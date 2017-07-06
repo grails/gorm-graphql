@@ -1,0 +1,73 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+    dependencies {
+        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "org.grails:grails-docs:$grailsVersion"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+        classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
+    }
+}
+
+repositories {
+    mavenLocal()
+    maven { url "https://repo.grails.org/grails/core" }
+}
+
+version project.projectVersion
+
+ext {
+    commonBuild = "https://raw.githubusercontent.com/grails/grails-common-build/cfd3bca16661cbb6fead6006715ea5ee26fb737a/"
+}
+
+subprojects {
+
+    version project.projectVersion
+
+    ext {
+        userOrg = "grails"
+        isGrailsPlugin = name.endsWith('plugin')
+        isBuildSnapshot = version.toString().endsWith("-SNAPSHOT")
+    }
+
+    if(project.name.startsWith("examples/")) {
+        if(project.name.startsWith("examples/grails")) {
+            apply plugin:"org.grails.grails-web"
+        }
+        return
+    }
+
+
+    if(isGrailsPlugin) {
+        group "org.grails.plugins"
+    }
+    else {
+        group "org.grails"
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+
+    if(project.name.endsWith('docs')) {
+        apply from:"${commonBuild}/common-docs.gradle"
+        return
+    }
+
+    if (isGrailsPlugin) {
+        apply plugin:"org.grails.grails-plugin"
+        apply from:"${commonBuild}/common-publishing.gradle"
+    }
+    else {
+        apply from:"${commonBuild}/common-project.gradle"
+        apply from:"${commonBuild}/common-publishing.gradle"
+    }
+
+    dependencies {
+        testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"
+    }
+}

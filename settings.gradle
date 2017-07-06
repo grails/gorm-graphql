@@ -1,0 +1,11 @@
+include 'core'
+include 'plugin'
+include 'docs'
+
+rootProject.name = 'gorm-graphql'
+
+rootProject.children.each {
+    if (!it.name.startsWith('examples')) {
+        it.name = "gorm-graphql-${it.name}"
+    }
+}
