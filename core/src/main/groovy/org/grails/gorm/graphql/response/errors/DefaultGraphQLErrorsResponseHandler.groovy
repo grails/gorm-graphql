@@ -1,4 +1,4 @@
-package org.grails.gorm.graphql.errors
+package org.grails.gorm.graphql.response.errors
 
 import graphql.Scalars
 import graphql.schema.DataFetcher
@@ -7,6 +7,7 @@ import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLObjectType
 import groovy.transform.CompileStatic
 import org.grails.datastore.gorm.GormValidateable
+import org.grails.gorm.graphql.response.CachingGraphQLResponseHandler
 import org.springframework.context.MessageSource
 import org.springframework.validation.FieldError
 
@@ -17,11 +18,15 @@ import static graphql.schema.GraphQLObjectType.newObject
 
 
 @CompileStatic
-class DefaultGraphQLErrorsOutputHandler extends CachingGraphQLErrorsOutputHandler {
+class DefaultGraphQLErrorsResponseHandler extends CachingGraphQLResponseHandler implements GraphQLErrorsResponseHandler {
 
-    private MessageSource messageSource
+    protected MessageSource messageSource
+    protected String name = "Error"
+    protected String description = "Validation Errors"
+    protected String fieldName = "errors"
+    protected String fieldDescription = "A list of validation errors on the entity"
 
-    DefaultGraphQLErrorsOutputHandler(MessageSource messageSource) {
+    DefaultGraphQLErrorsResponseHandler(MessageSource messageSource) {
         this.messageSource = messageSource
     }
 
@@ -59,36 +64,34 @@ class DefaultGraphQLErrorsOutputHandler extends CachingGraphQLErrorsOutputHandle
         }
     }
 
+    protected List<GraphQLFieldDefinition> getFieldDefinitions() {
+        [newFieldDefinition()
+            .name("field")
+            .type(nonNull(Scalars.GraphQLString))
+            .dataFetcher(fieldFetcher)
+            .build(),
 
-
-    private GraphQLObjectType _definition
+        newFieldDefinition()
+            .name("message")
+            .type(Scalars.GraphQLString)
+            .dataFetcher(messageFetcher)
+            .build()]
+    }
 
     @Override
     protected GraphQLObjectType buildDefinition() {
-        if (_definition != null) {
-            return GraphQLObjectType.reference(_definition.name)
-        }
-
-        _definition = newObject()
-            .name("Error")
-            .field(newFieldDefinition()
-                .name("field")
-                .type(nonNull(Scalars.GraphQLString))
-                .dataFetcher(fieldFetcher)
-            )
-            .field(newFieldDefinition()
-                .name("message")
-                .type(Scalars.GraphQLString)
-                .dataFetcher(messageFetcher)
-            ).build()
-
-        _definition
+        newObject()
+            .name(name)
+            .description(description)
+            .fields(fieldDefinitions)
+            .build()
     }
 
     @Override
     GraphQLFieldDefinition getFieldDefinition() {
         newFieldDefinition()
-            .name("errors")
+            .name(fieldName)
+            .description(fieldDescription)
             .type(list(definition))
             .dataFetcher(errorsFetcher).build()
     }

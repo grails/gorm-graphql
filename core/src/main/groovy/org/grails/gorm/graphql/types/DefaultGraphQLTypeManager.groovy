@@ -15,11 +15,11 @@ import java.util.concurrent.ConcurrentHashMap
  */
 class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
-    private static final Map<Class, Class> primitiveBoxes = [:]
+    protected static final Map<Class, Class> primitiveBoxes = [:]
 
-    private static final ConcurrentHashMap<Class, GraphQLType> typeMap = new ConcurrentHashMap<>()
+    protected static final ConcurrentHashMap<Class, GraphQLType> typeMap = new ConcurrentHashMap<>()
 
-    private static final ConcurrentHashMap<Class, GraphQLEnumType> enumTypes = new ConcurrentHashMap<>()
+    protected static final ConcurrentHashMap<Class, GraphQLEnumType> enumTypes = new ConcurrentHashMap<>()
 
     static {
         primitiveBoxes.put(int, Integer)
@@ -36,11 +36,14 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             Float serialize(Object input) {
                 if (input instanceof Float) {
                     return (Float) input
-                } else if (input instanceof Number) {
+                }
+                else if (input instanceof Number) {
                     return input.floatValue()
-                } else if (input instanceof String) {
+                }
+                else if (input instanceof String) {
                     Float.parseFloat(input)
-                } else {
+                }
+                else {
                     return null
                 }
             }
@@ -54,9 +57,11 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             Float parseLiteral(Object input) {
                 if (input instanceof IntValue) {
                     return ((IntValue) input).getValue().floatValue()
-                } else if (input instanceof FloatValue) {
+                }
+                else if (input instanceof FloatValue) {
                     return ((FloatValue) input).getValue().floatValue()
-                } else {
+                }
+                else {
                     return null
                 }
             }
@@ -103,7 +108,8 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         GraphQLType type = typeMap.get(clazz)
         if (!nullable) {
             GraphQLNonNull.nonNull(type)
-        } else {
+        }
+        else {
             type
         }
     }
@@ -137,7 +143,8 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             enumTypes.put(clazz, enumType)
 
             enumType
-        } else {
+        }
+        else {
             enumTypes.get(clazz)
         }
     }
@@ -146,7 +153,8 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         final String referenceName = entity.javaClass.simpleName
         if (type == GraphQLPropertyType.INPUT) {
             GraphQLInputObjectType.reference(referenceName + "Input")
-        } else {
+        }
+        else {
             GraphQLObjectType.reference(referenceName)
         }
     }

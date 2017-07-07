@@ -33,6 +33,11 @@ subprojects {
         isBuildSnapshot = version.toString().endsWith("-SNAPSHOT")
     }
 
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+
     if(project.name.startsWith("examples/")) {
         if(project.name.startsWith("examples/grails")) {
             apply plugin:"org.grails.grails-web"
@@ -46,11 +51,6 @@ subprojects {
     }
     else {
         group "org.grails"
-    }
-
-    repositories {
-        mavenLocal()
-        maven { url "https://repo.grails.org/grails/core" }
     }
 
     if(project.name.endsWith('docs')) {

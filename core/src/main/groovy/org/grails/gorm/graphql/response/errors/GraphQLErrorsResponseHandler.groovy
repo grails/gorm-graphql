@@ -1,8 +1,8 @@
-package org.grails.gorm.graphql.errors
+package org.grails.gorm.graphql.response.errors
 
 import graphql.schema.GraphQLFieldDefinition
 
-interface GraphQLErrorsOutputHandler {
+interface GraphQLErrorsResponseHandler {
 
     GraphQLFieldDefinition getFieldDefinition()
 

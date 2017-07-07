@@ -1,11 +1,11 @@
-package org.grails.gorm.graphql.errors
+package org.grails.gorm.graphql.response
 
 import graphql.schema.GraphQLObjectType
 
 /**
  * Created by jameskleeh on 6/6/17.
  */
-abstract class CachingGraphQLErrorsOutputHandler implements GraphQLErrorsOutputHandler {
+abstract class CachingGraphQLResponseHandler {
 
     private GraphQLObjectType _definition
 

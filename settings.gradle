@@ -2,6 +2,8 @@ include 'core'
 include 'plugin'
 include 'docs'
 
+include 'examples/grails32-test-app'
+
 rootProject.name = 'gorm-graphql'
 
 rootProject.children.each {

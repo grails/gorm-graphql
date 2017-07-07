@@ -31,7 +31,8 @@ class EntityDataFetcher<T extends Collection> extends GormDataFetcher<T> {
             Property mapping = it.mapping.mappedForm
             if (hibernatePropertyConfig != null && hibernatePropertyConfig.isAssignableFrom(mapping.class)) {
                 batchModeEnabled.put(it.name, ((Integer)mapping.invokeMethod('getBatchSize', [] as Object[])) > 1)
-            } else {
+            }
+            else {
                 batchModeEnabled.put(it.name, true)
             }
         }

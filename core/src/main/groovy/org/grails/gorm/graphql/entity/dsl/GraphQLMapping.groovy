@@ -1,6 +1,8 @@
 package org.grails.gorm.graphql.entity.dsl
 
+import static org.grails.gorm.graphql.entity.property.AdditionalGraphQLProperty.newProperty
 import groovy.transform.CompileStatic
+import groovy.transform.CompileDynamic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.grails.gorm.graphql.entity.property.AdditionalGraphQLProperty
@@ -28,6 +30,7 @@ import org.grails.gorm.graphql.entity.property.AdditionalGraphQLProperty
 class GraphQLMapping {
 
     List<AdditionalGraphQLProperty> additional = []
+    Map<String, GraphQLPropertyMapping> propertyMappings = [:]
     Set<String> excluded = new HashSet<String>()
     boolean deprecated = false
     String deprecationReason
@@ -45,15 +48,102 @@ class GraphQLMapping {
     /**
      * Add a new property to be included in the schema. The property may
      * or may not be backed by an instance method depending on whether or
-     * not the property is to be used for output.
+     * not the property is to be used for response.
      *
      * @param property The property to include
      */
     void add(AdditionalGraphQLProperty property) {
         if (property.name == null || property.type == null) {
-            throw new IllegalArgumentException("GraphQL properties must have both a name and type")
+            throw new IllegalArgumentException("${property.name}: GraphQL properties must have both a name and type")
         }
         additional.add(property)
+    }
+
+    /**
+     * Add a new property to be included in the schema. The property may
+     * or may not be backed by an instance method depending on whether or
+     * not the property is to be used for response.
+     *
+     * @param name The name of property to include
+     * @param type The type of property to include
+     */
+    void add(String name, Class type) {
+        add(newProperty().name(name).type(type))
+    }
+
+    private void handleAddClosure(AdditionalGraphQLProperty property, Closure closure) {
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = property
+
+        try {
+            closure.call()
+        } finally {
+            closure.delegate = null
+        }
+
+        add(property)
+    }
+
+    /**
+     * Add a new property to be included in the schema. The property may
+     * or may not be backed by an instance method depending on whether or
+     * not the property is to be used for response.
+     *
+     * @param name The name of property to include
+     * @param type The type of property to include
+     * @param closure A closure to further configure the property
+     */
+    void add(String name, Class type, @DelegatesTo(value = AdditionalGraphQLProperty, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+        AdditionalGraphQLProperty property = newProperty().name(name).type(type)
+        handleAddClosure(property, closure)
+    }
+
+    /**
+     * Add a new property to be included in the schema. The property may
+     * or may not be backed by an instance method depending on whether or
+     * not the property is to be used for response.
+     *
+     * Both name and type must be configured in the provided closure
+     *
+     * @param closure A closure to configure the property
+     */
+    void add(@DelegatesTo(value = AdditionalGraphQLProperty, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+        AdditionalGraphQLProperty property = newProperty()
+        handleAddClosure(property, closure)
+    }
+
+    void property(@DelegatesTo(value = GraphQLPropertyMapping, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+        GraphQLPropertyMapping.build(closure)
+    }
+
+    void property(Map namedArgs) {
+        new GraphQLPropertyMapping(namedArgs)
+    }
+
+    @CompileDynamic
+    def methodMissing(String name, Object args) {
+        if(args && args.getClass().isArray()) {
+
+            GraphQLPropertyMapping propertyMapping
+
+            if(args[0] instanceof Closure) {
+                propertyMapping = property((Closure) args[0])
+            }
+            else if(args[0] instanceof GraphQLPropertyMapping) {
+                propertyMapping = (GraphQLPropertyMapping) args[0]
+            }
+            else if(args[0] instanceof Map) {
+                propertyMapping = property((Map) args[0])
+            }
+            else {
+                throw new MissingMethodException(name, getClass(), args)
+            }
+
+            propertyMappings.put(name, propertyMapping)
+        }
+        else {
+            throw new MissingMethodException(name, getClass(), args)
+        }
     }
 
     /**
@@ -66,7 +156,13 @@ class GraphQLMapping {
         GraphQLMapping mapping = new GraphQLMapping()
         closure.resolveStrategy = Closure.DELEGATE_FIRST
         closure.delegate = mapping
-        closure.call()
+
+        try {
+            closure.call()
+        } finally {
+            closure.delegate = null
+        }
+
         mapping
     }
 

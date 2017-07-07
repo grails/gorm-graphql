@@ -37,7 +37,8 @@ abstract class GormDataFetcher<T> implements DataFetcher<T> {
 
         if (joinProperties) {
             [fetch: joinProperties.collectEntries { [(it): "join"] }]
-        } else {
+        }
+        else {
             [:]
         }
     }
@@ -47,7 +48,8 @@ abstract class GormDataFetcher<T> implements DataFetcher<T> {
 
         if (entity.identity != null) {
             idNames.add(entity.identity.name)
-        } else if (entity.compositeIdentity != null) {
+        }
+        else if (entity.compositeIdentity != null) {
             entity.compositeIdentity.each { PersistentProperty p ->
                 idNames.add(p.name)
             }
