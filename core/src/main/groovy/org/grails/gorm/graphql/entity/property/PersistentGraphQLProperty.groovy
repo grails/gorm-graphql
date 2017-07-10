@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.entity.property
 
 import graphql.schema.GraphQLType
+import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.types.Association
@@ -14,17 +15,23 @@ import java.lang.reflect.Field
 import static graphql.schema.GraphQLList.list
 
 /**
- * Created by jameskleeh on 7/6/17.
+ * Implementation of {@link GraphQLDomainProperty} to represent a property
+ * on a GORM entity
+ *
+ * @author James Kleeh
  */
+@CompileStatic
 class PersistentGraphQLProperty implements GraphQLDomainProperty {
 
     final String name
+    final Class type
     final boolean collection
     final boolean nullable
     String description
     String deprecationReason
     final boolean input
     final boolean output
+    final Closure dataFetcher
 
     PersistentProperty property
     private MappingContext mappingContext
@@ -33,12 +40,14 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         this.property = property
         this.mappingContext = mappingContext
         this.name = property.name
+        this.type = property.type
         this.collection = (property instanceof Association)
         this.nullable = property.owner.isIdentityName(property.name) || property.mapping.mappedForm.nullable
         this.output = mapping.output
         this.input = mapping.input
         this.description = mapping.description
         this.deprecationReason = mapping.deprecationReason
+        this.dataFetcher = mapping.dataFetcher
         try {
             Field field = property.owner.javaClass.getField(property.name)
             if (field != null) {
@@ -72,7 +81,7 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         GraphQLType type
 
         if (property instanceof Association) {
-            if (property.basic) {
+            if (((Association)property).basic) {
                 Class componentType = ((Basic) property).componentType
                 if (mappingContext.mappingFactory.isSimpleType(componentType.name)) {
                     type = typeManager.getType(componentType)

@@ -12,6 +12,7 @@ class GraphQLPropertyMapping {
     boolean deprecated = false
     String deprecationReason
     String description
+    Closure dataFetcher
 
     static GraphQLPropertyMapping build(@DelegatesTo(value = GraphQLPropertyMapping, strategy = Closure.DELEGATE_FIRST) Closure closure) {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()

@@ -7,6 +7,12 @@ import org.grails.datastore.gorm.GormEntity
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 
+/**
+ * A class for creating entities with GraphQL
+ *
+ * @param <T> The domain type to create
+ * @author James Kleeh
+ */
 @CompileStatic
 class CreateEntityDataFetcher<T> extends GormDataFetcher<T> {
 

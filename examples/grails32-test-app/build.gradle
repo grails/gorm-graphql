@@ -1,5 +1,10 @@
 group "examples"
 
+ext {
+    grailsVersion = "3.2.10"
+    gormVersion = "6.0.10.RELEASE"
+}
+
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
@@ -9,7 +14,6 @@ dependencies {
     compile "org.grails:grails-plugin-url-mappings"
     compile "org.grails:grails-plugin-rest"
     compile "org.grails:grails-plugin-codecs"
-    compile "org.grails:grails-plugin-interceptors"
     compile "org.grails:grails-plugin-services"
     compile "org.grails:grails-plugin-datasource"
     compile "org.grails:grails-plugin-databinding"
@@ -31,7 +35,7 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
     
-    compile project(":gorm-graphql-plugin")
+    compile project(":grails-plugin-gorm-graphql")
 }
 
 bootRun {

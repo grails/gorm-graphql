@@ -3,7 +3,10 @@ package org.grails.gorm.graphql.response
 import graphql.schema.GraphQLObjectType
 
 /**
- * Created by jameskleeh on 6/6/17.
+ * Generic class to cache the creation of {@link GraphQLObjectType} instances
+ * by providing a reference if the object was already created when requested.
+ *
+ * @author James Kleeh
  */
 abstract class CachingGraphQLResponseHandler {
 

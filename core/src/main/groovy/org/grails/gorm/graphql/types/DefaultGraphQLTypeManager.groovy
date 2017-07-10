@@ -6,7 +6,9 @@ import graphql.language.IntValue
 import graphql.schema.*
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQL
+import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
+import org.grails.gorm.graphql.types.scalars.GormScalars
 
 import java.util.concurrent.ConcurrentHashMap
 
@@ -31,53 +33,20 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         primitiveBoxes.put(byte, Byte)
         primitiveBoxes.put(short, Short)
 
-        GraphQLScalarType GraphQLFloat = new GraphQLScalarType("Float", "Built-in Float", new Coercing<Float, Float>() {
-            @Override
-            Float serialize(Object input) {
-                if (input instanceof Float) {
-                    return (Float) input
-                }
-                else if (input instanceof Number) {
-                    return input.floatValue()
-                }
-                else if (input instanceof String) {
-                    Float.parseFloat(input)
-                }
-                else {
-                    return null
-                }
-            }
-
-            @Override
-            Float parseValue(Object input) {
-                return serialize(input)
-            }
-
-            @Override
-            Float parseLiteral(Object input) {
-                if (input instanceof IntValue) {
-                    return ((IntValue) input).getValue().floatValue()
-                }
-                else if (input instanceof FloatValue) {
-                    return ((FloatValue) input).getValue().floatValue()
-                }
-                else {
-                    return null
-                }
-            }
-        })
+        GraphQLScalarType
 
         typeMap.put(Integer, Scalars.GraphQLInt)
         typeMap.put(Long, Scalars.GraphQLLong)
         typeMap.put(Short, Scalars.GraphQLShort)
         typeMap.put(Byte, Scalars.GraphQLByte)
         typeMap.put(Double, Scalars.GraphQLFloat)
-        typeMap.put(Float, GraphQLFloat)
+        typeMap.put(Float, GormScalars.GraphQLFloat)
         typeMap.put(BigInteger, Scalars.GraphQLBigInteger)
         typeMap.put(BigDecimal, Scalars.GraphQLBigDecimal)
         typeMap.put(String, Scalars.GraphQLString)
         typeMap.put(Boolean, Scalars.GraphQLBoolean)
         typeMap.put(Character, Scalars.GraphQLChar)
+        typeMap.put(UUID, GormScalars.GraphQLUUID)
 
         /*       java.util.Date.class.getName(),
             Time.class.getName(),
@@ -95,8 +64,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             Clob.class.getName(),
             Serializable.class.getName(),
             URI.class.getName(),
-            URL.class.getName(),
-            UUID.class.getName(),   */
+            URL.class.getName(),   */
 
     }
 
@@ -123,6 +91,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         typeMap.put(clazz, type)
     }
 
+    @Override
     GraphQLEnumType buildEnumType(Class clazz) {
         if (!enumTypes.containsKey(clazz)) {
             GraphQLEnumType.Builder builder = GraphQLEnumType.newEnum()
@@ -149,6 +118,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         }
     }
 
+    @Override
     GraphQLType getReference(PersistentEntity entity, GraphQLPropertyType type) {
         final String referenceName = entity.javaClass.simpleName
         if (type == GraphQLPropertyType.INPUT) {
@@ -157,5 +127,19 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         else {
             GraphQLObjectType.reference(referenceName)
         }
+    }
+
+    @Override
+    GraphQLInputObjectType createUpdateType(PersistentEntity entity, GraphQLInputObjectType createType, GraphQLEntityNamingConvention namingConvention) {
+        new GraphQLInputObjectType(namingConvention.getUpdateType(entity), createType.description, createType.fields.collect {
+            GraphQLInputType unwrappedType
+            if (it.type instanceof GraphQLNonNull) {
+                unwrappedType = (GraphQLInputType)((GraphQLNonNull)it.type).wrappedType
+            }
+            else {
+                unwrappedType = it.type
+            }
+            new GraphQLInputObjectField(it.name, it.description, unwrappedType, it.defaultValue)
+        })
     }
 }

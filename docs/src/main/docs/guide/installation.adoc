@@ -1,0 +1,14 @@
+To use this library in your project, add the following dependency to the
+`dependencies` block of your `build.gradle`:
+
+For Grails applications
+
+[source,groovy,subs="attributes"]
+compile "org.grails.plugins:gorm-graphql:{version}"
+
+For standalone projects
+
+[source,groovy,subs="attributes"]
+testCompile "org.grails:gorm-graphql:{version}"
+
+NOTE: The dependencies are optional. If you are not unit testing domain activity, you may not need the GORM testing support library.

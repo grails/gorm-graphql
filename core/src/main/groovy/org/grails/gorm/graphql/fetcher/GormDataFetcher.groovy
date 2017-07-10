@@ -10,6 +10,12 @@ import org.grails.datastore.gorm.GormEntity
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 
+/**
+ * A generic class to assist with querying entities with GraphQL
+ *
+ * @param <T> The domain type to query
+ * @author James Kleeh
+ */
 @CompileStatic
 abstract class GormDataFetcher<T> implements DataFetcher<T> {
 

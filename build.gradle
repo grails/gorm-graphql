@@ -29,7 +29,7 @@ subprojects {
 
     ext {
         userOrg = "grails"
-        isGrailsPlugin = name.endsWith('plugin')
+        isGrailsPlugin = name.startsWith('grails-plugin')
         isBuildSnapshot = version.toString().endsWith("-SNAPSHOT")
     }
 
@@ -60,12 +60,12 @@ subprojects {
 
     if (isGrailsPlugin) {
         apply plugin:"org.grails.grails-plugin"
-        apply from:"${commonBuild}/common-publishing.gradle"
     }
     else {
         apply from:"${commonBuild}/common-project.gradle"
-        apply from:"${commonBuild}/common-publishing.gradle"
     }
+
+    apply from:"${commonBuild}/common-publishing.gradle"
 
     dependencies {
         testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"

@@ -5,14 +5,24 @@ import grails.gorm.transactions.Transactional
 import graphql.Scalars
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLScalarType
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import groovy.util.logging.Slf4j
 import org.grails.datastore.mapping.config.Property
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.datastore.mapping.model.PropertyMapping
+import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.reflect.ClassUtils
 
+/**
+ * A class for retrieving a list of entities with GraphQL
+ *
+ * @param <T> The domain type to query
+ * @author James Kleeh
+ */
 @InheritConstructors
 @Slf4j
+@CompileStatic
 class EntityDataFetcher<T extends Collection> extends GormDataFetcher<T> {
 
     Map<String, Boolean> batchModeEnabled = [:]
@@ -27,13 +37,15 @@ class EntityDataFetcher<T extends Collection> extends GormDataFetcher<T> {
 
     EntityDataFetcher(PersistentEntity entity) {
         super(entity)
-        entity.associations.each {
-            Property mapping = it.mapping.mappedForm
+        entity.associations.each { Association association ->
+            //Workaround for groovy issue (Groovy thinks association.mapping.mappedForm is a Collection)
+            PropertyMapping<Property> propertyMapping = association.mapping
+            Property mapping = propertyMapping.mappedForm
             if (hibernatePropertyConfig != null && hibernatePropertyConfig.isAssignableFrom(mapping.class)) {
-                batchModeEnabled.put(it.name, ((Integer)mapping.invokeMethod('getBatchSize', [] as Object[])) > 1)
+                batchModeEnabled.put(association.name, ((Integer)mapping.invokeMethod('getBatchSize', [] as Object[])) > 1)
             }
             else {
-                batchModeEnabled.put(it.name, true)
+                batchModeEnabled.put(association.name, true)
             }
         }
     }
@@ -62,19 +74,17 @@ class EntityDataFetcher<T extends Collection> extends GormDataFetcher<T> {
             }
         }
 
-        if (queryArgs.containsKey('max') || queryArgs.containsKey('offset')) {
-            if (queryArgs.containsKey('fetch')) {
-                Map fetch = queryArgs.get('fetch')
-                boolean showWarning = false
-                fetch.keySet().each { String key ->
-                    fetch.put(key, "default")
-                    if (!batchModeEnabled.get(key)) {
-                        showWarning = true
-                    }
+        if (queryArgs.containsKey('fetch') && (queryArgs.containsKey('max') || queryArgs.containsKey('offset'))) {
+            Map<String, String> fetch = (Map)queryArgs.get('fetch')
+            boolean showWarning = false
+            fetch.keySet().each { String key ->
+                fetch.put(key, "default")
+                if (!batchModeEnabled.get(key)) {
+                    showWarning = true
                 }
-                if (showWarning) {
-                    log.warn("Pagination parameters were supplied for query ${environment.fields[0].name} in addition to a joined collection. The fetch mode will be lazy. Configure a batchSize for better performance.")
-                }
+            }
+            if (showWarning) {
+                log.warn("Pagination parameters were supplied for query ${environment.fields[0].name} in addition to a joined collection. The fetch mode will be lazy to ensure the correct data is returned. Configure a batchSize for better performance.")
             }
         }
 

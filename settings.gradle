@@ -4,10 +4,8 @@ include 'docs'
 
 include 'examples/grails32-test-app'
 
-rootProject.name = 'gorm-graphql'
+rootProject.name = 'gorm-graphql-root'
 
-rootProject.children.each {
-    if (!it.name.startsWith('examples')) {
-        it.name = "gorm-graphql-${it.name}"
-    }
-}
+findProject(':core').name = 'gorm-graphql'
+findProject(':plugin').name = 'grails-plugin-gorm-graphql'
+findProject(':docs').name = 'gorm-graphql-docs'

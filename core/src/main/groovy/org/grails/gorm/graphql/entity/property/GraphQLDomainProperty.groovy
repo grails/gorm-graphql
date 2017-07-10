@@ -4,10 +4,14 @@ import graphql.schema.GraphQLType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 /**
- * Created by jameskleeh on 7/6/17.
+ * An interface to describe a property to be used in the
+ * creation of a GraphQL schema
+ *
+ * @author James Kleeh
  */
 interface GraphQLDomainProperty {
     String getName()
+    Class getType()
     GraphQLType getGraphQLType(GraphQLTypeManager typeManager, GraphQLPropertyType propertyType)
     String getDescription()
     boolean isDeprecated()
@@ -16,4 +20,5 @@ interface GraphQLDomainProperty {
     boolean isOutput()
     boolean isNullable()
     boolean isCollection()
+    Closure getDataFetcher()
 }

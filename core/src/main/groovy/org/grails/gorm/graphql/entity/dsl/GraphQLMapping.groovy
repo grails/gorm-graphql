@@ -1,5 +1,8 @@
 package org.grails.gorm.graphql.entity.dsl
 
+import org.springframework.beans.MutablePropertyValues
+import org.springframework.validation.DataBinder
+
 import static org.grails.gorm.graphql.entity.property.AdditionalGraphQLProperty.newProperty
 import groovy.transform.CompileStatic
 import groovy.transform.CompileDynamic
@@ -117,7 +120,10 @@ class GraphQLMapping {
     }
 
     void property(Map namedArgs) {
-        new GraphQLPropertyMapping(namedArgs)
+        GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()
+        DataBinder dataBinder = new DataBinder(mapping)
+        dataBinder.bind(new MutablePropertyValues(namedArgs))
+        mapping
     }
 
     @CompileDynamic

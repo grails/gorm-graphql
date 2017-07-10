@@ -5,23 +5,37 @@ import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.grails.datastore.gorm.GormEntity
+import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 
+/**
+ * A class for deleting entities with GraphQL
+ *
+ * @param <T> The domain type to delete
+ * @author James Kleeh
+ */
 @CompileStatic
-@InheritConstructors
 class DeleteEntityDataFetcher<T> extends GormDataFetcher<T> {
+
+    GraphQLDeleteResponseHandler responseHandler
+
+    DeleteEntityDataFetcher(PersistentEntity entity, GraphQLDeleteResponseHandler responseHandler) {
+        super(entity)
+        this.responseHandler = responseHandler
+    }
 
     @Override
     @Transactional
     T get(DataFetchingEnvironment environment) {
         GormEntity instance = queryInstance(environment)
 
-        Map response = [success: false]
+        boolean success = false
         try {
             ((GormEntity)instance).delete(failOnError: true)
-            response.success = true
+            success = true
         } catch (e) {}
 
-        (T)response
+        (T)responseHandler.createResponse(environment, success)
     }
 
 }

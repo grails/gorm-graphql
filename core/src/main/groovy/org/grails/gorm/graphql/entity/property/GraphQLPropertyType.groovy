@@ -1,7 +1,10 @@
 package org.grails.gorm.graphql.entity.property
 
 /**
- * Created by jameskleeh on 7/6/17.
+ * Represents what type of property is being created, for
+ * input or output
+ *
+ * @author James Kleeh
  */
 enum GraphQLPropertyType {
     INPUT,

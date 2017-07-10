@@ -16,7 +16,18 @@ import static graphql.schema.GraphQLList.list
 import static graphql.schema.GraphQLNonNull.nonNull
 import static graphql.schema.GraphQLObjectType.newObject
 
-
+/**
+ * The default way to respond with validation errors in GraphQL.
+ * Will look for the locale in the environment context to properly format
+ * error messages. Defaults to {@link Locale#getDefault()}.
+ *
+ * errors {
+ *     field
+ *     message
+ * }
+ *
+ * @author James Kleeh
+ */
 @CompileStatic
 class DefaultGraphQLErrorsResponseHandler extends CachingGraphQLResponseHandler implements GraphQLErrorsResponseHandler {
 

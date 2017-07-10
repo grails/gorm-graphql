@@ -1,16 +1,23 @@
 package org.grails.gorm.graphql.response.delete
 
 import graphql.Scalars
+import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLObjectType
+import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.response.CachingGraphQLResponseHandler
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLObjectType.newObject
 
 /**
- * Created by jameskleeh on 7/7/17.
+ * The default data available in a delete mutation response
+ *
+ * success: Boolean
+ *
+ * @author James Kleeh
  */
+@CompileStatic
 class DefaultGraphQLDeleteResponseHandler extends CachingGraphQLResponseHandler implements GraphQLDeleteResponseHandler {
 
     protected String description = "Whether or not the operation was successful"
@@ -32,5 +39,10 @@ class DefaultGraphQLDeleteResponseHandler extends CachingGraphQLResponseHandler 
             .description(description)
             .fields(buildFieldDefinitions())
             .build()
+    }
+
+    @Override
+    Object createResponse(DataFetchingEnvironment environment, boolean success) {
+        [success: success]
     }
 }

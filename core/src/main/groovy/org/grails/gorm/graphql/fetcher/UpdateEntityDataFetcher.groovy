@@ -7,6 +7,12 @@ import org.grails.datastore.gorm.GormEntity
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 
+/**
+ * A class for updating an entity with GraphQL
+ *
+ * @param <T> The domain type to update
+ * @author James Kleeh
+ */
 @CompileStatic
 class UpdateEntityDataFetcher<T> extends GormDataFetcher<T> {
 

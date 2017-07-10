@@ -1,10 +1,14 @@
 package org.grails.gorm.graphql.entity
 
+import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
 
 /**
- * Created by jameskleeh on 7/7/17.
+ * A class to return the names of class types and query/mutation names
+ *
+ * @author James Kleeh
  */
+@CompileStatic
 class GraphQLEntityNamingConvention {
 
     String getReadSingle(PersistentEntity entity) {

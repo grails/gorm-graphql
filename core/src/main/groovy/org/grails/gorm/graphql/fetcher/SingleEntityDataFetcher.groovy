@@ -5,6 +5,12 @@ import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
+/**
+ * A class for querying a single entity with GraphQL
+ *
+ * @param <T> The domain type to query
+ * @author James Kleeh
+ */
 @CompileStatic
 @InheritConstructors
 class SingleEntityDataFetcher<T> extends GormDataFetcher<T> {
