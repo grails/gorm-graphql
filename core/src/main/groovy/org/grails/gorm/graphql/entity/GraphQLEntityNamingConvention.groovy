@@ -41,6 +41,9 @@ class GraphQLEntityNamingConvention {
             case GraphQLPropertyType.UPDATE:
                 simpleName + "Update"
                 break
+            case GraphQLPropertyType.UPDATE_NESTED:
+                simpleName + "UpdateNested"
+                break
             default:
                 simpleName
         }

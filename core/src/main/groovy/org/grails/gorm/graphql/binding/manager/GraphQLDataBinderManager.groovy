@@ -18,7 +18,7 @@ class GraphQLDataBinderManager {
 
     GraphQLDataBinderManager() {
         //Create the default data binder
-        this(new GraphQLDataBinder() {
+        register(Object, new GraphQLDataBinder() {
             @Override
             void bind(Object object, Map data) {
                 DataBinder dataBinder = new DataBinder(object)

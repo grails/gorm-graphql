@@ -2,9 +2,12 @@ package org.grails.gorm.graphql.types
 
 import graphql.schema.GraphQLEnumType
 import graphql.schema.GraphQLInputObjectType
+import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLType
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
+import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
 
 /**
@@ -24,5 +27,11 @@ interface GraphQLTypeManager {
 
     GraphQLType createReference(PersistentEntity entity, GraphQLPropertyType type)
 
-    GraphQLInputObjectType createUpdateType(PersistentEntity entity, GraphQLInputObjectType createType)
+    GraphQLType getType(PersistentEntity entity, GraphQLPropertyType type)
+
+    GraphQLObjectType getObjectType(PersistentEntity entity)
+
+    GraphQLInputObjectType getCreateObjectType(PersistentEntity entity)
+
+    GraphQLInputObjectType getUpdateObjectType(PersistentEntity entity)
 }

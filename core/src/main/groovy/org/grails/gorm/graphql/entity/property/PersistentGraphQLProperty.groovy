@@ -9,6 +9,7 @@ import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.model.types.Basic
 import org.grails.datastore.mapping.model.types.ToMany
 import org.grails.gorm.graphql.GraphQL
+import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
@@ -125,7 +126,15 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         else {
             PersistentEntity entity = mappingContext.getPersistentEntity(type.name)
             if (entity != null) {
-                graphQLType = typeManager.createReference(entity, propertyType)
+                if (propertyType == GraphQLPropertyType.UPDATE) {
+                    graphQLType = typeManager.getType(entity, GraphQLPropertyType.UPDATE_NESTED)
+                }
+                else if (GraphQLEntityHelper.getMapping(entity) != null) {
+                    graphQLType = typeManager.createReference(entity, propertyType)
+                }
+                else {
+                    graphQLType = typeManager.getType(entity, propertyType)
+                }
             } else {
                 graphQLType = typeManager.getType(type, nullable)
             }

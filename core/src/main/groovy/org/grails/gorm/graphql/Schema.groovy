@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql
 
+import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
@@ -41,6 +42,7 @@ import java.lang.reflect.Method
 /**
  * Created by jameskleeh on 5/19/17.
  */
+@CompileStatic
 class Schema {
 
     protected MappingContext mappingContext
@@ -69,207 +71,47 @@ class Schema {
         dataFetcherManager = new DefaultGraphQLDataFetcherManager()
     }
 
-    private static Method derivedMethod
-
-    //To support older versions of GORM
-    static {
-        try {
-            derivedMethod = Property.class.getMethod("isDerived", (Class<?>[]) null)
-        } catch (NoSuchMethodException | SecurityException e) {
-            // no-op
+    protected void populateIdentityArguments(PersistentEntity entity, GraphQLFieldDefinition.Builder... builders) {
+        List<PersistentProperty> identities = []
+        if (entity.identity != null) {
+            identities.add(entity.identity)
         }
-    }
+        else if (entity.compositeIdentity != null) {
+            identities.addAll(entity.compositeIdentity)
+        }
+        identities
 
-    protected Map<PersistentEntity, GraphQLObjectType> domainObjectTypes = [:]
-    protected Map<PersistentEntity, GraphQLInputObjectType> domainInputObjectTypes = [:]
-
-    protected GraphQLInputObjectField.Builder buildInputField(GraphQLDomainProperty prop) {
-        newInputObjectField()
-            .name(prop.name)
-            .description(prop.description)
-            .type((GraphQLInputType)prop.getGraphQLType(typeManager, GraphQLPropertyType.CREATE))
-    }
-
-    protected GraphQLFieldDefinition.Builder buildField(GraphQLDomainProperty prop) {
-        newFieldDefinition()
-            .name(prop.name)
-            .deprecate(prop.deprecationReason)
-            .description(prop.description)
-            .dataFetcher(prop.dataFetcher ? new ClosureDataFetcher(prop.dataFetcher) : null)
-            .type((GraphQLOutputType)prop.getGraphQLType(typeManager, GraphQLPropertyType.OUTPUT))
-    }
-
-    protected List<GraphQLDomainProperty> getProperties(PersistentEntity entity, GraphQLMapping mapping, boolean includeIdentifiers = true) {
-
-        List<GraphQLDomainProperty> properties = []
-
-        if (includeIdentifiers) {
-            if (entity.identity != null) {
-                properties.add(new PersistentGraphQLProperty(mappingContext, entity.identity, mapping.propertyMappings.getOrDefault(entity.identity.name, new GraphQLPropertyMapping(input: false))))
-            }
-            else if (entity.compositeIdentity?.length > 0) {
-                properties.addAll(entity.compositeIdentity.collect {
-                    mapping.propertyMappings.getOrDefault(it.name, new GraphQLPropertyMapping())
-                    new PersistentGraphQLProperty(mappingContext, it, mapping.propertyMappings.getOrDefault(it.name, new GraphQLPropertyMapping()))
-                })
+        identities.each { PersistentProperty identity ->
+            builders.each { GraphQLFieldDefinition.Builder builder ->
+                builder.argument(newArgument()
+                        .name(identity.name)
+                        .type((GraphQLInputType)typeManager.getType(identity.type, false)))
             }
         }
-
-        entity.persistentProperties.each { PersistentProperty prop ->
-            if (!mapping.excluded.contains(prop.name)) {
-                if (prop instanceof Embedded) {
-                    properties.addAll(
-                        getProperties(prop.associatedEntity,
-                                      mapping.createEmbeddedMapping(prop.name), false))
-                }
-                else {
-                    boolean input = true
-                    if (derivedMethod != null) {
-                        Property property = prop.mapping.mappedForm
-                        if (derivedMethod.invoke(property, (Object[]) null)) {
-                            input = false
-                        }
-                    }
-
-                    properties.add(new PersistentGraphQLProperty(mappingContext, prop, mapping.propertyMappings.getOrDefault(prop.name, new GraphQLPropertyMapping(input: input))))
-                }
-            }
-        }
-
-        properties.addAll(mapping.additional)
-
-        properties
-    }
-
-    protected void handleAssociatedEntity(PersistentProperty property) {
-        if (property instanceof Association && !property.basic) {
-            PersistentEntity associatedEntity = property.associatedEntity
-            if (!mappedEntities.containsKey(associatedEntity)) {
-                GraphQLMapping associatedMapping = new GraphQLMapping()
-                handleEntity(associatedEntity, associatedMapping)
-            }
-        }
-    }
-
-    protected void handleEntity(PersistentEntity entity, GraphQLMapping mapping) {
-        List<GraphQLDomainProperty> associatedProperties = getProperties(entity, mapping)
-        final String description = getDescription(entity, mapping)
-        buildObjectType(entity, associatedProperties, description)
-        buildInputObjectType(entity, associatedProperties, description)
-    }
-
-    protected GraphQLObjectType buildObjectType(PersistentEntity entity, List<GraphQLDomainProperty> properties, String description) {
-
-        if (!domainObjectTypes.containsKey(entity)) {
-
-            GraphQLObjectType.Builder obj = newObject()
-                    .name(namingConvention.getType(entity, GraphQLPropertyType.OUTPUT))
-                    .description(description)
-
-            properties.each { GraphQLDomainProperty prop ->
-                if (prop.output) {
-                    obj.field(buildField(prop))
-                    if (prop instanceof PersistentGraphQLProperty) {
-                        handleAssociatedEntity(prop.property)
-                    }
-                }
-            }
-
-            obj.field(errorsResponseHandler.fieldDefinition)
-
-            domainObjectTypes.put(entity, obj.build())
-        }
-
-        domainObjectTypes.get(entity)
-    }
-
-    protected GraphQLInputObjectType buildInputObjectType(PersistentEntity entity, List<GraphQLDomainProperty> properties, String description) {
-
-        if (!domainInputObjectTypes.containsKey(entity)) {
-
-            GraphQLInputObjectType.Builder inputObj = newInputObject()
-                    .name(namingConvention.getType(entity, GraphQLPropertyType.CREATE))
-                    .description(description)
-
-            properties.each { GraphQLDomainProperty prop ->
-                if (prop.input) {
-                    inputObj.field(buildInputField(prop))
-                    if (prop instanceof PersistentGraphQLProperty) {
-                        handleAssociatedEntity(prop.property)
-                    }
-                }
-            }
-
-            domainInputObjectTypes.put(entity, inputObj.build())
-        }
-
-        domainInputObjectTypes.get(entity)
-    }
-
-    protected void populateIdentityArguments(GraphQLFieldDefinition.Builder builder, List<PersistentProperty> identities) {
-        identities.each {
-            builder.argument(newArgument()
-                    .name(it.name)
-                    .type((GraphQLInputType)typeManager.getType(it.type, false)))
-        }
-    }
-
-    protected GraphQLMapping getMapping(PersistentEntity entity) {
-        def graphql = ClassPropertyFetcher.getStaticPropertyValue(entity.javaClass, 'graphql', Object)
-        if (graphql != null) {
-            if (graphql == Boolean.TRUE) {
-                return new GraphQLMapping()
-            }
-            else if (graphql instanceof Closure) {
-                return new GraphQLMapping().build(graphql)
-            }
-
-            if (!(graphql instanceof GraphQLMapping)) {
-                throw new IllegalMappingException("The static graphql property on ${entity.name} is not a Boolean, Closure, or GraphQLMapping")
-            }
-
-            return graphql
-        }
-        null
     }
 
     GraphQLSchema generate() {
 
         mappingContext.persistentEntities.each { PersistentEntity entity ->
-            GraphQLMapping mapping = getMapping(entity)
+            GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity)
             if (mapping != null) {
                 mappedEntities.put(entity, mapping)
             }
         }
 
-        mappedEntities.each { PersistentEntity entity, GraphQLMapping mapping ->
-            handleEntity(entity, mapping)
-        }
-
         GraphQLObjectType.Builder queryType = newObject().name("Query")
         GraphQLObjectType.Builder mutationType = newObject().name("Mutation")
 
-        mappedEntities.keySet().each { PersistentEntity entity ->
+        mappedEntities.each { PersistentEntity entity, GraphQLMapping mapping ->
 
             GraphQLDataBinder dataBinder = dataBinderManager.getDataBinder(entity.javaClass)
 
-            List<PersistentProperty> identities = []
-            if (entity.identity != null) {
-                identities.add(entity.identity)
-            }
-            else if (entity.compositeIdentity != null) {
-                identities.addAll(entity.compositeIdentity)
-            }
-            identities
-
-            GraphQLObjectType objectType = domainObjectTypes.get(entity)
+            GraphQLObjectType objectType = typeManager.getObjectType(entity)
 
             def queryOne = newFieldDefinition()
                     .name(namingConvention.getReadSingle(entity))
                     .type(objectType)
                     .dataFetcher(dataFetcherManager.createGetFetcher(entity))
-
-            populateIdentityArguments(queryOne, identities)
 
             def queryAll = newFieldDefinition()
                     .name(namingConvention.getReadMany(entity))
@@ -283,14 +125,14 @@ class Schema {
                         .defaultValue(null))
             }
 
-            GraphQLInputObjectType inputObjectType = domainInputObjectTypes.get(entity)
+            GraphQLInputObjectType createObjectType = typeManager.getCreateObjectType(entity)
 
             def create = newFieldDefinition()
                     .name(namingConvention.getCreate(entity))
                     .type(objectType)
                     .argument(newArgument()
                         .name(entity.decapitalizedName)
-                        .type(inputObjectType))
+                        .type(createObjectType))
                     .dataFetcher(dataFetcherManager.createCreateFetcher(entity, dataBinder))
 
             def delete = newFieldDefinition()
@@ -298,17 +140,17 @@ class Schema {
                     .type(deleteResponseHandler.objectType)
                     .dataFetcher(dataFetcherManager.createDeleteFetcher(entity, deleteResponseHandler))
 
-            populateIdentityArguments(delete, identities)
+            GraphQLInputObjectType updateObjectType = typeManager.getUpdateObjectType(entity)
 
             def update = newFieldDefinition()
                     .name(namingConvention.getUpdate(entity))
                     .type(objectType)
                     .argument(newArgument()
                         .name(entity.decapitalizedName)
-                        .type(typeManager.createUpdateType(entity, inputObjectType)))
+                        .type(updateObjectType))
                     .dataFetcher(dataFetcherManager.createUpdateFetcher(entity, dataBinder))
 
-            populateIdentityArguments(update, identities)
+            populateIdentityArguments(entity, queryOne, delete, update)
 
             queryType
                 .field(queryOne)
@@ -327,26 +169,6 @@ class Schema {
             .build()
     }
 
-    protected String getDescription(PersistentEntity entity, GraphQLMapping graphQLMapping) {
-        String description = graphQLMapping.description
 
-        if (description == null) {
-            GraphQL graphQL = entity.javaClass.getAnnotation(GraphQL)
-            if (graphQL != null) {
-                description = graphQL.value()
-            }
-            else {
-                try {
-                    Class hibernateMapping = Class.forName( "org.grails.orm.hibernate.cfg.Mapping" )
-                    Entity mapping = entity.mapping.mappedForm
-                    if (hibernateMapping.isAssignableFrom(mapping.class)) {
-                        description = hibernateMapping.getMethod('getComment').invoke(mapping)
-                    }
-                } catch(ClassNotFoundException e) {}
-            }
-        }
-
-        description
-    }
 
 }

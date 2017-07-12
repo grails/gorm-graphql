@@ -1,0 +1,5 @@
+import groovy.transform.Field
+
+@Field Map result
+
+json g.render(result, [includes: 'errors'])

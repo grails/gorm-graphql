@@ -1,21 +1,24 @@
-ext {
-    grailsVersion = "3.2.10"
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+    dependencies {
+        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "org.grails.plugins:views-gradle:1.2.3"
+    }
 }
 
+apply plugin:"org.grails.grails-plugin"
+apply plugin:"org.grails.plugins.views-json"
+
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-logging"
-    compile "org.springframework.boot:spring-boot-autoconfigure"
-    compile "org.grails:grails-core"
-    compile "org.springframework.boot:spring-boot-starter-actuator"
-    compile "org.springframework.boot:spring-boot-starter-tomcat"
-    compile "org.grails:grails-dependencies"
-    compile "org.grails:grails-web-boot"
-    console "org.grails:grails-console"
+    compile "org.grails:grails-plugin-controllers"
+    compile "org.grails:grails-plugin-rest"
+    compile "org.grails:grails-plugin-url-mappings"
+    compile "org.grails.plugins:views-json:1.2.3"
+    compile "javax.servlet:javax.servlet-api:3.0.1"
     profile "org.grails.profiles:web-plugin"
-    testCompile "org.grails.plugins:geb"
-    testCompile "org.grails:grails-web-testing-support"
-    testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
-    testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 
     compile project(":gorm-graphql")
 }

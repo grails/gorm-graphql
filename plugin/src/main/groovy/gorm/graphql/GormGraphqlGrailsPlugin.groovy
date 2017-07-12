@@ -17,10 +17,7 @@ class GormGraphqlGrailsPlugin extends Plugin {
 
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "3.2.9 > *"
-    // resources that are excluded from plugin packaging
-    def pluginExcludes = [
-        "grails-app/views/error.gsp"
-    ]
+
 
     // TODO Fill in these fields
     def title = "Gorm Graphql" // Headline display name of the plugin
@@ -69,7 +66,5 @@ Brief summary/description of the plugin.
         }
         graphQLSchema(customSchema: "generate")
         graphQL(GraphQL, ref("graphQLSchema"))
-
-
     }}
 }

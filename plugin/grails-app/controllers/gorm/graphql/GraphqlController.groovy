@@ -10,6 +10,8 @@ import org.springframework.http.HttpMethod
 
 class GraphqlController {
 
+    static responseFormats = ['json', 'xml']
+
     GraphQL graphQL
 
     protected Object buildContext() {
@@ -64,6 +66,6 @@ class GraphqlController {
         }
         result.put("data", executionResult.getData())
 
-        respond result
+        respond([result: result])
     }
 }

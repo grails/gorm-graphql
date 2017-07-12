@@ -1,20 +1,30 @@
 package org.grails.gorm.graphql.types
 
 import graphql.Scalars
-import graphql.language.FloatValue
-import graphql.language.IntValue
 import graphql.schema.*
+import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQL
+import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
+import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
+import org.grails.gorm.graphql.entity.property.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
+import org.grails.gorm.graphql.fetcher.ClosureDataFetcher
+import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.types.scalars.GormScalars
 
 import java.util.concurrent.ConcurrentHashMap
 
+import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
+import static graphql.schema.GraphQLInputObjectField.newInputObjectField
+import static graphql.schema.GraphQLInputObjectType.newInputObject
+import static graphql.schema.GraphQLObjectType.newObject
+
 /**
  * Created by jameskleeh on 7/5/17.
  */
+@CompileStatic
 class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
     protected static final Map<Class, Class> primitiveBoxes = [:]
@@ -32,8 +42,6 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         primitiveBoxes.put(char, Character)
         primitiveBoxes.put(byte, Byte)
         primitiveBoxes.put(short, Short)
-
-        GraphQLScalarType
 
         typeMap.put(Integer, Scalars.GraphQLInt)
         typeMap.put(Long, Scalars.GraphQLLong)
@@ -69,9 +77,15 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     }
 
     GraphQLEntityNamingConvention namingConvention
+    GraphQLErrorsResponseHandler errorsResponseHandler
 
     DefaultGraphQLTypeManager(GraphQLEntityNamingConvention namingConvention) {
         this.namingConvention = namingConvention
+    }
+
+    DefaultGraphQLTypeManager(GraphQLEntityNamingConvention namingConvention, GraphQLErrorsResponseHandler errorsResponseHandler) {
+        this(namingConvention)
+        this.errorsResponseHandler = errorsResponseHandler
     }
 
     @Override
@@ -141,20 +155,135 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         }
     }
 
-    @Override
-    GraphQLInputObjectType createUpdateType(PersistentEntity entity, GraphQLInputObjectType createType) {
-        new GraphQLInputObjectType(namingConvention.getType(entity, GraphQLPropertyType.UPDATE), createType.description, createType.fields.collect {
-            GraphQLInputType unwrappedType
-            if (it.type instanceof GraphQLNonNull) {
-                unwrappedType = (GraphQLInputType)((GraphQLNonNull)it.type).wrappedType
+    protected Map<PersistentEntity, GraphQLObjectType> domainObjectTypes = [:]
+    protected Map<PersistentEntity, GraphQLInputObjectType> domainCreateObjectTypes = [:]
+    protected Map<PersistentEntity, GraphQLInputObjectType> domainUpdateObjectTypes = [:]
+    protected Map<PersistentEntity, GraphQLInputObjectType> domainUpdateNestedObjectTypes = [:]
+
+    protected GraphQLInputObjectField.Builder buildInputField(GraphQLDomainProperty prop, GraphQLPropertyType type) {
+        newInputObjectField()
+                .name(prop.name)
+                .description(prop.description)
+                .type((GraphQLInputType)prop.getGraphQLType(this, type))
+    }
+
+    protected GraphQLFieldDefinition.Builder buildField(GraphQLDomainProperty prop) {
+        newFieldDefinition()
+                .name(prop.name)
+                .deprecate(prop.deprecationReason)
+                .description(prop.description)
+                .dataFetcher(prop.dataFetcher ? new ClosureDataFetcher(prop.dataFetcher) : null)
+                .type((GraphQLOutputType)prop.getGraphQLType(this, GraphQLPropertyType.OUTPUT))
+    }
+
+    GraphQLObjectType getObjectType(PersistentEntity entity) {
+
+        if (!domainObjectTypes.containsKey(entity)) {
+
+            final String description = GraphQLEntityHelper.getDescription(entity)
+
+            GraphQLDomainPropertyManager manager = new GraphQLDomainPropertyManager(entity)
+
+            List<GraphQLDomainProperty> properties = manager.getProperties()
+
+            GraphQLObjectType.Builder obj = newObject()
+                    .name(namingConvention.getType(entity, GraphQLPropertyType.OUTPUT))
+                    .description(description)
+
+            properties.each { GraphQLDomainProperty prop ->
+                if (prop.output) {
+                    obj.field(buildField(prop))
+                }
             }
-            else {
-                unwrappedType = it.type
+
+            if (errorsResponseHandler != null) {
+                obj.field(errorsResponseHandler.fieldDefinition)
             }
-            if (unwrappedType instanceof TypeReference) {
-                unwrappedType = GraphQLInputObjectType.reference(namingConvention.getType(entity, GraphQLPropertyType.OUTPUT))
+
+            domainObjectTypes.put(entity, obj.build())
+        }
+
+        domainObjectTypes.get(entity)
+    }
+
+    private GraphQLInputObjectType buildInputObjectType(PersistentEntity entity, GraphQLDomainPropertyManager manager, GraphQLPropertyType type) {
+
+        final String description = GraphQLEntityHelper.getDescription(entity)
+
+        List<GraphQLDomainProperty> properties = manager.getProperties()
+
+        GraphQLInputObjectType.Builder inputObj = newInputObject()
+                .name(namingConvention.getType(entity, type))
+                .description(description)
+
+        properties.each { GraphQLDomainProperty prop ->
+            if (prop.input) {
+                inputObj.field(buildInputField(prop, type))
             }
-            new GraphQLInputObjectField(it.name, it.description, unwrappedType, it.defaultValue)
-        })
+        }
+
+        inputObj.build()
+    }
+
+    GraphQLType getType(PersistentEntity entity, GraphQLPropertyType type) {
+        switch (type) {
+            case GraphQLPropertyType.CREATE:
+                getCreateObjectType(entity)
+                break
+            case GraphQLPropertyType.UPDATE:
+                getUpdateObjectType(entity)
+                break
+            case GraphQLPropertyType.UPDATE_NESTED:
+                getUpdateNestedObjectType(entity)
+                break
+            default:
+                getObjectType(entity)
+        }
+    }
+
+    GraphQLInputObjectType getCreateObjectType(PersistentEntity entity) {
+
+        if (!domainCreateObjectTypes.containsKey(entity)) {
+
+            GraphQLDomainPropertyManager manager = new GraphQLDomainPropertyManager(entity)
+                .excludeTimestamps()
+                .excludeVersion()
+                .identifiers(false)
+
+            GraphQLInputObjectType inputObj = buildInputObjectType(entity, manager, GraphQLPropertyType.CREATE)
+
+            domainCreateObjectTypes.put(entity, inputObj)
+        }
+
+        domainCreateObjectTypes.get(entity)
+    }
+
+    GraphQLInputObjectType getUpdateObjectType(PersistentEntity entity) {
+        if (!domainUpdateObjectTypes.containsKey(entity)) {
+
+            GraphQLDomainPropertyManager manager = new GraphQLDomainPropertyManager(entity)
+                    .excludeTimestamps()
+                    .identifiers(false)
+
+            GraphQLInputObjectType inputObj = buildInputObjectType(entity, manager, GraphQLPropertyType.UPDATE)
+
+            domainUpdateObjectTypes.put(entity, inputObj)
+        }
+
+        domainUpdateObjectTypes.get(entity)
+    }
+
+    GraphQLInputObjectType getUpdateNestedObjectType(PersistentEntity entity) {
+        if (!domainUpdateNestedObjectTypes.containsKey(entity)) {
+
+            GraphQLDomainPropertyManager manager = new GraphQLDomainPropertyManager(entity)
+                .excludeTimestamps()
+
+            GraphQLInputObjectType inputObj = buildInputObjectType(entity, manager, GraphQLPropertyType.UPDATE_NESTED)
+
+            domainUpdateNestedObjectTypes.put(entity, inputObj)
+        }
+
+        domainUpdateNestedObjectTypes.get(entity)
     }
 }

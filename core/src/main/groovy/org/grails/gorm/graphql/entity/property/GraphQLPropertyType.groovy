@@ -13,5 +13,8 @@ enum GraphQLPropertyType {
     CREATE,
 
     //For updating data (typically the same as create except nulls allowed)
-    UPDATE
+    UPDATE,
+
+    //For supplying association data
+    UPDATE_NESTED
 }
