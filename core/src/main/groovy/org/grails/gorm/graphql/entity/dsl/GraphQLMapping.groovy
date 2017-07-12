@@ -115,17 +115,36 @@ class GraphQLMapping {
         handleAddClosure(property, closure)
     }
 
-    void property(@DelegatesTo(value = GraphQLPropertyMapping, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+    private GraphQLPropertyMapping property(@DelegatesTo(value = GraphQLPropertyMapping, strategy = Closure.DELEGATE_FIRST) Closure closure) {
         GraphQLPropertyMapping.build(closure)
     }
 
-    void property(Map namedArgs) {
+    private GraphQLPropertyMapping property(Map namedArgs) {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()
         DataBinder dataBinder = new DataBinder(mapping)
         dataBinder.bind(new MutablePropertyValues(namedArgs))
         mapping
     }
 
+
+    /**
+     * Supplies configuration for an existing property
+     *
+     * Usage:
+     *
+     * foo {
+     *     description "Foo"
+     * }
+     *
+     * foo description: "Foo"
+     *
+     * //Provides code completion
+     * foo GraphQLPropertyMapping.build {
+     *     description("Foo")
+     * }
+     *
+     * @see GraphQLPropertyMapping
+     */
     @CompileDynamic
     def methodMissing(String name, Object args) {
         if(args && args.getClass().isArray()) {

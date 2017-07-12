@@ -1,9 +1,6 @@
 group "examples"
 
-ext {
-    grailsVersion = "3.2.10"
-    gormVersion = "6.0.10.RELEASE"
-}
+apply plugin:"org.grails.grails-web"
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
@@ -17,6 +14,7 @@ dependencies {
     compile "org.grails:grails-plugin-services"
     compile "org.grails:grails-plugin-datasource"
     compile "org.grails:grails-plugin-databinding"
+    compile "org.grails:grails-plugin-converters:3.2.10"
     compile "org.grails:grails-plugin-async"
     compile "org.grails:grails-web-boot"
     compile "org.grails:grails-logging"

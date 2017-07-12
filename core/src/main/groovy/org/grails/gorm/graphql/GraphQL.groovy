@@ -13,5 +13,5 @@ import java.lang.annotation.Target
 
     boolean deprecated() default false
 
-    String deprecationReason() default ""
+    String deprecationReason() default ''
 }

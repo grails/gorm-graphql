@@ -1,7 +1,17 @@
 package gorm.graphql
 
-import org.grails.gorm.graphql.Schema
 import grails.plugins.*
+import graphql.GraphQL
+import org.grails.gorm.graphql.Schema
+import org.grails.gorm.graphql.binding.GraphQLDataBinder
+import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
+import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
+import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
+import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
+import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
+import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
+import org.springframework.beans.MutablePropertyValues
+import org.springframework.validation.DataBinder
 
 class GormGraphqlGrailsPlugin extends Plugin {
 
@@ -14,8 +24,8 @@ class GormGraphqlGrailsPlugin extends Plugin {
 
     // TODO Fill in these fields
     def title = "Gorm Graphql" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
+    def author = "James Kleeh"
+    def authorEmail = "james.kleeh@gmail.com"
     def description = '''\
 Brief summary/description of the plugin.
 '''
@@ -42,9 +52,23 @@ Brief summary/description of the plugin.
 //    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
 
     Closure doWithSpring() {{ ->
+        errorsResponseHandler(DefaultGraphQLErrorsResponseHandler, ref("messageSource"))
+        deleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
+        namingConvention(GraphQLEntityNamingConvention)
+        typeManager(DefaultGraphQLTypeManager, ref("namingConvention"))
+        dataBinderManager(GraphQLDataBinderManager, new DefaultGraphQLDataBinder())
+        dataFetcherManager(DefaultGraphQLDataFetcherManager)
 
-        customSchema(Schema, ref("grailsDomainClassMappingContext"), ref("messageSource"))
+        customSchema(Schema, ref("grailsDomainClassMappingContext")) {
+            errorsResponseHandler = ref("errorsResponseHandler")
+            deleteResponseHandler = ref("deleteResponseHandler")
+            namingConvention = ref("namingConvention")
+            typeManager = ref("typeManager")
+            dataBinderManager = ref("dataBinderManager")
+            dataFetcherManager = ref("dataFetcherManager")
+        }
         graphQLSchema(customSchema: "generate")
+        graphQL(GraphQL, ref("graphQLSchema"))
 
 
     }}

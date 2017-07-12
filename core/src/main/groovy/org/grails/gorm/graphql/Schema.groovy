@@ -62,9 +62,9 @@ class Schema {
 
     Schema(MappingContext mappingContext) {
         this.mappingContext = mappingContext
-        typeManager = new DefaultGraphQLTypeManager()
         deleteResponseHandler = new DefaultGraphQLDeleteResponseHandler()
         namingConvention = new GraphQLEntityNamingConvention()
+        typeManager = new DefaultGraphQLTypeManager(namingConvention)
         dataBinderManager = new GraphQLDataBinderManager()
         dataFetcherManager = new DefaultGraphQLDataFetcherManager()
     }
@@ -87,7 +87,7 @@ class Schema {
         newInputObjectField()
             .name(prop.name)
             .description(prop.description)
-            .type((GraphQLInputType)prop.getGraphQLType(typeManager, GraphQLPropertyType.INPUT))
+            .type((GraphQLInputType)prop.getGraphQLType(typeManager, GraphQLPropertyType.CREATE))
     }
 
     protected GraphQLFieldDefinition.Builder buildField(GraphQLDomainProperty prop) {
@@ -163,7 +163,7 @@ class Schema {
         if (!domainObjectTypes.containsKey(entity)) {
 
             GraphQLObjectType.Builder obj = newObject()
-                    .name(namingConvention.getOutputType(entity))
+                    .name(namingConvention.getType(entity, GraphQLPropertyType.OUTPUT))
                     .description(description)
 
             properties.each { GraphQLDomainProperty prop ->
@@ -188,7 +188,7 @@ class Schema {
         if (!domainInputObjectTypes.containsKey(entity)) {
 
             GraphQLInputObjectType.Builder inputObj = newInputObject()
-                    .name(namingConvention.getCreateType(entity))
+                    .name(namingConvention.getType(entity, GraphQLPropertyType.CREATE))
                     .description(description)
 
             properties.each { GraphQLDomainProperty prop ->
@@ -287,7 +287,7 @@ class Schema {
 
             def create = newFieldDefinition()
                     .name(namingConvention.getCreate(entity))
-                    .type(domainObjectTypes.get(entity))
+                    .type(objectType)
                     .argument(newArgument()
                         .name(entity.decapitalizedName)
                         .type(inputObjectType))
@@ -302,10 +302,10 @@ class Schema {
 
             def update = newFieldDefinition()
                     .name(namingConvention.getUpdate(entity))
-                    .type(domainObjectTypes.get(entity))
+                    .type(objectType)
                     .argument(newArgument()
                         .name(entity.decapitalizedName)
-                        .type(typeManager.createUpdateType(entity, inputObjectType, namingConvention)))
+                        .type(typeManager.createUpdateType(entity, inputObjectType)))
                     .dataFetcher(dataFetcherManager.createUpdateFetcher(entity, dataBinder))
 
             populateIdentityArguments(update, identities)

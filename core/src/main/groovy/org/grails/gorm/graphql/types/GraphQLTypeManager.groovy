@@ -20,9 +20,9 @@ interface GraphQLTypeManager {
 
     void registerType(Class clazz, GraphQLType type)
 
-    GraphQLEnumType buildEnumType(Class clazz)
+    GraphQLType getEnumType(Class clazz, boolean nullable)
 
-    GraphQLType getReference(PersistentEntity entity, GraphQLPropertyType type)
+    GraphQLType createReference(PersistentEntity entity, GraphQLPropertyType type)
 
-    GraphQLInputObjectType createUpdateType(PersistentEntity entity, GraphQLInputObjectType createType, GraphQLEntityNamingConvention namingConvention)
+    GraphQLInputObjectType createUpdateType(PersistentEntity entity, GraphQLInputObjectType createType)
 }

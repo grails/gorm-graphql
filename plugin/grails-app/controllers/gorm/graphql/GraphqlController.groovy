@@ -10,15 +10,13 @@ import org.springframework.http.HttpMethod
 
 class GraphqlController {
 
-    GraphQLSchema graphQLSchema
+    GraphQL graphQL
 
     protected Object buildContext() {
         [locale: request.locale]
     }
 
     def index() {
-        def graphql = new GraphQL(graphQLSchema)
-
         String query = null
         String operationName = null
         Object context = buildContext()
@@ -59,7 +57,7 @@ class GraphqlController {
             }
         }
 
-        ExecutionResult executionResult = graphql.execute(query, operationName, context, variables)
+        ExecutionResult executionResult = graphQL.execute(query, operationName, context, variables)
         Map<String, Object> result = new LinkedHashMap<>()
         if (executionResult.getErrors().size() > 0) {
             result.put("errors", executionResult.getErrors())

@@ -3,9 +3,11 @@ package org.grails.gorm.graphql.entity.property
 import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
+import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.model.types.Basic
+import org.grails.datastore.mapping.model.types.ToMany
 import org.grails.gorm.graphql.GraphQL
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.types.GraphQLTypeManager
@@ -40,24 +42,24 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         this.property = property
         this.mappingContext = mappingContext
         this.name = property.name
-        this.type = property.type
-        this.collection = (property instanceof Association)
-        this.nullable = property.owner.isIdentityName(property.name) || property.mapping.mappedForm.nullable
+        this.type = getBaseType(property)
+        this.collection = (property instanceof ToMany)
+        this.nullable = !isIdentityName(property.owner, property.name) && property.mapping.mappedForm.nullable
         this.output = mapping.output
         this.input = mapping.input
         this.description = mapping.description
         this.deprecationReason = mapping.deprecationReason
         this.dataFetcher = mapping.dataFetcher
+        final String defaultDeprecationReason = 'Deprecated'
         try {
-            Field field = property.owner.javaClass.getField(property.name)
+            Field field = property.owner.javaClass.getDeclaredField(property.name)
             if (field != null) {
-                final String defaultDeprecationReason = 'Deprecated'
                 GraphQL graphQL = field.getAnnotation(GraphQL)
                 if (graphQL != null) {
                     if (description == null) {
                         description = graphQL.value()
                     }
-                    if (deprecationReason == null) {
+                    if (deprecationReason == null && !graphQL.deprecationReason().empty) {
                         deprecationReason = graphQL.deprecationReason()
                     }
                     if (graphQL.deprecated() && deprecationReason == null) {
@@ -69,6 +71,37 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
                 }
             }
         } catch (NoSuchFieldException e) {}
+
+        if (mapping.deprecated && deprecationReason == null) {
+            deprecationReason = defaultDeprecationReason
+        }
+    }
+
+    protected boolean isIdentityName(PersistentEntity entity, final String name) {
+        if (entity.identity != null) {
+            entity.identity.name == name
+        }
+        else if (entity.compositeIdentity.length > 0) {
+            entity.compositeIdentity.any { PersistentProperty prop -> prop.name == name }
+        }
+        else {
+            false
+        }
+    }
+
+    protected Class getBaseType(PersistentProperty property) {
+        if (property instanceof Association) {
+            Association association = (Association)property
+            if (association.basic) {
+                ((Basic) property).componentType
+            }
+            else {
+                association.associatedEntity.javaClass
+            }
+        }
+        else {
+            property.type
+        }
     }
 
     @Override
@@ -78,30 +111,30 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
 
     @Override
     GraphQLType getGraphQLType(GraphQLTypeManager typeManager, GraphQLPropertyType propertyType) {
-        GraphQLType type
+        //It is expected at ths point that embedded properties have been "unwrapped"
+        GraphQLType graphQLType
 
-        if (property instanceof Association) {
-            if (((Association)property).basic) {
-                Class componentType = ((Basic) property).componentType
-                if (mappingContext.mappingFactory.isSimpleType(componentType.name)) {
-                    type = typeManager.getType(componentType)
-                }
-                else if (componentType.enum) {
-                    type = typeManager.buildEnumType(componentType)
-                }
-                else {
-                    throw new RuntimeException("Unsure of how to handle type definition of basic association ${property.toString()}. Not a simple type or enum.")
-                }
-            }
-            else {
-                type = typeManager.getReference(((Association)property).associatedEntity, propertyType)
-            }
-            type = list(type)
+        boolean nullable = true
+        if (propertyType == GraphQLPropertyType.CREATE) {
+            nullable = this.nullable
+        }
+
+        if (type.enum) {
+            graphQLType = typeManager.getEnumType(type, nullable)
         }
         else {
-            type = typeManager.getType(property.type, nullable)
+            PersistentEntity entity = mappingContext.getPersistentEntity(type.name)
+            if (entity != null) {
+                graphQLType = typeManager.createReference(entity, propertyType)
+            } else {
+                graphQLType = typeManager.getType(type, nullable)
+            }
         }
 
-        type
+        if (collection) {
+            graphQLType = list(graphQLType)
+        }
+
+        graphQLType
     }
 }

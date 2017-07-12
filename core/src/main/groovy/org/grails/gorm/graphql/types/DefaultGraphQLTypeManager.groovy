@@ -68,6 +68,12 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
     }
 
+    GraphQLEntityNamingConvention namingConvention
+
+    DefaultGraphQLTypeManager(GraphQLEntityNamingConvention namingConvention) {
+        this.namingConvention = namingConvention
+    }
+
     @Override
     GraphQLType getType(Class clazz, boolean nullable = true) {
         if (clazz.isPrimitive()) {
@@ -92,7 +98,9 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     }
 
     @Override
-    GraphQLEnumType buildEnumType(Class clazz) {
+    GraphQLType getEnumType(Class clazz, boolean nullable) {
+        GraphQLEnumType enumType
+
         if (!enumTypes.containsKey(clazz)) {
             GraphQLEnumType.Builder builder = GraphQLEnumType.newEnum()
                     .name(clazz.simpleName)
@@ -107,37 +115,44 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
                 builder.value(anEnum.name(), anEnum)
             }
 
-            GraphQLEnumType enumType = builder.build()
-
+            enumType = builder.build()
             enumTypes.put(clazz, enumType)
+        }
+        else {
+            enumType = enumTypes.get(clazz)
+        }
 
+        if (!nullable) {
+            GraphQLNonNull.nonNull(enumType)
+        }
+        else {
             enumType
         }
-        else {
-            enumTypes.get(clazz)
-        }
     }
 
     @Override
-    GraphQLType getReference(PersistentEntity entity, GraphQLPropertyType type) {
-        final String referenceName = entity.javaClass.simpleName
-        if (type == GraphQLPropertyType.INPUT) {
-            GraphQLInputObjectType.reference(referenceName + "Input")
-        }
-        else {
+    GraphQLType createReference(PersistentEntity entity, GraphQLPropertyType type) {
+        final String referenceName = namingConvention.getType(entity, type)
+        if (type == GraphQLPropertyType.OUTPUT) {
             GraphQLObjectType.reference(referenceName)
         }
+        else {
+            GraphQLInputObjectType.reference(referenceName)
+        }
     }
 
     @Override
-    GraphQLInputObjectType createUpdateType(PersistentEntity entity, GraphQLInputObjectType createType, GraphQLEntityNamingConvention namingConvention) {
-        new GraphQLInputObjectType(namingConvention.getUpdateType(entity), createType.description, createType.fields.collect {
+    GraphQLInputObjectType createUpdateType(PersistentEntity entity, GraphQLInputObjectType createType) {
+        new GraphQLInputObjectType(namingConvention.getType(entity, GraphQLPropertyType.UPDATE), createType.description, createType.fields.collect {
             GraphQLInputType unwrappedType
             if (it.type instanceof GraphQLNonNull) {
                 unwrappedType = (GraphQLInputType)((GraphQLNonNull)it.type).wrappedType
             }
             else {
                 unwrappedType = it.type
+            }
+            if (unwrappedType instanceof TypeReference) {
+                unwrappedType = GraphQLInputObjectType.reference(namingConvention.getType(entity, GraphQLPropertyType.OUTPUT))
             }
             new GraphQLInputObjectField(it.name, it.description, unwrappedType, it.defaultValue)
         })

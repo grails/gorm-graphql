@@ -17,5 +17,5 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 
-    compile project(":gorm-graphql-core")
+    compile project(":gorm-graphql")
 }

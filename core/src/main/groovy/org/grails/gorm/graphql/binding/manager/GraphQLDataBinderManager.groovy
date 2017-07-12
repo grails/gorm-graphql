@@ -14,11 +14,11 @@ import org.springframework.validation.DataBinder
 @CompileStatic
 class GraphQLDataBinderManager {
 
-    protected final Map<Class, GraphQLDataBinder> dataBinders = new LinkedHashMap<>()
+    protected final LinkedHashMap<Class, GraphQLDataBinder> dataBinders = new LinkedHashMap<>()
 
     GraphQLDataBinderManager() {
         //Create the default data binder
-        dataBinders.put(Object, new GraphQLDataBinder() {
+        this(new GraphQLDataBinder() {
             @Override
             void bind(Object object, Map data) {
                 DataBinder dataBinder = new DataBinder(object)
@@ -27,13 +27,36 @@ class GraphQLDataBinderManager {
         })
     }
 
+    GraphQLDataBinderManager(GraphQLDataBinder defaultDataBinder) {
+        register(Object, defaultDataBinder)
+    }
+
+    /**
+     * Register a data binder for use with the provided class or its subclasses
+     *
+     * @param clazz The class to be bound
+     * @param dataBinder The data binding instance to be used
+     */
     void register(Class clazz, GraphQLDataBinder dataBinder) {
         dataBinders.put(clazz, dataBinder)
     }
 
+    /**
+     * Returns a data binder to be used for the provided class
+     *
+     * @param clazz The class to be bound
+     * @return The data binding instance to be used
+     */
     GraphQLDataBinder getDataBinder(Class clazz) {
-        for (Class key: dataBinders.keySet()) {
-            if (key == clazz || key.isAssignableFrom(clazz)) {
+        List<Class> keys = dataBinders.keySet().toList()
+        keys.reverse(true)
+        for (Class key: keys) {
+            if (key == clazz) {
+                return dataBinders.get(key)
+            }
+        }
+        for (Class key: keys) {
+            if (key.isAssignableFrom(clazz)) {
                 return dataBinders.get(key)
             }
         }
