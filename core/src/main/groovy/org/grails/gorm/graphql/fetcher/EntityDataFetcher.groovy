@@ -65,12 +65,9 @@ class EntityDataFetcher<T extends Collection> extends GormDataFetcher<T> {
     T get(DataFetchingEnvironment environment) {
         Map queryArgs = defaultQueryOptions(environment)
 
-        ARGUMENTS.keySet().each {
-            if (environment.containsArgument(it)) {
-                def arg = environment.getArgument(it)
-                if (arg != null) {
-                    queryArgs.put(it, arg)
-                }
+        environment.arguments.each { String key, Object value ->
+            if (value != null) {
+                queryArgs.put(key, value)
             }
         }
 

@@ -82,7 +82,7 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         if (entity.identity != null) {
             entity.identity.name == name
         }
-        else if (entity.compositeIdentity.length > 0) {
+        else if (entity.compositeIdentity != null) {
             entity.compositeIdentity.any { PersistentProperty prop -> prop.name == name }
         }
         else {

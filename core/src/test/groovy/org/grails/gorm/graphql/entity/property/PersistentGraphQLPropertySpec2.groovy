@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.entity.property
 
+import static org.grails.gorm.graphql.entity.property.GraphQLPropertyType.*
 import grails.gorm.annotation.Entity
 import graphql.Scalars
 import graphql.schema.GraphQLList
@@ -119,10 +120,16 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
-        property.getGraphQLType(typeManager, GraphQLPropertyType.OUTPUT)
+        property.getGraphQLType(typeManager, type)
 
         then:
-        1 * typeManager.getType(String, false)
+        1 * typeManager.getType(String, nullable)
+
+        where:
+        type | nullable
+        CREATE | false
+        OUTPUT | true
+        UPDATE | true
     }
 
     void "test graphQL type with simple property (null)"() {
@@ -131,7 +138,7 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
-        property.getGraphQLType(typeManager, GraphQLPropertyType.OUTPUT)
+        property.getGraphQLType(typeManager, CREATE)
 
         then:
         1 * typeManager.getType(String, true)
@@ -143,7 +150,7 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
-        property.getGraphQLType(typeManager, GraphQLPropertyType.OUTPUT)
+        property.getGraphQLType(typeManager, CREATE)
 
         then:
         1 * typeManager.getType(Long, false)
@@ -155,7 +162,7 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
-        property.getGraphQLType(typeManager, GraphQLPropertyType.OUTPUT)
+        property.getGraphQLType(typeManager, CREATE)
 
         then:
         1 * typeManager.getType(String, false)
@@ -167,7 +174,7 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
-        property.getGraphQLType(typeManager, GraphQLPropertyType.OUTPUT)
+        property.getGraphQLType(typeManager, CREATE)
 
         then:
         1 * typeManager.getEnumType(BookType, false)
@@ -179,10 +186,10 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
-        GraphQLType type = property.getGraphQLType(typeManager, GraphQLPropertyType.OUTPUT)
+        GraphQLType type = property.getGraphQLType(typeManager, CREATE)
 
         then:
-        1 * typeManager.createReference(mappingContext.getPersistentEntity(Author.name), GraphQLPropertyType.OUTPUT) >> Scalars.GraphQLString
+        1 * typeManager.createReference(mappingContext.getPersistentEntity(Author.name), CREATE) >> Scalars.GraphQLString
         type instanceof GraphQLList
     }
 
@@ -192,7 +199,7 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
-        GraphQLType type = property.getGraphQLType(typeManager, GraphQLPropertyType.OUTPUT)
+        GraphQLType type = property.getGraphQLType(typeManager, CREATE)
 
         then:
         1 * typeManager.getType(String, false) >> Scalars.GraphQLString
@@ -205,10 +212,10 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
-        GraphQLType type = property.getGraphQLType(typeManager, GraphQLPropertyType.OUTPUT)
+        GraphQLType type = property.getGraphQLType(typeManager, CREATE)
 
         then:
-        1 * typeManager.createReference(mappingContext.getPersistentEntity(Metadata.name), GraphQLPropertyType.OUTPUT) >> Scalars.GraphQLString
+        1 * typeManager.createReference(mappingContext.getPersistentEntity(Metadata.name), CREATE) >> Scalars.GraphQLString
         type ==  Scalars.GraphQLString
     }
 
@@ -256,12 +263,16 @@ class Book2 implements Serializable {
         }
         hashCode
     }
+
+    static graphql = true
 }
 
 @Entity
 class Author {
     String name
     static belongsTo = [book: Book]
+
+    static graphql = true
 }
 
 @Entity

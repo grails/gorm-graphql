@@ -5,6 +5,7 @@ import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.PropertyMapping
 import org.grails.datastore.mapping.model.types.Association
+import org.grails.datastore.mapping.model.types.ToMany
 import org.grails.gorm.graphql.GraphQL
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import spock.lang.Specification
@@ -12,16 +13,25 @@ import spock.lang.Specification
 class PersistentGraphQLPropertySpec extends Specification {
 
     PersistentProperty buildProperty(String name, boolean identityName = false, boolean nullable = true, boolean association = false) {
-        Stub(association ? Association : PersistentProperty) {
+        Stub(association ? ToMany : PersistentProperty) {
             getName() >> name
             getType() >> String
             getOwner() >> Mock(PersistentEntity) {
-                isIdentityName(name) >> identityName
+                getIdentity() >> Mock(PersistentProperty) {
+                    getName() >> {
+                        identityName ? name : "sdflksjdf"
+                    }
+                }
                 getJavaClass() >> Test
             }
             getMapping() >> Mock(PropertyMapping) {
                 getMappedForm() >> Mock(Property) {
                     getNullable() >> nullable
+                }
+            }
+            if (association) {
+                getAssociatedEntity() >> Mock(PersistentEntity) {
+                    getJavaClass() >> String
                 }
             }
         }
