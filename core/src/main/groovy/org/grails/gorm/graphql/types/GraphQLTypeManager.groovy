@@ -36,4 +36,6 @@ interface GraphQLTypeManager {
     GraphQLInputObjectType getCreateObjectType(PersistentEntity entity)
 
     GraphQLInputObjectType getUpdateObjectType(PersistentEntity entity)
+
+    GraphQLInputObjectType getInputNestedObjectType(PersistentEntity entity)
 }

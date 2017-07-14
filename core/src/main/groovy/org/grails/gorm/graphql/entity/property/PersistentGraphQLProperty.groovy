@@ -126,8 +126,8 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         else {
             PersistentEntity entity = mappingContext.getPersistentEntity(type.name)
             if (entity != null) {
-                if (propertyType == GraphQLPropertyType.UPDATE) {
-                    graphQLType = typeManager.getType(entity, GraphQLPropertyType.UPDATE_NESTED)
+                if (propertyType == GraphQLPropertyType.UPDATE || propertyType == GraphQLPropertyType.CREATE) {
+                    graphQLType = typeManager.getType(entity, GraphQLPropertyType.INPUT_NESTED)
                 }
                 else if (GraphQLEntityHelper.getMapping(entity) != null) {
                     graphQLType = typeManager.createReference(entity, propertyType)

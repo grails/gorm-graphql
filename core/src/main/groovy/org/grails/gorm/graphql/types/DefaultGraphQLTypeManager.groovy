@@ -157,7 +157,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     protected Map<PersistentEntity, GraphQLObjectType> domainObjectTypes = [:]
     protected Map<PersistentEntity, GraphQLInputObjectType> domainCreateObjectTypes = [:]
     protected Map<PersistentEntity, GraphQLInputObjectType> domainUpdateObjectTypes = [:]
-    protected Map<PersistentEntity, GraphQLInputObjectType> domainUpdateNestedObjectTypes = [:]
+    protected Map<PersistentEntity, GraphQLInputObjectType> domainInputNestedObjectType = [:]
 
     protected GraphQLInputObjectField.Builder buildInputField(GraphQLDomainProperty prop, GraphQLPropertyType type) {
         newInputObjectField()
@@ -232,8 +232,8 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             case GraphQLPropertyType.UPDATE:
                 getUpdateObjectType(entity)
                 break
-            case GraphQLPropertyType.UPDATE_NESTED:
-                getUpdateNestedObjectType(entity)
+            case GraphQLPropertyType.INPUT_NESTED:
+                getInputNestedObjectType(entity)
                 break
             default:
                 getObjectType(entity)
@@ -248,14 +248,6 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
                 .excludeTimestamps()
                 .excludeVersion()
                 .identifiers(false)
-                .condition { PersistentProperty prop ->
-                    if (prop instanceof Association) {
-                        Association association = (Association)prop
-                        association.owningSide || !association.bidirectional
-                    } else {
-                        true
-                    }
-                }
 
             GraphQLInputObjectType inputObj = buildInputObjectType(entity, manager, GraphQLPropertyType.CREATE)
 
@@ -280,8 +272,8 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         domainUpdateObjectTypes.get(entity)
     }
 
-    GraphQLInputObjectType getUpdateNestedObjectType(PersistentEntity entity) {
-        if (!domainUpdateNestedObjectTypes.containsKey(entity)) {
+    GraphQLInputObjectType getInputNestedObjectType(PersistentEntity entity) {
+        if (!domainInputNestedObjectType.containsKey(entity)) {
 
             GraphQLDomainPropertyManager manager = new GraphQLDomainPropertyManager(entity)
                 .excludeTimestamps()
@@ -295,11 +287,11 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
                     }
                 }
 
-            GraphQLInputObjectType inputObj = buildInputObjectType(entity, manager, GraphQLPropertyType.UPDATE_NESTED)
+            GraphQLInputObjectType inputObj = buildInputObjectType(entity, manager, GraphQLPropertyType.INPUT_NESTED)
 
-            domainUpdateNestedObjectTypes.put(entity, inputObj)
+            domainInputNestedObjectType.put(entity, inputObj)
         }
 
-        domainUpdateNestedObjectTypes.get(entity)
+        domainInputNestedObjectType.get(entity)
     }
 }

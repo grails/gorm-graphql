@@ -183,8 +183,8 @@ class AuthorIntegrationSpec extends Specification implements GraphQLSpec {
         obj.id == 1
         obj.name == "Xavier"
         obj.books.size() == 2
-        obj.books.find { it.title == "x" } != null
-        obj.books.find { it.title == "Book 2" } != null
+        obj.books.find { it.id == 1 }.title == 'x'
+        obj.books.find { it.id == 2 } != null
     }
 
     void "test deleting an author"() {

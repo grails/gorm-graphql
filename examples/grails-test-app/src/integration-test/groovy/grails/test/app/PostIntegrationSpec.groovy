@@ -19,13 +19,27 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
                 ]
               }) {
                 id
-                name
-                books {
+                title
+                dateCreated
+                lastUpdated
+                tags {
                   id
-                  title
+                  name
                 }
               }
             }
         """)
+        def obj = resp.json.data.postCreate
+
+
+        then:
+        obj.id
+        obj.title == 'Grails 3.3 Release'
+        obj.tags.size() == 3
+        obj.tags.find { it.name == 'Grails' }
+        obj.tags.find { it.name == 'Groovy' }
+        obj.tags.find { it.name == 'Java' }
+        obj.dateCreated != null
+        obj.lastUpdated != null
     }
 }

@@ -16,5 +16,5 @@ enum GraphQLPropertyType {
     UPDATE,
 
     //For supplying association data
-    UPDATE_NESTED
+    INPUT_NESTED
 }

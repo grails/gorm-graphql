@@ -20,7 +20,7 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
 
     @Shared HibernateMappingContext mappingContext
 
-    List<Class> getDomainClasses() { [Book, Book2, Author, Tag, Metadata] }
+    List<Class> getDomainClasses() { [Book, Book2, Author, Tag, Metadata, OtherMetadata] }
 
     void setupSpec() {
         mappingContext = hibernateDatastore.getMappingContext()
@@ -180,16 +180,29 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         1 * typeManager.getEnumType(BookType, false)
     }
 
-    void "test graphQL type with a toMany"() {
+    void "test graphQL type with a toMany that is mapped with graphql"() {
         PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('authors')
         PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
         GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
-        GraphQLType type = property.getGraphQLType(typeManager, CREATE)
+        GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.createReference(mappingContext.getPersistentEntity(Author.name), CREATE) >> Scalars.GraphQLString
+        1 * typeManager.createReference(mappingContext.getPersistentEntity(Author.name), OUTPUT) >> Scalars.GraphQLString
+        type instanceof GraphQLList
+    }
+
+    void "test graphQL type with a toMany that is NOT mapped with graphql"() {
+        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('tags')
+        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+
+        when:
+        GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
+
+        then:
+        1 * typeManager.getType(mappingContext.getPersistentEntity(Tag.name), OUTPUT) >> Scalars.GraphQLString
         type instanceof GraphQLList
     }
 
@@ -206,16 +219,29 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         type instanceof GraphQLList
     }
 
-    void "test graphQL type with a toOne"() {
+    void "test graphQL type with a toOne that is mapped with graphql"() {
+        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('otherMetadata')
+        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+
+        when:
+        GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
+
+        then:
+        1 * typeManager.createReference(mappingContext.getPersistentEntity(OtherMetadata.name), OUTPUT) >> Scalars.GraphQLString
+        type ==  Scalars.GraphQLString
+    }
+
+    void "test graphQL type with a toOne that is NOT mapped with graphql"() {
         PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('metadata')
         PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
         GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
-        GraphQLType type = property.getGraphQLType(typeManager, CREATE)
+        GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.createReference(mappingContext.getPersistentEntity(Metadata.name), CREATE) >> Scalars.GraphQLString
+        1 * typeManager.getType(mappingContext.getPersistentEntity(Metadata.name), OUTPUT) >> Scalars.GraphQLString
         type ==  Scalars.GraphQLString
     }
 
@@ -229,12 +255,11 @@ class Book {
     Metadata metadata
     BookType bookType
     
-    Metadata otherMetaData
+    OtherMetadata otherMetadata
 
     static hasMany = [authors: Author, tags: Tag, basics: String]
 
-    static embedded = ['otherMetaData']
-    
+
     static constraints = {
         description nullable: true
     }
@@ -284,6 +309,14 @@ class Tag {
 class Metadata {
     String x
     String y
+}
+
+@Entity
+class OtherMetadata {
+    String x
+    String y
+
+    static graphql = true
 }
 
 enum BookType {

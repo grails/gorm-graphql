@@ -1,4 +1,5 @@
 import graphql.GraphQLError
+import graphql.language.SourceLocation
 
 model {
     Object data
@@ -8,6 +9,13 @@ model {
 json {
     data g.render(data)
     if (errors) {
-        errors g.render(errors)
+        errors(errors) { GraphQLError error ->
+            message error.message
+            errorType error.errorType
+            locations(error.locations) { SourceLocation location ->
+                line location.line
+                column location.column
+            }
+        }
     }
 }
