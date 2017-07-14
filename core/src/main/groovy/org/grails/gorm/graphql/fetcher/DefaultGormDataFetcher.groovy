@@ -17,12 +17,12 @@ import org.grails.datastore.mapping.model.PersistentProperty
  * @author James Kleeh
  */
 @CompileStatic
-abstract class GormDataFetcher<T> implements DataFetcher<T> {
+abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
 
-    protected PersistentEntity entity
     protected List<String> associationNames
+    protected PersistentEntity entity
 
-    GormDataFetcher(PersistentEntity entity) {
+    DefaultGormDataFetcher(PersistentEntity entity) {
         this.entity = entity
         this.associationNames = entity.associations*.name
     }

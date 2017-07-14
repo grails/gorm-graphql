@@ -1,11 +1,15 @@
-package org.grails.gorm.graphql.fetcher
+package org.grails.gorm.graphql.fetcher.impl
 
 import grails.gorm.transactions.Transactional
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
+import groovy.transform.InheritConstructors
 import org.grails.datastore.gorm.GormEntity
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
+import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
+import org.grails.gorm.graphql.fetcher.DefaultGormDataFetcher
+import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 
 /**
  * A class for creating entities with GraphQL
@@ -14,14 +18,10 @@ import org.grails.gorm.graphql.binding.GraphQLDataBinder
  * @author James Kleeh
  */
 @CompileStatic
-class CreateEntityDataFetcher<T> extends GormDataFetcher<T> {
+@InheritConstructors
+class CreateEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements BindingGormDataFetcher {
 
     GraphQLDataBinder dataBinder
-
-    CreateEntityDataFetcher(PersistentEntity entity, GraphQLDataBinder dataBinder) {
-        super(entity)
-        this.dataBinder = dataBinder
-    }
 
     @Override
     @Transactional
@@ -30,6 +30,11 @@ class CreateEntityDataFetcher<T> extends GormDataFetcher<T> {
         dataBinder.bind(instance, (Map)environment.getArgument(entity.decapitalizedName))
         instance.save()
         (T)instance
+    }
+
+    @Override
+    GraphQLDataFetcherType getType() {
+        GraphQLDataFetcherType.CREATE
     }
 
 }

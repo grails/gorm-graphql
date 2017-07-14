@@ -1,4 +1,4 @@
-package org.grails.gorm.graphql.fetcher
+package org.grails.gorm.graphql.fetcher.impl
 
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment

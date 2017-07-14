@@ -12,7 +12,7 @@ import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.entity.property.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
-import org.grails.gorm.graphql.fetcher.ClosureDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetcher
 import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.types.scalars.GraphQLFloat
 import org.grails.gorm.graphql.types.scalars.GraphQLURL

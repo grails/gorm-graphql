@@ -3,6 +3,7 @@ package gorm.graphql
 import grails.io.IOUtils
 import grails.util.TypeConvertingMap
 import grails.web.mapping.LinkGenerator
+import grails.web.mime.MimeType
 import graphql.ExecutionResult
 import graphql.GraphQL
 import graphql.schema.GraphQLSchema
@@ -13,6 +14,8 @@ import org.springframework.http.HttpMethod
 class GraphqlController {
 
     static responseFormats = ['json', 'xml']
+
+    public static MimeType GRAPHQL =  new MimeType('application/graphql')
 
     GraphQL graphQL
     LinkGenerator grailsLinkGenerator
@@ -40,17 +43,17 @@ class GraphqlController {
 
             String body = IOUtils.toString(request.inputStream, encoding)
 
-            if (request.contentType == "application/json") {
+            if (request.mimeTypes.contains(MimeType.JSON)) {
                 TypeConvertingMap json = new TypeConvertingMap((Map)new JsonSlurper().parseText(body))
                 query = json.query.toString()
-                operationName = json.containsKey('operationName') ? operationName : null
+                operationName = json.containsKey('operationName') ? json.operationName : null
                 if (json.variables instanceof Map) {
                     variables = json.variables
                 } else {
                     variables = Collections.emptyMap()
                 }
             }
-            else if (request.contentType == "application/graphql") {
+            else if (request.mimeTypes.contains(GRAPHQL)) {
                 query = body
                 operationName = null
                 variables = Collections.emptyMap()

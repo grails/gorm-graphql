@@ -1,4 +1,4 @@
-package org.grails.gorm.graphql.fetcher
+package org.grails.gorm.graphql.fetcher.impl
 
 import grails.gorm.transactions.Transactional
 import graphql.schema.DataFetchingEnvironment
@@ -6,6 +6,9 @@ import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.grails.datastore.gorm.GormEntity
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.gorm.graphql.fetcher.DefaultGormDataFetcher
+import org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
+import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 
 /**
@@ -15,14 +18,10 @@ import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
  * @author James Kleeh
  */
 @CompileStatic
-class DeleteEntityDataFetcher<T> extends GormDataFetcher<T> {
+@InheritConstructors
+class DeleteEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements DeletingGormDataFetcher {
 
     GraphQLDeleteResponseHandler responseHandler
-
-    DeleteEntityDataFetcher(PersistentEntity entity, GraphQLDeleteResponseHandler responseHandler) {
-        super(entity)
-        this.responseHandler = responseHandler
-    }
 
     @Override
     @Transactional

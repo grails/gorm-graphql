@@ -2,21 +2,20 @@ package org.grails.gorm.graphql
 
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
-import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
+import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
+import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
 import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
 import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
-import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
-import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
+import org.grails.gorm.graphql.fetcher.manager.runtime.BindingRuntimeDataFetcher
+import org.grails.gorm.graphql.fetcher.manager.runtime.DeletingRuntimeDataFetcher
+import org.grails.gorm.graphql.fetcher.manager.runtime.ReadingRuntimeDataFetcher
 import org.grails.gorm.graphql.types.scalars.GraphQLDate
 import org.grails.gorm.graphql.types.scalars.coercing.DateCoercion
-import org.springframework.context.MessageSource
 
 import javax.annotation.PostConstruct
 
 import static graphql.schema.GraphQLArgument.newArgument
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
-import static graphql.schema.GraphQLInputObjectField.newInputObjectField
-import static graphql.schema.GraphQLInputObjectType.newInputObject
 import static graphql.schema.GraphQLList.list
 import static graphql.schema.GraphQLObjectType.newObject
 
@@ -29,7 +28,6 @@ import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandl
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
-import org.grails.gorm.graphql.fetcher.*
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
@@ -134,12 +132,12 @@ class Schema {
             def queryOne = newFieldDefinition()
                     .name(namingConvention.getReadSingle(entity))
                     .type(objectType)
-                    .dataFetcher(dataFetcherManager.createGetFetcher(entity))
+                    .dataFetcher(new ReadingRuntimeDataFetcher(entity, dataFetcherManager, GraphQLDataFetcherType.GET))
 
             def queryAll = newFieldDefinition()
                     .name(namingConvention.getReadMany(entity))
                     .type(list(objectType))
-                    .dataFetcher(dataFetcherManager.createListFetcher(entity))
+                    .dataFetcher(new ReadingRuntimeDataFetcher(entity, dataFetcherManager, GraphQLDataFetcherType.LIST))
 
             EntityDataFetcher.ARGUMENTS.each { String name, GraphQLScalarType argType ->
                 queryAll.argument(newArgument()
@@ -156,12 +154,7 @@ class Schema {
                     .argument(newArgument()
                         .name(entity.decapitalizedName)
                         .type(createObjectType))
-                    .dataFetcher(dataFetcherManager.createCreateFetcher(entity, dataBinder))
-
-            def delete = newFieldDefinition()
-                    .name(namingConvention.getDelete(entity))
-                    .type(deleteResponseHandler.objectType)
-                    .dataFetcher(dataFetcherManager.createDeleteFetcher(entity, deleteResponseHandler))
+                    .dataFetcher(new BindingRuntimeDataFetcher(entity, dataFetcherManager, dataBinder, GraphQLDataFetcherType.CREATE))
 
             GraphQLInputObjectType updateObjectType = typeManager.getUpdateObjectType(entity)
 
@@ -171,7 +164,12 @@ class Schema {
                     .argument(newArgument()
                         .name(entity.decapitalizedName)
                         .type(updateObjectType))
-                    .dataFetcher(dataFetcherManager.createUpdateFetcher(entity, dataBinder))
+                    .dataFetcher(new BindingRuntimeDataFetcher(entity, dataFetcherManager, dataBinder, GraphQLDataFetcherType.UPDATE))
+
+            def delete = newFieldDefinition()
+                    .name(namingConvention.getDelete(entity))
+                    .type(deleteResponseHandler.objectType)
+                    .dataFetcher(new DeletingRuntimeDataFetcher(entity, dataFetcherManager, deleteResponseHandler))
 
             populateIdentityArguments(entity, queryOne, delete, update)
 

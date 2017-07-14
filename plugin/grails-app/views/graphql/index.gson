@@ -12,7 +12,7 @@ json {
         errors(errors) { GraphQLError error ->
             message error.message
             errorType error.errorType
-            locations(error.locations) { SourceLocation location ->
+            locations(error.locations ?: []) { SourceLocation location ->
                 line location.line
                 column location.column
             }

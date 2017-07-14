@@ -1,4 +1,4 @@
-package org.grails.gorm.graphql.fetcher
+package org.grails.gorm.graphql.fetcher.impl
 
 import grails.gorm.DetachedCriteria
 import grails.gorm.transactions.Transactional
@@ -13,6 +13,9 @@ import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PropertyMapping
 import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.reflect.ClassUtils
+import org.grails.gorm.graphql.fetcher.DefaultGormDataFetcher
+import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
+import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
 
 /**
  * A class for retrieving a list of entities with GraphQL
@@ -23,7 +26,7 @@ import org.grails.datastore.mapping.reflect.ClassUtils
 @InheritConstructors
 @Slf4j
 @CompileStatic
-class EntityDataFetcher<T extends Collection> extends GormDataFetcher<T> {
+class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> implements ReadingGormDataFetcher {
 
     Map<String, Boolean> batchModeEnabled = [:]
 
@@ -86,5 +89,10 @@ class EntityDataFetcher<T extends Collection> extends GormDataFetcher<T> {
         }
 
         (T)new DetachedCriteria(entity.javaClass).list(queryArgs)
+    }
+
+    @Override
+    GraphQLDataFetcherType getType() {
+        GraphQLDataFetcherType.LIST
     }
 }

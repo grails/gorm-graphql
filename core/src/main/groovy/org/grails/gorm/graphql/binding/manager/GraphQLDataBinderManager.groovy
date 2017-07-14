@@ -48,13 +48,11 @@ class GraphQLDataBinderManager {
      * @return The data binding instance to be used
      */
     GraphQLDataBinder getDataBinder(Class clazz) {
+        if (dataBinders.containsKey(clazz)) {
+            return dataBinders.get(clazz)
+        }
         List<Class> keys = dataBinders.keySet().toList()
         keys.reverse(true)
-        for (Class key: keys) {
-            if (key == clazz) {
-                return dataBinders.get(key)
-            }
-        }
         for (Class key: keys) {
             if (key.isAssignableFrom(clazz)) {
                 return dataBinders.get(key)
