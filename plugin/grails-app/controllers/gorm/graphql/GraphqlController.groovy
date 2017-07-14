@@ -2,10 +2,12 @@ package gorm.graphql
 
 import grails.io.IOUtils
 import grails.util.TypeConvertingMap
+import grails.web.mapping.LinkGenerator
 import graphql.ExecutionResult
 import graphql.GraphQL
 import graphql.schema.GraphQLSchema
 import groovy.json.JsonSlurper
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpMethod
 
 class GraphqlController {
@@ -13,6 +15,10 @@ class GraphqlController {
     static responseFormats = ['json', 'xml']
 
     GraphQL graphQL
+    LinkGenerator grailsLinkGenerator
+
+    @Value('${grails.gorm.graphql.browser:true}')
+    Boolean browserEnabled
 
     protected Object buildContext() {
         [locale: request.locale]
@@ -66,6 +72,25 @@ class GraphqlController {
         }
         result.put("data", executionResult.getData())
 
-        respond([result: result])
+        result
+    }
+
+    def browser() {
+        if (browserEnabled) {
+            String endpoint = grailsLinkGenerator.link(controller: 'graphql', action: 'index')
+            String staticBase = grailsLinkGenerator.resource([:])
+
+            if (!staticBase.endsWith('/')) {
+                staticBase = staticBase + '/'
+            }
+
+            String html = IOUtils.toString(this.class.classLoader.getResourceAsStream('graphiql.html'), "UTF8")
+                    .replaceAll(/\{endpoint}/, endpoint)
+                    .replaceAll(/\{staticBase}/, staticBase)
+
+            render(text: html, contentType: 'text/html')
+        } else {
+            render(status: 404)
+        }
     }
 }

@@ -20,7 +20,8 @@ class GraphQLDomainPropertyManager {
     GraphQLMapping mapping
 
     Set<String> excludedProperties = new HashSet<>()
-    boolean includeIdentifiers = true
+    boolean identifiers = true
+    Closure customCondition = null
 
     //To support older versions of GORM
     private static Method derivedMethod
@@ -42,7 +43,7 @@ class GraphQLDomainPropertyManager {
     }
 
     GraphQLDomainPropertyManager identifiers(boolean identifiers) {
-        this.includeIdentifiers = identifiers
+        this.identifiers = identifiers
         this
     }
 
@@ -61,6 +62,11 @@ class GraphQLDomainPropertyManager {
         this
     }
 
+    GraphQLDomainPropertyManager condition(Closure closure) {
+        this.customCondition = closure
+        this
+    }
+
     List<GraphQLDomainProperty> getProperties() {
         List<GraphQLDomainProperty> properties = []
         MappingContext mappingContext = entity.mappingContext
@@ -69,7 +75,7 @@ class GraphQLDomainPropertyManager {
             mapping = new GraphQLMapping()
         }
 
-        if (includeIdentifiers) {
+        if (identifiers) {
             if (entity.identity != null) {
                 properties.add(new PersistentGraphQLProperty(mappingContext, entity.identity, mapping.propertyMappings.getOrDefault(entity.identity.name, new GraphQLPropertyMapping())))
             }
@@ -82,23 +88,25 @@ class GraphQLDomainPropertyManager {
 
         entity.persistentProperties.each { PersistentProperty prop ->
             if (!mapping.excluded.contains(prop.name) && !excludedProperties.contains(prop.name)) {
-                if (prop instanceof Embedded) {
-                    PersistentEntity associatedEntity = ((Embedded)prop).associatedEntity
+                if (customCondition == null || customCondition.call(prop)) {
+                    if (prop instanceof Embedded) {
+                        PersistentEntity associatedEntity = ((Embedded)prop).associatedEntity
 
-                    GraphQLDomainPropertyManager associatedManager = new GraphQLDomainPropertyManager(associatedEntity, mapping.createEmbeddedMapping(prop.name)).identifiers(false).exclude(excludedProperties as String[])
+                        GraphQLDomainPropertyManager associatedManager = new GraphQLDomainPropertyManager(associatedEntity, mapping.createEmbeddedMapping(prop.name)).identifiers(false).exclude(excludedProperties as String[])
 
-                    properties.addAll(associatedManager.getProperties())
-                }
-                else {
-                    boolean input = true
-                    if (derivedMethod != null) {
-                        Property property = prop.mapping.mappedForm
-                        if (derivedMethod.invoke(property, (Object[]) null)) {
-                            input = false
-                        }
+                        properties.addAll(associatedManager.getProperties())
                     }
+                    else {
+                        boolean input = true
+                        if (derivedMethod != null) {
+                            Property property = prop.mapping.mappedForm
+                            if (derivedMethod.invoke(property, (Object[]) null)) {
+                                input = false
+                            }
+                        }
 
-                    properties.add(new PersistentGraphQLProperty(mappingContext, prop, mapping.propertyMappings.getOrDefault(prop.name, new GraphQLPropertyMapping(input: input))))
+                        properties.add(new PersistentGraphQLProperty(mappingContext, prop, mapping.propertyMappings.getOrDefault(prop.name, new GraphQLPropertyMapping(input: input))))
+                    }
                 }
             }
         }

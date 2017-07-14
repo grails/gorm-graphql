@@ -4,6 +4,8 @@ import graphql.Scalars
 import graphql.schema.*
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.datastore.mapping.model.PersistentProperty
+import org.grails.datastore.mapping.model.types.Association
 import org.grails.gorm.graphql.GraphQL
 import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
@@ -12,7 +14,9 @@ import org.grails.gorm.graphql.entity.property.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
 import org.grails.gorm.graphql.fetcher.ClosureDataFetcher
 import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
-import org.grails.gorm.graphql.types.scalars.GormScalars
+import org.grails.gorm.graphql.types.scalars.GraphQLFloat
+import org.grails.gorm.graphql.types.scalars.GraphQLURL
+import org.grails.gorm.graphql.types.scalars.GraphQLUUID
 
 import java.util.concurrent.ConcurrentHashMap
 
@@ -21,9 +25,6 @@ import static graphql.schema.GraphQLInputObjectField.newInputObjectField
 import static graphql.schema.GraphQLInputObjectType.newInputObject
 import static graphql.schema.GraphQLObjectType.newObject
 
-/**
- * Created by jameskleeh on 7/5/17.
- */
 @CompileStatic
 class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
@@ -48,13 +49,14 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         typeMap.put(Short, Scalars.GraphQLShort)
         typeMap.put(Byte, Scalars.GraphQLByte)
         typeMap.put(Double, Scalars.GraphQLFloat)
-        typeMap.put(Float, GormScalars.GraphQLFloat)
+        typeMap.put(Float, new GraphQLFloat())
         typeMap.put(BigInteger, Scalars.GraphQLBigInteger)
         typeMap.put(BigDecimal, Scalars.GraphQLBigDecimal)
         typeMap.put(String, Scalars.GraphQLString)
         typeMap.put(Boolean, Scalars.GraphQLBoolean)
         typeMap.put(Character, Scalars.GraphQLChar)
-        typeMap.put(UUID, GormScalars.GraphQLUUID)
+        typeMap.put(UUID, new GraphQLUUID())
+        typeMap.put(URL, new GraphQLURL())
 
         /*       java.util.Date.class.getName(),
             Time.class.getName(),
@@ -63,16 +65,13 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             java.util.Currency.class.getName(),
             TimeZone.class.getName(),
 
-            Class.class.getName(),
             byte[].class.getName(),
             Byte[].class.getName(),
             char[].class.getName(),
             Character[].class.getName(),
             Blob.class.getName(),
             Clob.class.getName(),
-            Serializable.class.getName(),
-            URI.class.getName(),
-            URL.class.getName(),   */
+            URI.class.getName(),   */
 
     }
 
@@ -249,6 +248,14 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
                 .excludeTimestamps()
                 .excludeVersion()
                 .identifiers(false)
+                .condition { PersistentProperty prop ->
+                    if (prop instanceof Association) {
+                        Association association = (Association)prop
+                        association.owningSide || !association.bidirectional
+                    } else {
+                        true
+                    }
+                }
 
             GraphQLInputObjectType inputObj = buildInputObjectType(entity, manager, GraphQLPropertyType.CREATE)
 
@@ -278,6 +285,15 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
             GraphQLDomainPropertyManager manager = new GraphQLDomainPropertyManager(entity)
                 .excludeTimestamps()
+                .excludeVersion()
+                .condition { PersistentProperty prop ->
+                    if (prop instanceof Association) {
+                        Association association = (Association)prop
+                        association.owningSide || !association.bidirectional
+                    } else {
+                        true
+                    }
+                }
 
             GraphQLInputObjectType inputObj = buildInputObjectType(entity, manager, GraphQLPropertyType.UPDATE_NESTED)
 
