@@ -8,4 +8,3 @@ rootProject.name = 'gorm-graphql-root'
 
 findProject(':core').name = 'gorm-graphql'
 findProject(':plugin').name = 'grails-plugin-gorm-graphql'
-findProject(':docs').name = 'gorm-graphql-docs'
