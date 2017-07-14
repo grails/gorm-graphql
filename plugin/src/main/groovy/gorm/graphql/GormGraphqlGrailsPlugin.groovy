@@ -1,5 +1,6 @@
 package gorm.graphql
 
+import grails.config.Settings
 import grails.plugins.*
 import graphql.GraphQL
 import org.grails.gorm.graphql.Schema
@@ -10,6 +11,7 @@ import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
 import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
+import org.grails.plugins.databinding.DataBindingGrailsPlugin
 import org.springframework.beans.MutablePropertyValues
 import org.springframework.validation.DataBinder
 
@@ -52,17 +54,30 @@ Brief summary/description of the plugin.
         errorsResponseHandler(DefaultGraphQLErrorsResponseHandler, ref("messageSource"))
         deleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
         namingConvention(GraphQLEntityNamingConvention)
-        typeManager(DefaultGraphQLTypeManager, ref("namingConvention"))
+        typeManager(DefaultGraphQLTypeManager, ref("namingConvention"), ref("errorsResponseHandler"))
         dataBinderManager(GraphQLDataBinderManager, new DefaultGraphQLDataBinder())
         dataFetcherManager(DefaultGraphQLDataFetcherManager)
 
+
+        Boolean dateParsingLenientSetting = config.getProperty("grails.gorm.graphql.dateParsingLenient", Boolean, null)
+
+        if (dateParsingLenientSetting == null) {
+            dateParsingLenientSetting = config.getProperty(Settings.DATE_LENIENT_PARSING, Boolean, false)
+        }
+
+        List dateFormatsSetting = config.getProperty("grails.gorm.graphql.dateFormats", List, [])
+        if (dateFormatsSetting.empty) {
+            dateFormatsSetting = config.getProperty(Settings.DATE_FORMATS, List, DataBindingGrailsPlugin.DEFAULT_DATE_FORMATS)
+        }
+
         customSchema(Schema, ref("grailsDomainClassMappingContext")) {
-            errorsResponseHandler = ref("errorsResponseHandler")
             deleteResponseHandler = ref("deleteResponseHandler")
             namingConvention = ref("namingConvention")
             typeManager = ref("typeManager")
             dataBinderManager = ref("dataBinderManager")
             dataFetcherManager = ref("dataFetcherManager")
+            dateFormats = dateFormatsSetting
+            dateFormatLenient = dateParsingLenientSetting
         }
         graphQLSchema(customSchema: "generate")
         graphQL(GraphQL, ref("graphQLSchema"))

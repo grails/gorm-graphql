@@ -1,5 +1,13 @@
-import groovy.transform.Field
+import graphql.GraphQLError
 
-@Field Map result
+model {
+    Object data
+    List<GraphQLError> errors
+}
 
-json g.render(result, [includes: 'errors'])
+json {
+    data g.render(data)
+    if (errors) {
+        errors g.render(errors)
+    }
+}

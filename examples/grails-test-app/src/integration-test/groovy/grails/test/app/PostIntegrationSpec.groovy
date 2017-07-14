@@ -7,6 +7,7 @@ import spock.lang.Specification
 class PostIntegrationSpec extends Specification implements GraphQLSpec {
 
     void "test creating a post with tags"() {
+        when:
         def resp = post("""
             mutation {
               postCreate(post: {

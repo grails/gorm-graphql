@@ -14,6 +14,7 @@ apply plugin:"org.grails.plugins.views-json"
 
 dependencies {
     compile "org.grails:grails-plugin-controllers"
+    compile "org.grails:grails-plugin-databinding"
     compile "org.grails:grails-plugin-rest"
     compile "org.grails:grails-plugin-url-mappings"
     compile "org.grails.plugins:views-json:1.2.3"
@@ -21,4 +22,8 @@ dependencies {
     profile "org.grails.profiles:web-plugin"
 
     compile project(":gorm-graphql")
+}
+
+compileGsonViews {
+    packageName = "gorm-graphql"
 }

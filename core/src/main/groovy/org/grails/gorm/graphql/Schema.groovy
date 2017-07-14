@@ -5,6 +5,13 @@ import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
 import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
+import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
+import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
+import org.grails.gorm.graphql.types.scalars.GraphQLDate
+import org.grails.gorm.graphql.types.scalars.coercing.DateCoercion
+import org.springframework.context.MessageSource
+
+import javax.annotation.PostConstruct
 
 import static graphql.schema.GraphQLArgument.newArgument
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
@@ -14,30 +21,17 @@ import static graphql.schema.GraphQLList.list
 import static graphql.schema.GraphQLObjectType.newObject
 
 import graphql.schema.*
-import org.grails.datastore.mapping.config.Entity
-import org.grails.datastore.mapping.config.Property
-import org.grails.datastore.mapping.model.IllegalMappingException
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
-import org.grails.datastore.mapping.model.types.Association
-import org.grails.datastore.mapping.model.types.Embedded
-import org.grails.datastore.mapping.reflect.ClassPropertyFetcher
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
-import org.springframework.context.MessageSource
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
-import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
-import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
-import org.grails.gorm.graphql.entity.property.PersistentGraphQLProperty
-import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
-import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.fetcher.*
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.gorm.graphql.types.GraphQLTypeManager
-import java.lang.reflect.Method
 
 /**
  * Created by jameskleeh on 5/19/17.
@@ -47,28 +41,53 @@ class Schema {
 
     protected MappingContext mappingContext
 
-    GraphQLErrorsResponseHandler errorsResponseHandler
     GraphQLTypeManager typeManager
     GraphQLDeleteResponseHandler deleteResponseHandler
     GraphQLEntityNamingConvention namingConvention
     GraphQLDataBinderManager dataBinderManager
     GraphQLDataFetcherManager dataFetcherManager
 
+    List<String> dateFormats
+    boolean dateFormatLenient
 
     protected Map<PersistentEntity, GraphQLMapping> mappedEntities = [:]
 
-    Schema(MappingContext mappingContext, MessageSource messageSource) {
+    private boolean initialized = false
+
+    Schema(MappingContext mappingContext, GraphQLTypeManager typeManager) {
         this(mappingContext)
-        errorsResponseHandler = new DefaultGraphQLErrorsResponseHandler(messageSource)
+        this.typeManager = typeManager
     }
 
     Schema(MappingContext mappingContext) {
         this.mappingContext = mappingContext
-        deleteResponseHandler = new DefaultGraphQLDeleteResponseHandler()
-        namingConvention = new GraphQLEntityNamingConvention()
-        typeManager = new DefaultGraphQLTypeManager(namingConvention)
-        dataBinderManager = new GraphQLDataBinderManager()
-        dataFetcherManager = new DefaultGraphQLDataFetcherManager()
+    }
+
+    @PostConstruct
+    void initialize() {
+        if (typeManager == null) {
+            if (namingConvention == null) {
+                namingConvention = new GraphQLEntityNamingConvention()
+            }
+            new DefaultGraphQLTypeManager(namingConvention)
+        } else {
+            if (namingConvention == null) {
+                namingConvention = typeManager.namingConvention
+            }
+        }
+        if (typeManager.getType(Date) == null) {
+            typeManager.registerType(Date, new GraphQLDate(new DateCoercion(dateFormats, dateFormatLenient)))
+        }
+        if (deleteResponseHandler == null) {
+            deleteResponseHandler = new DefaultGraphQLDeleteResponseHandler()
+        }
+        if (dataBinderManager == null) {
+            dataBinderManager = new GraphQLDataBinderManager()
+        }
+        if (dataFetcherManager == null) {
+            dataFetcherManager = new DefaultGraphQLDataFetcherManager()
+        }
+        initialized = true
     }
 
     protected void populateIdentityArguments(PersistentEntity entity, GraphQLFieldDefinition.Builder... builders) {
@@ -91,6 +110,10 @@ class Schema {
     }
 
     GraphQLSchema generate() {
+
+        if (!initialized) {
+            initialize()
+        }
 
         mappingContext.persistentEntities.each { PersistentEntity entity ->
             GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity)
