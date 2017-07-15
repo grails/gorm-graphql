@@ -47,20 +47,20 @@ if [[ $TRAVIS_REPO_SLUG == "grails/gorm-graphql" && $TRAVIS_PULL_REQUEST == 'fal
         majorVersion=${version:0:4}
         majorVersion="${majorVersion}x"
 
-        mkdir -p "$version/graphql"
-        cp -r ../docs/build/docs/. "./$version/graphql/"
-        git add "$version/graphql/*"
+        mkdir -p "$version"
+        cp -r ../docs/build/docs/. "./$version/"
+        git add "$version/*"
 
-        mkdir -p "$majorVersion/graphql"
-        cp -r ../docs/build/docs/. "./$majorVersion/graphql/"
-        git add "$majorVersion/graphql/*"
+        mkdir -p "$majorVersion"
+        cp -r ../docs/build/docs/. "./$majorVersion/"
+        git add "$majorVersion/*"
 
     else
         # If this is the master branch then update the snapshot
-        mkdir -p snapshot/graphql
-        cp -r ../docs/build/docs/. ./snapshot/graphql/
+        mkdir -p snapshot
+        cp -r ../docs/build/docs/. ./snapshot/
 
-        git add snapshot/graphql/*
+        git add snapshot/*
     fi
 
 
