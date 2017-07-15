@@ -3,7 +3,7 @@ echo "Publishing..."
 
 EXIT_STATUS=0
 
-if [[ $TRAVIS_REPO_SLUG == "grails/gorm-graphql" && $TRAVIS_PULL_REQUEST == 'false' && $EXIT_STATUS -eq 0 ]]; then
+if [[ $TRAVIS_REPO_SLUG == "grails/gorm-graphql" && $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'master' && $EXIT_STATUS -eq 0 ]]; then
 
   echo "Publishing archives"
   export GRADLE_OPTS="-Xmx1500m -Dfile.encoding=UTF-8"
@@ -37,7 +37,7 @@ if [[ $TRAVIS_REPO_SLUG == "grails/gorm-graphql" && $TRAVIS_PULL_REQUEST == 'fal
     echo "https://$GH_TOKEN:@github.com" > ~/.git-credentials
 
 
-    git clone https://${GH_TOKEN}@github.com/grails/grails-data-mapping.git -b gh-pages gh-pages --single-branch > /dev/null
+    git clone https://${GH_TOKEN}@github.com/grails/gorm-graphql.git -b gh-pages gh-pages --single-branch > /dev/null
     cd gh-pages
 
     if [[ -n $TRAVIS_TAG ]]; then

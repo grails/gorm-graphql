@@ -4,6 +4,7 @@ import grails.gorm.DetachedCriteria
 import grails.gorm.transactions.Transactional
 import graphql.Scalars
 import graphql.schema.DataFetchingEnvironment
+import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLScalarType
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
@@ -53,15 +54,17 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
         }
     }
 
-    static final Map<String, GraphQLScalarType> ARGUMENTS = [
-        max: Scalars.GraphQLInt,
-        offset: Scalars.GraphQLInt,
-        sort: Scalars.GraphQLString,
-        order: Scalars.GraphQLString,
-        cache: Scalars.GraphQLBoolean,
-        lock: Scalars.GraphQLBoolean,
-        ignoreCase: Scalars.GraphQLBoolean
-    ]
+    static final Map<String, GraphQLInputType> ARGUMENTS = new LinkedHashMap<String, GraphQLInputType>()
+
+    static {
+        ARGUMENTS.put('max', Scalars.GraphQLInt)
+        ARGUMENTS.put('offset', Scalars.GraphQLInt)
+        ARGUMENTS.put('sort', Scalars.GraphQLString)
+        ARGUMENTS.put('order', Scalars.GraphQLString)
+        ARGUMENTS.put('cache', Scalars.GraphQLBoolean)
+        ARGUMENTS.put('lock', Scalars.GraphQLBoolean)
+        ARGUMENTS.put('ignoreCase', Scalars.GraphQLBoolean)
+    }
 
     @Override
     @Transactional(readOnly = true)
