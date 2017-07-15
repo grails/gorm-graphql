@@ -33,10 +33,10 @@ class GrailsGraphQLConfiguration implements GrailsConfigurationAware {
     @PostConstruct
     void init() {
         if (dateFormats == null) {
-            dateFormats = config.getProperty(Settings.DATE_FORMATS, List, DataBindingGrailsPlugin.DEFAULT_DATE_FORMATS)
+            dateFormats = config.getProperty('grails.databinding.dateFormats', List, DataBindingGrailsPlugin.DEFAULT_DATE_FORMATS)
         }
         if (dateFormatLenient == null) {
-            dateFormatLenient = config.getProperty(Settings.DATE_LENIENT_PARSING, Boolean, false)
+            dateFormatLenient = config.getProperty('grails.databinding.dateParsingLenient', Boolean, false)
         }
         if (runtimeDataFetching == null) {
             runtimeDataFetching = true
