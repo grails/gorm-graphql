@@ -4,7 +4,6 @@ import grails.config.Settings
 import grails.plugins.*
 import graphql.GraphQL
 import org.grails.gorm.graphql.Schema
-import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
@@ -12,8 +11,6 @@ import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandl
 import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.plugins.databinding.DataBindingGrailsPlugin
-import org.springframework.beans.MutablePropertyValues
-import org.springframework.validation.DataBinder
 
 class GormGraphqlGrailsPlugin extends Plugin {
 
@@ -51,35 +48,29 @@ Brief summary/description of the plugin.
 //    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
 
     Closure doWithSpring() {{ ->
+        defaultGraphQLDataBinder(GrailsGraphQLDataBinder)
         errorsResponseHandler(DefaultGraphQLErrorsResponseHandler, ref("messageSource"))
         deleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
         namingConvention(GraphQLEntityNamingConvention)
         typeManager(DefaultGraphQLTypeManager, ref("namingConvention"), ref("errorsResponseHandler"))
-        dataBinderManager(GraphQLDataBinderManager, new DefaultGraphQLDataBinder())
+        dataBinderManager(GraphQLDataBinderManager, ref("defaultGraphQLDataBinder"))
         dataFetcherManager(DefaultGraphQLDataFetcherManager)
 
+        grailsGraphQLConfiguration(GrailsGraphQLConfiguration)
 
-        Boolean dateParsingLenientSetting = config.getProperty("grails.gorm.graphql.dateParsingLenient", Boolean, null)
-
-        if (dateParsingLenientSetting == null) {
-            dateParsingLenientSetting = config.getProperty(Settings.DATE_LENIENT_PARSING, Boolean, false)
-        }
-
-        List dateFormatsSetting = config.getProperty("grails.gorm.graphql.dateFormats", List, [])
-        if (dateFormatsSetting.empty) {
-            dateFormatsSetting = config.getProperty(Settings.DATE_FORMATS, List, DataBindingGrailsPlugin.DEFAULT_DATE_FORMATS)
-        }
-
-        customSchema(Schema, ref("grailsDomainClassMappingContext")) {
+        graphQLSchemaGenerator(Schema, ref("grailsDomainClassMappingContext")) {
             deleteResponseHandler = ref("deleteResponseHandler")
             namingConvention = ref("namingConvention")
             typeManager = ref("typeManager")
             dataBinderManager = ref("dataBinderManager")
             dataFetcherManager = ref("dataFetcherManager")
-            dateFormats = dateFormatsSetting
-            dateFormatLenient = dateParsingLenientSetting
+            dateFormats = '#{grailsGraphQLConfiguration.getDateFormats()}'
+            dateFormatLenient = '#{grailsGraphQLConfiguration.getDateFormatLenient()}'
+            listArguments = '#{grailsGraphQLConfiguration.getListArguments()}'
+            runtimeDataFetching = '#{grailsGraphQLConfiguration.getRuntimeDataFetching()}'
         }
-        graphQLSchema(customSchema: "generate")
+
+        graphQLSchema(graphQLSchemaGenerator: "generate")
         graphQL(GraphQL, ref("graphQLSchema"))
     }}
 }

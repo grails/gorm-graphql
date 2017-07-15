@@ -8,7 +8,7 @@ import org.grails.gorm.graphql.binding.GraphQLDataBinder
  *
  * @author James Kleeh
  */
-class DefaultGraphQLDataBinder implements GraphQLDataBinder {
+class GrailsGraphQLDataBinder implements GraphQLDataBinder {
 
     @Override
     void bind(Object object, Map data) {

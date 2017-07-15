@@ -49,11 +49,11 @@ class DateCoercion implements Coercing<Date, Date> {
 
     protected Date parseDate(String value) {
         Date dateValue
-        if(!value) {
+        if (!value || !formats) {
             return null
         }
         Exception firstException
-        formats.each { String format ->
+        for (String format: formats) {
             if (dateValue == null) {
                 DateFormat formatter = new SimpleDateFormat(format)
                 try {

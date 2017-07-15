@@ -6,9 +6,7 @@ import grails.web.mapping.LinkGenerator
 import grails.web.mime.MimeType
 import graphql.ExecutionResult
 import graphql.GraphQL
-import graphql.schema.GraphQLSchema
 import groovy.json.JsonSlurper
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpMethod
 
 class GraphqlController {
@@ -18,10 +16,10 @@ class GraphqlController {
     public static MimeType GRAPHQL =  new MimeType('application/graphql')
 
     GraphQL graphQL
+
     LinkGenerator grailsLinkGenerator
 
-    @Value('${grails.gorm.graphql.browser:true}')
-    Boolean browserEnabled
+    GrailsGraphQLConfiguration grailsGraphQLConfiguration
 
     protected Object buildContext() {
         [locale: request.locale]
@@ -79,7 +77,7 @@ class GraphqlController {
     }
 
     def browser() {
-        if (browserEnabled) {
+        if (grailsGraphQLConfiguration.browser) {
             String endpoint = grailsLinkGenerator.link(controller: 'graphql', action: 'index')
             String staticBase = grailsLinkGenerator.resource([:])
 
