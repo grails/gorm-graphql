@@ -111,7 +111,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
 
     void "test browser when disabled"() {
         when:
-        controller.browserEnabled = false
+        controller.grailsGraphQLConfiguration = new GrailsGraphQLConfiguration(browser: false)
         controller.browser()
 
         then:
@@ -120,7 +120,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
 
     void "test browser"() {
         when:
-        controller.browserEnabled = true
+        controller.grailsGraphQLConfiguration = new GrailsGraphQLConfiguration(browser: true)
         controller.browser()
 
         then:
