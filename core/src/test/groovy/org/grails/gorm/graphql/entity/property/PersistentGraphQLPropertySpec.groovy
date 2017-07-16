@@ -4,14 +4,15 @@ import org.grails.datastore.mapping.config.Property
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.PropertyMapping
-import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.model.types.ToMany
 import org.grails.gorm.graphql.GraphQL
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
+import org.grails.gorm.graphql.entity.property.impl.PersistentGraphQLProperty
 import spock.lang.Specification
 
 class PersistentGraphQLPropertySpec extends Specification {
 
+    @SuppressWarnings('UnnecessaryGetter')
     PersistentProperty buildProperty(String name, boolean identityName = false, boolean nullable = true, boolean association = false) {
         Stub(association ? ToMany : PersistentProperty) {
             getName() >> name
@@ -19,7 +20,7 @@ class PersistentGraphQLPropertySpec extends Specification {
             getOwner() >> Mock(PersistentEntity) {
                 getIdentity() >> Mock(PersistentProperty) {
                     getName() >> {
-                        identityName ? name : "sdflksjdf"
+                        identityName ? name : 'sdflksjdf'
                     }
                 }
                 getJavaClass() >> Test
@@ -78,7 +79,6 @@ class PersistentGraphQLPropertySpec extends Specification {
         prop.deprecated
         prop.deprecationReason == 'Deprecated'
     }
-
 
     void "test deprecation with barFoo property"() {
         given:
@@ -154,7 +154,7 @@ class PersistentGraphQLPropertySpec extends Specification {
         prop.deprecationReason == 'Bar deprecated from mapping'
     }
 
-
+    @SuppressWarnings('JUnitPublicProperty')
     class Test {
 
         @GraphQL(value = 'Foo', deprecated = true)

@@ -9,6 +9,7 @@ import groovy.transform.CompileStatic
  * with a closure.
  *
  * @author James Kleeh
+ * @since 1.0.0
  */
 @CompileStatic
 class ClosureDataFetcher implements DataFetcher<Object> {
@@ -21,7 +22,7 @@ class ClosureDataFetcher implements DataFetcher<Object> {
 
     @Override
     Object get(DataFetchingEnvironment environment) {
-        Object source = environment.getSource()
+        Object source = environment.source
         closure.call(source)
     }
 }

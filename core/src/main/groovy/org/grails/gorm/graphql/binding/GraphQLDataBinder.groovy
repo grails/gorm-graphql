@@ -4,6 +4,7 @@ package org.grails.gorm.graphql.binding
  * An interface to bind data from GraphQL to a GORM entity
  *
  * @author James Kleeh
+ * @since 1.0.0
  */
 interface GraphQLDataBinder {
 

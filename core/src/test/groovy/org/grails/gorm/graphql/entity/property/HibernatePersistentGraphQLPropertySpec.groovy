@@ -1,6 +1,8 @@
 package org.grails.gorm.graphql.entity.property
 
 import static org.grails.gorm.graphql.entity.property.GraphQLPropertyType.*
+import graphql.schema.GraphQLObjectType
+import org.grails.gorm.graphql.entity.property.impl.PersistentGraphQLProperty
 import grails.gorm.annotation.Entity
 import graphql.Scalars
 import graphql.schema.GraphQLList
@@ -13,17 +15,14 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.grails.orm.hibernate.cfg.HibernateMappingContext
 import spock.lang.Shared
 
-/**
- * Created by jameskleeh on 7/10/17.
- */
-class PersistentGraphQLPropertySpec2 extends HibernateSpec {
+class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
 
     @Shared HibernateMappingContext mappingContext
 
     List<Class> getDomainClasses() { [Book, Book2, Author, Tag, Metadata, OtherMetadata] }
 
     void setupSpec() {
-        mappingContext = hibernateDatastore.getMappingContext()
+        mappingContext = hibernateDatastore.mappingContext
     }
 
     void "test constructor with simple property (non null)"() {
@@ -202,7 +201,7 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.getType(mappingContext.getPersistentEntity(Tag.name), OUTPUT) >> Scalars.GraphQLString
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Tag.name)) >> GraphQLObjectType.newObject().name('x').build()
         type instanceof GraphQLList
     }
 
@@ -241,8 +240,8 @@ class PersistentGraphQLPropertySpec2 extends HibernateSpec {
         GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.getType(mappingContext.getPersistentEntity(Metadata.name), OUTPUT) >> Scalars.GraphQLString
-        type ==  Scalars.GraphQLString
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Metadata.name)) >> GraphQLObjectType.newObject().name('x').build()
+        !(type instanceof GraphQLList)
     }
 
 }
@@ -258,7 +257,6 @@ class Book {
     OtherMetadata otherMetadata
 
     static hasMany = [authors: Author, tags: Tag, basics: String]
-
 
     static constraints = {
         description nullable: true
@@ -287,6 +285,13 @@ class Book2 implements Serializable {
             hashCode = HashCodeHelper.updateHash(hashCode, description)
         }
         hashCode
+    }
+
+    @Override
+    boolean equals(Object other) {
+        if (other instanceof Book2) {
+            other.title == title && other.description == description
+        }
     }
 
     static graphql = true

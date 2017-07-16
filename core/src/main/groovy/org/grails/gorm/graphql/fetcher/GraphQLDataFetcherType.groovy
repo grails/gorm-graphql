@@ -1,8 +1,15 @@
 package org.grails.gorm.graphql.fetcher
 
+import groovy.transform.CompileStatic
+
 /**
- * Created by jameskleeh on 7/14/17.
+ * An enum defining the different data fetcher types and their
+ * required interfaces
+ *
+ * @author James Kleeh
+ * @since 1.0.0
  */
+@CompileStatic
 enum GraphQLDataFetcherType {
 
     CREATE(BindingGormDataFetcher),

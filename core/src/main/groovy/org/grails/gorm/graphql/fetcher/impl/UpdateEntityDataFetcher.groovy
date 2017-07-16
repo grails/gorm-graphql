@@ -5,7 +5,6 @@ import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.grails.datastore.gorm.GormEntity
-import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.DefaultGormDataFetcher
@@ -16,6 +15,7 @@ import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
  *
  * @param <T> The domain type to update
  * @author James Kleeh
+ * @since 1.0.0
  */
 @CompileStatic
 @InheritConstructors

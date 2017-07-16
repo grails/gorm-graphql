@@ -8,44 +8,70 @@ import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
  * A class to return the names of class types and query/mutation names
  *
  * @author James Kleeh
+ * @since 1.0.0
  */
 @CompileStatic
 class GraphQLEntityNamingConvention {
 
-    String getReadSingle(PersistentEntity entity) {
+    /**
+     * @param entity The persistent entity
+     * @return The name to use. Ex: "person"
+     */
+    String getGet(PersistentEntity entity) {
         entity.decapitalizedName
     }
 
-    String getReadMany(PersistentEntity entity) {
-        entity.decapitalizedName + "List"
+    /**
+     * @param entity The persistent entity
+     * @return The name to use. Ex: "personList"
+     */
+    String getList(PersistentEntity entity) {
+        entity.decapitalizedName + 'List'
     }
 
+    /**
+     * @param entity The persistent entity
+     * @return The name to use. Ex: "personCreate"
+     */
     String getCreate(PersistentEntity entity) {
-        entity.decapitalizedName + "Create"
+        entity.decapitalizedName + 'Create'
     }
 
+    /**
+     * @param entity The persistent entity
+     * @return The name to use. Ex: "personUpdate"
+     */
     String getUpdate(PersistentEntity entity) {
-        entity.decapitalizedName + "Update"
+        entity.decapitalizedName + 'Update'
     }
 
+    /**
+     * @param entity The persistent entity
+     * @return The name to use. Ex: "personDelete"
+     */
     String getDelete(PersistentEntity entity) {
-        entity.decapitalizedName + "Delete"
+        entity.decapitalizedName + 'Delete'
     }
 
+    /**
+     * @param entity The persistent entity
+     * @param type The property type
+     * @return The name to use. Ex: "Person", "PersonCreate", "PersonUpdate", "PersonInputNested"
+     */
     String getType(PersistentEntity entity, GraphQLPropertyType type) {
-        final String simpleName = entity.javaClass.simpleName
+        final String SIMPLE_NAME = entity.javaClass.simpleName
         switch (type) {
             case GraphQLPropertyType.CREATE:
-                simpleName + "Create"
+                SIMPLE_NAME + 'Create'
                 break
             case GraphQLPropertyType.UPDATE:
-                simpleName + "Update"
+                SIMPLE_NAME + 'Update'
                 break
             case GraphQLPropertyType.INPUT_NESTED:
-                simpleName + "InputNested"
+                SIMPLE_NAME + 'InputNested'
                 break
             default:
-                simpleName
+                SIMPLE_NAME
         }
     }
 }

@@ -25,11 +25,12 @@ import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
  * fetchers are provided, the generic GORM data fetchers will be used.
  *
  * @author James Kleeh
+ * @since 1.0.0
  */
 @CompileStatic
 class DefaultGraphQLDataFetcherManager implements GraphQLDataFetcherManager {
 
-    protected final LinkedHashMap<Class, Map<GraphQLDataFetcherType, DataFetcher>> dataFetchers = new LinkedHashMap<>()
+    protected final Map<Class, Map<GraphQLDataFetcherType, DataFetcher>> dataFetchers = [:]
 
     DefaultGraphQLDataFetcherManager() {
     }

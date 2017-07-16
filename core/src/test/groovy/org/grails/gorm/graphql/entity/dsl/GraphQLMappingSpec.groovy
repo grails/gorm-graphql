@@ -1,6 +1,6 @@
 package org.grails.gorm.graphql.entity.dsl
 
-import org.grails.gorm.graphql.entity.property.AdditionalGraphQLProperty
+import org.grails.gorm.graphql.entity.property.impl.AdditionalGraphQLProperty
 import spock.lang.Specification
 
 class GraphQLMappingSpec extends Specification {
@@ -45,9 +45,8 @@ class GraphQLMappingSpec extends Specification {
         mapping.additional[3].type == String
         mapping.additional[3].deprecationReason == 'Deprecated'
 
-
         when:
-        mapping.add {}
+        mapping.add { }
 
         then:
         thrown(IllegalArgumentException)
@@ -56,8 +55,8 @@ class GraphQLMappingSpec extends Specification {
         mapping.add(AdditionalGraphQLProperty.newProperty())
 
         then:
-        def ex = thrown(IllegalArgumentException)
-        ex.message == "null: GraphQL properties must have both a name and type"
+        Exception ex = thrown(IllegalArgumentException)
+        ex.message == 'null: GraphQL properties must have both a name and type'
     }
 
     void "test modify existing property"() {

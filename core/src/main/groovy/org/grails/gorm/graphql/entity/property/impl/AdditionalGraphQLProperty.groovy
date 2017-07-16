@@ -1,9 +1,11 @@
-package org.grails.gorm.graphql.entity.property
+package org.grails.gorm.graphql.entity.property.impl
 
 import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
+import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
+import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 /**
@@ -11,6 +13,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * additional properties beyond the ones defined in GORM entities
  *
  * @author James Kleeh
+ * @since 1.0.0
  */
 @Builder(builderStrategy = SimpleStrategy, prefix = '')
 @CompileStatic

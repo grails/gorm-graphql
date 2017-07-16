@@ -1,10 +1,19 @@
+apply plugin: 'codenarc'
+
 dependencies {
     compile "org.grails:grails-datastore-gorm:$gormVersion"
     compile "com.graphql-java:graphql-java:2.4.0"
+
+    codenarc 'org.codenarc:CodeNarc:0.25.2'
 
     testCompile "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
     testRuntime "com.h2database:h2:1.4.192"
     testRuntime "org.apache.tomcat:tomcat-jdbc:8.5.0"
     testRuntime "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"
     testRuntime "org.slf4j:slf4j-api:1.7.10"
+}
+
+codenarc {
+    toolVersion = '0.25.2'
+    configFile = file("${projectDir}/config/codenarc/rules.groovy")
 }

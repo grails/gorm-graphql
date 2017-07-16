@@ -7,6 +7,7 @@ import graphql.schema.GraphQLObjectType
  * Responsible for determining the data available in a GraphQL delete mutation response
  *
  * @author James Kleeh
+ * @since 1.0.0
  */
 interface GraphQLDeleteResponseHandler {
 

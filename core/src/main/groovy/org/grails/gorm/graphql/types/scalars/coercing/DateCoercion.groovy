@@ -6,8 +6,15 @@ import graphql.schema.Coercing
 import groovy.transform.CompileStatic
 
 import java.text.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 
+/**
+ * Default {@link Date} coercion
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @CompileStatic
 class DateCoercion implements Coercing<Date, Date> {
 
@@ -40,7 +47,7 @@ class DateCoercion implements Coercing<Date, Date> {
             new Date(((IntValue) input).value.longValue())
         }
         else if (input instanceof StringValue) {
-            parseDate(((StringValue) input).getValue())
+            parseDate(((StringValue) input).value)
         }
         else {
             null
@@ -59,12 +66,12 @@ class DateCoercion implements Coercing<Date, Date> {
                 try {
                     formatter.lenient = lenient
                     dateValue = formatter.parse((String)value)
-                } catch (Exception e) {
+                } catch (ParseException e) {
                     firstException = firstException ?: e
                 }
             }
         }
-        if(dateValue == null && firstException) {
+        if (dateValue == null && firstException) {
             throw firstException
         }
         dateValue

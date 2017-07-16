@@ -5,6 +5,12 @@ import graphql.language.IntValue
 import graphql.schema.Coercing
 import groovy.transform.CompileStatic
 
+/**
+ * Default {@link Float} coercion
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @CompileStatic
 class FloatCoercion implements Coercing<Float, Float> {
 
@@ -20,19 +26,19 @@ class FloatCoercion implements Coercing<Float, Float> {
 
     @Override
     Float parseValue(Object input) {
-        return serialize(input)
+        serialize(input)
     }
 
     @Override
     Float parseLiteral(Object input) {
         if (input instanceof IntValue) {
-            return ((IntValue) input).getValue().floatValue()
+            ((IntValue) input).value.floatValue()
         }
         else if (input instanceof FloatValue) {
-            return ((FloatValue) input).getValue().floatValue()
+            ((FloatValue) input).value.floatValue()
         }
         else {
-            return null
+            null
         }
     }
 

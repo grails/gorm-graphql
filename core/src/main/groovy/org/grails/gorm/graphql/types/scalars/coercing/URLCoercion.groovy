@@ -3,6 +3,12 @@ package org.grails.gorm.graphql.types.scalars.coercing
 import graphql.schema.Coercing
 import groovy.transform.CompileStatic
 
+/**
+ * Default {@link URL} coercion
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @CompileStatic
 class URLCoercion implements Coercing<URL, URL> {
 

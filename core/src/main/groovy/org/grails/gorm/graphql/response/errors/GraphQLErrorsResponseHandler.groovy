@@ -7,6 +7,7 @@ import graphql.schema.GraphQLFieldDefinition
  * to return validation errors to the user
  *
  * @author James Kleeh
+ * @since 1.0.0
  */
 interface GraphQLErrorsResponseHandler {
 

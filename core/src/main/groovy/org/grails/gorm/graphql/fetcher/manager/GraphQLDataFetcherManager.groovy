@@ -9,12 +9,11 @@ import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 
-import javax.xml.crypto.Data
-
 /**
  * An interface to register and retrieve data fetcher instances
  *
  * @author James Kleeh
+ * @since 1.0.0
  */
 interface GraphQLDataFetcherManager {
 

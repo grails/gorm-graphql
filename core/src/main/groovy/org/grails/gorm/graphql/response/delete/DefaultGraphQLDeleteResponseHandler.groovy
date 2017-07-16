@@ -1,5 +1,7 @@
 package org.grails.gorm.graphql.response.delete
 
+import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
+import static graphql.schema.GraphQLObjectType.newObject
 import graphql.Scalars
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLFieldDefinition
@@ -7,21 +9,19 @@ import graphql.schema.GraphQLObjectType
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.response.CachingGraphQLResponseHandler
 
-import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
-import static graphql.schema.GraphQLObjectType.newObject
-
 /**
  * The default data available in a delete mutation response
  *
  * success: Boolean
  *
  * @author James Kleeh
+ * @since 1.0.0
  */
 @CompileStatic
 class DefaultGraphQLDeleteResponseHandler extends CachingGraphQLResponseHandler implements GraphQLDeleteResponseHandler {
 
-    protected String description = "Whether or not the operation was successful"
-    protected String name = "DeleteResult"
+    protected String description = 'Whether or not the operation was successful'
+    protected String name = 'DeleteResult'
 
     @Override
     GraphQLObjectType getObjectType() {
@@ -29,7 +29,7 @@ class DefaultGraphQLDeleteResponseHandler extends CachingGraphQLResponseHandler 
     }
 
     protected List<GraphQLFieldDefinition> buildFieldDefinitions() {
-        [newFieldDefinition().name("success").type(Scalars.GraphQLBoolean).build()]
+        [newFieldDefinition().name('success').type(Scalars.GraphQLBoolean).build()]
     }
 
     @Override

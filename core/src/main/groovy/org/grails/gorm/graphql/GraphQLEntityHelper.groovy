@@ -2,21 +2,17 @@ package org.grails.gorm.graphql
 
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.config.Entity
-import org.grails.datastore.mapping.config.Property
 import org.grails.datastore.mapping.model.IllegalMappingException
-import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.datastore.mapping.model.PersistentProperty
-import org.grails.datastore.mapping.model.types.Embedded
 import org.grails.datastore.mapping.reflect.ClassPropertyFetcher
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
-import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
-import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
-import org.grails.gorm.graphql.entity.property.GraphQLDomainPropertyManager
-import org.grails.gorm.graphql.entity.property.PersistentGraphQLProperty
 
-import java.lang.reflect.Method
-
+/**
+ * A helper class to get GraphQL mappings and descriptions for GORM entities
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @CompileStatic
 class GraphQLEntityHelper {
 
@@ -37,12 +33,12 @@ class GraphQLEntityHelper {
             }
             else {
                 try {
-                    Class hibernateMapping = Class.forName( "org.grails.orm.hibernate.cfg.Mapping" )
+                    Class hibernateMapping = this.classLoader.loadClass('org.grails.orm.hibernate.cfg.Mapping')
                     Entity mapping = entity.mapping.mappedForm
                     if (hibernateMapping.isAssignableFrom(mapping.class)) {
                         description = hibernateMapping.getMethod('getComment').invoke(mapping)
                     }
-                } catch(ClassNotFoundException e) {}
+                } catch (ClassNotFoundException e) { }
             }
         }
         descriptions.put(entity, description)
@@ -53,14 +49,14 @@ class GraphQLEntityHelper {
         if (mappings.containsKey(entity)) {
             return mappings.get(entity)
         }
-        def graphql = ClassPropertyFetcher.getStaticPropertyValue(entity.javaClass, 'graphql', Object)
+        Object graphql = ClassPropertyFetcher.getStaticPropertyValue(entity.javaClass, 'graphql', Object)
         GraphQLMapping mapping = null
         if (graphql != null) {
             if (graphql == Boolean.TRUE) {
                 mapping = new GraphQLMapping()
             }
             else if (graphql instanceof Closure) {
-                mapping = new GraphQLMapping().build(graphql)
+                mapping = new GraphQLMapping().build((Closure)graphql)
             }
             else if (graphql instanceof GraphQLMapping) {
                 mapping = (GraphQLMapping)graphql

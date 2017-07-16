@@ -7,17 +7,18 @@ import graphql.schema.GraphQLObjectType
  * by providing a reference if the object was already created when requested.
  *
  * @author James Kleeh
+ * @since 1.0.0
  */
 abstract class CachingGraphQLResponseHandler {
 
-    private GraphQLObjectType _definition
+    private GraphQLObjectType cachedDefinition
 
     GraphQLObjectType getDefinition() {
-        if (_definition != null) {
-            return GraphQLObjectType.reference(_definition.name)
+        if (cachedDefinition != null) {
+            return GraphQLObjectType.reference(cachedDefinition.name)
         }
-        _definition = buildDefinition()
-        _definition
+        cachedDefinition = buildDefinition()
+        cachedDefinition
     }
 
     abstract protected GraphQLObjectType buildDefinition()

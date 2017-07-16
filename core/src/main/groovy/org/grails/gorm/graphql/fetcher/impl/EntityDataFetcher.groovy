@@ -5,7 +5,6 @@ import grails.gorm.transactions.Transactional
 import graphql.Scalars
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLInputType
-import graphql.schema.GraphQLScalarType
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import groovy.util.logging.Slf4j
@@ -23,6 +22,7 @@ import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
  *
  * @param <T> The domain type to query
  * @author James Kleeh
+ * @since 1.0.0
  */
 @InheritConstructors
 @Slf4j
@@ -36,16 +36,16 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
     static {
         try {
             hibernatePropertyConfig = ClassUtils.forName('org.grails.orm.hibernate.cfg.PropertyConfig')
-        } catch (ClassNotFoundException e) {}
+        } catch (ClassNotFoundException e) { }
     }
 
     EntityDataFetcher(PersistentEntity entity) {
         super(entity)
-        entity.associations.each { Association association ->
+        for (Association association: entity.associations) {
             //Workaround for groovy issue (Groovy thinks association.mapping.mappedForm is a Collection)
             PropertyMapping<Property> propertyMapping = association.mapping
             Property mapping = propertyMapping.mappedForm
-            if (hibernatePropertyConfig != null && hibernatePropertyConfig.isAssignableFrom(mapping.class)) {
+            if (hibernatePropertyConfig?.isAssignableFrom(mapping.class)) {
                 batchModeEnabled.put(association.name, ((Integer)mapping.invokeMethod('getBatchSize', [] as Object[])) > 1)
             }
             else {
@@ -54,16 +54,18 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
         }
     }
 
-    static final Map<String, GraphQLInputType> ARGUMENTS = new LinkedHashMap<String, GraphQLInputType>()
+    static final Map<String, GraphQLInputType> ARGUMENTS = [:]
 
     static {
-        ARGUMENTS.put('max', Scalars.GraphQLInt)
-        ARGUMENTS.put('offset', Scalars.GraphQLInt)
-        ARGUMENTS.put('sort', Scalars.GraphQLString)
-        ARGUMENTS.put('order', Scalars.GraphQLString)
-        ARGUMENTS.put('cache', Scalars.GraphQLBoolean)
-        ARGUMENTS.put('lock', Scalars.GraphQLBoolean)
-        ARGUMENTS.put('ignoreCase', Scalars.GraphQLBoolean)
+        ARGUMENTS.with {
+            put('max', Scalars.GraphQLInt)
+            put('offset', Scalars.GraphQLInt)
+            put('sort', Scalars.GraphQLString)
+            put('order', Scalars.GraphQLString)
+            put('cache', Scalars.GraphQLBoolean)
+            put('lock', Scalars.GraphQLBoolean)
+            put('ignoreCase', Scalars.GraphQLBoolean)
+        }
     }
 
     @Override
@@ -71,17 +73,17 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
     T get(DataFetchingEnvironment environment) {
         Map queryArgs = defaultQueryOptions(environment)
 
-        environment.arguments.each { String key, Object value ->
-            if (value != null) {
-                queryArgs.put(key, value)
+        for (Map.Entry<String, Object> entry: environment.arguments) {
+            if (entry.value != null) {
+                queryArgs.put(entry.key, entry.value)
             }
         }
 
         if (queryArgs.containsKey('fetch') && (queryArgs.containsKey('max') || queryArgs.containsKey('offset'))) {
             Map<String, String> fetch = (Map)queryArgs.get('fetch')
             boolean showWarning = false
-            fetch.keySet().each { String key ->
-                fetch.put(key, "default")
+            for (String key: fetch.keySet()) {
+                fetch.put(key, 'default')
                 if (!batchModeEnabled.get(key)) {
                     showWarning = true
                 }

@@ -1,26 +1,34 @@
 package org.grails.gorm.graphql
 
-import groovy.transform.CompileStatic
-import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
-import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
-import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
-import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
-import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
-import org.grails.gorm.graphql.fetcher.manager.runtime.BindingRuntimeDataFetcher
-import org.grails.gorm.graphql.fetcher.manager.runtime.DeletingRuntimeDataFetcher
-import org.grails.gorm.graphql.fetcher.manager.runtime.ReadingRuntimeDataFetcher
-import org.grails.gorm.graphql.types.scalars.GraphQLDate
-import org.grails.gorm.graphql.types.scalars.coercing.DateCoercion
-
-import javax.annotation.PostConstruct
-
 import static graphql.schema.GraphQLArgument.newArgument
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLList.list
 import static graphql.schema.GraphQLObjectType.newObject
-import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.*
-
-import graphql.schema.*
+import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.GET
+import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.LIST
+import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.CREATE
+import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.UPDATE
+import graphql.schema.DataFetcher
+import graphql.schema.GraphQLFieldDefinition
+import graphql.schema.GraphQLInputObjectType
+import graphql.schema.GraphQLInputType
+import graphql.schema.GraphQLObjectType
+import graphql.schema.GraphQLSchema
+import graphql.schema.GraphQLType
+import groovy.transform.CompileStatic
+import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
+import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
+import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
+import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
+import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
+import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
+import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
+import org.grails.gorm.graphql.fetcher.runtime.BindingRuntimeDataFetcher
+import org.grails.gorm.graphql.fetcher.runtime.DeletingRuntimeDataFetcher
+import org.grails.gorm.graphql.fetcher.runtime.ReadingRuntimeDataFetcher
+import org.grails.gorm.graphql.types.scalars.GraphQLDate
+import org.grails.gorm.graphql.types.scalars.coercing.DateCoercion
+import javax.annotation.PostConstruct
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
@@ -28,7 +36,6 @@ import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
-import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
@@ -50,8 +57,6 @@ class Schema {
     boolean dateFormatLenient = false
     boolean runtimeDataFetching = false
     Map<String, GraphQLInputType> listArguments
-
-    protected Map<PersistentEntity, GraphQLMapping> mappedEntities = [:]
 
     private boolean initialized = false
 
@@ -84,7 +89,7 @@ class Schema {
             if (namingConvention == null) {
                 namingConvention = new GraphQLEntityNamingConvention()
             }
-            new DefaultGraphQLTypeManager(namingConvention)
+            typeManager = new DefaultGraphQLTypeManager(namingConvention, null, new DefaultGraphQLDomainPropertyManager())
         } else {
             if (namingConvention == null) {
                 namingConvention = typeManager.namingConvention
@@ -108,6 +113,7 @@ class Schema {
         initialized = true
     }
 
+    @SuppressWarnings('NestedForLoop')
     protected void populateIdentityArguments(PersistentEntity entity, GraphQLFieldDefinition.Builder... builders) {
         List<PersistentProperty> identities = []
         if (entity.identity != null) {
@@ -116,10 +122,9 @@ class Schema {
         else if (entity.compositeIdentity != null) {
             identities.addAll(entity.compositeIdentity)
         }
-        identities
 
-        identities.each { PersistentProperty identity ->
-            builders.each { GraphQLFieldDefinition.Builder builder ->
+        for (PersistentProperty identity: identities) {
+            for (GraphQLFieldDefinition.Builder builder: builders) {
                 builder.argument(newArgument()
                         .name(identity.name)
                         .type((GraphQLInputType)typeManager.getType(identity.type, false)))
@@ -138,12 +143,13 @@ class Schema {
         fetcher
     }
 
-    protected DataFetcher getBindingFetcher(PersistentEntity entity, GraphQLDataFetcherType type, GraphQLDataFetcherManager manager, GraphQLDataBinder dataBinder) {
+    protected DataFetcher getBindingFetcher(PersistentEntity entity, GraphQLDataFetcherType type, GraphQLDataFetcherManager manager, GraphQLDataBinderManager dataBinderManager) {
         DataFetcher fetcher
         if (runtimeDataFetching) {
-            fetcher = new BindingRuntimeDataFetcher(entity, manager, dataBinder, type)
+            fetcher = new BindingRuntimeDataFetcher(entity, manager, dataBinderManager, type)
         }
         else {
+            GraphQLDataBinder dataBinder = dataBinderManager.getDataBinder(entity.javaClass)
             fetcher = dataFetcherManager.getBindingFetcher(entity, dataBinder, type)
         }
         fetcher
@@ -160,66 +166,63 @@ class Schema {
         fetcher
     }
 
+    @SuppressWarnings(['AbcMetric', 'NestedForLoop'])
     GraphQLSchema generate() {
 
         if (!initialized) {
             initialize()
         }
 
-        mappingContext.persistentEntities.each { PersistentEntity entity ->
-            GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity)
-            if (mapping != null) {
-                mappedEntities.put(entity, mapping)
+        GraphQLObjectType.Builder queryType = newObject().name('Query')
+        GraphQLObjectType.Builder mutationType = newObject().name('Mutation')
+
+        for (PersistentEntity entity: mappingContext.persistentEntities) {
+
+            if (GraphQLEntityHelper.getMapping(entity) == null) {
+                continue
             }
-        }
 
-        GraphQLObjectType.Builder queryType = newObject().name("Query")
-        GraphQLObjectType.Builder mutationType = newObject().name("Mutation")
+            //GET
+            GraphQLObjectType objectType = typeManager.getQueryType(entity)
 
-        mappedEntities.each { PersistentEntity entity, GraphQLMapping mapping ->
-
-            GraphQLDataBinder dataBinder = dataBinderManager.getDataBinder(entity.javaClass)
-
-            GraphQLObjectType objectType = typeManager.getObjectType(entity)
-
-            def queryOne = newFieldDefinition()
-                    .name(namingConvention.getReadSingle(entity))
+            GraphQLFieldDefinition.Builder queryOne = newFieldDefinition()
+                    .name(namingConvention.getGet(entity))
                     .type(objectType)
                     .dataFetcher(getReadingFetcher(entity, GET))
 
-            def queryAll = newFieldDefinition()
-                    .name(namingConvention.getReadMany(entity))
+            GraphQLFieldDefinition.Builder queryAll = newFieldDefinition()
+                    .name(namingConvention.getList(entity))
                     .type(list(objectType))
                     .dataFetcher(getReadingFetcher(entity, LIST))
 
-            listArguments.each { String name, GraphQLInputType argType ->
+            for (Map.Entry<String, GraphQLInputType> argument: listArguments) {
                 queryAll.argument(newArgument()
-                        .name(name)
-                        .type(argType)
+                        .name(argument.key)
+                        .type(argument.value)
                         .defaultValue(null))
             }
 
-            GraphQLInputObjectType createObjectType = typeManager.getCreateObjectType(entity)
+            GraphQLInputObjectType createObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.CREATE)
 
-            def create = newFieldDefinition()
+            GraphQLFieldDefinition.Builder create = newFieldDefinition()
                     .name(namingConvention.getCreate(entity))
                     .type(objectType)
                     .argument(newArgument()
                         .name(entity.decapitalizedName)
                         .type(createObjectType))
-                    .dataFetcher(getBindingFetcher(entity, CREATE, dataFetcherManager, dataBinder))
+                    .dataFetcher(getBindingFetcher(entity, CREATE, dataFetcherManager, dataBinderManager))
 
-            GraphQLInputObjectType updateObjectType = typeManager.getUpdateObjectType(entity)
+            GraphQLInputObjectType updateObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.UPDATE)
 
-            def update = newFieldDefinition()
+            GraphQLFieldDefinition.Builder update = newFieldDefinition()
                     .name(namingConvention.getUpdate(entity))
                     .type(objectType)
                     .argument(newArgument()
                         .name(entity.decapitalizedName)
                         .type(updateObjectType))
-                    .dataFetcher(getBindingFetcher(entity, UPDATE, dataFetcherManager, dataBinder))
+                    .dataFetcher(getBindingFetcher(entity, UPDATE, dataFetcherManager, dataBinderManager))
 
-            def delete = newFieldDefinition()
+            GraphQLFieldDefinition.Builder delete = newFieldDefinition()
                     .name(namingConvention.getDelete(entity))
                     .type(deleteResponseHandler.objectType)
                     .dataFetcher(getDeletingFetcher(entity, dataFetcherManager, deleteResponseHandler))
@@ -236,13 +239,10 @@ class Schema {
                 .field(update)
         }
 
-
         GraphQLSchema.newSchema()
             .query(queryType)
             .mutation(mutationType)
             .build()
     }
-
-
 
 }

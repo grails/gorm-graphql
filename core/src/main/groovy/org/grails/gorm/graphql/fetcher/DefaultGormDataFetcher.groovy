@@ -15,6 +15,7 @@ import org.grails.datastore.mapping.model.PersistentProperty
  *
  * @param <T> The domain type to query
  * @author James Kleeh
+ * @since 1.0.0
  */
 @CompileStatic
 abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
@@ -27,22 +28,23 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         this.associationNames = entity.associations*.name
     }
 
+    @SuppressWarnings('NestedForLoop')
     protected Map defaultQueryOptions(DataFetchingEnvironment environment) {
         Set<String> joinProperties = []
 
-        environment.fields.each { field ->
-            field.selectionSet.selections.each { Selection selection ->
+        for (Field field: environment.fields) {
+            for (Selection selection: field.selectionSet.selections) {
                 if (selection instanceof Field) {
-                    final String name = ((Field)selection).name
-                    if (associationNames.contains(name)) {
-                        joinProperties.add(name)
+                    final String NAME = ((Field)selection).name
+                    if (associationNames.contains(NAME)) {
+                        joinProperties.add(NAME)
                     }
                 }
             }
         }
 
         if (joinProperties) {
-            [fetch: joinProperties.collectEntries { [(it): "join"] }]
+            [fetch: joinProperties.collectEntries { [(it): 'join'] } ]
         }
         else {
             [:]
@@ -56,14 +58,14 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
             idNames.add(entity.identity.name)
         }
         else if (entity.compositeIdentity != null) {
-            entity.compositeIdentity.each { PersistentProperty p ->
+            for (PersistentProperty p: entity.compositeIdentity) {
                 idNames.add(p.name)
             }
         }
 
         (GormEntity)new DetachedCriteria(entity.javaClass).build {
-            idNames.each {
-                eq(it, environment.getArgument(it))
+            for (String prop: idNames) {
+                eq(prop, environment.getArgument(prop))
             }
         }.get(defaultQueryOptions(environment))
     }

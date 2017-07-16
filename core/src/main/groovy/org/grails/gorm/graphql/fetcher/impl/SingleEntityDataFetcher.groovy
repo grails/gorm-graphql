@@ -13,6 +13,7 @@ import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
  *
  * @param <T> The domain type to query
  * @author James Kleeh
+ * @since 1.0.0
  */
 @CompileStatic
 @InheritConstructors

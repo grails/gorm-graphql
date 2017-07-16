@@ -6,6 +6,7 @@ import graphql.GraphQL
 import org.grails.gorm.graphql.Schema
 import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
+import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
 import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
@@ -48,22 +49,23 @@ Brief summary/description of the plugin.
 //    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
 
     Closure doWithSpring() {{ ->
-        defaultGraphQLDataBinder(GrailsGraphQLDataBinder)
-        errorsResponseHandler(DefaultGraphQLErrorsResponseHandler, ref("messageSource"))
-        deleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
-        namingConvention(GraphQLEntityNamingConvention)
-        typeManager(DefaultGraphQLTypeManager, ref("namingConvention"), ref("errorsResponseHandler"))
-        dataBinderManager(GraphQLDataBinderManager, ref("defaultGraphQLDataBinder"))
-        dataFetcherManager(DefaultGraphQLDataFetcherManager)
+        graphQLDataBinder(GrailsGraphQLDataBinder)
+        graphQLErrorsResponseHandler(DefaultGraphQLErrorsResponseHandler, ref("messageSource"))
+        graphQLDeleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
+        graphQLEntityNamingConvention(GraphQLEntityNamingConvention)
+        graphQLDomainPropertyManager(DefaultGraphQLDomainPropertyManager)
+        graphQLTypeManager(DefaultGraphQLTypeManager, ref("graphQLEntityNamingConvention"), ref("graphQLErrorsResponseHandler"), ref("graphQLDomainPropertyManager"))
+        graphQLDataBinderManager(GraphQLDataBinderManager, ref("graphQLDataBinder"))
+        graphQLDataFetcherManager(DefaultGraphQLDataFetcherManager)
 
         grailsGraphQLConfiguration(GrailsGraphQLConfiguration)
 
         graphQLSchemaGenerator(Schema, ref("grailsDomainClassMappingContext")) {
-            deleteResponseHandler = ref("deleteResponseHandler")
-            namingConvention = ref("namingConvention")
-            typeManager = ref("typeManager")
-            dataBinderManager = ref("dataBinderManager")
-            dataFetcherManager = ref("dataFetcherManager")
+            deleteResponseHandler = ref("graphQLDeleteResponseHandler")
+            namingConvention = ref("graphQLEntityNamingConvention")
+            typeManager = ref("graphQLTypeManager")
+            dataBinderManager = ref("graphQLDataBinderManager")
+            dataFetcherManager = ref("graphQLDataFetcherManager")
             dateFormats = '#{grailsGraphQLConfiguration.getDateFormats()}'
             dateFormatLenient = '#{grailsGraphQLConfiguration.getDateFormatLenient()}'
             listArguments = '#{grailsGraphQLConfiguration.getListArguments()}'

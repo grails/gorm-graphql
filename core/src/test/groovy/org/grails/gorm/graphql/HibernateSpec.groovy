@@ -12,19 +12,17 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 @CompileStatic
-abstract class HibernateSpec extends Specification {
+class HibernateSpec extends Specification {
 
     @Shared @AutoCleanup HibernateDatastore hibernateDatastore
     @Shared PlatformTransactionManager transactionManager
 
     void setupSpec() {
-        List<Class> domainClasses = getDomainClasses()
-
         hibernateDatastore = new HibernateDatastore(
-                DatastoreUtils.createPropertyResolver(getConfiguration()),
+                DatastoreUtils.createPropertyResolver(configuration),
                 domainClasses as Class[])
 
-        transactionManager = hibernateDatastore.getTransactionManager()
+        transactionManager = hibernateDatastore.transactionManager
     }
 
     /**
@@ -44,7 +42,7 @@ abstract class HibernateSpec extends Specification {
      * @return The configuration
      */
     Map getConfiguration() {
-        Collections.singletonMap(Settings.SETTING_DB_CREATE, "create-drop")
+        Collections.singletonMap(Settings.SETTING_DB_CREATE, 'create-drop')
     }
 
     /**

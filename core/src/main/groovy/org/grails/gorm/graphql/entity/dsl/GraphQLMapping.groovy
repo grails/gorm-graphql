@@ -1,14 +1,13 @@
 package org.grails.gorm.graphql.entity.dsl
 
+import static org.grails.gorm.graphql.entity.property.impl.AdditionalGraphQLProperty.newProperty
 import org.springframework.beans.MutablePropertyValues
 import org.springframework.validation.DataBinder
-
-import static org.grails.gorm.graphql.entity.property.AdditionalGraphQLProperty.newProperty
 import groovy.transform.CompileStatic
 import groovy.transform.CompileDynamic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.grails.gorm.graphql.entity.property.AdditionalGraphQLProperty
+import org.grails.gorm.graphql.entity.property.impl.AdditionalGraphQLProperty
 
 /**
  * Builder to provide GraphQL specific data for a GORM entity
@@ -21,12 +20,15 @@ import org.grails.gorm.graphql.entity.property.AdditionalGraphQLProperty
  *     add new AdditionalGraphQLProperty().name('bar').type(String)
  *     description 'Business users'
  * }
+ * //OR: For code completion
+ * static graphql = GraphQLMapping.build {
+ *     ...
+ * }
  * }
  * </pre>
  *
- * The closure can also be passed to {@link GraphQLMapping#build(Closure)} to provide code completion
- *
  * @author James Kleeh
+ * @since 1.0.0
  */
 @Builder(builderStrategy = SimpleStrategy, prefix = '', includes = ['deprecated', 'deprecationReason', 'description'])
 @CompileStatic
@@ -34,7 +36,7 @@ class GraphQLMapping {
 
     List<AdditionalGraphQLProperty> additional = []
     Map<String, GraphQLPropertyMapping> propertyMappings = [:]
-    Set<String> excluded = new HashSet<String>()
+    Set<String> excluded = [] as Set
     boolean deprecated = false
     String deprecationReason
     String description
@@ -115,17 +117,33 @@ class GraphQLMapping {
         handleAddClosure(property, closure)
     }
 
-    private GraphQLPropertyMapping property(@DelegatesTo(value = GraphQLPropertyMapping, strategy = Closure.DELEGATE_FIRST) Closure closure) {
-        GraphQLPropertyMapping.build(closure)
-    }
-
-    private GraphQLPropertyMapping property(Map namedArgs) {
-        GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()
-        DataBinder dataBinder = new DataBinder(mapping)
-        dataBinder.bind(new MutablePropertyValues(namedArgs))
+    /**
+     * Supply metadata about an existing property
+     *
+     * @param name The property name
+     * @param closure The closure to build the metadata
+     * @return The property mapping instance
+     */
+    GraphQLPropertyMapping property(String name, @DelegatesTo(value = GraphQLPropertyMapping, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+        GraphQLPropertyMapping mapping = GraphQLPropertyMapping.build(closure)
+        propertyMappings.put(name, mapping)
         mapping
     }
 
+    /**
+     * Supply metadata about an existing property
+     *
+     * @param name The property name
+     * @param namedArgs The arguments to build the mapping
+     * @return The property mapping instance
+     */
+    GraphQLPropertyMapping property(String name, Map namedArgs) {
+        GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()
+        DataBinder dataBinder = new DataBinder(mapping)
+        dataBinder.bind(new MutablePropertyValues(namedArgs))
+        propertyMappings.put(name, mapping)
+        mapping
+    }
 
     /**
      * Supplies configuration for an existing property
@@ -146,25 +164,21 @@ class GraphQLMapping {
      * @see GraphQLPropertyMapping
      */
     @CompileDynamic
-    def methodMissing(String name, Object args) {
-        if(args && args.getClass().isArray()) {
+    Object methodMissing(String name, Object args) {
+        if (args && args.getClass().isArray()) {
 
-            GraphQLPropertyMapping propertyMapping
-
-            if(args[0] instanceof Closure) {
-                propertyMapping = property((Closure) args[0])
+            if (args[0] instanceof Closure) {
+                property(name, (Closure) args[0])
             }
-            else if(args[0] instanceof GraphQLPropertyMapping) {
-                propertyMapping = (GraphQLPropertyMapping) args[0]
+            else if (args[0] instanceof GraphQLPropertyMapping) {
+                propertyMappings.put(name, (GraphQLPropertyMapping) args[0])
             }
-            else if(args[0] instanceof Map) {
-                propertyMapping = property((Map) args[0])
+            else if (args[0] instanceof Map) {
+                property(name, (Map) args[0])
             }
             else {
                 throw new MissingMethodException(name, getClass(), args)
             }
-
-            propertyMappings.put(name, propertyMapping)
         }
         else {
             throw new MissingMethodException(name, getClass(), args)
@@ -212,11 +226,11 @@ class GraphQLMapping {
      * @return A new mapping with excluded that doesn't include the parent name
      */
     GraphQLMapping createEmbeddedMapping(String propertyName) {
-        final String subName = propertyName + '.'
-        Set<String> excluded = new HashSet<>()
-        this.excluded.each {
-            if (it.startsWith(subName)) {
-                excluded.add(it.replace(subName, ''))
+        final String SUB_NAME = propertyName + '.'
+        Set<String> excluded = [] as Set
+        for (String prop: this.excluded) {
+            if (prop.startsWith(SUB_NAME)) {
+                excluded.add(prop.replace(SUB_NAME, ''))
             }
         }
         new GraphQLMapping(excluded: excluded)

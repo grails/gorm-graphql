@@ -10,11 +10,12 @@ import org.springframework.validation.DataBinder
  * with GraphQL operations on GORM entities
  *
  * @author James Kleeh
+ * @since 1.0.0
  */
 @CompileStatic
 class GraphQLDataBinderManager {
 
-    protected final LinkedHashMap<Class, GraphQLDataBinder> dataBinders = new LinkedHashMap<>()
+    protected final Map<Class, GraphQLDataBinder> dataBinders = [:]
 
     GraphQLDataBinderManager() {
         //Create the default data binder

@@ -1,15 +1,22 @@
-package org.grails.gorm.graphql.fetcher.manager.runtime
+package org.grails.gorm.graphql.fetcher.runtime
 
-import graphql.schema.DataFetchingEnvironment
+import graphql.schema.DataFetcher
+import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.gorm.graphql.binding.GraphQLDataBinder
-import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 
 /**
- * Created by jameskleeh on 7/14/17.
+ * A runtime data fetcher implementation used for fetchers
+ * that delete
+ *
+ * @see AbstractRuntimeDataFetcher
+ *
+ * @param <T> The domain type to return
+ * @author James Kleeh
+ * @since 1.0.0
  */
+@CompileStatic
 class DeletingRuntimeDataFetcher<T> extends AbstractRuntimeDataFetcher<T> {
 
     GraphQLDeleteResponseHandler responseHandler
@@ -24,7 +31,7 @@ class DeletingRuntimeDataFetcher<T> extends AbstractRuntimeDataFetcher<T> {
     }
 
     @Override
-    T get(DataFetchingEnvironment environment) {
-        return (T)manager.getDeletingFetcher(entity, responseHandler).get(environment)
+    DataFetcher resolveFetcher() {
+        manager.getDeletingFetcher(entity, responseHandler)
     }
 }
