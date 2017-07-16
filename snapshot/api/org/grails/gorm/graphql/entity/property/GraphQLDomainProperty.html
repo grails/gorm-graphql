@@ -100,7 +100,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
     <p> An interface to describe a property to be used in the
  creation of a GraphQL schema
- <DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL></p>
+ <DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
 
           </li>
     </ul>
@@ -143,67 +143,67 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>groovy.lang.Closure</code></td>
-                            <td class="colLast"><code><strong><a href="#getDataFetcher()">getDataFetcher</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getDataFetcher()">getDataFetcher</a></strong>()</code><br> <DL><DT><B>Returns:</B></DT><DD>The closure to retrieve the data for the property.</DD></DL></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getDeprecationReason()">getDeprecationReason</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getDeprecationReason()">getDeprecationReason</a></strong>()</code><br>@return The reason why the property is deprecated, or null if it isn't</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getDescription()">getDescription</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getDescription()">getDescription</a></strong>()</code><br>@return The description of the property</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../GraphQLType.html'>GraphQLType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.entity.property.GraphQLPropertyType)">getGraphQLType</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> propertyType)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.entity.property.GraphQLPropertyType)">getGraphQLType</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> propertyType)</code><br>@param typeManager The type manager used to retrieve GraphQL types</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getName()">getName</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getName()">getName</a></strong>()</code><br>@return The name of the property</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#getType()">getType</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getType()">getType</a></strong>()</code><br>@return The type of the property</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isCollection()">isCollection</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#isCollection()">isCollection</a></strong>()</code><br>@return True if the property represents a collection</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isDeprecated()">isDeprecated</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#isDeprecated()">isDeprecated</a></strong>()</code><br>@return True if the property is deprecated</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isInput()">isInput</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#isInput()">isInput</a></strong>()</code><br>@return True if the property is to be used for input operations (CREATE/UPDATE)</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isNullable()">isNullable</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#isNullable()">isNullable</a></strong>()</code><br>@return True if the property allows nulls</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isOutput()">isOutput</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#isOutput()">isOutput</a></strong>()</code><br>@return True if the property is to be used for output operations (GET/LIST)</td>
                         </tr>
                         
                     </table>
@@ -242,7 +242,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>groovy.lang.Closure <strong>getDataFetcher</strong>()</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The closure to retrieve the data for the property. If not null, it
+ will be used to create a <a href='../../../../../../org/grails/gorm/graphql/fetcher/impl/ClosureDataFetcher.html' title='ClosureDataFetcher'>ClosureDataFetcher</a>,
+ otherwise the default fetcher will be used.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -250,7 +253,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>java.lang.String <strong>getDeprecationReason</strong>()</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The reason why the property is deprecated, or null if it isn't</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -258,7 +262,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>java.lang.String <strong>getDescription</strong>()</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The description of the property</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -266,7 +271,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../../GraphQLType.html'>GraphQLType</a> <strong>getGraphQLType</strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> propertyType)</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The GraphQLType representing the property</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>typeManager</code> -  The type manager used to retrieve GraphQL types</DD><DD><code>propertyType</code> -  The type of property being created</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -274,7 +280,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>java.lang.String <strong>getName</strong>()</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The name of the property</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -282,7 +289,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>java.lang.Class <strong>getType</strong>()</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The type of the property</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -290,7 +298,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>boolean <strong>isCollection</strong>()</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>True if the property represents a collection</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -298,7 +307,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>boolean <strong>isDeprecated</strong>()</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>True if the property is deprecated</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -306,7 +316,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>boolean <strong>isInput</strong>()</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>True if the property is to be used for input operations (CREATE/UPDATE)</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -314,7 +325,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>boolean <strong>isNullable</strong>()</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>True if the property allows nulls</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -322,7 +334,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>boolean <strong>isOutput</strong>()</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>True if the property is to be used for output operations (GET/LIST)</DD></DL></p>
                             </li>
                         </ul>
                     

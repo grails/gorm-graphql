@@ -129,12 +129,6 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;PersistentEntity, <a href='../../../../org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html' title='GraphQLMapping'>GraphQLMapping</a>&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#mappedEntities">mappedEntities</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../MappingContext.html'>MappingContext</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#mappingContext">mappingContext</a></code></td>
                             <td class="colLast"></td>
@@ -268,7 +262,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../DataFetcher.html'>DataFetcher</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getBindingFetcher(PersistentEntity, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType, org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager, org.grails.gorm.graphql.binding.GraphQLDataBinder)">getBindingFetcher</a></strong>(<a href='../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type, <a href='../../../../org/grails/gorm/graphql/fetcher/manager/GraphQLDataFetcherManager.html'>GraphQLDataFetcherManager</a> manager, <a href='../../../../org/grails/gorm/graphql/binding/GraphQLDataBinder.html'>GraphQLDataBinder</a> dataBinder)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getBindingFetcher(PersistentEntity, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType, org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager, org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager)">getBindingFetcher</a></strong>(<a href='../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type, <a href='../../../../org/grails/gorm/graphql/fetcher/manager/GraphQLDataFetcherManager.html'>GraphQLDataFetcherManager</a> manager, <a href='../../../../org/grails/gorm/graphql/binding/manager/GraphQLDataBinderManager.html'>GraphQLDataBinderManager</a> dataBinderManager)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -341,14 +335,6 @@ if (location.href.indexOf('is-external=true') == -1) {
                     <!--   -->
                 </a>
                     <h3>Field Detail</h3>
-                    
-                        <a name="mappedEntities"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;java.util.Map&lt;PersistentEntity, <a href='../../../../org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html' title='GraphQLMapping'>GraphQLMapping</a>&gt; <strong>mappedEntities</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
                     
                         <a name="mappingContext"><!-- --></a>
                         <ul class="blockListLast">
@@ -488,15 +474,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="generate()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../GraphQLSchema.html'>GraphQLSchema</a> <strong>generate</strong>()</h4>
+                                <h4>@java.lang.SuppressWarnings(['AbcMetric', 'NestedForLoop'])
+<a href='../../../../GraphQLSchema.html'>GraphQLSchema</a> <strong>generate</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="getBindingFetcher(PersistentEntity, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType, org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager, org.grails.gorm.graphql.binding.GraphQLDataBinder)"><!-- --></a>
+                        <a name="getBindingFetcher(PersistentEntity, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType, org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager, org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../DataFetcher.html'>DataFetcher</a> <strong>getBindingFetcher</strong>(<a href='../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type, <a href='../../../../org/grails/gorm/graphql/fetcher/manager/GraphQLDataFetcherManager.html'>GraphQLDataFetcherManager</a> manager, <a href='../../../../org/grails/gorm/graphql/binding/GraphQLDataBinder.html'>GraphQLDataBinder</a> dataBinder)</h4>
+                                <h4>protected&nbsp;<a href='../../../../DataFetcher.html'>DataFetcher</a> <strong>getBindingFetcher</strong>(<a href='../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type, <a href='../../../../org/grails/gorm/graphql/fetcher/manager/GraphQLDataFetcherManager.html'>GraphQLDataFetcherManager</a> manager, <a href='../../../../org/grails/gorm/graphql/binding/manager/GraphQLDataBinderManager.html'>GraphQLDataBinderManager</a> dataBinderManager)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -529,7 +516,8 @@ void <strong>initialize</strong>()</h4>
                         <a name="populateIdentityArguments(PersistentEntity, GraphQLFieldDefinition.Builder)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>populateIdentityArguments</strong>(<a href='../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../GraphQLFieldDefinition.Builder.html'>Builder</a>... builders)</h4>
+                                <h4>@java.lang.SuppressWarnings('NestedForLoop')
+protected&nbsp;void <strong>populateIdentityArguments</strong>(<a href='../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../GraphQLFieldDefinition.Builder.html'>Builder</a>... builders)</h4>
                                 <p></p>
                             </li>
                         </ul>

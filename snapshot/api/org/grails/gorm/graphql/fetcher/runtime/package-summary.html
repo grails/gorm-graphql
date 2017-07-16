@@ -22,16 +22,16 @@
 <html>
 <head>
 
-<title>org.grails.gorm.graphql</title>
-<meta name="keywords" content="org.grails.gorm.graphql package">
+<title>org.grails.gorm.graphql.fetcher.runtime</title>
+<meta name="keywords" content="org.grails.gorm.graphql.fetcher.runtime package">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" title="Style">
-<link href="../../../../groovy.ico" type="image/x-icon" rel="shortcut icon">
-<link href="../../../../groovy.ico" type="image/x-icon" rel="icon">
+<link rel ="stylesheet" TYPE="text/css" HREF="../../../../../../stylesheet.css" title="Style">
+<link href="../../../../../../groovy.ico" type="image/x-icon" rel="shortcut icon">
+<link href="../../../../../../groovy.ico" type="image/x-icon" rel="icon">
 <script type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="org.grails.gorm.graphql";
+    parent.document.title="org.grails.gorm.graphql.fetcher.runtime";
 }
 </script>
 <noscript>
@@ -49,18 +49,18 @@ function windowTitle()
 </a>
 <a name="navbar_top_firstrow"><!-- --></a>
 <ul class="navList" title="Navigation">
-    <li><a href="../../../../overview-summary.html">Overview</a></li>
+    <li><a href="../../../../../../overview-summary.html">Overview</a></li>
     <li class="navBarCell1Rev">Package</li>
     <li>Class</li>
-    <li><a href="../../../../deprecated-list.html">Deprecated</a></li>
-    <li><a href="../../../../index-all.html">Index</a></li>
-    <li><a href="../../../../help-doc.html">Help</a></li>
+    <li><a href="../../../../../../deprecated-list.html">Deprecated</a></li>
+    <li><a href="../../../../../../index-all.html">Index</a></li>
+    <li><a href="../../../../../../help-doc.html">Help</a></li>
 </ul>
 </div>
 
 <div class="subNav">
     <ul class="navList">
-        <li><a href="../../../../index.html?org/grails/gorm/graphql/package-summary.html" target="_top">Frames</a></li>
+        <li><a href="../../../../../../index.html?org/grails/gorm/graphql/fetcher/runtime/package-summary.html" target="_top">Frames</a></li>
         <li><a href="package-summary.html" target="_top">No Frames</a></li>
     </ul>
 </div>
@@ -68,7 +68,7 @@ function windowTitle()
 <!-- ========= END OF TOP NAVBAR ========= -->
 
 <div class="header">
-    <h1 class="title">Package org.grails.gorm.graphql</h1>
+    <h1 class="title">Package org.grails.gorm.graphql.fetcher.runtime</h1>
 </div>
 
 
@@ -90,19 +90,39 @@ function windowTitle()
                     </tr>
 <tr class="altColor">
                             <td class="colOne">
-                                <strong><a href="GraphQLEntityHelper.html" title="class in org/grails/gorm/graphql">
-                                    GraphQLEntityHelper
+                                <strong><a href="AbstractRuntimeDataFetcher.html" title="class in org/grails/gorm/graphql/fetcher/runtime">
+                                    AbstractRuntimeDataFetcher
                                 </a></strong>
                             </td>
-                            <td>A helper class to get GraphQL mappings and descriptions for GORM entities</td>
+                            <td>A base class to extend from to resolve data fetchers at runtime
+ instead of during schema generation. </td>
                         </tr>
 <tr class="altColor">
                             <td class="colOne">
-                                <strong><a href="Schema.html" title="class in org/grails/gorm/graphql">
-                                    Schema
+                                <strong><a href="BindingRuntimeDataFetcher.html" title="class in org/grails/gorm/graphql/fetcher/runtime">
+                                    BindingRuntimeDataFetcher
                                 </a></strong>
                             </td>
-                            <td>Created by jameskleeh on 5/19/17.</td>
+                            <td>A runtime data fetcher implementation used for fetchers
+ that require data binding</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="DeletingRuntimeDataFetcher.html" title="class in org/grails/gorm/graphql/fetcher/runtime">
+                                    DeletingRuntimeDataFetcher
+                                </a></strong>
+                            </td>
+                            <td>A runtime data fetcher implementation used for fetchers
+ that delete</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="ReadingRuntimeDataFetcher.html" title="class in org/grails/gorm/graphql/fetcher/runtime">
+                                    ReadingRuntimeDataFetcher
+                                </a></strong>
+                            </td>
+                            <td>A runtime data fetcher implementation used for fetchers
+ that read data</td>
                         </tr>
 
                     </tbody>
@@ -115,32 +135,6 @@ function windowTitle()
 
 
 
-
-    <div class="summary">
-        <ul class="blockList">
-            <li class="blockList">
-                <table border="0" cellpadding="3" cellspacing="0" summary="Annotation Type Summary">
-                    <caption><span>Annotation Type Summary</span><span class="tabEnd">&nbsp;</span></caption>
-                    <tbody>
-                    <tr>
-                        <th class="colFirst" scope="col">Annotation Type</th>
-                        <th class="colLast" scope="col">Description</th>
-                    </tr>
-<tr class="altColor">
-                            <td class="colOne">
-                                <strong><a href="GraphQL.html" title="class in org/grails/gorm/graphql">
-                                    GraphQL
-                                </a></strong>
-                            </td>
-                            <td>Annotation used to supply metadata to GraphQL. </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </li>
-            </ul>
-        </div>
-    
 
 
 </div>

@@ -100,7 +100,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
 
     <p> A class to return the names of class types and query/mutation names
- <DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL></p>
+ <DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
 
           </li>
     </ul>
@@ -143,37 +143,37 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getCreate(PersistentEntity)">getCreate</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getCreate(PersistentEntity)">getCreate</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br>@param entity The persistent entity</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getDelete(PersistentEntity)">getDelete</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getDelete(PersistentEntity)">getDelete</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br>@param entity The persistent entity</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getReadMany(PersistentEntity)">getReadMany</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getGet(PersistentEntity)">getGet</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br>@param entity The persistent entity</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getReadSingle(PersistentEntity)">getReadSingle</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getList(PersistentEntity)">getList</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br>@param entity The persistent entity</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getType(PersistentEntity, org.grails.gorm.graphql.entity.property.GraphQLPropertyType)">getType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getType(PersistentEntity, org.grails.gorm.graphql.entity.property.GraphQLPropertyType)">getType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br>@param entity The persistent entity</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getUpdate(PersistentEntity)">getUpdate</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getUpdate(PersistentEntity)">getUpdate</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br>@param entity The persistent entity</td>
                         </tr>
                         
                     </table>
@@ -230,7 +230,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>java.lang.String <strong>getCreate</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The name to use. Ex: "personCreate"</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -238,23 +239,26 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>java.lang.String <strong>getDelete</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The name to use. Ex: "personDelete"</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getReadMany(PersistentEntity)"><!-- --></a>
+                        <a name="getGet(PersistentEntity)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>getReadMany</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
-                                <p></p>
+                                <h4>java.lang.String <strong>getGet</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The name to use. Ex: "person"</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getReadSingle(PersistentEntity)"><!-- --></a>
+                        <a name="getList(PersistentEntity)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>getReadSingle</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
-                                <p></p>
+                                <h4>java.lang.String <strong>getList</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The name to use. Ex: "personList"</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -262,7 +266,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>java.lang.String <strong>getType</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The name to use. Ex: "Person", "PersonCreate", "PersonUpdate", "PersonInputNested"</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity</DD><DD><code>type</code> -  The property type</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -270,7 +275,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>java.lang.String <strong>getUpdate</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
-                                <p></p>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>The name to use. Ex: "personUpdate"</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity</DD></DL></p>
                             </li>
                         </ul>
                     
