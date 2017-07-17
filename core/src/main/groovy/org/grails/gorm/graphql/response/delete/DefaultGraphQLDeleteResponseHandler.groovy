@@ -1,9 +1,8 @@
 package org.grails.gorm.graphql.response.delete
 
-import graphql.schema.GraphQLNonNull
-
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLObjectType.newObject
+import graphql.schema.GraphQLNonNull
 import graphql.Scalars
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLFieldDefinition
