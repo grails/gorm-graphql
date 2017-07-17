@@ -178,13 +178,13 @@ class GraphQLMapping {
         if (args && args.getClass().isArray()) {
 
             if (args[0] instanceof Closure) {
-                property(name, (Closure) args[0])
+                property(name, args[0])
             }
             else if (args[0] instanceof GraphQLPropertyMapping) {
-                propertyMappings.put(name, (GraphQLPropertyMapping) args[0])
+                propertyMappings.put(name, args[0])
             }
             else if (args[0] instanceof Map) {
-                property(name, (Map) args[0])
+                property(name, args[0])
             }
             else {
                 throw new MissingMethodException(name, getClass(), args)

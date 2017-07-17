@@ -15,7 +15,7 @@ class UUIDCoercion implements Coercing<UUID, UUID> {
     @Override
     UUID serialize(Object input) {
         if (input instanceof UUID) {
-            (UUID) input
+            input
         }
         else {
             null

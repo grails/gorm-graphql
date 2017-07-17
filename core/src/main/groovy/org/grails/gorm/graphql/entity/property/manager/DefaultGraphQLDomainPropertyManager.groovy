@@ -144,7 +144,7 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
                 }
 
                 if (prop instanceof Embedded) {
-                    PersistentEntity associatedEntity = ((Embedded)prop).associatedEntity
+                    PersistentEntity associatedEntity = prop.associatedEntity
 
                     Builder associatedBuilder = new Builder()
                             .excludeIdentifiers()

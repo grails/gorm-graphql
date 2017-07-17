@@ -299,8 +299,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
                     .alwaysNullable()
                     .condition { PersistentProperty prop ->
                         if (prop instanceof Association) {
-                            Association association = (Association)prop
-                            association.owningSide || !association.bidirectional
+                            prop.owningSide || !prop.bidirectional
                         } else {
                             true
                         }

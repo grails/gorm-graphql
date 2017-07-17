@@ -35,7 +35,7 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         for (Field field: environment.fields) {
             for (Selection selection: field.selectionSet.selections) {
                 if (selection instanceof Field) {
-                    final String NAME = ((Field)selection).name
+                    final String NAME = selection.name
                     if (associationNames.contains(NAME)) {
                         joinProperties.add(NAME)
                     }

@@ -15,7 +15,7 @@ class URLCoercion implements Coercing<URL, URL> {
     @Override
     URL serialize(Object input) {
         if (input instanceof URL) {
-            (URL) input
+            input
         }
         else {
             null

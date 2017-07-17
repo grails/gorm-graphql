@@ -29,7 +29,7 @@ class DateCoercion implements Coercing<Date, Date> {
     @Override
     Date serialize(Object input) {
         if (input instanceof Date) {
-            (Date) input
+            input
         }
         else {
             null
@@ -65,7 +65,7 @@ class DateCoercion implements Coercing<Date, Date> {
                 DateFormat formatter = new SimpleDateFormat(format)
                 try {
                     formatter.lenient = lenient
-                    dateValue = formatter.parse((String)value)
+                    dateValue = formatter.parse(value)
                 } catch (ParseException e) {
                     firstException = firstException ?: e
                 }

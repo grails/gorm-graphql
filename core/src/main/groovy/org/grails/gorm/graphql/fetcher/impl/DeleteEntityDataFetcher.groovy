@@ -29,7 +29,7 @@ class DeleteEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements De
 
         boolean success = false
         try {
-            ((GormEntity)instance).delete(failOnError: true)
+            instance.delete(failOnError: true)
             success = true
         } catch (e) { }
 

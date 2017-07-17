@@ -42,9 +42,7 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
     EntityDataFetcher(PersistentEntity entity) {
         super(entity)
         for (Association association: entity.associations) {
-            //Workaround for groovy issue (Groovy thinks association.mapping.mappedForm is a Collection)
-            PropertyMapping<Property> propertyMapping = association.mapping
-            Property mapping = propertyMapping.mappedForm
+            Property mapping = association.mapping.mappedForm
             if (hibernatePropertyConfig?.isAssignableFrom(mapping.class)) {
                 batchModeEnabled.put(association.name, ((Integer)mapping.invokeMethod('getBatchSize', [] as Object[])) > 1)
             }

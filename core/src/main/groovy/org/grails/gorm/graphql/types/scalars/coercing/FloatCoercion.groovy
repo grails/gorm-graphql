@@ -17,7 +17,7 @@ class FloatCoercion implements Coercing<Float, Float> {
     @Override
     Float serialize(Object input) {
         if (input instanceof Float) {
-            (Float) input
+            input
         }
         else {
             null

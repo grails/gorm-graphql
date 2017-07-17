@@ -86,12 +86,11 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
 
     protected Class getBaseType(PersistentProperty property) {
         if (property instanceof Association) {
-            Association association = (Association)property
-            if (association.basic) {
-                ((Basic) property).componentType
+            if (property instanceof Basic) {
+                property.componentType
             }
             else {
-                association.associatedEntity.javaClass
+                property.associatedEntity.javaClass
             }
         }
         else {

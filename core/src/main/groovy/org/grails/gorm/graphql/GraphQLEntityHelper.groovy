@@ -56,10 +56,10 @@ class GraphQLEntityHelper {
                 mapping = new GraphQLMapping()
             }
             else if (graphql instanceof Closure) {
-                mapping = new GraphQLMapping().build((Closure)graphql)
+                mapping = new GraphQLMapping().build(graphql)
             }
             else if (graphql instanceof GraphQLMapping) {
-                mapping = (GraphQLMapping)graphql
+                mapping = graphql
             }
 
             if (!(mapping instanceof GraphQLMapping)) {
