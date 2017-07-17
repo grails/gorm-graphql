@@ -126,8 +126,7 @@ class GraphQLMapping {
      */
     GraphQLPropertyMapping property(String name, @DelegatesTo(value = GraphQLPropertyMapping, strategy = Closure.DELEGATE_FIRST) Closure closure) {
         GraphQLPropertyMapping mapping = GraphQLPropertyMapping.build(closure)
-        propertyMappings.put(name, mapping)
-        mapping
+        property(name, mapping)
     }
 
     /**
@@ -141,6 +140,17 @@ class GraphQLMapping {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()
         DataBinder dataBinder = new DataBinder(mapping)
         dataBinder.bind(new MutablePropertyValues(namedArgs))
+        property(name, mapping)
+    }
+
+    /**
+     * Supply metadata about an existing property
+     *
+     * @param name The property name
+     * @param mapping The property mapping instance
+     * @return The property mapping instance provided
+     */
+    GraphQLPropertyMapping property(String name, GraphQLPropertyMapping mapping) {
         propertyMappings.put(name, mapping)
         mapping
     }
@@ -233,6 +243,6 @@ class GraphQLMapping {
                 excluded.add(prop.replace(SUB_NAME, ''))
             }
         }
-        new GraphQLMapping(excluded: excluded)
+        new GraphQLMapping([excluded: excluded])
     }
 }

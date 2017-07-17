@@ -80,6 +80,27 @@ class GraphQLMappingSpec extends Specification {
         mapping.propertyMappings.get('fooBar').dataFetcher != null
     }
 
+    void "test modify existing property with property method"() {
+        when:
+        GraphQLMapping mapping = GraphQLMapping.build {
+            property('foo') {
+                description 'Foo'
+            }
+            property('bar', [deprecated: true])
+            property('fooBar', GraphQLPropertyMapping.build {
+                dataFetcher {
+
+                }
+            })
+        }
+
+        then:
+        mapping.propertyMappings.size() == 3
+        mapping.propertyMappings.get('foo').description == 'Foo'
+        mapping.propertyMappings.get('bar').deprecated
+        mapping.propertyMappings.get('fooBar').dataFetcher != null
+    }
+
     void "test create embedded mapping"() {
         given:
         GraphQLMapping mapping = GraphQLMapping.build {

@@ -43,6 +43,7 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
         Set<String> excludedProperties = [] as Set
         boolean identifiers = true
         Closure customCondition = null
+        boolean overrideNullable = false
 
         @Override
         Builder excludeIdentifiers() {
@@ -75,8 +76,39 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
         }
 
         @Override
+        Builder alwaysNullable() {
+            this.overrideNullable = true
+            this
+        }
+
+        @Override
         List<GraphQLDomainProperty> getProperties(PersistentEntity entity) {
             getProperties(entity, GraphQLEntityHelper.getMapping(entity))
+        }
+
+        private GraphQLPropertyMapping getPropertyMapping(PersistentProperty property, GraphQLMapping mapping, boolean id = false) {
+            GraphQLPropertyMapping propertyMapping
+            if (mapping.propertyMappings.containsKey(property.name)) {
+                propertyMapping = mapping.propertyMappings.get(property.name)
+            }
+            else {
+                propertyMapping = new GraphQLPropertyMapping()
+            }
+
+            if (overrideNullable) {
+                propertyMapping.nullable(true)
+            }
+            else if (id && propertyMapping.nullable == null) {
+                propertyMapping.nullable(false)
+            }
+
+            if (derivedMethod != null) {
+                Property prop = property.mapping.mappedForm
+                if (derivedMethod.invoke(prop, (Object[]) null)) {
+                    propertyMapping.input(false)
+                }
+            }
+            propertyMapping
         }
 
         @Override
@@ -89,12 +121,14 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
 
             if (identifiers) {
                 if (entity.identity != null) {
-                    properties.add(new PersistentGraphQLProperty(mappingContext, entity.identity, mapping.propertyMappings.getOrDefault(entity.identity.name, new GraphQLPropertyMapping())))
+                    properties.add(new PersistentGraphQLProperty(mappingContext, entity.identity, getPropertyMapping(entity.identity, mapping)))
                 }
                 else if (entity.compositeIdentity?.length > 0) {
-                    properties.addAll(entity.compositeIdentity.collect { PersistentProperty prop ->
-                        new PersistentGraphQLProperty(mappingContext, prop, mapping.propertyMappings.getOrDefault(prop.name, new GraphQLPropertyMapping()))
-                    })
+                    for (PersistentProperty prop: entity.compositeIdentity) {
+                        properties.add(
+                            new PersistentGraphQLProperty(mappingContext, prop, getPropertyMapping(prop, mapping))
+                        )
+                    }
                 }
             }
 
@@ -112,20 +146,20 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
                 if (prop instanceof Embedded) {
                     PersistentEntity associatedEntity = ((Embedded)prop).associatedEntity
 
-                    Builder associatedBuilder = new Builder().excludeIdentifiers().exclude(excludedProperties as String[])
+                    Builder associatedBuilder = new Builder()
+                            .excludeIdentifiers()
+                            .excludeVersion()
+                            .excludeTimestamps()
+                            .exclude(excludedProperties as String[])
+
+                    if (overrideNullable) {
+                        associatedBuilder.alwaysNullable()
+                    }
 
                     properties.addAll(associatedBuilder.getProperties(associatedEntity, mapping.createEmbeddedMapping(prop.name)))
                 }
                 else {
-                    boolean input = true
-                    if (derivedMethod != null) {
-                        Property property = prop.mapping.mappedForm
-                        if (derivedMethod.invoke(property, (Object[]) null)) {
-                            input = false
-                        }
-                    }
-
-                    properties.add(new PersistentGraphQLProperty(mappingContext, prop, mapping.propertyMappings.getOrDefault(prop.name, new GraphQLPropertyMapping(input: input))))
+                    properties.add(new PersistentGraphQLProperty(mappingContext, prop, getPropertyMapping(prop, mapping)))
                 }
 
             }

@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.entity.property
 
 import static org.grails.gorm.graphql.entity.property.GraphQLPropertyType.*
+import graphql.schema.GraphQLInputObjectType
 import graphql.schema.GraphQLObjectType
 import org.grails.gorm.graphql.entity.property.impl.PersistentGraphQLProperty
 import grails.gorm.annotation.Entity
@@ -119,16 +120,10 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
-        property.getGraphQLType(typeManager, type)
+        property.getGraphQLType(typeManager, CREATE)
 
         then:
-        1 * typeManager.getType(String, nullable)
-
-        where:
-        type | nullable
-        CREATE | false
-        OUTPUT | true
-        UPDATE | true
+        1 * typeManager.getType(String, false)
     }
 
     void "test graphQL type with simple property (null)"() {
@@ -229,6 +224,32 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         then:
         1 * typeManager.createReference(mappingContext.getPersistentEntity(OtherMetadata.name), OUTPUT) >> Scalars.GraphQLString
         type ==  Scalars.GraphQLString
+    }
+
+    void "test graphQL type with a toOne that is mapped with graphql CREATE"() {
+        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('otherMetadata')
+        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+
+        when:
+        GraphQLType type = property.getGraphQLType(typeManager, CREATE)
+
+        then:
+        1 * typeManager.getMutationType(mappingContext.getPersistentEntity(OtherMetadata.name), INPUT_NESTED) >> GraphQLInputObjectType.newInputObject().name('x').build()
+        type instanceof GraphQLInputObjectType
+    }
+
+    void "test graphQL type with a toOne that is mapped with graphql UPDATE"() {
+        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('otherMetadata')
+        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+
+        when:
+        GraphQLType type = property.getGraphQLType(typeManager, UPDATE)
+
+        then:
+        1 * typeManager.getMutationType(mappingContext.getPersistentEntity(OtherMetadata.name), INPUT_NESTED) >> GraphQLInputObjectType.newInputObject().name('x').build()
+        type instanceof GraphQLInputObjectType
     }
 
     void "test graphQL type with a toOne that is NOT mapped with graphql"() {

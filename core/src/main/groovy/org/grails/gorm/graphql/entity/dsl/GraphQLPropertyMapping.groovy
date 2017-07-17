@@ -38,6 +38,7 @@ class GraphQLPropertyMapping {
     boolean input = true
     boolean output = true
     boolean deprecated = false
+    Boolean nullable
     String deprecationReason
     String description
     Closure dataFetcher

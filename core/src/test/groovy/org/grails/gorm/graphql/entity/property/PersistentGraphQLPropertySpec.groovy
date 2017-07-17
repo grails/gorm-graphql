@@ -94,10 +94,10 @@ class PersistentGraphQLPropertySpec extends Specification {
         prop.deprecationReason == 'Deprecated'
     }
 
-    void "test nullable when identity"() {
+    void "test nullable with mapping"() {
         given:
         PersistentProperty property = buildProperty('foo', true)
-        GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()
+        GraphQLPropertyMapping mapping = new GraphQLPropertyMapping(nullable: false)
 
         when:
         PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
@@ -116,6 +116,18 @@ class PersistentGraphQLPropertySpec extends Specification {
 
         then:
         !prop.nullable
+    }
+
+    void "test nullable mapping overrides mapped form"() {
+        given:
+        PersistentProperty property = buildProperty('foo', false, false)
+        GraphQLPropertyMapping mapping = new GraphQLPropertyMapping(nullable: true)
+
+        when:
+        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
+
+        then:
+        prop.nullable
     }
 
     void "test collection if association"() {

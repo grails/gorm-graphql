@@ -1,5 +1,7 @@
 package org.grails.gorm.graphql.response.delete
 
+import graphql.schema.GraphQLNonNull
+
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLObjectType.newObject
 import graphql.Scalars
@@ -29,7 +31,7 @@ class DefaultGraphQLDeleteResponseHandler extends CachingGraphQLResponseHandler 
     }
 
     protected List<GraphQLFieldDefinition> buildFieldDefinitions() {
-        [newFieldDefinition().name('success').type(Scalars.GraphQLBoolean).build()]
+        [newFieldDefinition().name('success').type(GraphQLNonNull.nonNull(Scalars.GraphQLBoolean)).build()]
     }
 
     @Override

@@ -46,7 +46,12 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         this.name = property.name
         this.type = getBaseType(property)
         this.collection = (property instanceof ToMany)
-        this.nullable = !isIdentityName(property.owner, property.name) && property.mapping.mappedForm.nullable
+        if (mapping.nullable != null) {
+            this.nullable = mapping.nullable
+        }
+        else {
+            this.nullable = property.mapping.mappedForm.nullable
+        }
         this.output = mapping.output
         this.input = mapping.input
         this.description = mapping.description
@@ -79,18 +84,6 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         }
     }
 
-    protected boolean isIdentityName(PersistentEntity entity, final String name) {
-        if (entity.identity != null) {
-            entity.identity.name == name
-        }
-        else if (entity.compositeIdentity != null) {
-            entity.compositeIdentity.any { PersistentProperty prop -> prop.name == name }
-        }
-        else {
-            false
-        }
-    }
-
     protected Class getBaseType(PersistentProperty property) {
         if (property instanceof Association) {
             Association association = (Association)property
@@ -115,11 +108,6 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
     GraphQLType getGraphQLType(GraphQLTypeManager typeManager, GraphQLPropertyType propertyType) {
         //It is expected at ths point that embedded properties have been "unwrapped"
         GraphQLType graphQLType
-
-        boolean nullable = true
-        if (propertyType == GraphQLPropertyType.CREATE) {
-            nullable = this.nullable
-        }
 
         if (type.enum) {
             graphQLType = typeManager.getEnumType(type, nullable)

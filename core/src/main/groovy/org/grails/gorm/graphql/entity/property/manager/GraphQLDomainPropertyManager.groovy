@@ -53,6 +53,12 @@ interface GraphQLDomainPropertyManager {
         Builder condition(Closure closure)
 
         /**
+         * Whether or not properties should allow nulls should be overridden
+         * so that properties are nullable, even if they otherwise would not be.
+         */
+        Builder alwaysNullable()
+
+        /**
          * Retrieves the desired properties based on the conditions previously applied
          * The mapping will be retrieved from the entity `static graphql = ..`
          *

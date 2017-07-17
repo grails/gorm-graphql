@@ -196,7 +196,10 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
             final String DESCRIPTION = GraphQLEntityHelper.getDescription(entity)
 
-            List<GraphQLDomainProperty> properties = propertyManager.builder().getProperties(entity)
+            List<GraphQLDomainProperty> properties = propertyManager
+                    .builder()
+                    .alwaysNullable()
+                    .getProperties(entity)
 
             GraphQLObjectType.Builder obj = newObject()
                     .name(namingConvention.getType(entity, GraphQLPropertyType.OUTPUT))
@@ -277,6 +280,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             GraphQLDomainPropertyManager.Builder builder = propertyManager.builder()
                     .excludeTimestamps()
                     .excludeIdentifiers()
+                    .alwaysNullable()
 
             GraphQLInputObjectType inputObj = buildInputObjectType(entity, builder, GraphQLPropertyType.UPDATE)
 
@@ -292,6 +296,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             GraphQLDomainPropertyManager.Builder builder = propertyManager.builder()
                     .excludeTimestamps()
                     .excludeVersion()
+                    .alwaysNullable()
                     .condition { PersistentProperty prop ->
                         if (prop instanceof Association) {
                             Association association = (Association)prop
