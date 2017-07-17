@@ -135,6 +135,9 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/AdditionalGraphQLProperty.html" title="Class in org.grails.gorm.graphql.entity.property.impl">AdditionalGraphQLProperty</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/property/impl/package-summary.html">org.grails.gorm.graphql.entity.property.impl</a>
 </dt><dd><div class="block">Implementation of GraphQLDomainProperty to be used to define
  additional properties beyond the ones defined in GORM entities</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.Builder.html#alwaysNullable()" title="Method in GraphQLDomainPropertyManager.Builder">alwaysNullable()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.Builder.html">GraphQLDomainPropertyManager.Builder</a>
+</dt><dd> <div class="block">Whether or not properties should allow nulls should be overridden
+ so that properties are nullable, even if they otherwise would not be.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#associationNames" title="Field in DefaultGormDataFetcher">associationNames</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 </dl>
@@ -539,8 +542,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">@return True if the property is deprecated</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html#isDeprecated()" title="Method in PersistentGraphQLProperty">isDeprecated()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html">PersistentGraphQLProperty</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html#isIdentityName(PersistentEntity, java.lang.String)" title="Method in PersistentGraphQLProperty">isIdentityName(PersistentEntity, String)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html">PersistentGraphQLProperty</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#isInput()" title="Method in GraphQLDomainProperty">isInput()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
 </dt><dd> <div class="block">@return True if the property is to be used for input operations (CREATE/UPDATE)</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#isNullable()" title="Method in GraphQLDomainProperty">isNullable()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
@@ -639,7 +640,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#PRIMITIVE_BOXES" title="Field in DefaultGraphQLTypeManager">PRIMITIVE_BOXES</a></span> - Field in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html#property(java.lang.String, java.util.Map)" title="Method in GraphQLMapping">property(String, Map)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html">GraphQLMapping</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html#property(java.lang.String, org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping)" title="Method in GraphQLMapping">property(String, GraphQLPropertyMapping)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html">GraphQLMapping</a>
 </dt><dd> <div class="block">Supply metadata about an existing property</div></dd>
 </dl>
 
