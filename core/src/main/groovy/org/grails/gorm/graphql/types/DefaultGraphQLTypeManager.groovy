@@ -1,5 +1,15 @@
 package org.grails.gorm.graphql.types
 
+import org.grails.datastore.mapping.reflect.ClassUtils
+import org.grails.gorm.graphql.types.input.CreateInputObjectTypeBuilder
+import org.grails.gorm.graphql.types.input.EmbeddedInputObjectTypeBuilder
+import org.grails.gorm.graphql.types.input.InputObjectTypeBuilder
+import org.grails.gorm.graphql.types.input.NestedInputObjectTypeBuilder
+import org.grails.gorm.graphql.types.input.UpdateInputObjectTypeBuilder
+import org.grails.gorm.graphql.types.output.EmbeddedObjectTypeBuilder
+import org.grails.gorm.graphql.types.output.ObjectTypeBuilder
+import org.grails.gorm.graphql.types.output.ShowObjectTypeBuilder
+
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLInputObjectField.newInputObjectField
 import static graphql.schema.GraphQLInputObjectType.newInputObject
@@ -40,23 +50,11 @@ import java.util.concurrent.ConcurrentHashMap
 @CompileStatic
 class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
-    protected static final Map<Class, Class> PRIMITIVE_BOXES = [:]
-
     protected static final Map<Class, GraphQLType> TYPE_MAP = new ConcurrentHashMap<>()
 
     protected static final Map<Class, GraphQLEnumType> ENUM_TYPES = new ConcurrentHashMap<>()
 
     static {
-        PRIMITIVE_BOXES.with {
-            put(int, Integer)
-            put(long, Long)
-            put(double, Double)
-            put(float, Float)
-            put(boolean, Boolean)
-            put(char, Character)
-            put(byte, Byte)
-            put(short, Short)
-        }
 
         TYPE_MAP.with {
             put(Integer, Scalars.GraphQLInt)
@@ -74,7 +72,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             put(URL, new GraphQLURL())
         }
 
-        /*       java.util.Date.class.getName(),
+        /*
             Time.class.getName(),
             Timestamp.class.getName(),
             java.sql.Date.class.getName(),
@@ -95,10 +93,33 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     GraphQLErrorsResponseHandler errorsResponseHandler
     GraphQLDomainPropertyManager propertyManager
 
+    Map<GraphQLPropertyType, InputObjectTypeBuilder> inputObjectTypeBuilders = [:]
+    Map<GraphQLPropertyType, ObjectTypeBuilder> objectTypeBuilders = [:]
+
     DefaultGraphQLTypeManager(GraphQLEntityNamingConvention namingConvention, GraphQLErrorsResponseHandler errorsResponseHandler, GraphQLDomainPropertyManager propertyManager) {
         this.namingConvention = namingConvention
         this.propertyManager = propertyManager
         this.errorsResponseHandler = errorsResponseHandler
+
+        List<InputObjectTypeBuilder> inputBuilders = []
+        inputBuilders.add(new CreateInputObjectTypeBuilder(propertyManager, this))
+        inputBuilders.add(new NestedInputObjectTypeBuilder(propertyManager, this, GraphQLPropertyType.CREATE_NESTED))
+        inputBuilders.add(new NestedInputObjectTypeBuilder(propertyManager, this, GraphQLPropertyType.UPDATE_NESTED))
+        inputBuilders.add(new UpdateInputObjectTypeBuilder(propertyManager, this))
+        inputBuilders.add(new EmbeddedInputObjectTypeBuilder(propertyManager, this, true))
+        inputBuilders.add(new EmbeddedInputObjectTypeBuilder(propertyManager, this, false))
+
+        for (InputObjectTypeBuilder builder: inputBuilders) {
+            inputObjectTypeBuilders.put(builder.type, builder)
+        }
+
+        List<ObjectTypeBuilder> builders = []
+        builders.add(new EmbeddedObjectTypeBuilder(propertyManager, this, null))
+        builders.add(new ShowObjectTypeBuilder(propertyManager, this, errorsResponseHandler))
+
+        for (ObjectTypeBuilder builder: builders) {
+            objectTypeBuilders.put(builder.type, builder)
+        }
     }
 
     @Override
@@ -116,7 +137,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     }
 
     protected Class boxPrimitive(Class clazz) {
-        PRIMITIVE_BOXES.get(clazz)
+        ClassUtils.PRIMITIVE_TYPE_COMPATIBLE_CLASSES.get(clazz)
     }
 
     @Override
@@ -168,149 +189,30 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         }
     }
 
-    protected Map<PersistentEntity, GraphQLObjectType> domainObjectTypes = [:]
-    protected Map<PersistentEntity, GraphQLInputObjectType> domainCreateObjectTypes = [:]
-    protected Map<PersistentEntity, GraphQLInputObjectType> domainUpdateObjectTypes = [:]
-    protected Map<PersistentEntity, GraphQLInputObjectType> domainInputNestedObjectType = [:]
-
-    protected GraphQLInputObjectField.Builder buildInputField(GraphQLDomainProperty prop, GraphQLPropertyType type) {
-        newInputObjectField()
-                .name(prop.name)
-                .description(prop.description)
-                .type((GraphQLInputType)prop.getGraphQLType(this, type))
-    }
-
-    protected GraphQLFieldDefinition.Builder buildField(GraphQLDomainProperty prop) {
-        newFieldDefinition()
-                .name(prop.name)
-                .deprecate(prop.deprecationReason)
-                .description(prop.description)
-                .dataFetcher(prop.dataFetcher ? new ClosureDataFetcher(prop.dataFetcher) : null)
-                .type((GraphQLOutputType)prop.getGraphQLType(this, GraphQLPropertyType.OUTPUT))
+    @Override
+    GraphQLOutputType getQueryType(PersistentEntity entity, GraphQLPropertyType type) {
+        if (objectTypeBuilders.containsKey(type)) {
+            objectTypeBuilders.get(type).build(entity)
+        }
+        else {
+            throw new IllegalArgumentException("Invalid type specified. ${type.name()} is not a valid query type")
+        }
     }
 
     @Override
-    GraphQLObjectType getQueryType(PersistentEntity entity) {
-
-        if (!domainObjectTypes.containsKey(entity)) {
-
-            final String DESCRIPTION = GraphQLEntityHelper.getDescription(entity)
-
-            List<GraphQLDomainProperty> properties = propertyManager
-                    .builder()
-                    .alwaysNullable()
-                    .getProperties(entity)
-
-            GraphQLObjectType.Builder obj = newObject()
-                    .name(namingConvention.getType(entity, GraphQLPropertyType.OUTPUT))
-                    .description(DESCRIPTION)
-
-            for (GraphQLDomainProperty prop: properties) {
-                if (prop.output) {
-                    obj.field(buildField(prop))
-                }
+    GraphQLInputType getMutationType(PersistentEntity entity, GraphQLPropertyType type, boolean nullable) {
+        if (inputObjectTypeBuilders.containsKey(type)) {
+            GraphQLInputType inputType = inputObjectTypeBuilders.get(type).build(entity)
+            if (nullable) {
+                inputType
             }
-
-            if (errorsResponseHandler != null) {
-                obj.field(errorsResponseHandler.fieldDefinition)
-            }
-
-            domainObjectTypes.put(entity, obj.build())
-        }
-
-        domainObjectTypes.get(entity)
-    }
-
-    private GraphQLInputObjectType buildInputObjectType(PersistentEntity entity, GraphQLDomainPropertyManager.Builder builder, GraphQLPropertyType type) {
-
-        final String DESCRIPTION = GraphQLEntityHelper.getDescription(entity)
-
-        List<GraphQLDomainProperty> properties = builder.getProperties(entity)
-
-        GraphQLInputObjectType.Builder inputObj = newInputObject()
-                .name(namingConvention.getType(entity, type))
-                .description(DESCRIPTION)
-
-        for (GraphQLDomainProperty prop: properties) {
-            if (prop.input) {
-                inputObj.field(buildInputField(prop, type))
+            else {
+                GraphQLNonNull.nonNull(inputType)
             }
         }
-
-        inputObj.build()
-    }
-
-    @Override
-    GraphQLInputObjectType getMutationType(PersistentEntity entity, GraphQLPropertyType type) {
-        switch (type) {
-            case GraphQLPropertyType.CREATE:
-                getCreateObjectType(entity)
-                break
-            case GraphQLPropertyType.UPDATE:
-                getUpdateObjectType(entity)
-                break
-            case GraphQLPropertyType.INPUT_NESTED:
-                getInputNestedObjectType(entity)
-                break
-            default:
-                throw new IllegalArgumentException("Invalid type specified. ${type.name()} is not a valid mutation type")
+        else {
+            throw new IllegalArgumentException("Invalid type specified. ${type.name()} is not a valid mutation type")
         }
     }
 
-    GraphQLInputObjectType getCreateObjectType(PersistentEntity entity) {
-
-        if (!domainCreateObjectTypes.containsKey(entity)) {
-
-            GraphQLDomainPropertyManager.Builder builder = propertyManager.builder()
-                .excludeTimestamps()
-                .excludeVersion()
-                .excludeIdentifiers()
-
-            GraphQLInputObjectType inputObj = buildInputObjectType(entity, builder, GraphQLPropertyType.CREATE)
-
-            domainCreateObjectTypes.put(entity, inputObj)
-        }
-
-        domainCreateObjectTypes.get(entity)
-    }
-
-    GraphQLInputObjectType getUpdateObjectType(PersistentEntity entity) {
-        if (!domainUpdateObjectTypes.containsKey(entity)) {
-
-            GraphQLDomainPropertyManager.Builder builder = propertyManager.builder()
-                    .excludeTimestamps()
-                    .excludeIdentifiers()
-                    .alwaysNullable()
-
-            GraphQLInputObjectType inputObj = buildInputObjectType(entity, builder, GraphQLPropertyType.UPDATE)
-
-            domainUpdateObjectTypes.put(entity, inputObj)
-        }
-
-        domainUpdateObjectTypes.get(entity)
-    }
-
-    GraphQLInputObjectType getInputNestedObjectType(PersistentEntity entity) {
-        if (!domainInputNestedObjectType.containsKey(entity)) {
-
-            GraphQLDomainPropertyManager.Builder builder = propertyManager.builder()
-                    .excludeTimestamps()
-                    .excludeVersion()
-                    .alwaysNullable()
-                    .condition { PersistentProperty prop ->
-                        if (prop instanceof Association) {
-                            Association association = (Association)prop
-                            association.owningSide || !association.bidirectional
-                        } else {
-                            true
-                        }
-                    }
-
-            GraphQLInputObjectType inputObj = buildInputObjectType(entity, builder, GraphQLPropertyType.INPUT_NESTED)
-
-            domainInputNestedObjectType.put(entity, inputObj)
-        }
-
-        domainInputNestedObjectType.get(entity)
-    }
 }

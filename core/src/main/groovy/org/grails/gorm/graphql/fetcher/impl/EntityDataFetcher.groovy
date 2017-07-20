@@ -97,7 +97,7 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
     }
 
     @Override
-    GraphQLDataFetcherType getType() {
-        GraphQLDataFetcherType.LIST
+    boolean supports(GraphQLDataFetcherType type) {
+        type == GraphQLDataFetcherType.LIST
     }
 }

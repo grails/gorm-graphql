@@ -1,9 +1,8 @@
-package org.grails.gorm.graphql.entity.property
+package org.grails.gorm.graphql.entity.property.impl
 
 import static org.grails.gorm.graphql.entity.property.GraphQLPropertyType.*
 import graphql.schema.GraphQLInputObjectType
 import graphql.schema.GraphQLObjectType
-import org.grails.gorm.graphql.entity.property.impl.PersistentGraphQLProperty
 import grails.gorm.annotation.Entity
 import graphql.Scalars
 import graphql.schema.GraphQLList

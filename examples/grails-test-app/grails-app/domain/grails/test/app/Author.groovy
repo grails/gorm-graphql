@@ -10,21 +10,9 @@ class Author {
         name maxSize: 20
     }
 
-    static graphql = true
+    static mapping = {
+        books cascade: 'all-delete-orphan'
+    }
 
-    /*
-    * static graphql = {
-    *   name input: false
-    *   password output: false, name: 'xyz'
-    *   add('number1', Integer) {
-    *       output false
-    *   }
-    *   add('number2', Integer) {
-    *       dataFetcher { Author author ->
-    *           author.foo
-    *       }
-    *   }
-    *
-    * }
-    * */
+    static graphql = true
 }

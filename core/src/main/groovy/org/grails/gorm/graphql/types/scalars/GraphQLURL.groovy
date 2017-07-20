@@ -14,6 +14,6 @@ import org.grails.gorm.graphql.types.scalars.coercing.URLCoercion
 class GraphQLURL extends GraphQLScalarType {
 
     GraphQLURL() {
-        super('URL', 'Built-in URL', new URLCoercion())
+        super('URL', 'Accepts a string in the form of a URL', new URLCoercion())
     }
 }

@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.entity.property.impl
 
 import graphql.schema.GraphQLType
+import groovy.transform.AutoClone
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
@@ -15,6 +16,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * @author James Kleeh
  * @since 1.0.0
  */
+@AutoClone
 @Builder(builderStrategy = SimpleStrategy, prefix = '')
 @CompileStatic
 class AdditionalGraphQLProperty implements GraphQLDomainProperty {

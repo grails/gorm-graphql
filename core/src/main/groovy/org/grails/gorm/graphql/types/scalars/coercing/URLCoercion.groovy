@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.types.scalars.coercing
 
+import graphql.language.StringValue
 import graphql.schema.Coercing
 import groovy.transform.CompileStatic
 
@@ -29,8 +30,8 @@ class URLCoercion implements Coercing<URL, URL> {
 
     @Override
     URL parseLiteral(Object input) {
-        if (input instanceof String) {
-            new URL((String)input)
+        if (input instanceof StringValue) {
+            new URL(((StringValue)input).value)
         }
         else {
             null

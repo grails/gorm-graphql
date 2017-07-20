@@ -8,7 +8,7 @@ class BookIntegrationSpec extends Specification implements GraphQLSpec {
 
     void "test books cannot be queried directly"() {
         when:
-        def resp = post("""
+        def resp = graphQL.graphql("""
             {
               bookList {
                 id

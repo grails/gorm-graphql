@@ -1,4 +1,4 @@
-package org.grails.gorm.graphql.entity.property
+package org.grails.gorm.graphql.entity.property.impl
 
 import org.grails.datastore.mapping.config.Property
 import org.grails.datastore.mapping.model.PersistentEntity

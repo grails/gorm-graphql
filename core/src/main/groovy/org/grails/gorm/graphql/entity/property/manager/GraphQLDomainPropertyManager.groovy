@@ -26,6 +26,13 @@ interface GraphQLDomainPropertyManager {
         Builder excludeIdentifiers()
 
         /**
+         * Exclude identifier properties from being returned
+         *
+         * @param exceptComposite If true, composite identifiers will be included
+         */
+        Builder excludeIdentifiers(boolean exceptComposite)
+
+        /**
          * Exclude the version property from being returned
          */
         Builder excludeVersion()

@@ -60,18 +60,13 @@ class GraphQLEntityNamingConvention {
      */
     String getType(PersistentEntity entity, GraphQLPropertyType type) {
         final String SIMPLE_NAME = entity.javaClass.simpleName
-        switch (type) {
-            case GraphQLPropertyType.CREATE:
-                SIMPLE_NAME + 'Create'
-                break
-            case GraphQLPropertyType.UPDATE:
-                SIMPLE_NAME + 'Update'
-                break
-            case GraphQLPropertyType.INPUT_NESTED:
-                SIMPLE_NAME + 'InputNested'
-                break
-            default:
-                SIMPLE_NAME
+        if (type == GraphQLPropertyType.OUTPUT) {
+            SIMPLE_NAME
+        }
+        else {
+            SIMPLE_NAME + type.name().split('_').collect { String name ->
+                name.toLowerCase().capitalize()
+            }.join('')
         }
     }
 }

@@ -26,7 +26,7 @@ class SingleEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements Re
     }
 
     @Override
-    GraphQLDataFetcherType getType() {
-        GraphQLDataFetcherType.GET
+    boolean supports(GraphQLDataFetcherType type) {
+        type == GraphQLDataFetcherType.GET
     }
 }

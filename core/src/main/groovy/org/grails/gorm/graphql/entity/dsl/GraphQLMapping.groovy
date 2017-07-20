@@ -1,5 +1,7 @@
 package org.grails.gorm.graphql.entity.dsl
 
+import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
+
 import static org.grails.gorm.graphql.entity.property.impl.AdditionalGraphQLProperty.newProperty
 import org.springframework.beans.MutablePropertyValues
 import org.springframework.validation.DataBinder
@@ -40,6 +42,7 @@ class GraphQLMapping {
     boolean deprecated = false
     String deprecationReason
     String description
+    Operations operations = new Operations()
 
     /**
      * Exclude one or more properties from being included in the schema
@@ -132,6 +135,8 @@ class GraphQLMapping {
     /**
      * Supply metadata about an existing property
      *
+     * Example: property('foo', [input: false])
+     *
      * @param name The property name
      * @param namedArgs The arguments to build the mapping
      * @return The property mapping instance
@@ -141,6 +146,19 @@ class GraphQLMapping {
         DataBinder dataBinder = new DataBinder(mapping)
         dataBinder.bind(new MutablePropertyValues(namedArgs))
         property(name, mapping)
+    }
+
+    /**
+     * Supply metadata about an existing property
+     *
+     * Example: property('foo', input: false)
+     *
+     * @param name The property name
+     * @param namedArgs The arguments to build the mapping
+     * @return The property mapping instance
+     */
+    GraphQLPropertyMapping property(Map namedArgs, String name) {
+        property(name, namedArgs)
     }
 
     /**
@@ -244,5 +262,13 @@ class GraphQLMapping {
             }
         }
         new GraphQLMapping([excluded: excluded])
+    }
+
+    class Operations {
+        boolean get
+        boolean list
+        boolean create
+        boolean update
+        boolean delete
     }
 }

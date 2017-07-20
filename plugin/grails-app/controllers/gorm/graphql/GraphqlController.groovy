@@ -13,7 +13,6 @@ class GraphqlController {
 
     static responseFormats = ['json', 'xml']
 
-    public static MimeType GRAPHQL =  new MimeType('application/graphql')
 
     GraphQL graphQL
 
@@ -26,6 +25,10 @@ class GraphqlController {
     }
 
     def index() {
+        if (!grailsGraphQLConfiguration.enabled) {
+            render(status: 404)
+            return
+        }
         String query = null
         String operationName = null
         Object context = buildContext()
@@ -51,7 +54,7 @@ class GraphqlController {
                     variables = Collections.emptyMap()
                 }
             }
-            else if (request.mimeTypes.contains(GRAPHQL)) {
+            else if (request.mimeTypes.contains(GormGraphqlGrailsPlugin.GRAPHQL_MIME)) {
                 query = body
                 operationName = null
                 variables = Collections.emptyMap()

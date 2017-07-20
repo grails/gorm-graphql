@@ -75,6 +75,7 @@ hibernate:
         use_second_level_cache: false
         use_query_cache: false
 dataSource:
+    logSql: true
     pooled: true
     jmxExport: true
     driverClassName: org.h2.Driver

@@ -33,7 +33,7 @@ class UpdateEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements Bi
     }
 
     @Override
-    GraphQLDataFetcherType getType() {
-        GraphQLDataFetcherType.UPDATE
+    boolean supports(GraphQLDataFetcherType type) {
+        type == GraphQLDataFetcherType.UPDATE
     }
 }

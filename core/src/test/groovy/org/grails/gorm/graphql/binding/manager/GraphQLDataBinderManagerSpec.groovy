@@ -5,10 +5,10 @@ import spock.lang.Specification
 
 class GraphQLDataBinderManagerSpec extends Specification {
 
-    GraphQLDataBinderManager manager
+    DefaultGraphQLDataBinderManager manager
 
     void setup() {
-        manager = new GraphQLDataBinderManager()
+        manager = new DefaultGraphQLDataBinderManager()
     }
 
     GraphQLDataBinder newBinder() {

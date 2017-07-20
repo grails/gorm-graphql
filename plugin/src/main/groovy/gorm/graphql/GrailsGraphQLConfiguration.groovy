@@ -15,6 +15,8 @@ class GrailsGraphQLConfiguration implements GrailsConfigurationAware {
 
     private Config config
 
+    Boolean enabled
+
     List<String> dateFormats
 
     Boolean dateFormatLenient

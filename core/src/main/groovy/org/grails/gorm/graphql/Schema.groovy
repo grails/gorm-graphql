@@ -1,5 +1,10 @@
 package org.grails.gorm.graphql
 
+import graphql.schema.GraphQLOutputType
+import org.grails.datastore.mapping.model.types.Association
+import org.grails.datastore.mapping.model.types.Simple
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
+
 import static graphql.schema.GraphQLArgument.newArgument
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLList.list
@@ -8,6 +13,8 @@ import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.GET
 import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.LIST
 import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.CREATE
 import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.UPDATE
+import javassist.Modifier
+import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
 import graphql.schema.DataFetcher
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLInputObjectType
@@ -16,7 +23,7 @@ import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLSchema
 import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
-import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
+import org.grails.gorm.graphql.binding.manager.DefaultGraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
@@ -70,16 +77,18 @@ class Schema {
     }
 
     void setListArguments(Map<String, Class> arguments) {
-        listArguments = [:]
-        for (Map.Entry<String, Class> entry: arguments) {
-            GraphQLType type = typeManager.getType(entry.value)
-            if (type == null) {
-                throw new IllegalArgumentException("Error while setting list arguments. GraphQLType could not be found for ${entry.value.name}")
+        if (arguments != null) {
+            listArguments = [:]
+            for (Map.Entry<String, Class> entry: arguments) {
+                GraphQLType type = typeManager.getType(entry.value)
+                if (type == null) {
+                    throw new IllegalArgumentException("Error while setting list arguments. GraphQLType could not be found for ${entry.value.name}")
+                }
+                if (!(type instanceof GraphQLInputType)) {
+                    throw new IllegalArgumentException("Error while setting list arguments. Invalid type found for ${entry.value.name}. GraphQLType found ${type.name} of type ${type.class.name} is not an instance of ${GraphQLInputType.name}")
+                }
+                listArguments.put(entry.key, (GraphQLInputType)type)
             }
-            if (!(type instanceof GraphQLInputType)) {
-                throw new IllegalArgumentException("Error while setting list arguments. Invalid type found for ${entry.value.name}. GraphQLType found ${type.name} of type ${type.class.name} is not an instance of ${GraphQLInputType.name}")
-            }
-            listArguments.put(entry.key, (GraphQLInputType)type)
         }
     }
 
@@ -102,7 +111,7 @@ class Schema {
             deleteResponseHandler = new DefaultGraphQLDeleteResponseHandler()
         }
         if (dataBinderManager == null) {
-            dataBinderManager = new GraphQLDataBinderManager()
+            dataBinderManager = new DefaultGraphQLDataBinderManager()
         }
         if (dataFetcherManager == null) {
             dataFetcherManager = new DefaultGraphQLDataFetcherManager()
@@ -115,19 +124,35 @@ class Schema {
 
     @SuppressWarnings('NestedForLoop')
     protected void populateIdentityArguments(PersistentEntity entity, GraphQLFieldDefinition.Builder... builders) {
-        List<PersistentProperty> identities = []
+        Map<String, Class> identities = [:]
+
         if (entity.identity != null) {
-            identities.add(entity.identity)
+            identities.put(entity.identity.name, entity.identity.type)
         }
         else if (entity.compositeIdentity != null) {
-            identities.addAll(entity.compositeIdentity)
+            for (PersistentProperty identity: entity.compositeIdentity) {
+                if (identity instanceof Association) {
+                    PersistentEntity associatedEntity = ((Association)identity).associatedEntity
+                    if (associatedEntity.identity != null) {
+                        identities.put(identity.name, associatedEntity.identity.type)
+                    }
+                    else {
+                        throw new UnsupportedOperationException("Mapping domain classes with nested composite keys is not currently supported. ${identity.toString()} has a composite key.")
+                    }
+                }
+                else {
+                    identities.put(identity.name, identity.type)
+                }
+            }
         }
 
-        for (PersistentProperty identity: identities) {
+        for (Map.Entry<String, Class> identity: identities) {
+            GraphQLInputType inputType = (GraphQLInputType)typeManager.getType(identity.value, false)
+
             for (GraphQLFieldDefinition.Builder builder: builders) {
                 builder.argument(newArgument()
-                        .name(identity.name)
-                        .type((GraphQLInputType)typeManager.getType(identity.type, false)))
+                        .name(identity.key)
+                        .type(inputType))
             }
         }
     }
@@ -177,66 +202,100 @@ class Schema {
         GraphQLObjectType.Builder mutationType = newObject().name('Mutation')
 
         for (PersistentEntity entity: mappingContext.persistentEntities) {
-
-            if (GraphQLEntityHelper.getMapping(entity) == null) {
+            GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity)
+            if (mapping == null) {
                 continue
             }
 
-            //GET
-            GraphQLObjectType objectType = typeManager.getQueryType(entity)
+            List<GraphQLFieldDefinition.Builder> queryFields = []
+            List<GraphQLFieldDefinition.Builder> mutationFields = []
 
-            GraphQLFieldDefinition.Builder queryOne = newFieldDefinition()
-                    .name(namingConvention.getGet(entity))
-                    .type(objectType)
-                    .dataFetcher(getReadingFetcher(entity, GET))
+            GraphQLOutputType objectType = typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT)
 
-            GraphQLFieldDefinition.Builder queryAll = newFieldDefinition()
-                    .name(namingConvention.getList(entity))
-                    .type(list(objectType))
-                    .dataFetcher(getReadingFetcher(entity, LIST))
+            List<GraphQLFieldDefinition.Builder> requiresIdentityArguments = []
+            List<Closure> postIdentityExecutables = []
 
-            for (Map.Entry<String, GraphQLInputType> argument: listArguments) {
-                queryAll.argument(newArgument()
-                        .name(argument.key)
-                        .type(argument.value)
-                        .defaultValue(null))
+            if (mapping.operations.get) {
+
+                GraphQLFieldDefinition.Builder queryOne = newFieldDefinition()
+                        .name(namingConvention.getGet(entity))
+                        .type(objectType)
+                        .dataFetcher(getReadingFetcher(entity, GET))
+
+                requiresIdentityArguments.add(queryOne)
+                queryFields.add(queryOne)
             }
 
-            GraphQLInputObjectType createObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.CREATE)
+            if (mapping.operations.list) {
 
-            GraphQLFieldDefinition.Builder create = newFieldDefinition()
-                    .name(namingConvention.getCreate(entity))
-                    .type(objectType)
-                    .argument(newArgument()
+                GraphQLFieldDefinition.Builder queryAll = newFieldDefinition()
+                        .name(namingConvention.getList(entity))
+                        .type(list(objectType))
+                        .dataFetcher(getReadingFetcher(entity, LIST))
+
+                queryFields.add(queryAll)
+
+                for (Map.Entry<String, GraphQLInputType> argument: listArguments) {
+                    queryAll.argument(newArgument()
+                            .name(argument.key)
+                            .type(argument.value))
+                }
+            }
+
+            if (mapping.operations.create && !Modifier.isAbstract(entity.javaClass.modifiers)) {
+                GraphQLInputType createObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.CREATE, true)
+
+                GraphQLFieldDefinition.Builder create = newFieldDefinition()
+                        .name(namingConvention.getCreate(entity))
+                        .type(objectType)
+                        .argument(newArgument()
                         .name(entity.decapitalizedName)
                         .type(createObjectType))
-                    .dataFetcher(getBindingFetcher(entity, CREATE, dataFetcherManager, dataBinderManager))
+                        .dataFetcher(getBindingFetcher(entity, CREATE, dataFetcherManager, dataBinderManager))
 
-            GraphQLInputObjectType updateObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.UPDATE)
+                mutationFields.add(create)
+            }
 
-            GraphQLFieldDefinition.Builder update = newFieldDefinition()
-                    .name(namingConvention.getUpdate(entity))
-                    .type(objectType)
-                    .argument(newArgument()
-                        .name(entity.decapitalizedName)
-                        .type(updateObjectType))
-                    .dataFetcher(getBindingFetcher(entity, UPDATE, dataFetcherManager, dataBinderManager))
 
-            GraphQLFieldDefinition.Builder delete = newFieldDefinition()
-                    .name(namingConvention.getDelete(entity))
-                    .type(deleteResponseHandler.objectType)
-                    .dataFetcher(getDeletingFetcher(entity, dataFetcherManager, deleteResponseHandler))
+            if (mapping.operations.update) {
 
-            populateIdentityArguments(entity, queryOne, delete, update)
+                GraphQLInputType updateObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.UPDATE, true)
 
-            queryType
-                .field(queryOne)
-                .field(queryAll)
+                GraphQLFieldDefinition.Builder update = newFieldDefinition()
+                        .name(namingConvention.getUpdate(entity))
+                        .type(objectType)
+                        .dataFetcher(getBindingFetcher(entity, UPDATE, dataFetcherManager, dataBinderManager))
 
-            mutationType
-                .field(create)
-                .field(delete)
-                .field(update)
+                postIdentityExecutables.add {
+                    update.argument(newArgument()
+                            .name(entity.decapitalizedName)
+                            .type(updateObjectType))
+                }
+
+                requiresIdentityArguments.add(update)
+                mutationFields.add(update)
+            }
+
+            if (mapping.operations.delete) {
+
+                GraphQLFieldDefinition.Builder delete = newFieldDefinition()
+                        .name(namingConvention.getDelete(entity))
+                        .type(deleteResponseHandler.objectType)
+                        .dataFetcher(getDeletingFetcher(entity, dataFetcherManager, deleteResponseHandler))
+
+                requiresIdentityArguments.add(delete)
+                mutationFields.add(delete)
+            }
+
+            populateIdentityArguments(entity, requiresIdentityArguments.toArray(new GraphQLFieldDefinition.Builder[0]))
+
+            for (Closure c: postIdentityExecutables) {
+                c.call()
+            }
+
+            queryType.fields(queryFields*.build())
+
+            mutationType.fields(mutationFields*.build())
         }
 
         GraphQLSchema.newSchema()

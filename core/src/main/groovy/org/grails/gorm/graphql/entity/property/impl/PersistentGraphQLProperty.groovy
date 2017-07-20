@@ -1,5 +1,7 @@
 package org.grails.gorm.graphql.entity.property.impl
 
+import org.grails.gorm.graphql.entity.property.GraphQLOperationType
+
 import static graphql.schema.GraphQLList.list
 import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
@@ -106,25 +108,45 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
 
     @Override
     GraphQLType getGraphQLType(GraphQLTypeManager typeManager, GraphQLPropertyType propertyType) {
-        //It is expected at ths point that embedded properties have been "unwrapped"
         GraphQLType graphQLType
 
         if (type.enum) {
             graphQLType = typeManager.getEnumType(type, nullable)
         }
         else {
-            PersistentEntity entity = mappingContext.getPersistentEntity(type.name)
+            boolean embedded = false
+            PersistentEntity entity
+            if (property instanceof Association) {
+                entity = ((Association)property).associatedEntity
+                embedded = ((Association)property).embedded
+            }
+            if (entity == null) {
+                entity = mappingContext.getPersistentEntity(type.name)
+            }
             if (entity != null) {
-                if (propertyType == GraphQLPropertyType.UPDATE || propertyType == GraphQLPropertyType.CREATE) {
-                    graphQLType = typeManager.getMutationType(entity, GraphQLPropertyType.INPUT_NESTED)
-                }
-                else if (GraphQLEntityHelper.getMapping(entity) != null) {
-                    graphQLType = typeManager.createReference(entity, propertyType)
+                if (propertyType.operationType == GraphQLOperationType.OUTPUT) {
+                    if (embedded) {
+                        graphQLType = typeManager.getQueryType(entity, propertyType.embeddedType)
+                    }
+                    else if (GraphQLEntityHelper.getMapping(entity) != null) {
+                        graphQLType = typeManager.createReference(entity, propertyType)
+                    }
+                    else {
+                        graphQLType = typeManager.getQueryType(entity, propertyType.nestedType)
+                    }
                 }
                 else {
-                    graphQLType = typeManager.getQueryType(entity)
+                    GraphQLPropertyType mutationType
+                    if (embedded) {
+                        mutationType = propertyType.embeddedType
+                    }
+                    else {
+                        mutationType = propertyType.nestedType
+                    }
+                    graphQLType = typeManager.getMutationType(entity, mutationType, nullable)
                 }
-            } else {
+            }
+            else {
                 graphQLType = typeManager.getType(type, nullable)
             }
         }

@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.types.scalars.coercing
 
+import graphql.language.StringValue
 import graphql.schema.Coercing
 import groovy.transform.CompileStatic
 
@@ -29,8 +30,8 @@ class UUIDCoercion implements Coercing<UUID, UUID> {
 
     @Override
     UUID parseLiteral(Object input) {
-        if (input instanceof String) {
-            UUID.fromString((String)input)
+        if (input instanceof StringValue) {
+            UUID.fromString(((StringValue)input).value)
         }
         else {
             null

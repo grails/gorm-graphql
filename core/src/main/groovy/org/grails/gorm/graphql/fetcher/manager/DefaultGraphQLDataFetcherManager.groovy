@@ -59,7 +59,13 @@ class DefaultGraphQLDataFetcherManager implements GraphQLDataFetcherManager {
 
     @Override
     void registerBindingDataFetcher(Class clazz, BindingGormDataFetcher fetcher) {
-        registerFetcher(clazz, fetcher, fetcher.type)
+        for (GraphQLDataFetcherType type: GraphQLDataFetcherType.values()) {
+            if (type.requiredClass == BindingGormDataFetcher) {
+                if (fetcher.supports(type)) {
+                    registerFetcher(clazz, fetcher, type)
+                }
+            }
+        }
     }
 
     @Override
@@ -69,7 +75,13 @@ class DefaultGraphQLDataFetcherManager implements GraphQLDataFetcherManager {
 
     @Override
     void registerReadingDataFetcher(Class clazz, ReadingGormDataFetcher fetcher) {
-        registerFetcher(clazz, fetcher, fetcher.type)
+        for (GraphQLDataFetcherType type: GraphQLDataFetcherType.values()) {
+            if (type.requiredClass == ReadingGormDataFetcher) {
+                if (fetcher.supports(type)) {
+                    registerFetcher(clazz, fetcher, type)
+                }
+            }
+        }
     }
 
     protected DataFetcher getCustomFetcher(Class clazz, GraphQLDataFetcherType type) {

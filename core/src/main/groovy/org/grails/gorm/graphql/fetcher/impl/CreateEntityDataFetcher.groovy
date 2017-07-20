@@ -33,8 +33,8 @@ class CreateEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements Bi
     }
 
     @Override
-    GraphQLDataFetcherType getType() {
-        GraphQLDataFetcherType.CREATE
+    boolean supports(GraphQLDataFetcherType type) {
+        type == GraphQLDataFetcherType.CREATE
     }
 
 }

@@ -11,7 +11,7 @@ class AuthorIntegrationSpec extends Specification implements GraphQLSpec {
 
     void "test creating an author with multiple books"() {
         when:
-        def resp = post("""
+        def resp = graphQL.graphql("""
             mutation {
               authorCreate(author: {
                 name: "Sally",
@@ -44,7 +44,7 @@ class AuthorIntegrationSpec extends Specification implements GraphQLSpec {
 
     void "test creating an author with a book"() {
         when:
-        def resp = post("""
+        def resp = graphQL.graphql("""
             mutation {
               authorCreate(author: {
                 name: "Joseph",
@@ -75,7 +75,7 @@ class AuthorIntegrationSpec extends Specification implements GraphQLSpec {
 
     void "test creating an author with errors"() {
         when:
-        def resp = post("""
+        def resp = graphQL.graphql("""
             mutation {
               authorCreate(author: {
                 name: "123456789012345678901"
@@ -99,7 +99,7 @@ class AuthorIntegrationSpec extends Specification implements GraphQLSpec {
 
     void "test listing authors"() {
         when:
-        def resp = post("""
+        def resp = graphQL.graphql("""
             {
               authorList {
                 id
@@ -133,7 +133,7 @@ class AuthorIntegrationSpec extends Specification implements GraphQLSpec {
 
     void "test querying a single author"() {
         when:
-        def resp = post("""
+        def resp = graphQL.graphql("""
             {
               author(id: 2) {
                 id
@@ -158,7 +158,7 @@ class AuthorIntegrationSpec extends Specification implements GraphQLSpec {
 
     void "test updating a book on an author"() {
         when:
-        def resp = post("""
+        def resp = graphQL.graphql("""
             mutation {
               authorUpdate(id: 1, author: {
                 name: "Xavier",
@@ -189,7 +189,7 @@ class AuthorIntegrationSpec extends Specification implements GraphQLSpec {
 
     void "test deleting an author"() {
         when:
-        def resp = post("""
+        def resp = graphQL.graphql("""
             mutation {
               authorDelete(id: 2) {
                 success
@@ -202,7 +202,7 @@ class AuthorIntegrationSpec extends Specification implements GraphQLSpec {
     }
 
     void cleanupSpec() {
-        post("""
+        graphQL.graphql("""
             mutation {
               authorDelete(id: 1) {
                 success

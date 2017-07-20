@@ -1,7 +1,9 @@
 package org.grails.gorm.graphql.types
 
 import graphql.schema.GraphQLInputObjectType
+import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLObjectType
+import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLType
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
@@ -70,9 +72,10 @@ interface GraphQLTypeManager {
      *
      * @param entity The persistent entity to retrieve the type for
      * @param type The type of property to retrieve
+     * @param nullable True if the property allows nulls
      * @return The type representing the provided entity
      */
-    GraphQLInputObjectType getMutationType(PersistentEntity entity, GraphQLPropertyType type)
+    GraphQLInputType getMutationType(PersistentEntity entity, GraphQLPropertyType type, boolean nullable)
 
     /**
      * Retrieves a GraphQL type used for queries that represents the provided entity
@@ -81,5 +84,6 @@ interface GraphQLTypeManager {
      * @param type The type of property to retrieve
      * @return The type representing the provided entity
      */
-    GraphQLObjectType getQueryType(PersistentEntity entity)
+    GraphQLOutputType getQueryType(PersistentEntity entity, GraphQLPropertyType type)
+
 }

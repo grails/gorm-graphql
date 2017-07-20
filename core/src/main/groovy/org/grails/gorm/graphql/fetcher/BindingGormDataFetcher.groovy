@@ -1,6 +1,5 @@
 package org.grails.gorm.graphql.fetcher
 
-import graphql.schema.DataFetcher
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 
 /**
@@ -9,9 +8,7 @@ import org.grails.gorm.graphql.binding.GraphQLDataBinder
  * @author James Kleeh
  * @since 1.0.0
  */
-interface BindingGormDataFetcher extends DataFetcher {
+interface BindingGormDataFetcher extends GormDataFetcher {
 
     void setDataBinder(GraphQLDataBinder dataBinder)
-
-    GraphQLDataFetcherType getType()
 }

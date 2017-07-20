@@ -14,7 +14,7 @@ import org.grails.gorm.graphql.types.scalars.coercing.UUIDCoercion
 class GraphQLUUID extends GraphQLScalarType {
 
     GraphQLUUID() {
-        super('UUID', 'Built-in UUID', new UUIDCoercion())
+        super('UUID', 'Accepts a string to be converted to a UUID', new UUIDCoercion())
     }
 
 }

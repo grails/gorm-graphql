@@ -22,14 +22,17 @@ class DeleteEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements De
 
     GraphQLDeleteResponseHandler responseHandler
 
-    @Override
     @Transactional
-    T get(DataFetchingEnvironment environment) {
+    void delete(DataFetchingEnvironment environment) {
         GormEntity instance = queryInstance(environment)
+        ((GormEntity)instance).delete(failOnError: true)
+    }
 
+    @Override
+    T get(DataFetchingEnvironment environment) {
         boolean success = false
         try {
-            ((GormEntity)instance).delete(failOnError: true)
+            delete(environment)
             success = true
         } catch (e) { }
 

@@ -1,17 +1,16 @@
 package gorm.graphql
 
-import grails.config.Settings
 import grails.plugins.*
+import grails.web.mime.MimeType
 import graphql.GraphQL
 import org.grails.gorm.graphql.Schema
-import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
+import org.grails.gorm.graphql.binding.manager.DefaultGraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
 import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
-import org.grails.plugins.databinding.DataBindingGrailsPlugin
 
 class GormGraphqlGrailsPlugin extends Plugin {
 
@@ -48,14 +47,21 @@ Brief summary/description of the plugin.
     // Online location of the plugin's browseable source code.
 //    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
 
+    public static MimeType GRAPHQL_MIME =  new MimeType('application/graphql')
+
     Closure doWithSpring() {{ ->
+
+        if (!config.getProperty('grails.gorm.graphql.enabled', Boolean, true)) {
+            return
+        }
+
         graphQLDataBinder(GrailsGraphQLDataBinder)
         graphQLErrorsResponseHandler(DefaultGraphQLErrorsResponseHandler, ref("messageSource"))
         graphQLDeleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
         graphQLEntityNamingConvention(GraphQLEntityNamingConvention)
         graphQLDomainPropertyManager(DefaultGraphQLDomainPropertyManager)
         graphQLTypeManager(DefaultGraphQLTypeManager, ref("graphQLEntityNamingConvention"), ref("graphQLErrorsResponseHandler"), ref("graphQLDomainPropertyManager"))
-        graphQLDataBinderManager(GraphQLDataBinderManager, ref("graphQLDataBinder"))
+        graphQLDataBinderManager(DefaultGraphQLDataBinderManager, ref("graphQLDataBinder"))
         graphQLDataFetcherManager(DefaultGraphQLDataFetcherManager)
 
         grailsGraphQLConfiguration(GrailsGraphQLConfiguration)
