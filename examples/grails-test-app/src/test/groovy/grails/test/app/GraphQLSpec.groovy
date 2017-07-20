@@ -1,13 +1,10 @@
 package grails.test.app
 
-import grails.core.GrailsApplication
 import grails.plugins.rest.client.RestBuilder
 import grails.plugins.rest.client.RestResponse
 import groovy.json.StreamingJsonBuilder
 import groovy.transform.TupleConstructor
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import spock.lang.Specification
 
 trait GraphQLSpec {
 

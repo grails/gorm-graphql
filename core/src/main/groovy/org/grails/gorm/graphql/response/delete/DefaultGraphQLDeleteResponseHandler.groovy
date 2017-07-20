@@ -1,14 +1,15 @@
 package org.grails.gorm.graphql.response.delete
 
-import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
-import static graphql.schema.GraphQLObjectType.newObject
-import graphql.schema.GraphQLNonNull
 import graphql.Scalars
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLFieldDefinition
+import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.response.CachingGraphQLResponseHandler
+
+import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
+import static graphql.schema.GraphQLObjectType.newObject
 
 /**
  * The default data available in a delete mutation response

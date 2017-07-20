@@ -1,8 +1,5 @@
 package org.grails.gorm.graphql.entity.property.impl
 
-import org.grails.gorm.graphql.entity.property.GraphQLOperationType
-
-import static graphql.schema.GraphQLList.list
 import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
@@ -13,11 +10,16 @@ import org.grails.datastore.mapping.model.types.Basic
 import org.grails.datastore.mapping.model.types.ToMany
 import org.grails.gorm.graphql.GraphQL
 import org.grails.gorm.graphql.GraphQLEntityHelper
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
-import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
+import org.grails.gorm.graphql.types.GraphQLOperationType
+import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
+
 import java.lang.reflect.Field
+
+import static graphql.schema.GraphQLList.list
 
 /**
  * Implementation of {@link GraphQLDomainProperty} to represent a property
@@ -128,11 +130,15 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
                     if (embedded) {
                         graphQLType = typeManager.getQueryType(entity, propertyType.embeddedType)
                     }
-                    else if (GraphQLEntityHelper.getMapping(entity) != null) {
-                        graphQLType = typeManager.createReference(entity, propertyType)
-                    }
                     else {
-                        graphQLType = typeManager.getQueryType(entity, propertyType.nestedType)
+                        GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity)
+                        if (mapping?.operations?.output) {
+                            //This is necessary to avoid StackOverflow exceptions
+                            graphQLType = typeManager.createReference(entity, propertyType)
+                        }
+                        else {
+                            graphQLType = typeManager.getQueryType(entity, propertyType.nestedType)
+                        }
                     }
                 }
                 else {

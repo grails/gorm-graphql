@@ -226,8 +226,8 @@ ruleset {
     DuplicateImport
     ImportFromSamePackage
     ImportFromSunPackages
-    MisorderedStaticImports
-    'NoWildcardImports' doNotApplyToFilesMatching: '.*Spec.groovy'
+    //MisorderedStaticImports
+    //'NoWildcardImports' doNotApplyToFilesMatching: '.*Spec.groovy'
     UnnecessaryGroovyImport
     UnusedImport
 

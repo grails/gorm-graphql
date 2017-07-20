@@ -7,7 +7,6 @@ import org.grails.datastore.mapping.model.PropertyMapping
 import org.grails.datastore.mapping.model.types.ToMany
 import org.grails.gorm.graphql.GraphQL
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
-import org.grails.gorm.graphql.entity.property.impl.PersistentGraphQLProperty
 import spock.lang.Specification
 
 class PersistentGraphQLPropertySpec extends Specification {

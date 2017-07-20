@@ -1,6 +1,5 @@
 package gorm.graphql
 
-import org.grails.datastore.gorm.GormEntity
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 
 /**

@@ -3,6 +3,8 @@ package org.grails.gorm.graphql.fetcher.runtime
 import graphql.schema.DataFetcher
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.gorm.graphql.binding.DataBinderNotFoundException
+import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
@@ -21,21 +23,21 @@ import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
 class BindingRuntimeDataFetcher<T> extends AbstractRuntimeDataFetcher<T> {
 
     GraphQLDataBinderManager binderManager
-    GraphQLDataFetcherType type
-    PersistentEntity entity
 
     BindingRuntimeDataFetcher(PersistentEntity entity,
                               GraphQLDataFetcherManager fetcherManager,
-                              GraphQLDataBinderManager binderManager,
-                              GraphQLDataFetcherType type) {
-        super(fetcherManager)
+                              GraphQLDataFetcherType type,
+                              GraphQLDataBinderManager binderManager) {
+        super(entity, fetcherManager, type)
         this.binderManager = binderManager
-        this.type = type
-        this.entity = entity
     }
 
     @Override
     DataFetcher resolveFetcher() {
-        manager.getBindingFetcher(entity, binderManager.getDataBinder(entity.javaClass), type)
+        GraphQLDataBinder binder = binderManager.getDataBinder(entity.javaClass)
+        if (binder == null) {
+            throw new DataBinderNotFoundException(entity)
+        }
+        manager.getBindingFetcher(entity, binder, type)
     }
 }

@@ -1,13 +1,10 @@
 package org.grails.gorm.graphql.types
 
-import graphql.schema.GraphQLInputObjectType
 import graphql.schema.GraphQLInputType
-import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLType
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
-import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
 
 /**
  * An interface for handling type conversion and creation with GraphQL
@@ -24,7 +21,16 @@ interface GraphQLTypeManager {
      * @param clazz The class to retrieve a type for
      * @return The GraphQLType
      */
-    GraphQLType getType(Class clazz)
+    GraphQLType getType(Class clazz) throws TypeNotFoundException
+
+    /**
+     * Retrieves whether or not a GraphQL type has been registered for the
+     * provided class
+     *
+     * @param clazz The class to search for a type for
+     * @return True if a type was found
+     */
+    boolean hasType(Class clazz)
 
     /**
      * Retrieves the corresponding GraphQL type for the specified class.

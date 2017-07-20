@@ -1,7 +1,7 @@
 package org.grails.gorm.graphql.entity
 
 import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
+import org.grails.gorm.graphql.types.GraphQLPropertyType
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -34,11 +34,15 @@ class GraphQLEntityNamingConventionSpec extends Specification {
         name == expected
 
         where:
-        type                             | expected
-        GraphQLPropertyType.CREATE       | 'FooCreate'
-        GraphQLPropertyType.UPDATE       | 'FooUpdate'
-        GraphQLPropertyType.INPUT_NESTED | 'FooInputNested'
-        GraphQLPropertyType.OUTPUT       | 'Foo'
+        type                                | expected
+        GraphQLPropertyType.CREATE          | 'FooCreate'
+        GraphQLPropertyType.CREATE_EMBEDDED | 'FooCreateEmbedded'
+        GraphQLPropertyType.CREATE_NESTED   | 'FooCreateNested'
+        GraphQLPropertyType.UPDATE          | 'FooUpdate'
+        GraphQLPropertyType.UPDATE_EMBEDDED | 'FooUpdateEmbedded'
+        GraphQLPropertyType.UPDATE_NESTED   | 'FooUpdateNested'
+        GraphQLPropertyType.OUTPUT          | 'Foo'
+        GraphQLPropertyType.OUTPUT_EMBEDDED | 'FooEmbedded'
     }
 
     class Foo {

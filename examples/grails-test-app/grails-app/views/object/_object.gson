@@ -1,4 +1,4 @@
-import groovy.transform.*
+import groovy.transform.Field
 
 @Field Object object
 

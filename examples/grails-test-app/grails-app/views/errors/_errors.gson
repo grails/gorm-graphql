@@ -1,4 +1,5 @@
-import org.springframework.validation.*
+import org.springframework.validation.Errors
+import org.springframework.validation.ObjectError
 
 /**
  * Renders validation errors according to vnd.error: https://github.com/blongden/vnd.error

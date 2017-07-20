@@ -3,6 +3,7 @@ package org.grails.gorm.graphql.fetcher.runtime
 import graphql.schema.DataFetcher
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 
@@ -20,14 +21,12 @@ import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 class DeletingRuntimeDataFetcher<T> extends AbstractRuntimeDataFetcher<T> {
 
     GraphQLDeleteResponseHandler responseHandler
-    PersistentEntity entity
 
     DeletingRuntimeDataFetcher(PersistentEntity entity,
                                GraphQLDataFetcherManager manager,
                                GraphQLDeleteResponseHandler responseHandler) {
-        super(manager)
+        super(entity, manager, GraphQLDataFetcherType.DELETE)
         this.responseHandler = responseHandler
-        this.entity = entity
     }
 
     @Override

@@ -1,18 +1,18 @@
 package org.grails.gorm.graphql.entity.dsl
 
-import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
-
-import static org.grails.gorm.graphql.entity.property.impl.AdditionalGraphQLProperty.newProperty
-import org.springframework.beans.MutablePropertyValues
-import org.springframework.validation.DataBinder
-import groovy.transform.CompileStatic
 import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.grails.gorm.graphql.entity.property.impl.AdditionalGraphQLProperty
+import org.grails.gorm.graphql.entity.operations.CustomOperation
+import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
+import org.springframework.beans.MutablePropertyValues
+import org.springframework.validation.DataBinder
+
+import static CustomGraphQLProperty.newProperty
 
 /**
- * Builder to provide GraphQL specific data for a GORM entity
+ * DSL to provide GraphQL specific data for a GORM entity
  *
  * Usage:
  * <pre>
@@ -36,13 +36,15 @@ import org.grails.gorm.graphql.entity.property.impl.AdditionalGraphQLProperty
 @CompileStatic
 class GraphQLMapping {
 
-    List<AdditionalGraphQLProperty> additional = []
+    List<CustomGraphQLProperty> additional = []
     Map<String, GraphQLPropertyMapping> propertyMappings = [:]
     Set<String> excluded = [] as Set
     boolean deprecated = false
     String deprecationReason
     String description
     Operations operations = new Operations()
+    List<CustomOperation> customQueryOperations = []
+    List<CustomOperation> customMutationOperations = []
 
     /**
      * Exclude one or more properties from being included in the schema
@@ -60,7 +62,7 @@ class GraphQLMapping {
      *
      * @param property The property to include
      */
-    void add(AdditionalGraphQLProperty property) {
+    void add(CustomGraphQLProperty property) {
         if (property.name == null || property.type == null) {
             throw new IllegalArgumentException("${property.name}: GraphQL properties must have both a name and type")
         }
@@ -79,7 +81,7 @@ class GraphQLMapping {
         add(newProperty().name(name).type(type))
     }
 
-    private void handleAddClosure(AdditionalGraphQLProperty property, Closure closure) {
+    private void handleAddClosure(CustomGraphQLProperty property, Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
         closure.delegate = property
 
@@ -101,8 +103,8 @@ class GraphQLMapping {
      * @param type The type of property to include
      * @param closure A closure to further configure the property
      */
-    void add(String name, Class type, @DelegatesTo(value = AdditionalGraphQLProperty, strategy = Closure.DELEGATE_FIRST) Closure closure) {
-        AdditionalGraphQLProperty property = newProperty().name(name).type(type)
+    void add(String name, Class type, @DelegatesTo(value = CustomGraphQLProperty, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+        CustomGraphQLProperty property = newProperty().name(name).type(type)
         handleAddClosure(property, closure)
     }
 
@@ -115,8 +117,8 @@ class GraphQLMapping {
      *
      * @param closure A closure to configure the property
      */
-    void add(@DelegatesTo(value = AdditionalGraphQLProperty, strategy = Closure.DELEGATE_FIRST) Closure closure) {
-        AdditionalGraphQLProperty property = newProperty()
+    void add(@DelegatesTo(value = CustomGraphQLProperty, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+        CustomGraphQLProperty property = newProperty()
         handleAddClosure(property, closure)
     }
 
@@ -214,6 +216,17 @@ class GraphQLMapping {
     }
 
     /**
+     * Builder to provide code completion. The mapping instance will not be evaluated
+     * until the schema is being generated
+     *
+     * @param closure The closure to execute in the context of a mapping
+     * @return The mapping instance
+     */
+    static LazyGraphQLMapping lazy(@DelegatesTo(value = GraphQLMapping, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+        new LazyGraphQLMapping(closure)
+    }
+
+    /**
      * Builder to provide code completion
      *
      * @param closure The closure to execute in the context of a mapping
@@ -234,41 +247,38 @@ class GraphQLMapping {
     }
 
     /**
-     * Internal use only. Used to populate a mapping to support nested property names.
-     * Current use case is embedded properties.
-     *
-     *  * <pre>
-     * {@code
-     *
-     * Foo foo
-     *
-     * static embedded = ['foo']
-     *
-     * static graphql = {
-     *     exclude 'foo.bar'
-     * }
-     * }
-     * </pre>
-     *
-     * @param propertyName The embedded property name
-     * @return A new mapping with excluded that doesn't include the parent name
+     * Controls whether query or mutation types will be created for the entity
      */
-    GraphQLMapping createEmbeddedMapping(String propertyName) {
-        final String SUB_NAME = propertyName + '.'
-        Set<String> excluded = [] as Set
-        for (String prop: this.excluded) {
-            if (prop.startsWith(SUB_NAME)) {
-                excluded.add(prop.replace(SUB_NAME, ''))
-            }
+    class Operations {
+        boolean get = true
+        boolean list = true
+        boolean create = true
+        boolean update = true
+        boolean delete = true
+
+        boolean isOutput() {
+            get || list
         }
-        new GraphQLMapping([excluded: excluded])
     }
 
-    class Operations {
-        boolean get
-        boolean list
-        boolean create
-        boolean update
-        boolean delete
+    private CustomOperation handleCustomOperation(String name, Closure closure) {
+        CustomOperation operation = new CustomOperation().name(name)
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = operation
+
+        try {
+            closure.call()
+        } finally {
+            closure.delegate = null
+        }
+        operation
+    }
+
+    void query(String name, @DelegatesTo(value = CustomOperation, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+        customQueryOperations.add(handleCustomOperation(name, closure))
+    }
+
+    void mutation(String name, @DelegatesTo(value = CustomOperation, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+        customMutationOperations.add(handleCustomOperation(name, closure))
     }
 }

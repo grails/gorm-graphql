@@ -1,19 +1,25 @@
 package org.grails.gorm.graphql.types.input
 
-import groovy.transform.CompileStatic
-
-import static graphql.schema.GraphQLInputObjectField.newInputObjectField
-import static graphql.schema.GraphQLInputObjectType.newInputObject
 import graphql.schema.GraphQLInputObjectField
 import graphql.schema.GraphQLInputObjectType
 import graphql.schema.GraphQLInputType
+import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
-import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
+import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
+import static graphql.schema.GraphQLInputObjectField.newInputObjectField
+import static graphql.schema.GraphQLInputObjectType.newInputObject
+
+/**
+ * The base class used to build an input object based on an entity
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @CompileStatic
 abstract class InputObjectTypeBuilder {
 
@@ -41,7 +47,10 @@ abstract class InputObjectTypeBuilder {
 
         GraphQLInputObjectType inputObjectType
 
-        if (!objectTypeCache.containsKey(entity)) {
+        if (objectTypeCache.containsKey(entity)) {
+            objectTypeCache.get(entity)
+        }
+        else {
             final String DESCRIPTION = GraphQLEntityHelper.getDescription(entity)
 
             List<GraphQLDomainProperty> properties = builder.getProperties(entity)
@@ -60,10 +69,6 @@ abstract class InputObjectTypeBuilder {
             objectTypeCache.put(entity, inputObjectType)
             inputObjectType
         }
-        else {
-            objectTypeCache.get(entity)
-        }
-
 
     }
 }

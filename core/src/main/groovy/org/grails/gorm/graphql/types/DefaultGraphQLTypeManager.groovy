@@ -1,44 +1,22 @@
 package org.grails.gorm.graphql.types
 
+import graphql.Scalars
+import graphql.schema.*
+import groovy.transform.CompileStatic
+import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.reflect.ClassUtils
-import org.grails.gorm.graphql.types.input.CreateInputObjectTypeBuilder
-import org.grails.gorm.graphql.types.input.EmbeddedInputObjectTypeBuilder
-import org.grails.gorm.graphql.types.input.InputObjectTypeBuilder
-import org.grails.gorm.graphql.types.input.NestedInputObjectTypeBuilder
-import org.grails.gorm.graphql.types.input.UpdateInputObjectTypeBuilder
+import org.grails.gorm.graphql.GraphQL
+import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
+import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
+import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
+import org.grails.gorm.graphql.types.input.*
 import org.grails.gorm.graphql.types.output.EmbeddedObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ShowObjectTypeBuilder
-
-import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
-import static graphql.schema.GraphQLInputObjectField.newInputObjectField
-import static graphql.schema.GraphQLInputObjectType.newInputObject
-import static graphql.schema.GraphQLObjectType.newObject
-import graphql.schema.GraphQLEnumType
-import graphql.schema.GraphQLFieldDefinition
-import graphql.schema.GraphQLInputObjectField
-import graphql.schema.GraphQLInputObjectType
-import graphql.schema.GraphQLInputType
-import graphql.schema.GraphQLNonNull
-import graphql.schema.GraphQLObjectType
-import graphql.schema.GraphQLOutputType
-import graphql.schema.GraphQLType
-import graphql.Scalars
 import org.grails.gorm.graphql.types.scalars.GraphQLFloat
 import org.grails.gorm.graphql.types.scalars.GraphQLURL
 import org.grails.gorm.graphql.types.scalars.GraphQLUUID
-import groovy.transform.CompileStatic
-import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.datastore.mapping.model.PersistentProperty
-import org.grails.datastore.mapping.model.types.Association
-import org.grails.gorm.graphql.GraphQL
-import org.grails.gorm.graphql.GraphQLEntityHelper
-import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
-import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
-import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
-import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
-import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetcher
-import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
+
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -50,44 +28,23 @@ import java.util.concurrent.ConcurrentHashMap
 @CompileStatic
 class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
-    protected static final Map<Class, GraphQLType> TYPE_MAP = new ConcurrentHashMap<>()
+    protected static final Map<Class, GraphQLType> TYPE_MAP = new ConcurrentHashMap<>([
+        (Integer): Scalars.GraphQLInt,
+        (Long): Scalars.GraphQLLong,
+        (Short): Scalars.GraphQLShort,
+        (Byte): Scalars.GraphQLByte,
+        (Double): Scalars.GraphQLFloat,
+        (Float): new GraphQLFloat(),
+        (BigInteger): Scalars.GraphQLBigInteger,
+        (BigDecimal): Scalars.GraphQLBigDecimal,
+        (String): Scalars.GraphQLString,
+        (Boolean): Scalars.GraphQLBoolean,
+        (Character): Scalars.GraphQLChar,
+        (UUID): new GraphQLUUID(),
+        (URL): new GraphQLURL()
+    ])
 
     protected static final Map<Class, GraphQLEnumType> ENUM_TYPES = new ConcurrentHashMap<>()
-
-    static {
-
-        TYPE_MAP.with {
-            put(Integer, Scalars.GraphQLInt)
-            put(Long, Scalars.GraphQLLong)
-            put(Short, Scalars.GraphQLShort)
-            put(Byte, Scalars.GraphQLByte)
-            put(Double, Scalars.GraphQLFloat)
-            put(Float, new GraphQLFloat())
-            put(BigInteger, Scalars.GraphQLBigInteger)
-            put(BigDecimal, Scalars.GraphQLBigDecimal)
-            put(String, Scalars.GraphQLString)
-            put(Boolean, Scalars.GraphQLBoolean)
-            put(Character, Scalars.GraphQLChar)
-            put(UUID, new GraphQLUUID())
-            put(URL, new GraphQLURL())
-        }
-
-        /*
-            Time.class.getName(),
-            Timestamp.class.getName(),
-            java.sql.Date.class.getName(),
-            java.util.Currency.class.getName(),
-            TimeZone.class.getName(),
-
-            byte[].class.getName(),
-            Byte[].class.getName(),
-            char[].class.getName(),
-            Character[].class.getName(),
-            Blob.class.getName(),
-            Clob.class.getName(),
-            URI.class.getName(),   */
-
-    }
 
     GraphQLEntityNamingConvention namingConvention
     GraphQLErrorsResponseHandler errorsResponseHandler
@@ -100,22 +57,28 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         this.namingConvention = namingConvention
         this.propertyManager = propertyManager
         this.errorsResponseHandler = errorsResponseHandler
+        initialize()
+    }
 
+    void initialize() {
         List<InputObjectTypeBuilder> inputBuilders = []
-        inputBuilders.add(new CreateInputObjectTypeBuilder(propertyManager, this))
-        inputBuilders.add(new NestedInputObjectTypeBuilder(propertyManager, this, GraphQLPropertyType.CREATE_NESTED))
-        inputBuilders.add(new NestedInputObjectTypeBuilder(propertyManager, this, GraphQLPropertyType.UPDATE_NESTED))
-        inputBuilders.add(new UpdateInputObjectTypeBuilder(propertyManager, this))
-        inputBuilders.add(new EmbeddedInputObjectTypeBuilder(propertyManager, this, true))
-        inputBuilders.add(new EmbeddedInputObjectTypeBuilder(propertyManager, this, false))
+        GraphQLTypeManager typeManager = this
+        inputBuilders.with {
+            add(new CreateInputObjectTypeBuilder(propertyManager, typeManager))
+            add(new NestedInputObjectTypeBuilder(propertyManager, typeManager, GraphQLPropertyType.CREATE_NESTED))
+            add(new NestedInputObjectTypeBuilder(propertyManager, typeManager, GraphQLPropertyType.UPDATE_NESTED))
+            add(new UpdateInputObjectTypeBuilder(propertyManager, typeManager))
+            add(new EmbeddedInputObjectTypeBuilder(propertyManager, typeManager, GraphQLPropertyType.UPDATE_EMBEDDED))
+            add(new EmbeddedInputObjectTypeBuilder(propertyManager, typeManager, GraphQLPropertyType.CREATE_EMBEDDED))
+        }
 
         for (InputObjectTypeBuilder builder: inputBuilders) {
             inputObjectTypeBuilders.put(builder.type, builder)
         }
 
         List<ObjectTypeBuilder> builders = []
-        builders.add(new EmbeddedObjectTypeBuilder(propertyManager, this, null))
-        builders.add(new ShowObjectTypeBuilder(propertyManager, this, errorsResponseHandler))
+        builders.add(new EmbeddedObjectTypeBuilder(propertyManager, typeManager, null))
+        builders.add(new ShowObjectTypeBuilder(propertyManager, typeManager, errorsResponseHandler))
 
         for (ObjectTypeBuilder builder: builders) {
             objectTypeBuilders.put(builder.type, builder)
@@ -128,12 +91,23 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             clazz = boxPrimitive(clazz)
         }
         GraphQLType type = TYPE_MAP.get(clazz)
+        if (type == null) {
+            throw new TypeNotFoundException(clazz)
+        }
         if (nullable) {
             type
         }
         else {
             GraphQLNonNull.nonNull(type)
         }
+    }
+
+    @Override
+    boolean hasType(Class clazz) {
+        if (clazz.isPrimitive()) {
+            clazz = boxPrimitive(clazz)
+        }
+        TYPE_MAP.containsKey(clazz)
     }
 
     protected Class boxPrimitive(Class clazz) {
@@ -181,7 +155,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     @Override
     GraphQLType createReference(PersistentEntity entity, GraphQLPropertyType type) {
         final String REF_NAME = namingConvention.getType(entity, type)
-        if (type == GraphQLPropertyType.OUTPUT) {
+        if (type.operationType == GraphQLOperationType.OUTPUT) {
             GraphQLObjectType.reference(REF_NAME)
         }
         else {

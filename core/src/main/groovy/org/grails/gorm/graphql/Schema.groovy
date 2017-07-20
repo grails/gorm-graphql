@@ -1,31 +1,20 @@
 package org.grails.gorm.graphql
 
-import graphql.schema.GraphQLOutputType
-import org.grails.datastore.mapping.model.types.Association
-import org.grails.datastore.mapping.model.types.Simple
-import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
-
-import static graphql.schema.GraphQLArgument.newArgument
-import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
-import static graphql.schema.GraphQLList.list
-import static graphql.schema.GraphQLObjectType.newObject
-import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.GET
-import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.LIST
-import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.CREATE
-import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.UPDATE
-import javassist.Modifier
-import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
-import graphql.schema.DataFetcher
-import graphql.schema.GraphQLFieldDefinition
-import graphql.schema.GraphQLInputObjectType
-import graphql.schema.GraphQLInputType
-import graphql.schema.GraphQLObjectType
-import graphql.schema.GraphQLSchema
-import graphql.schema.GraphQLType
+import graphql.schema.*
 import groovy.transform.CompileStatic
+import javassist.Modifier
+import org.grails.datastore.mapping.model.MappingContext
+import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.datastore.mapping.model.PersistentProperty
+import org.grails.datastore.mapping.model.types.Association
+import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.binding.manager.DefaultGraphQLDataBinderManager
+import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
+import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
+import org.grails.gorm.graphql.entity.operations.CustomOperation
+import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
-import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
 import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
@@ -33,18 +22,20 @@ import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
 import org.grails.gorm.graphql.fetcher.runtime.BindingRuntimeDataFetcher
 import org.grails.gorm.graphql.fetcher.runtime.DeletingRuntimeDataFetcher
 import org.grails.gorm.graphql.fetcher.runtime.ReadingRuntimeDataFetcher
-import org.grails.gorm.graphql.types.scalars.GraphQLDate
-import org.grails.gorm.graphql.types.scalars.coercing.DateCoercion
-import javax.annotation.PostConstruct
-import org.grails.datastore.mapping.model.MappingContext
-import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.datastore.mapping.model.PersistentProperty
-import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
-import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.gorm.graphql.types.GraphQLTypeManager
+import org.grails.gorm.graphql.types.scalars.GraphQLDate
+import org.grails.gorm.graphql.types.scalars.coercing.DateCoercion
+
+import javax.annotation.PostConstruct
+
+import static graphql.schema.GraphQLArgument.newArgument
+import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
+import static graphql.schema.GraphQLList.list
+import static graphql.schema.GraphQLObjectType.newObject
+import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.*
 
 /**
  * Created by jameskleeh on 5/19/17.
@@ -81,9 +72,6 @@ class Schema {
             listArguments = [:]
             for (Map.Entry<String, Class> entry: arguments) {
                 GraphQLType type = typeManager.getType(entry.value)
-                if (type == null) {
-                    throw new IllegalArgumentException("Error while setting list arguments. GraphQLType could not be found for ${entry.value.name}")
-                }
                 if (!(type instanceof GraphQLInputType)) {
                     throw new IllegalArgumentException("Error while setting list arguments. Invalid type found for ${entry.value.name}. GraphQLType found ${type.name} of type ${type.class.name} is not an instance of ${GraphQLInputType.name}")
                 }
@@ -104,7 +92,7 @@ class Schema {
                 namingConvention = typeManager.namingConvention
             }
         }
-        if (typeManager.getType(Date) == null) {
+        if (!typeManager.hasType(Date)) {
             typeManager.registerType(Date, new GraphQLDate(new DateCoercion(dateFormats, dateFormatLenient)))
         }
         if (deleteResponseHandler == null) {
@@ -171,7 +159,7 @@ class Schema {
     protected DataFetcher getBindingFetcher(PersistentEntity entity, GraphQLDataFetcherType type, GraphQLDataFetcherManager manager, GraphQLDataBinderManager dataBinderManager) {
         DataFetcher fetcher
         if (runtimeDataFetching) {
-            fetcher = new BindingRuntimeDataFetcher(entity, manager, dataBinderManager, type)
+            fetcher = new BindingRuntimeDataFetcher(entity, manager, type, dataBinderManager)
         }
         else {
             GraphQLDataBinder dataBinder = dataBinderManager.getDataBinder(entity.javaClass)
@@ -191,7 +179,7 @@ class Schema {
         fetcher
     }
 
-    @SuppressWarnings(['AbcMetric', 'NestedForLoop'])
+    @SuppressWarnings(['AbcMetric', 'NestedForLoop', 'MethodSize'])
     GraphQLSchema generate() {
 
         if (!initialized) {
@@ -256,7 +244,6 @@ class Schema {
                 mutationFields.add(create)
             }
 
-
             if (mapping.operations.update) {
 
                 GraphQLInputType updateObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.UPDATE, true)
@@ -291,6 +278,14 @@ class Schema {
 
             for (Closure c: postIdentityExecutables) {
                 c.call()
+            }
+
+            for (CustomOperation operation: mapping.customQueryOperations) {
+                queryFields.add(operation.createField(typeManager, mappingContext))
+            }
+
+            for (CustomOperation operation: mapping.customMutationOperations) {
+                mutationFields.add(operation.createField(typeManager, mappingContext))
             }
 
             queryType.fields(queryFields*.build())

@@ -12,7 +12,6 @@ import org.grails.datastore.gorm.GormStaticApi
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.types.Association
-import org.grails.datastore.mapping.model.types.Identity
 
 /**
  * A generic class to assist with querying entities with GraphQL
@@ -24,14 +23,26 @@ import org.grails.datastore.mapping.model.types.Identity
 @CompileStatic
 abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
 
-    protected Map<String, PersistentEntity> associations = [:]
+    protected Map<String, Association> associations = [:]
     protected PersistentEntity entity
     protected Set<String> associationNames
+    protected String propertyName
 
     DefaultGormDataFetcher(PersistentEntity entity) {
         this.entity = entity
+        initializeEntity(entity)
+    }
+
+    DefaultGormDataFetcher(PersistentEntity entity, String projectionName) {
+        this(entity)
+        this.propertyName = projectionName
+    }
+
+    protected void initializeEntity(PersistentEntity entity) {
         for (Association association: entity.associations) {
-            associations.put(association.name, association.associatedEntity)
+            if (!association.embedded) {
+                associations.put(association.name, association)
+            }
         }
         associationNames = associations.keySet()
     }
@@ -40,9 +51,9 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         boolean join = false
         if (associationNames.contains(selectedField.name)) {
             join = true
-            PersistentEntity entity = associations.get(selectedField.name)
-            List<Selection> selections = selectedField.selectionSet?.selections ?: (List<Selection>)[]
-            if (selections.size() == 1 && selections[0] instanceof Field) {
+            PersistentEntity entity = associations.get(selectedField.name).associatedEntity
+            List<Selection> selections = selectedField.selectionSet?.selections
+            if (selections?.size() == 1 && selections[0] instanceof Field) {
                 Field field = (Field)selections[0]
                 if (entity.isIdentityName(field.name)) {
                     join = false
@@ -56,17 +67,26 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
     protected Map defaultQueryOptions(DataFetchingEnvironment environment) {
         Set<String> joinProperties = []
 
+        if (propertyName) {
+            joinProperties.add(propertyName)
+        }
+
         for (Field field: environment.fields) {
             for (Selection selection: field.selectionSet.selections) {
                 if (selection instanceof Field) {
                     Field selectedField = (Field)selection
                     if (shouldJoinProperty(selectedField)) {
-                        joinProperties.add(selectedField.name)
+                        if (propertyName) {
+                            joinProperties.add(propertyName + '.' + selectedField.name)
+                        }
+                        else {
+                            joinProperties.add(selectedField.name)
+                        }
                     }
                 }
             }
         }
-
+        
         if (joinProperties) {
             [fetch: joinProperties.collectEntries { [(it): 'join'] } ]
         }
@@ -92,7 +112,7 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
                 Object value
                 Object argument = environment.getArgument(p.name)
                 if (associations.containsKey(p.name)) {
-                    PersistentEntity associatedEntity = associations.get(p.name)
+                    PersistentEntity associatedEntity = associations.get(p.name).associatedEntity
                     value = loadEntity(associatedEntity, argument)
                 } else {
                     value = argument

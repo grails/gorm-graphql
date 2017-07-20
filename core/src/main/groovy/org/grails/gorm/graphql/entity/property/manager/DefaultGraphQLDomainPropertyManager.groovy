@@ -5,12 +5,11 @@ import org.grails.datastore.mapping.config.Property
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
-import org.grails.datastore.mapping.model.types.Embedded
 import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
-import org.grails.gorm.graphql.entity.property.impl.AdditionalGraphQLProperty
+import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
 import org.grails.gorm.graphql.entity.property.impl.PersistentGraphQLProperty
 
 import java.lang.reflect.Method
@@ -34,7 +33,7 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
         } catch (NoSuchMethodException | SecurityException e) { }
     }
 
-    private static Closure CLASS_SIMPLE_NAME = { Object obj ->
+    private static Closure classSimpleName = { Object obj ->
         obj.class.simpleName
     }
 
@@ -157,31 +156,10 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
                 }
 
                 properties.add(new PersistentGraphQLProperty(mappingContext, prop, getPropertyMapping(prop, mapping)))
-
-                /*
-                if (prop instanceof Embedded) {
-                    PersistentEntity associatedEntity = ((Embedded)prop).associatedEntity
-
-                    Builder associatedBuilder = new Builder()
-                            .excludeIdentifiers()
-                            .excludeVersion()
-                            .excludeTimestamps()
-                            .exclude(excludedProperties as String[])
-
-                    if (overrideNullable) {
-                        associatedBuilder.alwaysNullable()
-                    }
-
-                    properties.addAll(associatedBuilder.getProperties(associatedEntity, mapping.createEmbeddedMapping(prop.name)))
-                }
-                else {
-                    properties.add(new PersistentGraphQLProperty(mappingContext, prop, getPropertyMapping(prop, mapping)))
-                }*/
-
             }
 
             if (overrideNullable) {
-                for (AdditionalGraphQLProperty property: mapping.additional) {
+                for (CustomGraphQLProperty property: mapping.additional) {
                     if (property.nullable) {
                         properties.add(property)
                     }
@@ -195,11 +173,11 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
             }
 
             if (!mappingContext.getDirectChildEntities(entity).empty) {
-                properties.add(AdditionalGraphQLProperty.newProperty()
+                properties.add(CustomGraphQLProperty.newProperty()
                     .input(false)
                     .name('className')
                     .type(String)
-                    .dataFetcher(CLASS_SIMPLE_NAME)
+                    .dataFetcher(classSimpleName)
                 )
             }
 

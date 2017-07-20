@@ -16,7 +16,6 @@ import org.grails.datastore.mapping.reflect.ClassUtils
 import org.grails.gorm.graphql.fetcher.DefaultGormDataFetcher
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
-
 /**
  * A class for retrieving a list of entities with GraphQL
  *
@@ -29,7 +28,7 @@ import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
 @CompileStatic
 class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> implements ReadingGormDataFetcher {
 
-    Map<String, Boolean> batchModeEnabled = [:]
+    Map<String, Boolean> batchModeEnabled
 
     private static Class hibernatePropertyConfig
 
@@ -39,9 +38,10 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
         } catch (ClassNotFoundException e) { }
     }
 
-    EntityDataFetcher(PersistentEntity entity) {
-        super(entity)
-        for (Association association: entity.associations) {
+    protected void initializeEntity(PersistentEntity entity) {
+        super.initializeEntity(entity)
+        batchModeEnabled = [:]
+        for (Association association: associations.values()) {
             //Workaround for groovy issue (Groovy thinks association.mapping.mappedForm is a Collection)
             PropertyMapping<Property> propertyMapping = association.mapping
             Property mapping = propertyMapping.mappedForm
@@ -54,18 +54,19 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
         }
     }
 
-    static final Map<String, GraphQLInputType> ARGUMENTS = [:]
+    //The new LinkedHasMap is to work around a static compilation bug
+    static final Map<String, GraphQLInputType> ARGUMENTS = new LinkedHashMap<String, GraphQLInputType>([
+       max: Scalars.GraphQLInt,
+       offset: Scalars.GraphQLInt,
+       sort: Scalars.GraphQLString,
+       order: Scalars.GraphQLString,
+       cache: Scalars.GraphQLBoolean,
+       lock: Scalars.GraphQLBoolean,
+       ignoreCase: Scalars.GraphQLBoolean
+    ])
 
-    static {
-        ARGUMENTS.with {
-            put('max', Scalars.GraphQLInt)
-            put('offset', Scalars.GraphQLInt)
-            put('sort', Scalars.GraphQLString)
-            put('order', Scalars.GraphQLString)
-            put('cache', Scalars.GraphQLBoolean)
-            put('lock', Scalars.GraphQLBoolean)
-            put('ignoreCase', Scalars.GraphQLBoolean)
-        }
+    protected Map<String, Object> getArguments(DataFetchingEnvironment environment) {
+        environment.arguments
     }
 
     @Override
@@ -73,7 +74,7 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
     T get(DataFetchingEnvironment environment) {
         Map queryArgs = defaultQueryOptions(environment)
 
-        for (Map.Entry<String, Object> entry: environment.arguments) {
+        for (Map.Entry<String, Object> entry: getArguments(environment)) {
             if (entry.value != null) {
                 queryArgs.put(entry.key, entry.value)
             }
@@ -93,7 +94,11 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
             }
         }
 
-        (T)new DetachedCriteria(entity.javaClass).list(queryArgs)
+        (T)executeQuery(environment, queryArgs)
+    }
+
+    protected List executeQuery(DataFetchingEnvironment environment, Map queryArgs) {
+        new DetachedCriteria(entity.javaClass).list(queryArgs)
     }
 
     @Override

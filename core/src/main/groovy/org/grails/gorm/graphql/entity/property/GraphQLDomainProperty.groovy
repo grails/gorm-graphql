@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.entity.property
 
 import graphql.schema.GraphQLType
+import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 /**

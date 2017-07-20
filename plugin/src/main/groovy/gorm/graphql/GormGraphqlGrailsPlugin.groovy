@@ -1,6 +1,6 @@
 package gorm.graphql
 
-import grails.plugins.*
+import grails.plugins.Plugin
 import grails.web.mime.MimeType
 import graphql.GraphQL
 import org.grails.gorm.graphql.Schema

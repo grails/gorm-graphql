@@ -60,7 +60,25 @@ class UserRole implements Serializable {
         version false
     }
 
-    static graphql = GraphQLMapping.build {
+    /**
+     * The use of lazy here is required because the
+     * data fetcher provided needs access to the persistent
+     * entity API which will not be available when the
+     * class is initialized
+     */
+    static graphql = GraphQLMapping.lazy {
         operations.update = false
+
+        query('usersByRole') {
+            argument('role', Long)
+            type([User])
+            dataFetcher(new UsersByRoleDataFetcher())
+        }
+
+        mutation('revokeAllRoles') {
+            argument('user', Long)
+            type([success: Boolean])
+            dataFetcher(new RevokeAllRolesDataFetcher())
+        }
     }
 }

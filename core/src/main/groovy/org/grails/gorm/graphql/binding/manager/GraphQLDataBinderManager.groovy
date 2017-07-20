@@ -20,7 +20,6 @@ interface GraphQLDataBinderManager {
      */
     void register(Class clazz, GraphQLDataBinder dataBinder)
 
-
     /**
      * Returns a data binder to be used for the provided class
      *

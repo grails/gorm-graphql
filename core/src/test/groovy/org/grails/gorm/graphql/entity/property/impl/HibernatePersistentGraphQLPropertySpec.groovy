@@ -1,11 +1,10 @@
 package org.grails.gorm.graphql.entity.property.impl
 
-import static org.grails.gorm.graphql.entity.property.GraphQLPropertyType.*
-import graphql.schema.GraphQLInputObjectType
-import graphql.schema.GraphQLObjectType
 import grails.gorm.annotation.Entity
 import graphql.Scalars
+import graphql.schema.GraphQLInputObjectType
 import graphql.schema.GraphQLList
+import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLType
 import org.codehaus.groovy.util.HashCodeHelper
 import org.grails.datastore.mapping.model.PersistentProperty
@@ -14,6 +13,8 @@ import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.grails.orm.hibernate.cfg.HibernateMappingContext
 import spock.lang.Shared
+
+import static org.grails.gorm.graphql.types.GraphQLPropertyType.*
 
 class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
 

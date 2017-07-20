@@ -1,9 +1,5 @@
 package org.grails.gorm.graphql.response.errors
 
-import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
-import static graphql.schema.GraphQLList.list
-import static graphql.schema.GraphQLNonNull.nonNull
-import static graphql.schema.GraphQLObjectType.newObject
 import graphql.Scalars
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
@@ -14,6 +10,11 @@ import org.grails.datastore.gorm.GormValidateable
 import org.grails.gorm.graphql.response.CachingGraphQLResponseHandler
 import org.springframework.context.MessageSource
 import org.springframework.validation.FieldError
+
+import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
+import static graphql.schema.GraphQLList.list
+import static graphql.schema.GraphQLNonNull.nonNull
+import static graphql.schema.GraphQLObjectType.newObject
 
 /**
  * The default way to respond with validation errors in GraphQL.

@@ -1,7 +1,6 @@
 package grails.test.app
 
 import grails.testing.mixin.integration.Integration
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Stepwise
 

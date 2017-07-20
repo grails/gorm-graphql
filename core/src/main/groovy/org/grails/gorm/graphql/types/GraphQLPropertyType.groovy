@@ -1,4 +1,4 @@
-package org.grails.gorm.graphql.entity.property
+package org.grails.gorm.graphql.types
 
 import groovy.transform.CompileStatic
 
@@ -68,6 +68,8 @@ enum GraphQLPropertyType {
             case GraphQLOperationType.UPDATE:
                 UPDATE_EMBEDDED
                 break
+            default:
+                throw new UnsupportedOperationException("No embedded type available for ${operationType.name()}")
         }
     }
 

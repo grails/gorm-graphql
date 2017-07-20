@@ -1,13 +1,13 @@
 package org.grails.gorm.graphql.types.output
 
 import graphql.schema.GraphQLFieldDefinition
-import graphql.schema.GraphQLInputObjectType
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLOutputType
+import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
-import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
+import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetcher
 import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
@@ -16,7 +16,13 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLObjectType.newObject
 
-
+/**
+ * A base class used to create object types that represent an entity
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
+@CompileStatic
 abstract class ObjectTypeBuilder {
 
     protected Map<PersistentEntity, GraphQLObjectType> objectTypeCache = [:]
@@ -49,14 +55,16 @@ abstract class ObjectTypeBuilder {
 
         GraphQLObjectType objectType
 
-        if (!objectTypeCache.containsKey(entity)) {
-
+        if (objectTypeCache.containsKey(entity)) {
+            objectTypeCache.get(entity)
+        }
+        else {
             final String DESCRIPTION = GraphQLEntityHelper.getDescription(entity)
 
             List<GraphQLDomainProperty> properties = builder.getProperties(entity)
 
             GraphQLObjectType.Builder obj = newObject()
-                    .name(typeManager.namingConvention.getType(entity,type))
+                    .name(typeManager.namingConvention.getType(entity, type))
                     .description(DESCRIPTION)
 
             for (GraphQLDomainProperty prop: properties) {
@@ -72,9 +80,6 @@ abstract class ObjectTypeBuilder {
             objectType = obj.build()
             objectTypeCache.put(entity, objectType)
             objectType
-        }
-        else {
-            objectTypeCache.get(entity)
         }
     }
 

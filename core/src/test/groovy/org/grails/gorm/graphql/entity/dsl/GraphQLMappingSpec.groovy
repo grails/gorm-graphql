@@ -1,6 +1,6 @@
 package org.grails.gorm.graphql.entity.dsl
 
-import org.grails.gorm.graphql.entity.property.impl.AdditionalGraphQLProperty
+import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
 import spock.lang.Specification
 
 class GraphQLMappingSpec extends Specification {
@@ -26,7 +26,7 @@ class GraphQLMappingSpec extends Specification {
                 description 'Foo Bar'
             }
             add('foo', String)
-            add(AdditionalGraphQLProperty.newProperty().name('barFoo').type(Long))
+            add(CustomGraphQLProperty.newProperty().name('barFoo').type(Long))
             add('bar', String) {
                 deprecationReason 'Deprecated'
             }
@@ -52,7 +52,7 @@ class GraphQLMappingSpec extends Specification {
         thrown(IllegalArgumentException)
 
         when:
-        mapping.add(AdditionalGraphQLProperty.newProperty())
+        mapping.add(CustomGraphQLProperty.newProperty())
 
         then:
         Exception ex = thrown(IllegalArgumentException)
@@ -99,29 +99,5 @@ class GraphQLMappingSpec extends Specification {
         mapping.propertyMappings.get('foo').description == 'Foo'
         mapping.propertyMappings.get('bar').deprecated
         mapping.propertyMappings.get('fooBar').dataFetcher != null
-    }
-
-    void "test create embedded mapping"() {
-        given:
-        GraphQLMapping mapping = GraphQLMapping.build {
-            exclude('foo.bar', 'x', 'foo.y')
-            deprecated true
-        }
-
-        expect:
-        mapping.excluded.size() == 3
-        mapping.excluded.contains('foo.bar')
-        mapping.excluded.contains('x')
-        mapping.excluded.contains('foo.y')
-        mapping.deprecated
-
-        when:
-        mapping = mapping.createEmbeddedMapping('foo')
-
-        then: 'A new mapping is created with only excluded properties starting with "foo"'
-        mapping.excluded.size() == 2
-        mapping.excluded.contains('bar')
-        mapping.excluded.contains('y')
-        !mapping.deprecated
     }
 }

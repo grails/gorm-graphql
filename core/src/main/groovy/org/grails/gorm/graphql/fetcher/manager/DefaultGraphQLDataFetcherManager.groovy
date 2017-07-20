@@ -6,13 +6,9 @@ import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
-import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
-import org.grails.gorm.graphql.fetcher.impl.CreateEntityDataFetcher
-import org.grails.gorm.graphql.fetcher.impl.DeleteEntityDataFetcher
-import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
-import org.grails.gorm.graphql.fetcher.impl.SingleEntityDataFetcher
-import org.grails.gorm.graphql.fetcher.impl.UpdateEntityDataFetcher
+import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.*
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 
 /**

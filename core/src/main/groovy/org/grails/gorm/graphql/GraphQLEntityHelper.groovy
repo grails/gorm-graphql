@@ -6,6 +6,7 @@ import org.grails.datastore.mapping.model.IllegalMappingException
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.reflect.ClassPropertyFetcher
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
+import org.grails.gorm.graphql.entity.dsl.LazyGraphQLMapping
 
 /**
  * A helper class to get GraphQL mappings and descriptions for GORM entities
@@ -57,6 +58,9 @@ class GraphQLEntityHelper {
             }
             else if (graphql instanceof Closure) {
                 mapping = new GraphQLMapping().build((Closure)graphql)
+            }
+            else if (graphql instanceof LazyGraphQLMapping) {
+                mapping = ((LazyGraphQLMapping)graphql).initialize()
             }
             else if (graphql instanceof GraphQLMapping) {
                 mapping = (GraphQLMapping)graphql

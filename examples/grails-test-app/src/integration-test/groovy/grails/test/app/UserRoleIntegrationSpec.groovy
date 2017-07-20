@@ -2,6 +2,7 @@ package grails.test.app
 
 import grails.testing.mixin.integration.Integration
 import grails.testing.spock.OnceBefore
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.spockframework.util.StringMessagePrintStream
 import spock.lang.Shared
@@ -145,83 +146,182 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
         System.setOut(originalOut)
     }
 
-    void "test listing entities with a complex composite id"() {
-
-    }
-    /*
-    void "test updating an entity with a simple composite id"() {
+    void "test we cannot update a UserRole because it is turned off in the mapping"() {
         when:
         def resp = graphQL.graphql("""
             mutation {
-                simpleCompositeUpdate(title: "x", description: "y", simpleComposite: {
-                    someUUID: "8e22054f-a419-44dd-8726-1e53023cb7be"
-                }) {
-                    title
-                    description
-                    someUUID
+                userRoleUpdate(role: ${roleId}, user: ${userId}) {
+                    user {
+                        id
+                    }
+                    role {
+                        id
+                    }
                 }
             }
-        """)
-        JSONObject obj = resp.json.data.simpleCompositeUpdate
+        """.toString())
+        JSONObject result = resp.json
 
         then:
-        obj.title == 'x'
-        obj.description == 'y'
-        obj.someUUID == '8e22054f-a419-44dd-8726-1e53023cb7be'
+        result.errors.size() == 1
+        result.errors[0].message == "Validation error of type FieldUndefined: Field userRoleUpdate is undefined"
     }
 
-    void "test retrieving an entity with a simple composite id"() {
+
+    void "test listing entities with a complex composite id"() {
         when:
         def resp = graphQL.graphql("""
             {
-                simpleComposite(title: "x", description: "y") {
-                    title
-                    description
-                    someUUID
+                userRoleList {
+                    user {
+                        profile {
+                            email
+                        }
+                    }
+                    role {
+                        authority
+                    }
                 }
             }
-        """)
-        JSONObject obj = resp.json.data.simpleComposite
-
-        then:
-        obj.title == 'x'
-        obj.description == 'y'
-        obj.someUUID == '8e22054f-a419-44dd-8726-1e53023cb7be'
-    }
-
-    void "test listing entities with a simple composite id"() {
-        when:
-        def resp = graphQL.graphql("""
-            {
-                simpleCompositeList {
-                    title
-                    description
-                    someUUID
-                }
-            }
-        """)
-        JSONArray obj = resp.json.data.simpleCompositeList
+        """.toString())
+        JSONArray obj = resp.json.data.userRoleList
 
         then:
         obj.size() == 1
-        obj[0].title == 'x'
-        obj[0].description == 'y'
-        obj[0].someUUID == '8e22054f-a419-44dd-8726-1e53023cb7be'
+        obj[0].user.profile.email == 'admin@email.com'
+        obj[0].role.authority == 'ROLE_ADMIN'
     }
 
-    void "test deleting an entity with a simple composite id"() {
+    void "test custom query operation added in the mapping"() {
         when:
         def resp = graphQL.graphql("""
+            {
+                usersByRole(role: ${roleId}) {
+                    profile {
+                        email
+                    }
+                }
+            }
+        """.toString())
+        JSONArray obj = resp.json.data.usersByRole
+
+        then:
+        obj.size() == 1
+        obj[0].profile.email == 'admin@email.com'
+    }
+
+    void "test custom mutation operation added in the mapping"() {
+        setup: 'Add another role to the existing user'
+        def resp = graphQL.graphql("""
             mutation {
-                simpleCompositeDelete(title: "x", description: "y") {
-                    success
+                roleCreate(role: {
+                    authority: "ROLE_USER"
+                }) {
+                    id
                 }
             }
         """)
-        JSONObject obj = resp.json.data.simpleCompositeDelete
+        Long newRoleId = resp.json.data.roleCreate.id
+        graphQL.graphql("""
+            mutation {
+                userRoleCreate(userRole: {
+                    user: {
+                        id: ${userId}
+                    },
+                    role: {
+                        id: ${newRoleId}
+                    }
+                }) {
+                    user {
+                        id
+                    }
+                    role {
+                        id
+                    }
+                }
+            }
+        """.toString())
+
+        when:
+        resp = graphQL.graphql("""
+            {
+                userRoleList {
+                    role {
+                        authority
+                    }
+                }
+            }
+        """.toString())
+        JSONArray list = resp.json.data.userRoleList
+
+        then:
+        list.size() == 2
+
+        when:
+        resp = graphQL.graphql("""
+            mutation {
+                revokeAllRoles(user: ${userId}) {
+                    success
+                }
+            }
+        """.toString())
+        JSONObject obj = resp.json.data.revokeAllRoles
+
+        then:
+        obj.success
+
+        when:
+        resp = graphQL.graphql("""
+            {
+                userRoleList {
+                    user {
+                        id
+                    }
+                    role {
+                        id
+                    }
+                }
+            }
+        """.toString())
+        list = resp.json.data.userRoleList
+
+        then: 'Check if the delete worked'
+        list.empty
+
+        cleanup: 'Re-create the user role so the next test can delete it'
+        graphQL.graphql("""
+            mutation {
+                userRoleCreate(userRole: {
+                    user: {
+                        id: ${userId}
+                    },
+                    role: {
+                        id: ${roleId}
+                    }
+                }) {
+                    user {
+                        id
+                    }
+                    role {
+                        id
+                    }
+                }
+            }
+        """.toString())
+    }
+
+    void "test deleting an entity with a complex composite id"() {
+        when:
+        def resp = graphQL.graphql("""
+            mutation {
+                userRoleDelete(role: ${roleId}, user: ${userId}) {
+                    success
+                }
+            }
+        """.toString())
+        JSONObject obj = resp.json.data.userRoleDelete
 
         then:
         obj.success
     }
-    */
 }

@@ -2,7 +2,7 @@ package org.grails.gorm.graphql.entity
 
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
+import org.grails.gorm.graphql.types.GraphQLPropertyType
 
 /**
  * A class to return the names of class types and query/mutation names
@@ -59,14 +59,8 @@ class GraphQLEntityNamingConvention {
      * @return The name to use. Ex: "Person", "PersonCreate", "PersonUpdate", "PersonInputNested"
      */
     String getType(PersistentEntity entity, GraphQLPropertyType type) {
-        final String SIMPLE_NAME = entity.javaClass.simpleName
-        if (type == GraphQLPropertyType.OUTPUT) {
-            SIMPLE_NAME
-        }
-        else {
-            SIMPLE_NAME + type.name().split('_').collect { String name ->
-                name.toLowerCase().capitalize()
-            }.join('')
-        }
+        entity.javaClass.simpleName + type.name().split('_').collect { String name ->
+            name.toLowerCase().capitalize()
+        }.join('').replace('Output', '')
     }
 }

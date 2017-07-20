@@ -1,7 +1,6 @@
 package gorm.graphql
 
 import grails.config.Config
-import grails.config.Settings
 import grails.core.support.GrailsConfigurationAware
 import groovy.transform.CompileStatic
 import org.grails.plugins.databinding.DataBindingGrailsPlugin
@@ -15,7 +14,7 @@ class GrailsGraphQLConfiguration implements GrailsConfigurationAware {
 
     private Config config
 
-    Boolean enabled
+    Boolean enabled = true
 
     List<String> dateFormats
 

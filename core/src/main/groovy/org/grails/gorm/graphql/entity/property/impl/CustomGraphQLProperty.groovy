@@ -6,7 +6,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
-import org.grails.gorm.graphql.entity.property.GraphQLPropertyType
+import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 /**
@@ -19,7 +19,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
 @AutoClone
 @Builder(builderStrategy = SimpleStrategy, prefix = '')
 @CompileStatic
-class AdditionalGraphQLProperty implements GraphQLDomainProperty {
+class CustomGraphQLProperty implements GraphQLDomainProperty {
 
     String name
     Class type
@@ -36,7 +36,7 @@ class AdditionalGraphQLProperty implements GraphQLDomainProperty {
         typeManager.getType(type, nullable)
     }
 
-    static AdditionalGraphQLProperty newProperty() {
-        new AdditionalGraphQLProperty()
+    static CustomGraphQLProperty newProperty() {
+        new CustomGraphQLProperty()
     }
 }

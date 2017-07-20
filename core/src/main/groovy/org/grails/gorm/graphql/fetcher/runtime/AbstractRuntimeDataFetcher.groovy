@@ -3,6 +3,9 @@ package org.grails.gorm.graphql.fetcher.runtime
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
+import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.gorm.graphql.fetcher.DataFetcherNotFoundException
+import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
 
 /**
@@ -18,16 +21,25 @@ import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
 abstract class AbstractRuntimeDataFetcher<T> implements DataFetcher<T> {
 
     GraphQLDataFetcherManager manager
+    PersistentEntity entity
+    GraphQLDataFetcherType type
 
     private DataFetcher resolvedFetcher
 
-    AbstractRuntimeDataFetcher(GraphQLDataFetcherManager manager) {
+    AbstractRuntimeDataFetcher(PersistentEntity entity,
+                               GraphQLDataFetcherManager manager,
+                               GraphQLDataFetcherType type) {
+        this.entity = entity
         this.manager = manager
+        this.type = type
     }
 
     T get(DataFetchingEnvironment environment) {
         if (resolvedFetcher == null) {
             resolvedFetcher = resolveFetcher()
+        }
+        if (resolvedFetcher == null) {
+            throw new DataFetcherNotFoundException(entity, type)
         }
         resolvedFetcher.get(environment)
     }

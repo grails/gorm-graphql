@@ -1,10 +1,8 @@
 package gorm.graphql
 
 import grails.testing.web.controllers.ControllerUnitTest
-import grails.util.TypeConvertingMap
 import graphql.ExecutionResult
 import graphql.GraphQL
-import groovy.json.JsonSlurper
 import spock.lang.Specification
 
 class GraphqlControllerSpec extends Specification implements ControllerUnitTest<GraphqlController> {
