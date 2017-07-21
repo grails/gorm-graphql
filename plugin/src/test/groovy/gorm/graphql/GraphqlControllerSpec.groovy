@@ -20,6 +20,15 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         }
     }
 
+    def "calling graphql endpoint without supplying a query should not crash"() {
+        when:
+        controller.grailsGraphQLConfiguration = stubEnabledGrailsGraphQLConfiguration()
+        controller.index()
+
+        then:
+        response.status == 422
+    }
+
     void "test graphql with GET request"() {
         given:
         GraphQL graphQL = Mock(GraphQL)
