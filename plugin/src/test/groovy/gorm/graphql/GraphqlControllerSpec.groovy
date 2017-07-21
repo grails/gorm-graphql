@@ -85,7 +85,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
-        GrailsGraphQLConfiguration grailsGraphQLConfiguration = stubEnabledGrailsGraphQLConfiguration()
+        controller.grailsGraphQLConfiguration = stubEnabledGrailsGraphQLConfiguration()
 
         when:
         request.setJson('{"query": "query2", "operationName": "operationName", "variables": {"foo": 2}}')
@@ -100,7 +100,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
-        GrailsGraphQLConfiguration grailsGraphQLConfiguration = stubEnabledGrailsGraphQLConfiguration()
+        controller.grailsGraphQLConfiguration = stubEnabledGrailsGraphQLConfiguration()
 
         when:
         request.setJson('{"query": "query"}')
