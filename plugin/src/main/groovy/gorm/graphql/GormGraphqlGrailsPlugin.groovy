@@ -75,7 +75,6 @@ Brief summary/description of the plugin.
             dateFormats = '#{grailsGraphQLConfiguration.getDateFormats()}'
             dateFormatLenient = '#{grailsGraphQLConfiguration.getDateFormatLenient()}'
             listArguments = '#{grailsGraphQLConfiguration.getListArguments()}'
-            runtimeDataFetching = '#{grailsGraphQLConfiguration.getRuntimeDataFetching()}'
         }
 
         graphQLSchema(graphQLSchemaGenerator: "generate")

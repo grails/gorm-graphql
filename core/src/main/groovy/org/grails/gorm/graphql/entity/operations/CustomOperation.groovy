@@ -4,6 +4,8 @@ import graphql.schema.*
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.gorm.graphql.fetcher.impl.CustomOperationInterceptorDataFetcher
+import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.grails.gorm.graphql.types.TypeNotFoundException
@@ -112,7 +114,10 @@ class CustomOperation extends ReturnsType<CustomOperation> {
         }
     }
 
-    GraphQLFieldDefinition.Builder createField(GraphQLTypeManager typeManager, MappingContext mappingContext) {
+    GraphQLFieldDefinition.Builder createField(PersistentEntity entity,
+                                               GraphQLTypeManager typeManager,
+                                               GraphQLInterceptorManager interceptorManager,
+                                               MappingContext mappingContext) {
 
         validate()
 
@@ -121,7 +126,7 @@ class CustomOperation extends ReturnsType<CustomOperation> {
         GraphQLFieldDefinition.Builder customQuery = newFieldDefinition()
                 .name(name)
                 .type(outputType)
-                .dataFetcher(dataFetcher)
+                .dataFetcher(new CustomOperationInterceptorDataFetcher(entity.javaClass, dataFetcher, interceptorManager))
 
         if (!arguments.isEmpty()) {
             for (CustomArgument argument: arguments) {

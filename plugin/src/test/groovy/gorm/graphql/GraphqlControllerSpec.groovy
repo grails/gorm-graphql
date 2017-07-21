@@ -19,10 +19,10 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
             1 * getData() >> ''
         }
     }
-
-    def "calling graphql endpoint without supplying a query should not crash"() {
+      
+    void "test graphql with invalid request"() {
         when:
-        controller.grailsGraphQLConfiguration = stubEnabledGrailsGraphQLConfiguration()
+        controller.grailsGraphQLConfiguration = mockConfiguration()
         controller.index()
 
         then:
@@ -33,7 +33,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
-        controller.grailsGraphQLConfiguration = stubEnabledGrailsGraphQLConfiguration()
+        controller.grailsGraphQLConfiguration = mockConfiguration()
 
         when:
         params.query = 'query'
@@ -64,7 +64,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
-        controller.grailsGraphQLConfiguration = stubEnabledGrailsGraphQLConfiguration()
+        controller.grailsGraphQLConfiguration = mockConfiguration()
 
         when:
         request.setJson('{"query": "query"}')
@@ -79,7 +79,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
-        controller.grailsGraphQLConfiguration = stubEnabledGrailsGraphQLConfiguration()
+        controller.grailsGraphQLConfiguration = mockConfiguration()
 
         when:
         request.setJson('{"query": "query2", "operationName": "operationName"}')
@@ -94,7 +94,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
-        controller.grailsGraphQLConfiguration = stubEnabledGrailsGraphQLConfiguration()
+        controller.grailsGraphQLConfiguration = mockConfiguration()
 
         when:
         request.setJson('{"query": "query2", "operationName": "operationName", "variables": {"foo": 2}}')
@@ -109,7 +109,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
-        controller.grailsGraphQLConfiguration = stubEnabledGrailsGraphQLConfiguration()
+        controller.grailsGraphQLConfiguration = mockConfiguration()
 
         when:
         request.setJson('{"query": "query"}')
@@ -140,9 +140,4 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         response.contentType == "text/html;charset=utf-8"
     }
 
-    private def stubEnabledGrailsGraphQLConfiguration() {
-        Stub(GrailsGraphQLConfiguration) {
-            getEnabled() >> true
-        }
-    }
 }

@@ -64,7 +64,7 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
     }
 
     @SuppressWarnings('NestedForLoop')
-    protected Map defaultQueryOptions(DataFetchingEnvironment environment) {
+    protected Map getFetchArguments(DataFetchingEnvironment environment) {
         Set<String> joinProperties = []
 
         if (propertyName) {
@@ -72,15 +72,17 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         }
 
         for (Field field: environment.fields) {
-            for (Selection selection: field.selectionSet.selections) {
-                if (selection instanceof Field) {
-                    Field selectedField = (Field)selection
-                    if (shouldJoinProperty(selectedField)) {
-                        if (propertyName) {
-                            joinProperties.add(propertyName + '.' + selectedField.name)
-                        }
-                        else {
-                            joinProperties.add(selectedField.name)
+            if (field.selectionSet != null) {
+                for (Selection selection: field.selectionSet.selections) {
+                    if (selection instanceof Field) {
+                        Field selectedField = (Field)selection
+                        if (shouldJoinProperty(selectedField)) {
+                            if (propertyName) {
+                                joinProperties.add(propertyName + '.' + selectedField.name)
+                            }
+                            else {
+                                joinProperties.add(selectedField.name)
+                            }
                         }
                     }
                 }
@@ -131,7 +133,7 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
             for (Map.Entry<String, Object> prop: idProperties) {
                 eq(prop.key, prop.value)
             }
-        }.get(defaultQueryOptions(environment))
+        }.get(getFetchArguments(environment))
     }
 
     abstract T get(DataFetchingEnvironment environment)

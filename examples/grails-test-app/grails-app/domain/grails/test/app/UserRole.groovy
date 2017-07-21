@@ -71,7 +71,7 @@ class UserRole implements Serializable {
 
         query('usersByRole') {
             argument('role', Long)
-            type([User])
+            type([String])
             dataFetcher(new UsersByRoleDataFetcher())
         }
 

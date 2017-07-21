@@ -18,7 +18,7 @@ interface GraphQLDataBinderManager {
      * @param clazz The class to be bound
      * @param dataBinder The data binding instance to be used
      */
-    void register(Class clazz, GraphQLDataBinder dataBinder)
+    void registerDataBinder(Class clazz, GraphQLDataBinder dataBinder)
 
     /**
      * Returns a data binder to be used for the provided class
