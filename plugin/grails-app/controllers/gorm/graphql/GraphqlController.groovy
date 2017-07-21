@@ -1,24 +1,25 @@
 package gorm.graphql
 
 import grails.io.IOUtils
-import grails.util.TypeConvertingMap
 import grails.web.mapping.LinkGenerator
-import grails.web.mime.MimeType
 import graphql.ExecutionResult
 import graphql.GraphQL
-import groovy.json.JsonSlurper
+import groovy.transform.CompileStatic
+import org.springframework.context.MessageSource
 import org.springframework.http.HttpMethod
 
+@CompileStatic
 class GraphqlController {
 
     static responseFormats = ['json', 'xml']
-
 
     GraphQL graphQL
 
     LinkGenerator grailsLinkGenerator
 
     GrailsGraphQLConfiguration grailsGraphQLConfiguration
+
+    MessageSource messageSource
 
     protected Object buildContext() {
         [locale: request.locale]
@@ -29,53 +30,35 @@ class GraphqlController {
             render(status: 404)
             return
         }
-        String query = null
-        String operationName = null
-        Object context = buildContext()
-        Map<String, Object> variables = null
+
+        GraphQLRequest graphQLRequest
 
         HttpMethod method = HttpMethod.resolve(request.method)
         if (request.contentLength != 0 && method != HttpMethod.GET) {
-
-            String encoding = request.characterEncoding
-            if (encoding == null) {
-                encoding = "UTF-8"
-            }
-
+            String encoding = request.characterEncoding ?: 'UTF-8'
             String body = IOUtils.toString(request.inputStream, encoding)
-
-            if (request.mimeTypes.contains(MimeType.JSON)) {
-                TypeConvertingMap json = new TypeConvertingMap((Map)new JsonSlurper().parseText(body))
-                query = json.query.toString()
-                operationName = json.containsKey('operationName') ? json.operationName : null
-                if (json.variables instanceof Map) {
-                    variables = json.variables
-                } else {
-                    variables = Collections.emptyMap()
-                }
-            }
-            else if (request.mimeTypes.contains(GormGraphqlGrailsPlugin.GRAPHQL_MIME)) {
-                query = body
-                operationName = null
-                variables = Collections.emptyMap()
-            }
+            graphQLRequest = GraphQLRequestUtils.graphQLRequestWithBodyAndMimeTypes(body, request.mimeTypes)
         } else {
-            query = params.query
-            operationName = params.containsKey('operationName') ? params.operationName : null
-            if (params.containsKey('variables')) {
-                variables = (Map)new JsonSlurper().parseText(params.variables)
-            } else {
-                variables = Collections.emptyMap()
-            }
+            graphQLRequest = GraphQLRequestUtils.graphQLRequestWithParams(params)
         }
 
-        ExecutionResult executionResult = graphQL.execute(query, operationName, context, variables)
         Map<String, Object> result = new LinkedHashMap<>()
-        if (executionResult.getErrors().size() > 0) {
-            result.put("errors", executionResult.getErrors())
+        if (graphQLRequest == null) {
+            response.setStatus(422)
+            return result
         }
-        result.put("data", executionResult.getData())
+        if ( !graphQLRequest.validate() ) {
+            result.put('errors', graphQLRequest.graphQLErrors(messageSource, request.locale))
+            response.setStatus(422)
+            return result
+        }
 
+        Object context = buildContext()
+        ExecutionResult executionResult = graphQL.execute(graphQLRequest.query, graphQLRequest.operationName, context, graphQLRequest.variables)
+        if (executionResult.errors.size() > 0) {
+            result.put('errors', executionResult.errors)
+        }
+        result.put('data', executionResult.data)
         result
     }
 
