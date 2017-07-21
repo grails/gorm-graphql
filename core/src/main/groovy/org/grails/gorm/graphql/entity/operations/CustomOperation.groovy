@@ -12,6 +12,7 @@ import org.grails.gorm.graphql.types.TypeNotFoundException
 
 import static graphql.schema.GraphQLArgument.newArgument
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
+
 /**
  * This class stores data about custom query operations
  * that users provide in the mapping of the entity.

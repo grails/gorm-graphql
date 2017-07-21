@@ -11,6 +11,7 @@ import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
 import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
 import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
+
 /**
  * A runtime data fetcher implementation used for fetchers
  * that require data binding

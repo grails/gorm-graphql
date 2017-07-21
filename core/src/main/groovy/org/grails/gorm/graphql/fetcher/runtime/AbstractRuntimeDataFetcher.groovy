@@ -54,8 +54,8 @@ abstract class AbstractRuntimeDataFetcher<T> implements DataFetcher<T>, GormData
             interceptors = interceptorManager.getInterceptors(entity.javaClass) ?: (List<GraphQLFetcherInterceptor>)[]
         }
         if (!intercept(environment)) {
-            final String name = environment.fields.empty ? "UNKNOWN" : environment.fields[0].name
-            log.info("Execution of ${name} was prevented by an interceptor")
+            final String NAME = environment.fields.empty ? 'UNKNOWN' : environment.fields[0].name
+            log.info("Execution of ${NAME} was prevented by an interceptor")
             return null
         }
         if (resolvedFetcher == null) {

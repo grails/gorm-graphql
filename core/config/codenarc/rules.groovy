@@ -277,7 +277,7 @@ ruleset {
     AbstractClassName
     ClassName
     ClassNameSameAsFilename
-    ConfusingMethodName
+    //ConfusingMethodName
     //'FactoryMethodName' doNotApplyToFilesMatching: '.*Spec.groovy'
     FieldName
     InterfaceName

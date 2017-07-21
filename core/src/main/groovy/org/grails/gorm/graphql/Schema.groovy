@@ -38,6 +38,7 @@ import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLList.list
 import static graphql.schema.GraphQLObjectType.newObject
 import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.*
+
 /**
  * Created by jameskleeh on 5/19/17.
  */
@@ -152,7 +153,6 @@ class Schema {
             }
         }
     }
-
 
     @SuppressWarnings(['AbcMetric', 'NestedForLoop', 'MethodSize'])
     GraphQLSchema generate() {

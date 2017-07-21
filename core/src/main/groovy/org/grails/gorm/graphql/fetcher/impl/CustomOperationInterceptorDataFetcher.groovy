@@ -38,11 +38,11 @@ class CustomOperationInterceptorDataFetcher implements DataFetcher {
             interceptors = interceptorManager.getInterceptors(clazz) ?: (List<GraphQLFetcherInterceptor>)[]
         }
 
-        final String name = environment.fields.empty ? "UNKNOWN" : environment.fields[0].name
+        final String NAME = environment.fields.empty ? 'UNKNOWN' : environment.fields[0].name
 
         for (GraphQLFetcherInterceptor i: interceptors) {
-            if (!i.onCustomOperation(name, environment)) {
-                log.info("Execution of ${name} was prevented by an interceptor")
+            if (!i.onCustomOperation(NAME, environment)) {
+                log.info("Execution of ${NAME} was prevented by an interceptor")
                 return null
             }
         }

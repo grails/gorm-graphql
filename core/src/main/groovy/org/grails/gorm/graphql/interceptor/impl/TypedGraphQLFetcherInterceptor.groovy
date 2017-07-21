@@ -17,7 +17,7 @@ import java.lang.reflect.ParameterizedType
  * @since 1.0.0
  */
 @CompileStatic
-abstract class AbstractGraphQLFetcherInterceptor<T> implements GraphQLFetcherInterceptor {
+class TypedGraphQLFetcherInterceptor<T> implements GraphQLFetcherInterceptor {
 
     private Class resolvedType
 
@@ -25,7 +25,7 @@ abstract class AbstractGraphQLFetcherInterceptor<T> implements GraphQLFetcherInt
         if (resolvedType == null) {
             ParameterizedType parameterizedType = (ParameterizedType)getClass().genericInterfaces.find { genericInterface ->
                 genericInterface instanceof ParameterizedType &&
-                        AbstractGraphQLFetcherInterceptor.isAssignableFrom((Class)((ParameterizedType)genericInterface).rawType)
+                        TypedGraphQLFetcherInterceptor.isAssignableFrom((Class)((ParameterizedType)genericInterface).rawType)
             }
 
             if (parameterizedType?.actualTypeArguments != null) {

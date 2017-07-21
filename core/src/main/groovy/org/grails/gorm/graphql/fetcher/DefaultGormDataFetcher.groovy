@@ -63,7 +63,7 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         join
     }
 
-    @SuppressWarnings('NestedForLoop')
+    @SuppressWarnings(['NestedForLoop', 'NestedBlockDepth'])
     protected Map getFetchArguments(DataFetchingEnvironment environment) {
         Set<String> joinProperties = []
 
