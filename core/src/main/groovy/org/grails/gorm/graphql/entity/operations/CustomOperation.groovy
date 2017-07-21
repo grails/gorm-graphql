@@ -102,13 +102,13 @@ class CustomOperation extends ReturnsType<CustomOperation> {
 
     private void validate() {
         if (name == null) {
-            throw new IllegalArgumentException("A name is required for creating custom operations")
+            throw new IllegalArgumentException('A name is required for creating custom operations')
         }
         if (dataFetcher == null) {
-            throw new IllegalArgumentException("A data fetcher is required for creating custom operations")
+            throw new IllegalArgumentException('A data fetcher is required for creating custom operations')
         }
         if (returnType == null && customReturnFields == null) {
-            throw new IllegalArgumentException("A return type is required for creating custom operations")
+            throw new IllegalArgumentException('A return type is required for creating custom operations')
         }
     }
 
