@@ -19,11 +19,4 @@ class GraphQLRequest implements Validateable {
         operationName nullable: true
         variables nullable: false
     }
-
-    List<GraphQLError> graphQLErrors(MessageSource messageSource, Locale locale) {
-        errors.allErrors.collect { ObjectError error ->
-            String message = messageSource.getMessage(error.code, error.arguments, error.defaultMessage, locale)
-            new GraphQLErrorImpl(message: message, errorType: ErrorType.InvalidSyntax)
-        } as List <GraphQLError>
-    }
 }

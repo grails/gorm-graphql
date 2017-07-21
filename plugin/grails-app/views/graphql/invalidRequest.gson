@@ -1,0 +1,7 @@
+model {
+    String error
+}
+
+json {
+    error error
+}

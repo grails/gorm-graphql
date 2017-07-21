@@ -42,17 +42,13 @@ class GraphqlController {
             graphQLRequest = GraphQLRequestUtils.graphQLRequestWithParams(params)
         }
 
+        if (graphQLRequest == null || !graphQLRequest.validate() ) {
+            String message = messageSource.getMessage('graphql.invalid.request', [] as Object[], 'Invalid GraphQL request', request.locale)
+            render view: '/graphql/invalidRequest', model: [error: message]
+            response.setStatus(422)
+            return
+        }
         Map<String, Object> result = new LinkedHashMap<>()
-        if (graphQLRequest == null) {
-            response.setStatus(422)
-            return result
-        }
-        if ( !graphQLRequest.validate() ) {
-            result.put('errors', graphQLRequest.graphQLErrors(messageSource, request.locale))
-            response.setStatus(422)
-            return result
-        }
-
         Object context = buildContext()
         ExecutionResult executionResult = graphQL.execute(graphQLRequest.query, graphQLRequest.operationName, context, graphQLRequest.variables)
         if (executionResult.errors.size() > 0) {
