@@ -19,6 +19,12 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
             1 * getData() >> ''
         }
     }
+
+    private GrailsGraphQLConfiguration mockConfiguration() {
+        Stub(GrailsGraphQLConfiguration) {
+            getEnabled() >> true
+        }
+    }
       
     void "test graphql with invalid request"() {
         when:
@@ -26,7 +32,8 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         controller.index()
 
         then:
-        response.status == 422
+        view == '/graphql/invalidRequest'
+        model.error == 'Invalid GraphQL request'
     }
 
     void "test graphql with GET request"() {

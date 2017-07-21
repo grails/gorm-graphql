@@ -27,7 +27,7 @@ class GraphQLDataBinderManagerSpec extends Specification {
     void "test binders add order takes precedence"() {
         given:
         GraphQLDataBinder binder = newBinder()
-        manager.register(String, binder)
+        manager.registerDataBinder(String, binder)
 
         expect:
         manager.getDataBinder(Object) != binder
@@ -38,8 +38,8 @@ class GraphQLDataBinderManagerSpec extends Specification {
         given:
         GraphQLDataBinder serializable = newBinder()
         GraphQLDataBinder string = newBinder()
-        manager.register(String, string)
-        manager.register(Serializable, serializable)
+        manager.registerDataBinder(String, string)
+        manager.registerDataBinder(Serializable, serializable)
 
         expect:
         manager.getDataBinder(String) == string
@@ -50,8 +50,8 @@ class GraphQLDataBinderManagerSpec extends Specification {
         given:
         GraphQLDataBinder serializable = newBinder()
         GraphQLDataBinder string = newBinder()
-        manager.register(Serializable, serializable)
-        manager.register(String, string)
+        manager.registerDataBinder(Serializable, serializable)
+        manager.registerDataBinder(String, string)
 
         expect:
         manager.getDataBinder(String) == string
@@ -62,8 +62,8 @@ class GraphQLDataBinderManagerSpec extends Specification {
         given:
         GraphQLDataBinder serializable = newBinder()
         GraphQLDataBinder comparable = newBinder()
-        manager.register(Serializable, serializable)
-        manager.register(Comparable, comparable)
+        manager.registerDataBinder(Serializable, serializable)
+        manager.registerDataBinder(Comparable, comparable)
 
         expect:
         manager.getDataBinder(Long) == comparable
@@ -73,8 +73,8 @@ class GraphQLDataBinderManagerSpec extends Specification {
         given:
         GraphQLDataBinder serializable = newBinder()
         GraphQLDataBinder comparable = newBinder()
-        manager.register(Comparable, comparable)
-        manager.register(Serializable, serializable)
+        manager.registerDataBinder(Comparable, comparable)
+        manager.registerDataBinder(Serializable, serializable)
 
         expect:
         manager.getDataBinder(Long) == serializable

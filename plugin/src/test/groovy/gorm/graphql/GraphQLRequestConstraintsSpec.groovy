@@ -8,7 +8,7 @@ class GraphQLRequestConstraintsSpec extends Specification {
     @Subject
     GraphQLRequest graphQLRequest = new GraphQLRequest()
 
-    def "GraphQLExecutionRequest.query cannot be null"() {
+    void "GraphQLExecutionRequest.query cannot be null"() {
         when:
         graphQLRequest.query = null
 
@@ -16,7 +16,7 @@ class GraphQLRequestConstraintsSpec extends Specification {
         !graphQLRequest.validate(['query'])
     }
 
-    def "GraphQLExecutionRequest.operationName can be null"() {
+    void "GraphQLExecutionRequest.operationName can be null"() {
         when:
         graphQLRequest.operationName = null
 
@@ -24,7 +24,7 @@ class GraphQLRequestConstraintsSpec extends Specification {
         graphQLRequest.validate(['operationName'])
     }
 
-    def "GraphQLExecutionRequest.variables cannot be null"() {
+    void "GraphQLExecutionRequest.variables cannot be null"() {
         when:
         graphQLRequest.variables = null
 
@@ -32,7 +32,7 @@ class GraphQLRequestConstraintsSpec extends Specification {
         !graphQLRequest.validate(['variables'])
     }
 
-    def "GraphQLExecutionRequest.variables can be an empty Map"() {
+    void "GraphQLExecutionRequest.variables can be an empty Map"() {
         when:
         graphQLRequest.variables = [:]
 

@@ -42,24 +42,30 @@ class GraphqlController {
             graphQLRequest = GraphQLRequestUtils.graphQLRequestWithParams(params)
         }
 
-        if (graphQLRequest == null || !graphQLRequest.validate() ) {
+        if (!graphQLRequest?.validate()) {
             String message = messageSource.getMessage('graphql.invalid.request', [] as Object[], 'Invalid GraphQL request', request.locale)
             render view: '/graphql/invalidRequest', model: [error: message]
-            response.setStatus(422)
             return
         }
-        Map<String, Object> result = new LinkedHashMap<>()
+
         Object context = buildContext()
-        ExecutionResult executionResult = graphQL.execute(graphQLRequest.query, graphQLRequest.operationName, context, graphQLRequest.variables)
+
+        Map<String, Object> result = new LinkedHashMap<>()
+
+        ExecutionResult executionResult = graphQL.execute(graphQLRequest.query,
+                                                          graphQLRequest.operationName,
+                                                          context,
+                                                          graphQLRequest.variables)
         if (executionResult.errors.size() > 0) {
             result.put('errors', executionResult.errors)
         }
         result.put('data', executionResult.data)
+
         result
     }
 
     def browser() {
-        if (grailsGraphQLConfiguration.browser) {
+        if (grailsGraphQLConfiguration.enabled && grailsGraphQLConfiguration.browser) {
             String endpoint = grailsLinkGenerator.link(controller: 'graphql', action: 'index')
             String staticBase = grailsLinkGenerator.resource([:])
 
