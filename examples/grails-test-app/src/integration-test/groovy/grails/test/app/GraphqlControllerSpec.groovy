@@ -11,6 +11,6 @@ class GraphqlControllerSpec extends Specification implements GraphQLSpec {
         def response = rest.get(url)
 
         then:
-        response.statusCode != 500
+        response.statusCode.value() == 422
     }
 }
