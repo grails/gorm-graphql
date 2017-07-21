@@ -16,6 +16,7 @@ import org.grails.datastore.mapping.reflect.ClassUtils
 import org.grails.gorm.graphql.fetcher.DefaultGormDataFetcher
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
+
 /**
  * A class for retrieving a list of entities with GraphQL
  *

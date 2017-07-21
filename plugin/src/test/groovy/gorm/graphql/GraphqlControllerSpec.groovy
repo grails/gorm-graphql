@@ -20,10 +20,17 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         }
     }
 
+    private GrailsGraphQLConfiguration mockConfiguration() {
+        Stub(GrailsGraphQLConfiguration) {
+            getEnabled() >> true
+        }
+    }
+
     void "test graphql with GET request"() {
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
+        controller.grailsGraphQLConfiguration = mockConfiguration()
 
         when:
         params.query = 'query'
@@ -54,6 +61,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
+        controller.grailsGraphQLConfiguration = mockConfiguration()
 
         when:
         request.setJson('{"query": "query"}')
@@ -68,6 +76,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
+        controller.grailsGraphQLConfiguration = mockConfiguration()
 
         when:
         request.setJson('{"query": "query2", "operationName": "operationName"}')
@@ -82,6 +91,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
+        controller.grailsGraphQLConfiguration = mockConfiguration()
 
         when:
         request.setJson('{"query": "query2", "operationName": "operationName", "variables": {"foo": 2}}')
@@ -96,6 +106,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         given:
         GraphQL graphQL = Mock(GraphQL)
         controller.graphQL = graphQL
+        controller.grailsGraphQLConfiguration = mockConfiguration()
 
         when:
         request.setJson('{"query": "query"}')
@@ -125,4 +136,5 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         !response.text.empty
         response.contentType == "text/html;charset=utf-8"
     }
+
 }

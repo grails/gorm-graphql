@@ -1,7 +1,14 @@
 package org.grails.gorm.graphql.entity.operations
+
+import groovy.transform.CompileStatic
+
 /**
- * Created by jameskleeh on 7/20/17.
+ * Parses return types for custom arguments and operations
+ *
+ * @author James Kleeh
+ * @since 1.0.0
  */
+@CompileStatic
 class ReturnsType<T> {
 
     String name
