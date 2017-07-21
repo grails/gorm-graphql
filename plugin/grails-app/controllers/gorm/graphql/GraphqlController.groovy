@@ -13,7 +13,6 @@ class GraphqlController {
 
     static responseFormats = ['json', 'xml']
 
-
     GraphQL graphQL
 
     LinkGenerator grailsLinkGenerator

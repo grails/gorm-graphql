@@ -1,29 +1,39 @@
 package org.grails.gorm.graphql.binding.manager
 
+import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
+import org.grails.gorm.graphql.types.KeyClassQuery
 import org.springframework.beans.MutablePropertyValues
 import org.springframework.validation.DataBinder
 
 /**
  * A default implementation of {@link GraphQLDataBinderManager} that
- * will also return a result of the class requested is a subclass
- * of a class that exists in the registry
+ * will also return a result if the class requested is a subclass
+ * of a class that exists in the registry. The order of which binders
+ * are registered is relevant to their resolution. The items added last
+ * have priority when searching for subclass matches.
+ *
+ * Example:
+ * register(Collection)
+ * register(List)
+ *
+ * When the binder is searched for ArrayList, List will be returned.
  *
  * @author James Kleeh
  * @since 1.0.0
  */
 @CompileStatic
-class DefaultGraphQLDataBinderManager implements GraphQLDataBinderManager {
+class DefaultGraphQLDataBinderManager implements GraphQLDataBinderManager, KeyClassQuery<GraphQLDataBinder> {
 
-    protected final Map<Class, GraphQLDataBinder> dataBinders = [:]
+    protected final Map<Class, GraphQLDataBinder> dataBinders = new ConcurrentLinkedHashMap.Builder<Class, GraphQLDataBinder>().build()
 
     /**
      * Registers a default data binder for the Object class
      */
     DefaultGraphQLDataBinderManager() {
         //Create the default data binder
-        register(Object, new GraphQLDataBinder() {
+        registerDataBinder(Object, new GraphQLDataBinder() {
             @Override
             void bind(Object object, Map data) {
                 DataBinder dataBinder = new DataBinder(object)
@@ -36,30 +46,22 @@ class DefaultGraphQLDataBinderManager implements GraphQLDataBinderManager {
      * Registers a the data binder provided for the Object class
      */
     DefaultGraphQLDataBinderManager(GraphQLDataBinder defaultDataBinder) {
-        register(Object, defaultDataBinder)
+        registerDataBinder(Object, defaultDataBinder)
     }
 
     /**
-     * @see GraphQLDataBinderManager#register
+     * @see GraphQLDataBinderManager#registerDataBinder
      */
-    void register(Class clazz, GraphQLDataBinder dataBinder) {
+    void registerDataBinder(Class clazz, GraphQLDataBinder dataBinder) {
         dataBinders.put(clazz, dataBinder)
     }
 
     /**
      * @see GraphQLDataBinderManager#getDataBinder
+     *
+     * @return NULL if no data binder found
      */
     GraphQLDataBinder getDataBinder(Class clazz) {
-        if (dataBinders.containsKey(clazz)) {
-            return dataBinders.get(clazz)
-        }
-        List<Class> keys = dataBinders.keySet().toList()
-        keys.reverse(true)
-        for (Class key: keys) {
-            if (key.isAssignableFrom(clazz)) {
-                return dataBinders.get(key)
-            }
-        }
-        null
+        searchMap(dataBinders, clazz)
     }
 }

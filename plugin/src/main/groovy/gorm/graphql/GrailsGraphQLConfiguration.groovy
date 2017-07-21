@@ -20,8 +20,6 @@ class GrailsGraphQLConfiguration implements GrailsConfigurationAware {
 
     Boolean dateFormatLenient
 
-    Boolean runtimeDataFetching
-
     Map<String, Class> listArguments
 
     Boolean browser
@@ -38,9 +36,6 @@ class GrailsGraphQLConfiguration implements GrailsConfigurationAware {
         }
         if (dateFormatLenient == null) {
             dateFormatLenient = config.getProperty('grails.databinding.dateParsingLenient', Boolean, false)
-        }
-        if (runtimeDataFetching == null) {
-            runtimeDataFetching = true
         }
         if (browser == null) {
             browser = false

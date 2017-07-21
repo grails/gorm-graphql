@@ -1,8 +1,10 @@
 package org.grails.gorm.graphql.fetcher.runtime
 
 import graphql.schema.DataFetcher
+import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
+import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
 
 /**
  * A runtime data fetcher implementation used for fetchers
@@ -20,6 +22,15 @@ class ReadingRuntimeDataFetcher<T> extends AbstractRuntimeDataFetcher<T> {
 
     @Override
     DataFetcher resolveFetcher() {
-        manager.getReadingFetcher(entity, type)
+        fetcherManager.getReadingFetcher(entity, type)
+    }
+
+    boolean intercept(DataFetchingEnvironment environment) {
+        for (GraphQLFetcherInterceptor i: interceptors) {
+            if (!i.onQuery(environment, type)) {
+                return false
+            }
+        }
+        true
     }
 }

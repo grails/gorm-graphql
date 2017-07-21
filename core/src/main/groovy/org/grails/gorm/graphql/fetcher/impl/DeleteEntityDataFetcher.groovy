@@ -7,6 +7,7 @@ import groovy.transform.InheritConstructors
 import org.grails.datastore.gorm.GormEntity
 import org.grails.gorm.graphql.fetcher.DefaultGormDataFetcher
 import org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
+import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 
 /**
@@ -39,4 +40,8 @@ class DeleteEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements De
         (T)responseHandler.createResponse(environment, success)
     }
 
+    @Override
+    boolean supports(GraphQLDataFetcherType type) {
+        type == GraphQLDataFetcherType.DELETE
+    }
 }

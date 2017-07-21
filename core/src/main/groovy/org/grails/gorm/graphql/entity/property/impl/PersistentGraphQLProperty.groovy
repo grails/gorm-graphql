@@ -131,6 +131,7 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
                         graphQLType = typeManager.getQueryType(entity, propertyType.embeddedType)
                     }
                     else {
+                        propertyType = GraphQLPropertyType.OUTPUT
                         GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity)
                         if (mapping?.operations?.output) {
                             //This is necessary to avoid StackOverflow exceptions

@@ -72,7 +72,7 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
     @Override
     @Transactional(readOnly = true)
     T get(DataFetchingEnvironment environment) {
-        Map queryArgs = defaultQueryOptions(environment)
+        Map queryArgs = getFetchArguments(environment)
 
         for (Map.Entry<String, Object> entry: getArguments(environment)) {
             if (entry.value != null) {
