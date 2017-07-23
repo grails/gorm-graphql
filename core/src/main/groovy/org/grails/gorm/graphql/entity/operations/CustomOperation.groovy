@@ -2,6 +2,8 @@ package org.grails.gorm.graphql.entity.operations
 
 import graphql.schema.*
 import groovy.transform.CompileStatic
+import groovy.transform.builder.Builder
+import groovy.transform.builder.SimpleStrategy
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.fetcher.impl.CustomOperationInterceptorDataFetcher
@@ -10,9 +12,7 @@ import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.grails.gorm.graphql.types.TypeNotFoundException
 
-import static graphql.schema.GraphQLArgument.newArgument
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
-
 /**
  * This class stores data about custom query operations
  * that users provide in the mapping of the entity.
@@ -20,16 +20,15 @@ import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
  * @author James Kleeh
  * @since 1.0.0
  */
+@Builder(builderStrategy = SimpleStrategy, prefix = '', includes = ['deprecated', 'deprecationReason', 'description', 'dataFetcher'])
 @CompileStatic
 class CustomOperation extends ReturnsType<CustomOperation> {
 
     private List<CustomArgument> arguments = []
     DataFetcher dataFetcher
-
-    CustomOperation dataFetcher(DataFetcher dataFetcher) {
-        this.dataFetcher = dataFetcher
-        this
-    }
+    boolean deprecated = false
+    String deprecationReason
+    String description
 
     private void handleArgumentClosure(CustomArgument argument, Closure closure) {
         if (closure != null) {
@@ -44,6 +43,7 @@ class CustomOperation extends ReturnsType<CustomOperation> {
         }
         arguments.add(argument)
     }
+
 
     CustomOperation argument(String name, Map<String, Class> returnType, @DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) Closure closure = null) {
         CustomArgument argument = new CustomArgument().name(name).type(returnType)
@@ -80,18 +80,22 @@ class CustomOperation extends ReturnsType<CustomOperation> {
         type
     }
 
+    GraphQLObjectType buildCustomType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
+        GraphQLObjectType.Builder builder = GraphQLObjectType.newObject()
+                .name(name.capitalize() + 'Custom')
+
+        for (Map.Entry<String, Class> entry: customReturnFields) {
+            builder.field(newFieldDefinition()
+                    .name(entry.key)
+                    .type(resolveType(typeManager, mappingContext, entry.value)))
+        }
+        builder.build()
+    }
+
     protected GraphQLOutputType getType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
         GraphQLOutputType type
         if (customReturnFields != null) {
-            GraphQLObjectType.Builder builder = GraphQLObjectType.newObject()
-                    .name(name.capitalize() + 'Custom')
-
-            for (Map.Entry<String, Class> entry: customReturnFields) {
-                builder.field(newFieldDefinition()
-                    .name(entry.key)
-                    .type(resolveType(typeManager, mappingContext, entry.value)))
-            }
-            type = builder.build()
+            type = buildCustomType(typeManager, mappingContext)
         }
         else {
             type = resolveType(typeManager, mappingContext, returnType)
@@ -127,16 +131,13 @@ class CustomOperation extends ReturnsType<CustomOperation> {
         GraphQLFieldDefinition.Builder customQuery = newFieldDefinition()
                 .name(name)
                 .type(outputType)
+                .description(description)
+                .deprecate(deprecationReason ?: (deprecated ? 'Deprecated' : null))
                 .dataFetcher(new CustomOperationInterceptorDataFetcher(entity.javaClass, dataFetcher, interceptorManager))
 
         if (!arguments.isEmpty()) {
             for (CustomArgument argument: arguments) {
-                GraphQLInputType inputType = (GraphQLInputType)typeManager.getType(argument.returnType, argument.nullable)
-                customQuery.argument(newArgument()
-                        .name(argument.name)
-                        .description(argument.description)
-                        .defaultValue(argument.defaultValue)
-                        .type(inputType))
+                customQuery.argument(argument.getArgument(typeManager))
             }
         }
 

@@ -1,7 +1,6 @@
 package org.grails.gorm.graphql.entity.operations
 
 import groovy.transform.CompileStatic
-
 /**
  * Parses return types for custom arguments and operations
  *
@@ -45,4 +44,5 @@ class ReturnsType<T> {
         collection = false
         (T)this
     }
+
 }
