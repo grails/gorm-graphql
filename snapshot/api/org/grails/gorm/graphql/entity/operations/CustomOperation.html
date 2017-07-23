@@ -136,6 +136,21 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <td class="colLast"><code><a href="#dataFetcher">dataFetcher</a></code><br></td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>boolean</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#deprecated">deprecated</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>java.lang.String</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#deprecationReason">deprecationReason</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>java.lang.String</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#description">description</a></code><br></td>
+                        </tr>
+                        
                     </table>
                    </ul>
                 </li>
@@ -182,14 +197,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#createField(PersistentEntity, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, MappingContext)">createField</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html'>GraphQLInterceptorManager</a> interceptorManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br></td>
+                            <td class="colLast"><code><a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a></code></td>
+                            <td class="colLast"><code><strong><a href="#buildCustomType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)">buildCustomType</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a></code></td>
-                            <td class="colLast"><code><strong><a href="#dataFetcher(DataFetcher)">dataFetcher</a></strong>(<a href='../../../../../../DataFetcher.html'>DataFetcher</a> dataFetcher)</code><br></td>
+                            <td class="colLast"><code><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a></code></td>
+                            <td class="colLast"><code><strong><a href="#createField(PersistentEntity, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, MappingContext)">createField</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html'>GraphQLInterceptorManager</a> interceptorManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -255,6 +270,30 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
+                        <a name="deprecated"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>boolean <strong>deprecated</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="deprecationReason"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.lang.String <strong>deprecationReason</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="description"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.lang.String <strong>description</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                 </li>
             </ul>
             
@@ -296,18 +335,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="createField(PersistentEntity, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, MappingContext)"><!-- --></a>
+                        <a name="buildCustomType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a> <strong>createField</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html'>GraphQLInterceptorManager</a> interceptorManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</h4>
+                                <h4><a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>buildCustomType</strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="dataFetcher(DataFetcher)"><!-- --></a>
+                        <a name="createField(PersistentEntity, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, MappingContext)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a> <strong>dataFetcher</strong>(<a href='../../../../../../DataFetcher.html'>DataFetcher</a> dataFetcher)</h4>
+                                <h4><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a> <strong>createField</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html'>GraphQLInterceptorManager</a> interceptorManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</h4>
                                 <p></p>
                             </li>
                         </ul>
