@@ -4,6 +4,7 @@ org.grails.gorm.graphql.binding
 org.grails.gorm.graphql.binding.manager
 org.grails.gorm.graphql.entity
 org.grails.gorm.graphql.entity.dsl
+org.grails.gorm.graphql.entity.operations
 org.grails.gorm.graphql.entity.property
 org.grails.gorm.graphql.entity.property.impl
 org.grails.gorm.graphql.entity.property.manager
@@ -11,9 +12,14 @@ org.grails.gorm.graphql.fetcher
 org.grails.gorm.graphql.fetcher.impl
 org.grails.gorm.graphql.fetcher.manager
 org.grails.gorm.graphql.fetcher.runtime
+org.grails.gorm.graphql.interceptor
+org.grails.gorm.graphql.interceptor.impl
+org.grails.gorm.graphql.interceptor.manager
 org.grails.gorm.graphql.response
 org.grails.gorm.graphql.response.delete
 org.grails.gorm.graphql.response.errors
 org.grails.gorm.graphql.types
+org.grails.gorm.graphql.types.input
+org.grails.gorm.graphql.types.output
 org.grails.gorm.graphql.types.scalars
 org.grails.gorm.graphql.types.scalars.coercing

@@ -141,7 +141,7 @@ extends <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDa
                         </tr>
                                                 <tr class="altColor">
                             <td class="colFirst"><strong><code>class <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html'>DefaultGormDataFetcher</a></code></strong></td>
-                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#associationNames'>associationNames</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#entity'>entity</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#associationNames'>associationNames</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#associations'>associations</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#entity'>entity</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#propertyName'>propertyName</a></code></td>
                         </tr>
 
                     </table>
@@ -197,8 +197,20 @@ extends <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDa
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#delete(DataFetchingEnvironment)">delete</a></strong>(<a href='../../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>T</code></td>
                             <td class="colLast"><code><strong><a href="#get(DataFetchingEnvironment)">get</a></strong>(<a href='../../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>boolean</code></td>
+                            <td class="colLast"><code><strong><a href="#supports(org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)">supports</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type)</code><br></td>
                         </tr>
                         
                     </table>
@@ -217,7 +229,7 @@ extends <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDa
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html'>DefaultGormDataFetcher</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#defaultQueryOptions(DataFetchingEnvironment)'>defaultQueryOptions</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#get(DataFetchingEnvironment)'>get</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#queryInstance(DataFetchingEnvironment)'>queryInstance</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#get(DataFetchingEnvironment)'>get</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#getFetchArguments(DataFetchingEnvironment)'>getFetchArguments</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#getIdentifierValues(DataFetchingEnvironment)'>getIdentifierValues</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#initializeEntity(PersistentEntity)'>initializeEntity</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#loadEntity(PersistentEntity, java.lang.Object)'>loadEntity</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#queryInstance(DataFetchingEnvironment)'>queryInstance</a>, <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#shouldJoinProperty(Field)'>shouldJoinProperty</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -269,12 +281,29 @@ extends <a href='../../../../../../org/grails/gorm/graphql/fetcher/DefaultGormDa
                 </a>
                     <h3>Method Detail</h3>
                     
+                        <a name="delete(DataFetchingEnvironment)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@Transactional
+void <strong>delete</strong>(<a href='../../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="get(DataFetchingEnvironment)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@java.lang.Override
-@Transactional
 T <strong>get</strong>(<a href='../../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="supports(org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@java.lang.Override
+boolean <strong>supports</strong>(<a href='../../../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type)</h4>
                                 <p></p>
                             </li>
                         </ul>

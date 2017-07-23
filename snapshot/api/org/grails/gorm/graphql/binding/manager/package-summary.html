@@ -76,6 +76,34 @@ function windowTitle()
 <div class="contentContainer">
 
 
+    <div class="summary">
+        <ul class="blockList">
+            <li class="blockList">
+                <table border="0" cellpadding="3" cellspacing="0" summary="Interface Summary">
+                    <caption><span>Interface Summary</span><span class="tabEnd">&nbsp;</span></caption>
+                    <tbody>
+                    <tr>
+                        <th class="colFirst" scope="col">Interface</th>
+                        <th class="colLast" scope="col">Description</th>
+                    </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="GraphQLDataBinderManager.html" title="class in org/grails/gorm/graphql/binding/manager">
+                                    GraphQLDataBinderManager
+                                </a></strong>
+                            </td>
+                            <td>An interface to describe a manager that will store
+ and return instances of data binders to be used
+ with GraphQL operations on GORM entities</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </li>
+            </ul>
+        </div>
+    
+
 
 
     <div class="summary">
@@ -90,12 +118,13 @@ function windowTitle()
                     </tr>
 <tr class="altColor">
                             <td class="colOne">
-                                <strong><a href="GraphQLDataBinderManager.html" title="class in org/grails/gorm/graphql/binding/manager">
-                                    GraphQLDataBinderManager
+                                <strong><a href="DefaultGraphQLDataBinderManager.html" title="class in org/grails/gorm/graphql/binding/manager">
+                                    DefaultGraphQLDataBinderManager
                                 </a></strong>
                             </td>
-                            <td>A class to manage instances of data binders to be used
- with GraphQL operations on GORM entities</td>
+                            <td>A default implementation of <a href='../../../../../../org/grails/gorm/graphql/binding/manager/GraphQLDataBinderManager.html' title='GraphQLDataBinderManager'>GraphQLDataBinderManager</a> that
+ will also return a result if the class requested is a subclass
+ of a class that exists in the registry. </td>
                         </tr>
 
                     </tbody>

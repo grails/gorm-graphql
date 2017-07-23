@@ -165,23 +165,29 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../../Builder.html'>Builder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#excludeTimestamps()">excludeTimestamps</a></strong>()</code><br>Exclude 'dateCreated' and 'lastUpdated' from being returned</td>
+                            <td class="colLast"><code><strong><a href="#excludeIdentifiers(boolean)">excludeIdentifiers</a></strong>(boolean exceptComposite)</code><br>Exclude identifier properties from being returned</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../../Builder.html'>Builder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#excludeVersion()">excludeVersion</a></strong>()</code><br>Exclude the version property from being returned</td>
+                            <td class="colLast"><code><strong><a href="#excludeTimestamps()">excludeTimestamps</a></strong>()</code><br>Exclude 'dateCreated' and 'lastUpdated' from being returned</td>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../../../../Builder.html'>Builder</a></code></td>
+                            <td class="colLast"><code><strong><a href="#excludeVersion()">excludeVersion</a></strong>()</code><br>Exclude the version property from being returned</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.List&lt;GraphQLDomainProperty&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getProperties(PersistentEntity)">getProperties</a></strong>(<a href='../../../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br>Retrieves the desired properties based on the conditions previously applied
  The mapping will be retrieved from the entity `static graphql = </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.List&lt;GraphQLDomainProperty&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getProperties(PersistentEntity, org.grails.gorm.graphql.entity.dsl.GraphQLMapping)">getProperties</a></strong>(<a href='../../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html'>GraphQLMapping</a> mapping)</code><br>Retrieves the desired properties based on the conditions previously applied</td>
@@ -256,6 +262,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                                 <h4><a href='../../../../../../../Builder.html'>Builder</a> <strong>excludeIdentifiers</strong>()</h4>
                                 <p> Exclude identifier properties from being returned
          </p>
+                            </li>
+                        </ul>
+                    
+                        <a name="excludeIdentifiers(boolean)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../../../../Builder.html'>Builder</a> <strong>excludeIdentifiers</strong>(boolean exceptComposite)</h4>
+                                <p> Exclude identifier properties from being returned
+         <DL><DT><B>Parameters:</B></DT><DD><code>exceptComposite</code> -  If true, composite identifiers will be included</DD></DL></p>
                             </li>
                         </ul>
                     

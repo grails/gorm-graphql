@@ -147,38 +147,8 @@ class DefaultGraphQLTypeManager
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;static&nbsp;java.util.Map&lt;java.lang.Class, java.lang.Class&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#PRIMITIVE_BOXES">PRIMITIVE_BOXES</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                        <tr class="altColor">
                             <td class="colFirst"><code><strong>protected&nbsp;static&nbsp;java.util.Map&lt;java.lang.Class, GraphQLType&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#TYPE_MAP">TYPE_MAP</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLInputObjectType&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#domainCreateObjectTypes">domainCreateObjectTypes</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLInputObjectType&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#domainInputNestedObjectType">domainInputNestedObjectType</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLObjectType&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#domainObjectTypes">domainObjectTypes</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLInputObjectType&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#domainUpdateObjectTypes">domainUpdateObjectTypes</a></code></td>
                             <td class="colLast"></td>
                         </tr>
                         
@@ -208,8 +178,18 @@ class DefaultGraphQLTypeManager
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code><strong>java.util.Map&lt;<a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html' title='GraphQLPropertyType'>GraphQLPropertyType</a>, <a href='../../../../../org/grails/gorm/graphql/types/input/InputObjectTypeBuilder.html' title='InputObjectTypeBuilder'>InputObjectTypeBuilder</a>&gt;</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#inputObjectTypeBuilders">inputObjectTypeBuilders</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong><a href='../../../../../org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html'>GraphQLEntityNamingConvention</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#namingConvention">namingConvention</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>java.util.Map&lt;<a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html' title='GraphQLPropertyType'>GraphQLPropertyType</a>, <a href='../../../../../org/grails/gorm/graphql/types/output/ObjectTypeBuilder.html' title='ObjectTypeBuilder'>ObjectTypeBuilder</a>&gt;</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#objectTypeBuilders">objectTypeBuilders</a></code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -273,50 +253,26 @@ class DefaultGraphQLTypeManager
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildField(org.grails.gorm.graphql.entity.property.GraphQLDomainProperty)">buildField</a></strong>(<a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html'>GraphQLDomainProperty</a> prop)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../GraphQLInputObjectField.Builder.html'>Builder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildInputField(org.grails.gorm.graphql.entity.property.GraphQLDomainProperty, org.grails.gorm.graphql.entity.property.GraphQLPropertyType)">buildInputField</a></strong>(<a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html'>GraphQLDomainProperty</a> prop, <a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../GraphQLType.html'>GraphQLType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#createReference(PersistentEntity, org.grails.gorm.graphql.entity.property.GraphQLPropertyType)">createReference</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#createReference(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)">createReference</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../GraphQLInputObjectType.html'>GraphQLInputObjectType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getCreateObjectType(PersistentEntity)">getCreateObjectType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../GraphQLType.html'>GraphQLType</a></code></td>
                             <td class="colLast"><code><strong><a href="#getEnumType(Class<? extends Enum>, boolean)">getEnumType</a></strong>(java.lang.Class&lt;? extends java.lang.Enum&gt; clazz, boolean nullable)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../GraphQLInputObjectType.html'>GraphQLInputObjectType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getInputNestedObjectType(PersistentEntity)">getInputNestedObjectType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
-                        </tr>
-                        
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../GraphQLInputObjectType.html'>GraphQLInputObjectType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getMutationType(PersistentEntity, org.grails.gorm.graphql.entity.property.GraphQLPropertyType)">getMutationType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br></td>
+                            <td class="colLast"><code><a href='../../../../../GraphQLInputType.html'>GraphQLInputType</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getMutationType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType, boolean)">getMutationType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type, boolean nullable)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../GraphQLObjectType.html'>GraphQLObjectType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getQueryType(PersistentEntity)">getQueryType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
+                            <td class="colLast"><code><a href='../../../../../GraphQLOutputType.html'>GraphQLOutputType</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getQueryType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)">getQueryType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -327,11 +283,17 @@ class DefaultGraphQLTypeManager
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../GraphQLInputObjectType.html'>GraphQLInputObjectType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getUpdateObjectType(PersistentEntity)">getUpdateObjectType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
+                            <td class="colLast"><code>boolean</code></td>
+                            <td class="colLast"><code><strong><a href="#hasType(java.lang.Class)">hasType</a></strong>(java.lang.Class clazz)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#initialize()">initialize</a></strong>()</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#registerType(java.lang.Class, GraphQLType)">registerType</a></strong>(java.lang.Class clazz, <a href='../../../../../GraphQLType.html'>GraphQLType</a> type)</code><br></td>
@@ -386,50 +348,10 @@ class DefaultGraphQLTypeManager
                             </li>
                         </ul>
                     
-                        <a name="PRIMITIVE_BOXES"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;static&nbsp;final&nbsp;java.util.Map&lt;java.lang.Class, java.lang.Class&gt; <strong>PRIMITIVE_BOXES</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
                         <a name="TYPE_MAP"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>protected&nbsp;static&nbsp;final&nbsp;java.util.Map&lt;java.lang.Class, GraphQLType&gt; <strong>TYPE_MAP</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="domainCreateObjectTypes"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLInputObjectType&gt; <strong>domainCreateObjectTypes</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="domainInputNestedObjectType"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLInputObjectType&gt; <strong>domainInputNestedObjectType</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="domainObjectTypes"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLObjectType&gt; <strong>domainObjectTypes</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="domainUpdateObjectTypes"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLInputObjectType&gt; <strong>domainUpdateObjectTypes</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -454,10 +376,26 @@ class DefaultGraphQLTypeManager
                             </li>
                         </ul>
                     
+                        <a name="inputObjectTypeBuilders"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.Map&lt;<a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html' title='GraphQLPropertyType'>GraphQLPropertyType</a>, <a href='../../../../../org/grails/gorm/graphql/types/input/InputObjectTypeBuilder.html' title='InputObjectTypeBuilder'>InputObjectTypeBuilder</a>&gt; <strong>inputObjectTypeBuilders</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="namingConvention"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html'>GraphQLEntityNamingConvention</a> <strong>namingConvention</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="objectTypeBuilders"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.Map&lt;<a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html' title='GraphQLPropertyType'>GraphQLPropertyType</a>, <a href='../../../../../org/grails/gorm/graphql/types/output/ObjectTypeBuilder.html' title='ObjectTypeBuilder'>ObjectTypeBuilder</a>&gt; <strong>objectTypeBuilders</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -513,35 +451,11 @@ class DefaultGraphQLTypeManager
                             </li>
                         </ul>
                     
-                        <a name="buildField(org.grails.gorm.graphql.entity.property.GraphQLDomainProperty)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a> <strong>buildField</strong>(<a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html'>GraphQLDomainProperty</a> prop)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="buildInputField(org.grails.gorm.graphql.entity.property.GraphQLDomainProperty, org.grails.gorm.graphql.entity.property.GraphQLPropertyType)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../GraphQLInputObjectField.Builder.html'>Builder</a> <strong>buildInputField</strong>(<a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html'>GraphQLDomainProperty</a> prop, <a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="createReference(PersistentEntity, org.grails.gorm.graphql.entity.property.GraphQLPropertyType)"><!-- --></a>
+                        <a name="createReference(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@java.lang.Override
-<a href='../../../../../GraphQLType.html'>GraphQLType</a> <strong>createReference</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="getCreateObjectType(PersistentEntity)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><a href='../../../../../GraphQLInputObjectType.html'>GraphQLInputObjectType</a> <strong>getCreateObjectType</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
+<a href='../../../../../GraphQLType.html'>GraphQLType</a> <strong>createReference</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -555,28 +469,20 @@ class DefaultGraphQLTypeManager
                             </li>
                         </ul>
                     
-                        <a name="getInputNestedObjectType(PersistentEntity)"><!-- --></a>
+                        <a name="getMutationType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType, boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../GraphQLInputObjectType.html'>GraphQLInputObjectType</a> <strong>getInputNestedObjectType</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
+                                <h4>@java.lang.Override
+<a href='../../../../../GraphQLInputType.html'>GraphQLInputType</a> <strong>getMutationType</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type, boolean nullable)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="getMutationType(PersistentEntity, org.grails.gorm.graphql.entity.property.GraphQLPropertyType)"><!-- --></a>
+                        <a name="getQueryType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@java.lang.Override
-<a href='../../../../../GraphQLInputObjectType.html'>GraphQLInputObjectType</a> <strong>getMutationType</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/entity/property/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="getQueryType(PersistentEntity)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@java.lang.Override
-<a href='../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>getQueryType</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
+<a href='../../../../../GraphQLOutputType.html'>GraphQLOutputType</a> <strong>getQueryType</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -590,10 +496,19 @@ class DefaultGraphQLTypeManager
                             </li>
                         </ul>
                     
-                        <a name="getUpdateObjectType(PersistentEntity)"><!-- --></a>
+                        <a name="hasType(java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../GraphQLInputObjectType.html'>GraphQLInputObjectType</a> <strong>getUpdateObjectType</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
+                                <h4>@java.lang.Override
+boolean <strong>hasType</strong>(java.lang.Class clazz)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="initialize()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>initialize</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>

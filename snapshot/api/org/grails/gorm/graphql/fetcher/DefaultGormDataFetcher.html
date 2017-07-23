@@ -141,14 +141,26 @@ abstract&nbsp;class DefaultGormDataFetcher
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Set&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#associationNames">associationNames</a></code></td>
                             <td class="colLast"></td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;java.lang.String, Association&gt;</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#associations">associations</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../PersistentEntity.html'>PersistentEntity</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#entity">entity</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;java.lang.String</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#propertyName">propertyName</a></code></td>
                             <td class="colLast"></td>
                         </tr>
                         
@@ -183,6 +195,12 @@ abstract&nbsp;class DefaultGormDataFetcher
                                 (<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst">
+                                <code><a href="#DefaultGormDataFetcher(PersistentEntity, java.lang.String)">DefaultGormDataFetcher</a>
+                                (<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.String projectionName)</code><br></td>
+                        </tr>
+                        
                     </table>
                    </ul>
               </li>
@@ -206,20 +224,44 @@ abstract&nbsp;class DefaultGormDataFetcher
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;java.util.Map</code></td>
-                            <td class="colLast"><code><strong><a href="#defaultQueryOptions(DataFetchingEnvironment)">defaultQueryOptions</a></strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>T</code></td>
                             <td class="colLast"><code><strong><a href="#get(DataFetchingEnvironment)">get</a></strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</code><br></td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#getFetchArguments(DataFetchingEnvironment)">getFetchArguments</a></strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</code><br></td>
+                        </tr>
+                        
                         <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getIdentifierValues(DataFetchingEnvironment)">getIdentifierValues</a></strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;void</code></td>
+                            <td class="colLast"><code><strong><a href="#initializeEntity(PersistentEntity)">initializeEntity</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.lang.Object</code></td>
+                            <td class="colLast"><code><strong><a href="#loadEntity(PersistentEntity, java.lang.Object)">loadEntity</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.Object argument)</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../GormEntity.html'>GormEntity</a></code></td>
                             <td class="colLast"><code><strong><a href="#queryInstance(DataFetchingEnvironment)">queryInstance</a></strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;boolean</code></td>
+                            <td class="colLast"><code><strong><a href="#shouldJoinProperty(Field)">shouldJoinProperty</a></strong>(<a href='../../../../../Field.html'>Field</a> selectedField)</code><br></td>
                         </tr>
                         
                     </table>
@@ -266,7 +308,15 @@ abstract&nbsp;class DefaultGormDataFetcher
                         <a name="associationNames"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;java.util.List&lt;java.lang.String&gt; <strong>associationNames</strong></h4>
+                                <h4>protected&nbsp;java.util.Set&lt;java.lang.String&gt; <strong>associationNames</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="associations"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.Map&lt;java.lang.String, Association&gt; <strong>associations</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -275,6 +325,14 @@ abstract&nbsp;class DefaultGormDataFetcher
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>protected&nbsp;<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> <strong>entity</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="propertyName"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.lang.String <strong>propertyName</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -303,6 +361,14 @@ abstract&nbsp;class DefaultGormDataFetcher
                             </li>
                         </ul>
                     
+                        <a name="DefaultGormDataFetcher(PersistentEntity, java.lang.String)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><strong>DefaultGormDataFetcher</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.String projectionName)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                 </li>
             </ul>
             
@@ -316,15 +382,6 @@ abstract&nbsp;class DefaultGormDataFetcher
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="defaultQueryOptions(DataFetchingEnvironment)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@java.lang.SuppressWarnings('NestedForLoop')
-protected&nbsp;java.util.Map <strong>defaultQueryOptions</strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
                         <a name="get(DataFetchingEnvironment)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -333,10 +390,51 @@ protected&nbsp;java.util.Map <strong>defaultQueryOptions</strong>(<a href='../..
                             </li>
                         </ul>
                     
+                        <a name="getFetchArguments(DataFetchingEnvironment)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@java.lang.SuppressWarnings(['NestedForLoop', 'NestedBlockDepth'])
+protected&nbsp;java.util.Map <strong>getFetchArguments</strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getIdentifierValues(DataFetchingEnvironment)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>getIdentifierValues</strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="initializeEntity(PersistentEntity)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;void <strong>initializeEntity</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="loadEntity(PersistentEntity, java.lang.Object)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.lang.Object <strong>loadEntity</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.Object argument)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="queryInstance(DataFetchingEnvironment)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>protected&nbsp;<a href='../../../../../GormEntity.html'>GormEntity</a> <strong>queryInstance</strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="shouldJoinProperty(Field)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;boolean <strong>shouldJoinProperty</strong>(<a href='../../../../../Field.html'>Field</a> selectedField)</h4>
                                 <p></p>
                             </li>
                         </ul>

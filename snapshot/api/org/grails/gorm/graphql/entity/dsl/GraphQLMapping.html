@@ -70,7 +70,7 @@ if (location.href.indexOf('is-external=true') == -1) {
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            <li><a href="#nested_summary">Nested</a></li>&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
@@ -99,7 +99,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
 
 
-    <p> Builder to provide GraphQL specific data for a GORM entity
+    <p> DSL to provide GraphQL specific data for a GORM entity
 
  Usage:
  <pre>
@@ -125,6 +125,29 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
         <!-- =========== NESTED CLASS SUMMARY =========== -->
         
+            <ul class="blockList">
+                <li class="blockList"><a name="nested_summary"><!--   --></a>
+                    <h3>Nested Class Summary</h3>
+                    <ul class="blockList">
+                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Nested Class Summary table, listing nested classes, and an explanation">
+                        <caption><span>Nested classes</span><span class="tabEnd">&nbsp;</span></caption>
+                        <tr>
+                            <th class="colFirst" scope="col">Modifiers</th>
+                            <th class="colLast" scope="col">Name</th>
+                            <th class="colLast" scope="col">Description</th>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>class</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLMapping.Operations.html'>GraphQLMapping.Operations</a></code></td>
+                            <td class="colLast">Controls whether query or mutation types will be created for the entity</td>
+                        </tr>
+                        
+                    </table>
+                   </ul>
+                </li>
+            </ul>
+        
 
         <!-- =========== ENUM CONSTANT SUMMARY =========== -->
         
@@ -145,8 +168,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.util.List&lt;AdditionalGraphQLProperty&gt;</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>java.util.List&lt;CustomGraphQLProperty&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#additional">additional</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>java.util.List&lt;CustomOperation&gt;</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#customMutationOperations">customMutationOperations</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>java.util.List&lt;CustomOperation&gt;</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#customQueryOperations">customQueryOperations</a></code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -170,6 +203,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code><strong><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLMapping.Operations.html'>GraphQLMapping.Operations</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#operations">operations</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>java.util.Map&lt;java.lang.String, <a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html' title='GraphQLPropertyMapping'>GraphQLPropertyMapping</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#propertyMappings">propertyMappings</a></code><br></td>
                         </tr>
@@ -203,7 +241,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#add(org.grails.gorm.graphql.entity.property.impl.AdditionalGraphQLProperty)">add</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/entity/property/impl/AdditionalGraphQLProperty.html'>AdditionalGraphQLProperty</a> property)</code><br>Add a new property to be included in the schema. </td>
+                            <td class="colLast"><code><strong><a href="#add(org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty)">add</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html'>CustomGraphQLProperty</a> property)</code><br>Add a new property to be included in the schema. </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -232,14 +270,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html'>GraphQLMapping</a></code></td>
-                            <td class="colLast"><code><strong><a href="#createEmbeddedMapping(java.lang.String)">createEmbeddedMapping</a></strong>(java.lang.String propertyName)</code><br>Internal use only. </td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#exclude(java.lang.String)">exclude</a></strong>(java.lang.String... properties)</code><br>Exclude one or more properties from being included in the schema</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#exclude(java.lang.String)">exclude</a></strong>(java.lang.String... properties)</code><br>Exclude one or more properties from being included in the schema</td>
+                            <td class="colLast"><code>static&nbsp;<a href='../../../../../../org/grails/gorm/graphql/entity/dsl/LazyGraphQLMapping.html'>LazyGraphQLMapping</a></code></td>
+                            <td class="colLast"><code><strong><a href="#lazy(groovy.lang.Closure)">lazy</a></strong>(groovy.lang.Closure closure)</code><br>Builder to provide code completion. </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -250,20 +288,38 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a></code></td>
-                            <td class="colLast"><code><strong><a href="#property(java.lang.String, groovy.lang.Closure)">property</a></strong>(java.lang.String name, groovy.lang.Closure closure)</code><br>Supply metadata about an existing property</td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#mutation(java.lang.String, groovy.lang.Closure)">mutation</a></strong>(java.lang.String name, groovy.lang.Closure closure)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a></code></td>
+                            <td class="colLast"><code><strong><a href="#property(java.lang.String, groovy.lang.Closure)">property</a></strong>(java.lang.String name, groovy.lang.Closure closure)</code><br>Supply metadata about an existing property</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a></code></td>
                             <td class="colLast"><code><strong><a href="#property(java.lang.String, java.util.Map)">property</a></strong>(java.lang.String name, java.util.Map namedArgs)</code><br>Supply metadata about an existing property</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a></code></td>
+                            <td class="colLast"><code><strong><a href="#property(java.util.Map, java.lang.String)">property</a></strong>(java.util.Map namedArgs, java.lang.String name)</code><br>Supply metadata about an existing property</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a></code></td>
                             <td class="colLast"><code><strong><a href="#property(java.lang.String, org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping)">property</a></strong>(java.lang.String name, <a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a> mapping)</code><br>Supply metadata about an existing property</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#query(java.lang.String, groovy.lang.Closure)">query</a></strong>(java.lang.String name, groovy.lang.Closure closure)</code><br></td>
                         </tr>
                         
                     </table>
@@ -312,7 +368,23 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="additional"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.util.List&lt;AdditionalGraphQLProperty&gt; <strong>additional</strong></h4>
+                                <h4>java.util.List&lt;CustomGraphQLProperty&gt; <strong>additional</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="customMutationOperations"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.List&lt;CustomOperation&gt; <strong>customMutationOperations</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="customQueryOperations"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.List&lt;CustomOperation&gt; <strong>customQueryOperations</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -349,6 +421,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
+                        <a name="operations"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLMapping.Operations.html'>GraphQLMapping.Operations</a> <strong>operations</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="propertyMappings"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -374,10 +454,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="add(org.grails.gorm.graphql.entity.property.impl.AdditionalGraphQLProperty)"><!-- --></a>
+                        <a name="add(org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>add</strong>(<a href='../../../../../../org/grails/gorm/graphql/entity/property/impl/AdditionalGraphQLProperty.html'>AdditionalGraphQLProperty</a> property)</h4>
+                                <h4>void <strong>add</strong>(<a href='../../../../../../org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html'>CustomGraphQLProperty</a> property)</h4>
                                 <p> Add a new property to be included in the schema. The property may
  or may not be backed by an instance method depending on whether or
  not the property is to be used for response.
@@ -399,7 +479,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="add(java.lang.String, java.lang.Class, groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>add</strong>(java.lang.String name, java.lang.Class type, @groovy.lang.DelegatesTo(value = AdditionalGraphQLProperty, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure)</h4>
+                                <h4>void <strong>add</strong>(java.lang.String name, java.lang.Class type, @groovy.lang.DelegatesTo(value = CustomGraphQLProperty, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure)</h4>
                                 <p> Add a new property to be included in the schema. The property may
  or may not be backed by an instance method depending on whether or
  not the property is to be used for response.
@@ -410,7 +490,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="add(groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>add</strong>(@groovy.lang.DelegatesTo(value = AdditionalGraphQLProperty, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure)</h4>
+                                <h4>void <strong>add</strong>(@groovy.lang.DelegatesTo(value = CustomGraphQLProperty, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure)</h4>
                                 <p> Add a new property to be included in the schema. The property may
  or may not be backed by an instance method depending on whether or
  not the property is to be used for response.
@@ -429,33 +509,22 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="createEmbeddedMapping(java.lang.String)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html'>GraphQLMapping</a> <strong>createEmbeddedMapping</strong>(java.lang.String propertyName)</h4>
-                                <p> Internal use only. Used to populate a mapping to support nested property names.
- Current use case is embedded properties.
-
-  * <pre>
- <CODE>Foo foo
-
- static embedded = ['foo']
-
- static graphql = {
-     exclude 'foo.bar'
- </CODE>
- }
- </pre>
-     <DL><DT><B>Returns:</B></DT><DD>A new mapping with excluded that doesn't include the parent name</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>propertyName</code> -  The embedded property name</DD></DL></p>
-                            </li>
-                        </ul>
-                    
                         <a name="exclude(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>void <strong>exclude</strong>(java.lang.String... properties)</h4>
                                 <p> Exclude one or more properties from being included in the schema
      <DL><DT><B>Parameters:</B></DT><DD><code>properties</code> -  One or more property names</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="lazy(groovy.lang.Closure)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;<a href='../../../../../../org/grails/gorm/graphql/entity/dsl/LazyGraphQLMapping.html'>LazyGraphQLMapping</a> <strong>lazy</strong>(@groovy.lang.DelegatesTo(value = GraphQLMapping, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure)</h4>
+                                <p> Builder to provide code completion. The mapping instance will not be evaluated
+ until the schema is being generated
+     <DL><DT><B>Returns:</B></DT><DD>The mapping instance</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>closure</code> -  The closure to execute in the context of a mapping</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -482,6 +551,14 @@ java.lang.Object <strong>methodMissing</strong>(java.lang.String name, java.lang
                             </li>
                         </ul>
                     
+                        <a name="mutation(java.lang.String, groovy.lang.Closure)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>mutation</strong>(java.lang.String name, @groovy.lang.DelegatesTo(value = CustomOperation, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="property(java.lang.String, groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -496,6 +573,19 @@ java.lang.Object <strong>methodMissing</strong>(java.lang.String name, java.lang
                             <li class="blockList">
                                 <h4><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a> <strong>property</strong>(java.lang.String name, java.util.Map namedArgs)</h4>
                                 <p> Supply metadata about an existing property
+
+ Example: property('foo', [input: false])
+     <DL><DT><B>Returns:</B></DT><DD>The property mapping instance</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The property name</DD><DD><code>namedArgs</code> -  The arguments to build the mapping</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="property(java.util.Map, java.lang.String)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a> <strong>property</strong>(java.util.Map namedArgs, java.lang.String name)</h4>
+                                <p> Supply metadata about an existing property
+
+ Example: property('foo', input: false)
      <DL><DT><B>Returns:</B></DT><DD>The property mapping instance</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The property name</DD><DD><code>namedArgs</code> -  The arguments to build the mapping</DD></DL></p>
                             </li>
                         </ul>
@@ -506,6 +596,14 @@ java.lang.Object <strong>methodMissing</strong>(java.lang.String name, java.lang
                                 <h4><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a> <strong>property</strong>(java.lang.String name, <a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a> mapping)</h4>
                                 <p> Supply metadata about an existing property
      <DL><DT><B>Returns:</B></DT><DD>The property mapping instance provided</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The property name</DD><DD><code>mapping</code> -  The property mapping instance</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="query(java.lang.String, groovy.lang.Closure)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>query</strong>(java.lang.String name, @groovy.lang.DelegatesTo(value = CustomOperation, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure)</h4>
+                                <p></p>
                             </li>
                         </ul>
                     
@@ -543,7 +641,7 @@ java.lang.Object <strong>methodMissing</strong>(java.lang.String name, java.lang
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            <li><a href="#nested_summary">Nested</a></li>&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>

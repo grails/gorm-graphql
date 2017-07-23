@@ -70,11 +70,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     <a name="skip-navbar_top">
@@ -87,19 +87,19 @@ if (location.href.indexOf('is-external=true') == -1) {
 
     <div class="subTitle">Package: <strong>org.grails.gorm.graphql.binding.manager</strong></div>
 
-    <h2 title="[Groovy] Class GraphQLDataBinderManager" class="title">[Groovy] Class GraphQLDataBinderManager</h2>
+    <h2 title="[Groovy] Interface GraphQLDataBinderManager" class="title">[Groovy] Interface GraphQLDataBinderManager</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li>org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
+
 </ul>
 <div class="description">
     <ul class="blockList">
         <li class="blockList">
 
 
-
-    <p> A class to manage instances of data binders to be used
+    <p> An interface to describe a manager that will store
+ and return instances of data binders to be used
  with GraphQL operations on GORM entities
  <DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
 
@@ -117,30 +117,6 @@ if (location.href.indexOf('is-external=true') == -1) {
         
         <!-- =========== FIELD SUMMARY =========== -->
         
-            <ul class="blockList">
-                <li class="blockList"><a name="field_summary"><!--   --></a>
-                    <h3>Field Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Enum constants summary table">
-                        <caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Modifiers</th>
-                            <th class="colLast" scope="col">Name</th>
-                            <th class="colLast" scope="col">Description</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;java.lang.Class, GraphQLDataBinder&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#dataBinders">dataBinders</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                    </table>
-                   </ul>
-                </li>
-                
-            </ul>
-        
 
         <!-- =========== PROPERTY SUMMARY =========== -->
         
@@ -148,34 +124,6 @@ if (location.href.indexOf('is-external=true') == -1) {
         <!-- =========== ELEMENT SUMMARY =========== -->
         
 
-        
-        <!-- ======== CONSTRUCTOR SUMMARY ======== -->
-        <ul class="blockList">
-                <li class="blockList"><a name="constructor_summary"><!--   --></a>
-                    <h3>Constructor Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructors Summary table">
-                        <caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Constructor and description</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst">
-                                <code><a href="#GraphQLDataBinderManager()">GraphQLDataBinderManager</a>
-                                ()</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst">
-                                <code><a href="#GraphQLDataBinderManager(org.grails.gorm.graphql.binding.GraphQLDataBinder)">GraphQLDataBinderManager</a>
-                                (<a href='../../../../../../org/grails/gorm/graphql/binding/GraphQLDataBinder.html'>GraphQLDataBinder</a> defaultDataBinder)</code><br></td>
-                        </tr>
-                        
-                    </table>
-                   </ul>
-              </li>
-        </ul>
         
 
         
@@ -202,31 +150,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#register(java.lang.Class, org.grails.gorm.graphql.binding.GraphQLDataBinder)">register</a></strong>(java.lang.Class clazz, <a href='../../../../../../org/grails/gorm/graphql/binding/GraphQLDataBinder.html'>GraphQLDataBinder</a> dataBinder)</code><br>Register a data binder for use with the provided class or its subclasses</td>
+                            <td class="colLast"><code><strong><a href="#registerDataBinder(java.lang.Class, org.grails.gorm.graphql.binding.GraphQLDataBinder)">registerDataBinder</a></strong>(java.lang.Class clazz, <a href='../../../../../../org/grails/gorm/graphql/binding/GraphQLDataBinder.html'>GraphQLDataBinder</a> dataBinder)</code><br>Register a data binder for use with the provided class</td>
                         </tr>
                         
                     </table>
                    </ul>
               </li>
             
-            <li class="blockList"><a name="method_summary"><!--   --></a>
-                    <h3>Inherited Methods Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
-                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Methods inherited from class</th>
-                            <th class="colLast" scope="col">Name</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code>class java.lang.Object</code></td>
-                            <td class="colLast"><code>java.lang.Object#wait(long, int), java.lang.Object#wait(long), java.lang.Object#wait(), java.lang.Object#equals(java.lang.Object), java.lang.Object#toString(), java.lang.Object#hashCode(), java.lang.Object#getClass(), java.lang.Object#notify(), java.lang.Object#notifyAll()</code></td>
-                        </tr>
-                    </table>
-                   </ul>
-              </li>
-                
         </ul>
         
     </li>
@@ -239,55 +169,11 @@ if (location.href.indexOf('is-external=true') == -1) {
            
 
             
-            <!-- =========== FIELD DETAIL =========== -->
-            <ul class="blockList">
-                <li class="blockList"><a name="field_detail">
-                    <!--   -->
-                </a>
-                    <h3>Field Detail</h3>
-                    
-                        <a name="dataBinders"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;final&nbsp;java.util.Map&lt;java.lang.Class, GraphQLDataBinder&gt; <strong>dataBinders</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                </li>
-            </ul>
-            
 
             
 
             
 
-            
-            <!-- =========== CONSTRUCTOR DETAIL =========== -->
-            <ul class="blockList">
-                <li class="blockList"><a name="constructor_detail">
-                    <!--   -->
-                </a>
-                    <h3>Constructor Detail</h3>
-                    
-                        <a name="GraphQLDataBinderManager()"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><strong>GraphQLDataBinderManager</strong>()</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="GraphQLDataBinderManager(org.grails.gorm.graphql.binding.GraphQLDataBinder)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><strong>GraphQLDataBinderManager</strong>(<a href='../../../../../../org/grails/gorm/graphql/binding/GraphQLDataBinder.html'>GraphQLDataBinder</a> defaultDataBinder)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                </li>
-            </ul>
             
 
 
@@ -308,11 +194,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="register(java.lang.Class, org.grails.gorm.graphql.binding.GraphQLDataBinder)"><!-- --></a>
+                        <a name="registerDataBinder(java.lang.Class, org.grails.gorm.graphql.binding.GraphQLDataBinder)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>register</strong>(java.lang.Class clazz, <a href='../../../../../../org/grails/gorm/graphql/binding/GraphQLDataBinder.html'>GraphQLDataBinder</a> dataBinder)</h4>
-                                <p> Register a data binder for use with the provided class or its subclasses
+                                <h4>void <strong>registerDataBinder</strong>(java.lang.Class clazz, <a href='../../../../../../org/grails/gorm/graphql/binding/GraphQLDataBinder.html'>GraphQLDataBinder</a> dataBinder)</h4>
+                                <p> Register a data binder for use with the provided class
      <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class to be bound</DD><DD><code>dataBinder</code> -  The data binding instance to be used</DD></DL></p>
                             </li>
                         </ul>
@@ -351,11 +237,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     
