@@ -20,15 +20,25 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
 
     @Shared HibernateMappingContext mappingContext
 
+    GraphQLTypeManager typeManager
+
     List<Class> getDomainClasses() { [Book, Book2, Author, Tag, Metadata, OtherMetadata] }
 
     void setupSpec() {
         mappingContext = hibernateDatastore.mappingContext
     }
 
+    void setup() {
+        typeManager = Mock(GraphQLTypeManager)
+    }
+
+    PersistentGraphQLProperty getProperty(Class clazz, String name) {
+        PersistentProperty p = mappingContext.getPersistentEntity(clazz.name).getPropertyByName(name)
+        new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+    }
+
     void "test constructor with simple property (non null)"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('title')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+        PersistentGraphQLProperty property = getProperty(Book, 'title')
 
         expect:
         property.name == 'title'
@@ -38,8 +48,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test constructor with simple property (null)"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('description')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+        PersistentGraphQLProperty property = getProperty(Book, 'description')
 
         expect:
         property.name == 'description'
@@ -60,8 +69,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test constructor with composite id property"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book2.name).getPropertyByName('title')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+        PersistentGraphQLProperty property = getProperty(Book2, 'title')
 
         expect:
         property.name == 'title'
@@ -71,8 +79,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test constructor with an enum"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('bookType')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+        PersistentGraphQLProperty property = getProperty(Book, 'bookType')
 
         expect:
         property.name == 'bookType'
@@ -82,8 +89,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test constructor with a toMany"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('authors')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+        PersistentGraphQLProperty property = getProperty(Book, 'authors')
 
         expect:
         property.name == 'authors'
@@ -93,8 +99,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test constructor with a simple toMany"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('basics')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+        PersistentGraphQLProperty property = getProperty(Book, 'basics')
 
         expect:
         property.name == 'basics'
@@ -104,8 +109,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test constructor with a toOne"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('metadata')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+        PersistentGraphQLProperty property = getProperty(Book, 'metadata')
 
         expect:
         property.name == 'metadata'
@@ -115,9 +119,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test graphQL type with simple property (non null)"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('title')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+        PersistentGraphQLProperty property = getProperty(Book, 'title')
 
         when:
         property.getGraphQLType(typeManager, CREATE)
@@ -127,9 +129,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test graphQL type with simple property (null)"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('description')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+        PersistentGraphQLProperty property = getProperty(Book, 'description')
 
         when:
         property.getGraphQLType(typeManager, CREATE)
@@ -141,7 +141,6 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     void "test graphQL type with id property"() {
         PersistentProperty p = mappingContext.getPersistentEntity(Book.name).identity
         PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
 
         when:
         property.getGraphQLType(typeManager, CREATE)
@@ -151,9 +150,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test graphQL type with composite id property"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book2.name).getPropertyByName('title')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+        PersistentGraphQLProperty property = getProperty(Book2, 'title')
 
         when:
         property.getGraphQLType(typeManager, CREATE)
@@ -163,9 +160,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test graphQL type with an enum"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('bookType')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+        PersistentGraphQLProperty property = getProperty(Book, 'bookType')
 
         when:
         property.getGraphQLType(typeManager, CREATE)
@@ -175,9 +170,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test graphQL type with a toMany that is mapped with graphql"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('authors')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+        PersistentGraphQLProperty property = getProperty(Book, 'authors')
 
         when:
         GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
@@ -188,22 +181,18 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test graphQL type with a toMany that is NOT mapped with graphql"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('tags')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+        PersistentGraphQLProperty property = getProperty(Book, 'tags')
 
         when:
         GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Tag.name)) >> GraphQLObjectType.newObject().name('x').build()
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Tag.name), OUTPUT) >> GraphQLObjectType.newObject().name('x').build()
         type instanceof GraphQLList
     }
 
     void "test graphQL type with a simple toMany"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('basics')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+        PersistentGraphQLProperty property = getProperty(Book, 'basics')
 
         when:
         GraphQLType type = property.getGraphQLType(typeManager, CREATE)
@@ -214,9 +203,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test graphQL type with a toOne that is mapped with graphql"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('otherMetadata')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+        PersistentGraphQLProperty property = getProperty(Book, 'otherMetadata')
 
         when:
         GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
@@ -227,41 +214,35 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     }
 
     void "test graphQL type with a toOne that is mapped with graphql CREATE"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('otherMetadata')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+        PersistentGraphQLProperty property = getProperty(Book, 'otherMetadata')
 
         when:
         GraphQLType type = property.getGraphQLType(typeManager, CREATE)
 
         then:
-        1 * typeManager.getMutationType(mappingContext.getPersistentEntity(OtherMetadata.name), INPUT_NESTED) >> GraphQLInputObjectType.newInputObject().name('x').build()
+        1 * typeManager.getMutationType(mappingContext.getPersistentEntity(OtherMetadata.name), CREATE_NESTED, false) >> GraphQLInputObjectType.newInputObject().name('x').build()
         type instanceof GraphQLInputObjectType
     }
 
     void "test graphQL type with a toOne that is mapped with graphql UPDATE"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('otherMetadata')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+        PersistentGraphQLProperty property = getProperty(Book, 'otherMetadata')
 
         when:
         GraphQLType type = property.getGraphQLType(typeManager, UPDATE)
 
         then:
-        1 * typeManager.getMutationType(mappingContext.getPersistentEntity(OtherMetadata.name), INPUT_NESTED) >> GraphQLInputObjectType.newInputObject().name('x').build()
+        1 * typeManager.getMutationType(mappingContext.getPersistentEntity(OtherMetadata.name), UPDATE_NESTED, false) >> GraphQLInputObjectType.newInputObject().name('x').build()
         type instanceof GraphQLInputObjectType
     }
 
     void "test graphQL type with a toOne that is NOT mapped with graphql"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).getPropertyByName('metadata')
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-        GraphQLTypeManager typeManager = Mock(GraphQLTypeManager)
+        PersistentGraphQLProperty property = getProperty(Book, 'metadata')
 
         when:
         GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Metadata.name)) >> GraphQLObjectType.newObject().name('x').build()
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Metadata.name), OUTPUT) >> GraphQLObjectType.newObject().name('x').build()
         !(type instanceof GraphQLList)
     }
 

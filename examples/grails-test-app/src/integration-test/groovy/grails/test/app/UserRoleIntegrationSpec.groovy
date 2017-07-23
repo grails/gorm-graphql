@@ -167,7 +167,6 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
         result.errors[0].message == "Validation error of type FieldUndefined: Field userRoleUpdate is undefined"
     }
 
-
     void "test listing entities with a complex composite id"() {
         when:
         def resp = graphQL.graphql("""

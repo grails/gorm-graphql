@@ -12,6 +12,6 @@ class Application extends GrailsAutoConfiguration {
     @Override
     void doWithApplicationContext() {
         def binderManager = applicationContext.getBean('graphQLDataBinderManager', GraphQLDataBinderManager)
-        binderManager.register(User, new UserDataBinder())
+        binderManager.registerDataBinder(User, new UserDataBinder())
     }
 }

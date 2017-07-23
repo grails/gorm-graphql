@@ -27,7 +27,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
 
         then:
         //The timestamp, version, identifiers of the embedded properties are ignored
-        properties*.name.toSet() == ['id', 'version', 'age', 'name', 'title', 'price', 'taxRate', 'tax'] as Set
+        properties*.name.toSet() == ['id', 'version', 'age', 'embeddedPogo', 'embeddedEntity', 'price', 'taxRate', 'tax'] as Set
         !properties.find { it.name == 'tax' }.input // Derived properties are input false by default
         !properties.find { it.name == 'id' }.nullable
     }
@@ -36,11 +36,11 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
         when:
         List<GraphQLDomainProperty> properties = manager
                 .builder()
-                .exclude('name', 'age') //One from the domain and one from an embedded
+                .exclude('version', 'age')
                 .getProperties(mappingContext.getPersistentEntity(NormalId.name))
 
         then:
-        properties*.name.toSet() == ['id', 'version', 'title', 'price', 'taxRate', 'tax'] as Set
+        properties*.name.toSet() == ['id', 'embeddedPogo', 'embeddedEntity', 'price', 'taxRate', 'tax'] as Set
     }
 
     void "test retrieving domain properties exclude identifers"() {
@@ -51,7 +51,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(NormalId.name))
 
         then:
-        properties*.name.toSet() == ['version', 'name', 'age', 'title', 'price', 'taxRate', 'tax'] as Set
+        properties*.name.toSet() == ['version', 'age', 'embeddedPogo', 'embeddedEntity', 'price', 'taxRate', 'tax'] as Set
     }
 
     void "test retrieving domain properties exclude version"() {
@@ -62,7 +62,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(NormalId.name))
 
         then:
-        properties*.name.toSet() == ['id', 'name', 'age', 'title', 'price', 'taxRate', 'tax'] as Set
+        properties*.name.toSet() == ['id', 'age', 'embeddedPogo', 'embeddedEntity', 'price', 'taxRate', 'tax'] as Set
     }
 
     void "test retrieving domain properties always nullable"() {
@@ -73,7 +73,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(NormalId.name))
 
         then:
-        properties*.name.toSet() == ['id', 'version', 'name', 'age', 'title', 'price', 'taxRate', 'tax'] as Set
+        properties*.name.toSet() == ['id', 'version', 'age', 'embeddedPogo', 'embeddedEntity', 'price', 'taxRate', 'tax'] as Set
         properties.findAll { !it.nullable }.empty
     }
 
@@ -87,7 +87,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(NormalId.name))
 
         then:
-        properties*.name.toSet() == ['id', 'version', 'title', 'price'] as Set
+        properties*.name.toSet() == ['id', 'version', 'embeddedEntity', 'price'] as Set
     }
 
     void "test retrieving domain properties with composite id"() {
@@ -97,7 +97,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(CompositeId.name))
 
         then: //bar is excluded via the mapping, foo is added
-        properties*.name.toSet() == ['version', 'title', 'description', 'dateCreated', 'lastUpdated', 'foo'] as Set
+        properties*.name.toSet() == ['title', 'description', 'dateCreated', 'lastUpdated', 'foo'] as Set
     }
 
     void "test retrieving domain properties excluding timestamps"() {
@@ -108,7 +108,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(CompositeId.name))
 
         then: //bar is excluded via the mapping, foo is added
-        properties*.name.toSet() == ['version', 'title', 'description', 'foo'] as Set
+        properties*.name.toSet() == ['title', 'description', 'foo'] as Set
     }
 
 }
@@ -164,6 +164,7 @@ class CompositeId implements Serializable {
 
     static mapping = {
         id composite: ['title', 'description']
+        version false
     }
 
     static graphql = GraphQLMapping.build {

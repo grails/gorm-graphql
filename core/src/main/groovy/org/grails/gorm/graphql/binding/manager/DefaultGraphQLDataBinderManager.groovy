@@ -1,6 +1,5 @@
 package org.grails.gorm.graphql.binding.manager
 
-import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.types.KeyClassQuery
@@ -26,7 +25,7 @@ import org.springframework.validation.DataBinder
 @CompileStatic
 class DefaultGraphQLDataBinderManager implements GraphQLDataBinderManager, KeyClassQuery<GraphQLDataBinder> {
 
-    protected final Map<Class, GraphQLDataBinder> dataBinders = new ConcurrentLinkedHashMap.Builder<Class, GraphQLDataBinder>().build()
+    protected final Map<Class, GraphQLDataBinder> dataBinders = Collections.synchronizedMap([:])
 
     /**
      * Registers a default data binder for the Object class

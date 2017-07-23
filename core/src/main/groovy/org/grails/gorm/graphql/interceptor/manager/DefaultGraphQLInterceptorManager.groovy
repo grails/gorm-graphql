@@ -1,6 +1,5 @@
 package org.grails.gorm.graphql.interceptor.manager
 
-import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
 import org.grails.gorm.graphql.types.KeyClassQuery
@@ -24,9 +23,7 @@ import org.grails.gorm.graphql.types.KeyClassQuery
 @CompileStatic
 class DefaultGraphQLInterceptorManager implements GraphQLInterceptorManager, KeyClassQuery<List<GraphQLFetcherInterceptor>> {
 
-    protected Map<Class, List<GraphQLFetcherInterceptor>> interceptors = new ConcurrentLinkedHashMap.Builder<Class,     List<GraphQLFetcherInterceptor>>().build().withDefault {
-        []
-    }
+    protected Map<Class, List<GraphQLFetcherInterceptor>> interceptors = Collections.synchronizedMap([:]).withDefault { [] }
 
     /**
      * @see GraphQLInterceptorManager#registerInterceptor
