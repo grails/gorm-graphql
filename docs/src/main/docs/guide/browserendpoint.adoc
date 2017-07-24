@@ -1,0 +1,7 @@
+The plugin includes a controller named `GraphqlController`. The `GraphqlController.browser` action
+listens, by default, in `/graphql/browser` and exposes a https://github.com/graphql/graphiql[GraphiQL browser]; An in-browser IDE for exploring GraphQL.
+
+image::graphiql.png[]
+
+You can disable this endpoint by setting the configuration property `grails.gorm.graphql.browser` to false.
+

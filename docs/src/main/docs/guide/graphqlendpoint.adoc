@@ -1,0 +1,3 @@
+The plugin includes a controller named `GraphqlController`. The `GraphqlController.index` action
+listens, by default, in `/graphql` and it is the entry point to your application GraphQL API.
+
