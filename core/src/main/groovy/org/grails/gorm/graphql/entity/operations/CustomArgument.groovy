@@ -26,6 +26,12 @@ class CustomArgument extends ReturnsType<CustomArgument> {
     Object defaultValue
     boolean nullable = true
 
+    /**
+     * Builds a custom input type if the supplied type is a Map
+     *
+     * @param typeManager The type manager
+     * @return The custom type
+     */
     GraphQLInputObjectType buildCustomType(GraphQLTypeManager typeManager) {
         GraphQLInputObjectType.Builder builder = GraphQLInputObjectType.newInputObject()
                 .name(name.capitalize() + 'Custom')
@@ -38,6 +44,12 @@ class CustomArgument extends ReturnsType<CustomArgument> {
         builder.build()
     }
 
+    /**
+     * Builds the GraphQL argument this class represents
+     *
+     * @param typeManager The type manager
+     * @return The argument
+     */
     GraphQLArgument.Builder getArgument(GraphQLTypeManager typeManager) {
 
         GraphQLInputType type

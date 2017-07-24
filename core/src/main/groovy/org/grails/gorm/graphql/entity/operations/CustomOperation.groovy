@@ -44,21 +44,46 @@ class CustomOperation extends ReturnsType<CustomOperation> {
         arguments.add(argument)
     }
 
-
-    CustomOperation argument(String name, Map<String, Class> returnType, @DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) Closure closure = null) {
-        CustomArgument argument = new CustomArgument().name(name).type(returnType)
+    /**
+     * Creates an argument to the operation of a custom type
+     *
+     * @param name The name of the argument
+     * @param type The type of the argument
+     * @param closure To provide additional data about the argument
+     * @return The operation in order to chain method calls
+     */
+    CustomOperation argument(String name, Map<String, Class> type, @DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) Closure closure = null) {
+        CustomArgument argument = new CustomArgument().name(name).type(type)
         handleArgumentClosure(argument, closure)
         this
     }
 
-    CustomOperation argument(String name, List returnType, @DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) Closure closure = null) {
-        CustomArgument argument = new CustomArgument().name(name).type(returnType)
+    /**
+     * Creates an argument to the operation that is a list. The list
+     * can not have more than 1 element. That element can either be
+     * a class or a map.
+     *
+     * @param name The name of the argument
+     * @param type The type of the argument
+     * @param closure To provide additional data about the argument
+     * @return The operation in order to chain method calls
+     */
+    CustomOperation argument(String name, List type, @DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) Closure closure = null) {
+        CustomArgument argument = new CustomArgument().name(name).type(type)
         handleArgumentClosure(argument, closure)
         this
     }
 
-    CustomOperation argument(String name, Class returnType, @DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) Closure closure = null) {
-        CustomArgument argument = new CustomArgument().name(name).type(returnType)
+    /**
+     * Creates an argument to the operation that is of the type provided.
+     *
+     * @param name The name of the argument
+     * @param type The type of the argument
+     * @param closure To provide additional data about the argument
+     * @return The operation in order to chain method calls
+     */
+    CustomOperation argument(String name, Class type, @DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) Closure closure = null) {
+        CustomArgument argument = new CustomArgument().name(name).type(type)
         handleArgumentClosure(argument, closure)
         this
     }
@@ -80,6 +105,13 @@ class CustomOperation extends ReturnsType<CustomOperation> {
         type
     }
 
+    /**
+     * Builds a custom object type if the supplied return type is a Map
+     *
+     * @param typeManager The type manager
+     * @param mappingContext The mapping context
+     * @return The custom type
+     */
     GraphQLObjectType buildCustomType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
         GraphQLObjectType.Builder builder = GraphQLObjectType.newObject()
                 .name(name.capitalize() + 'Custom')
@@ -119,6 +151,16 @@ class CustomOperation extends ReturnsType<CustomOperation> {
         }
     }
 
+    /**
+     * Creates the field to be added to the query or mutation type in the schema.
+     *
+     * @param entity The persistent entity the type was created for
+     * @param typeManager The type manager
+     * @param interceptorManager The interceptor manager to be used for executing
+     * interceptors with the custom data fetcher
+     * @param mappingContext The mapping context
+     * @return The custom field
+     */
     GraphQLFieldDefinition.Builder createField(PersistentEntity entity,
                                                GraphQLTypeManager typeManager,
                                                GraphQLInterceptorManager interceptorManager,

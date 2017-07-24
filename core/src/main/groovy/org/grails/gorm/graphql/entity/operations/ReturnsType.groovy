@@ -22,7 +22,7 @@ class ReturnsType<T> {
 
     T type(List<Class> list) {
         if (list.size() > 1) {
-            throw new IllegalArgumentException('When setting the type of a custom operation with a list, the list may only have one element.')
+            throw new IllegalArgumentException('When setting the type of a custom operation or argument with a list, the list may only have one element.')
         }
         if (list[0] instanceof Map) {
             type(list[0])

@@ -10,6 +10,7 @@ import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
+import org.grails.gorm.graphql.entity.operations.CustomOperation
 import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.fetcher.impl.CustomOperationInterceptorDataFetcher
@@ -118,7 +119,7 @@ class GraphQLMappingSpec extends Specification {
     }
 
     void "test adding an operation" () {
-        when:
+        given:
         GraphQLTypeManager typeManager = new DefaultGraphQLTypeManager(new GraphQLEntityNamingConvention(), null, new DefaultGraphQLDomainPropertyManager())
         GraphQLInterceptorManager interceptorManager = new DefaultGraphQLInterceptorManager()
         PersistentEntity entity = Stub(PersistentEntity) {
@@ -159,7 +160,17 @@ class GraphQLMappingSpec extends Specification {
                 dataFetcher(defaultFetcher)
                 description('ZYX mutation')
             }
+
+            mutation('no fetcher') {
+                type(String)
+            }
+
+            mutation('no type') {
+                dataFetcher(defaultFetcher)
+            }
         }
+
+        when:
         GraphQLFieldDefinition foo = mapping.customQueryOperations.find { it.name == 'foo' }.createField(entity, typeManager, interceptorManager, null).build()
         GraphQLFieldDefinition bar = mapping.customQueryOperations.find { it.name == 'bar' }.createField(entity, typeManager, interceptorManager, null).build()
         GraphQLFieldDefinition xyz = mapping.customMutationOperations.find { it.name == 'xyz' }.createField(entity, typeManager, interceptorManager, null).build()
@@ -200,5 +211,22 @@ class GraphQLMappingSpec extends Specification {
         xyz.arguments[0].name == 'fooBar'
         ((GraphQLInputObjectType)xyz.arguments[0].type).getField('foo').type == Scalars.GraphQLInt
         ((GraphQLInputObjectType)xyz.arguments[0].type).fieldDefinitions.size() == 1
+
+        when:
+        CustomOperation noFetcher = mapping.customMutationOperations.find { it.name == 'no fetcher' }
+        noFetcher.createField(entity, typeManager, interceptorManager, null)
+
+        then:
+        def ex = thrown(IllegalArgumentException)
+        ex.message == 'A data fetcher is required for creating custom operations'
+
+        when:
+        CustomOperation noType = mapping.customMutationOperations.find { it.name == 'no type' }
+        noType.createField(entity, typeManager, interceptorManager, null)
+
+        then:
+        ex = thrown(IllegalArgumentException)
+        ex.message == 'A return type is required for creating custom operations'
+
     }
 }

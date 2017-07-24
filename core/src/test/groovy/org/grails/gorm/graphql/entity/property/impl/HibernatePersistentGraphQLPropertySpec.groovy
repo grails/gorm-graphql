@@ -7,6 +7,7 @@ import graphql.schema.GraphQLList
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLType
 import org.codehaus.groovy.util.HashCodeHelper
+import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.gorm.graphql.HibernateSpec
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
@@ -35,6 +36,14 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
     PersistentGraphQLProperty getProperty(Class clazz, String name) {
         PersistentProperty p = mappingContext.getPersistentEntity(clazz.name).getPropertyByName(name)
         new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
+    }
+
+    GraphQLObjectType dummyObjectType() {
+        GraphQLObjectType.newObject().name('x').build()
+    }
+
+    GraphQLInputObjectType dummyInputObjectType() {
+        GraphQLInputObjectType.newInputObject().name('x').build()
     }
 
     void "test constructor with simple property (non null)"() {
@@ -88,6 +97,16 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         !property.nullable
     }
 
+    void "test constructor with a collection of enums"() {
+        PersistentGraphQLProperty property = getProperty(Book, 'otherBookTypes')
+
+        expect:
+        property.name == 'otherBookTypes'
+        property.type == BookType
+        property.collection
+        !property.nullable
+    }
+
     void "test constructor with a toMany"() {
         PersistentGraphQLProperty property = getProperty(Book, 'authors')
 
@@ -122,7 +141,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         PersistentGraphQLProperty property = getProperty(Book, 'title')
 
         when:
-        property.getGraphQLType(typeManager, CREATE)
+        property.getGraphQLType(typeManager, null)
 
         then:
         1 * typeManager.getType(String, false)
@@ -132,120 +151,173 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         PersistentGraphQLProperty property = getProperty(Book, 'description')
 
         when:
-        property.getGraphQLType(typeManager, CREATE)
+        property.getGraphQLType(typeManager, null)
 
         then:
         1 * typeManager.getType(String, true)
     }
 
-    void "test graphQL type with id property"() {
-        PersistentProperty p = mappingContext.getPersistentEntity(Book.name).identity
-        PersistentGraphQLProperty property = new PersistentGraphQLProperty(mappingContext, p, new GraphQLPropertyMapping())
-
-        when:
-        property.getGraphQLType(typeManager, CREATE)
-
-        then:
-        1 * typeManager.getType(Long, false)
-    }
-
-    void "test graphQL type with composite id property"() {
-        PersistentGraphQLProperty property = getProperty(Book2, 'title')
-
-        when:
-        property.getGraphQLType(typeManager, CREATE)
-
-        then:
-        1 * typeManager.getType(String, false)
-    }
-
-    void "test graphQL type with an enum"() {
+    void "test graphQL type with an enum (non null)"() {
         PersistentGraphQLProperty property = getProperty(Book, 'bookType')
 
         when:
-        property.getGraphQLType(typeManager, CREATE)
+        property.getGraphQLType(typeManager, null)
 
         then:
         1 * typeManager.getEnumType(BookType, false)
+    }
+
+    void "test graphQL type with an enum (null)"() {
+        PersistentGraphQLProperty property = getProperty(Book, 'nullBookType')
+
+        when:
+        property.getGraphQLType(typeManager, null)
+
+        then:
+        1 * typeManager.getEnumType(BookType, true)
     }
 
     void "test graphQL type with a toMany that is mapped with graphql"() {
         PersistentGraphQLProperty property = getProperty(Book, 'authors')
 
         when:
-        GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
+        property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.createReference(mappingContext.getPersistentEntity(Author.name), OUTPUT) >> Scalars.GraphQLString
-        type instanceof GraphQLList
+        1 * typeManager.createReference(mappingContext.getPersistentEntity(Author.name), OUTPUT) >> dummyObjectType()
+    }
+
+    void "test graphQL type with a toMany that is mapped with graphql CREATE"() {
+        PersistentGraphQLProperty property = getProperty(Book, 'authors')
+
+        when:
+        property.getGraphQLType(typeManager, CREATE)
+
+        then:
+        1 * typeManager.getMutationType(mappingContext.getPersistentEntity(Author.name), CREATE_NESTED, false) >> dummyInputObjectType()
     }
 
     void "test graphQL type with a toMany that is NOT mapped with graphql"() {
         PersistentGraphQLProperty property = getProperty(Book, 'tags')
 
         when:
-        GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
+        property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Tag.name), OUTPUT) >> GraphQLObjectType.newObject().name('x').build()
-        type instanceof GraphQLList
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Tag.name), OUTPUT) >> dummyObjectType()
+    }
+
+    void "test graphQL type with a toMany that is NOT mapped with graphql UPDATE"() {
+        PersistentGraphQLProperty property = getProperty(Book, 'tags')
+
+        when:
+        property.getGraphQLType(typeManager, UPDATE)
+
+        then:
+        1 * typeManager.getMutationType(mappingContext.getPersistentEntity(Tag.name), UPDATE_NESTED, false) >> dummyInputObjectType()
     }
 
     void "test graphQL type with a simple toMany"() {
         PersistentGraphQLProperty property = getProperty(Book, 'basics')
 
         when:
-        GraphQLType type = property.getGraphQLType(typeManager, CREATE)
+        property.getGraphQLType(typeManager, CREATE)
 
         then:
         1 * typeManager.getType(String, false) >> Scalars.GraphQLString
-        type instanceof GraphQLList
     }
 
-    void "test graphQL type with a toOne that is mapped with graphql"() {
+    void "test graphQL query type with a toOne that is NOT mapped with graphql"() {
+        PersistentGraphQLProperty property = getProperty(Book, 'metadata')
+
+        when:
+        property.getGraphQLType(typeManager, OUTPUT)
+
+        then:
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Metadata.name), OUTPUT)
+    }
+
+    void "test graphQL query type with a toOne that is mapped with graphql"() {
         PersistentGraphQLProperty property = getProperty(Book, 'otherMetadata')
 
         when:
-        GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
+        property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.createReference(mappingContext.getPersistentEntity(OtherMetadata.name), OUTPUT) >> Scalars.GraphQLString
-        type ==  Scalars.GraphQLString
+        1 * typeManager.createReference(mappingContext.getPersistentEntity(OtherMetadata.name), OUTPUT)
     }
 
-    void "test graphQL type with a toOne that is mapped with graphql CREATE"() {
+    void "test graphQL mutation type with a toOne that is mapped with graphql"() {
         PersistentGraphQLProperty property = getProperty(Book, 'otherMetadata')
 
         when:
-        GraphQLType type = property.getGraphQLType(typeManager, CREATE)
+        property.getGraphQLType(typeManager, propertyType)
 
         then:
-        1 * typeManager.getMutationType(mappingContext.getPersistentEntity(OtherMetadata.name), CREATE_NESTED, false) >> GraphQLInputObjectType.newInputObject().name('x').build()
-        type instanceof GraphQLInputObjectType
-    }
+        1 * typeManager.getMutationType(mappingContext.getPersistentEntity(OtherMetadata.name), queriedType, false)
 
-    void "test graphQL type with a toOne that is mapped with graphql UPDATE"() {
-        PersistentGraphQLProperty property = getProperty(Book, 'otherMetadata')
-
-        when:
-        GraphQLType type = property.getGraphQLType(typeManager, UPDATE)
-
-        then:
-        1 * typeManager.getMutationType(mappingContext.getPersistentEntity(OtherMetadata.name), UPDATE_NESTED, false) >> GraphQLInputObjectType.newInputObject().name('x').build()
-        type instanceof GraphQLInputObjectType
+        where:
+        propertyType | queriedType
+        CREATE       | CREATE_NESTED
+        UPDATE       | UPDATE_NESTED
     }
 
     void "test graphQL type with a toOne that is NOT mapped with graphql"() {
         PersistentGraphQLProperty property = getProperty(Book, 'metadata')
 
         when:
-        GraphQLType type = property.getGraphQLType(typeManager, OUTPUT)
+        property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Metadata.name), OUTPUT) >> GraphQLObjectType.newObject().name('x').build()
-        !(type instanceof GraphQLList)
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Metadata.name), OUTPUT)
+
+        when:
+        property.getGraphQLType(typeManager, OUTPUT_EMBEDDED)
+
+        then: 'The type gets set to OUTPUT since the property is not embedded'
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Metadata.name), OUTPUT)
     }
 
+    void "test graphQL type with an embedded property that is a domain OUTPUT"() {
+        PersistentGraphQLProperty property = getProperty(Book, 'otherMetadata2')
+
+        when:
+        property.getGraphQLType(typeManager, OUTPUT)
+
+        then:
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(OtherMetadata.name), OUTPUT_EMBEDDED)
+    }
+
+    void "test graphQL type with an embedded property that is NOT a domain OUTPUT"() {
+        PersistentGraphQLProperty property = getProperty(Book, 'someOtherMetadata')
+
+        when:
+        property.getGraphQLType(typeManager, OUTPUT)
+
+        then:
+        1 * typeManager.getQueryType(_ as PersistentEntity, OUTPUT_EMBEDDED)
+    }
+
+    void "test graphQL type with an embedded property that is a domain OUTPUT_EMBEDDED"() {
+        PersistentGraphQLProperty property = getProperty(Book, 'otherMetadata2')
+
+        when:
+        property.getGraphQLType(typeManager, OUTPUT_EMBEDDED)
+
+        then: 'The type stays the same since the property is embedded'
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(OtherMetadata.name), OUTPUT_EMBEDDED)
+    }
+
+    void "test graphQL type with an embedded property that is NOT a domain OUTPUT_EMBEDDED"() {
+        PersistentGraphQLProperty property = getProperty(Book, 'someOtherMetadata')
+
+        when:
+        GraphQLType type = property.getGraphQLType(typeManager, OUTPUT_EMBEDDED)
+
+        then: 'The type stays the same since the property is embedded'
+        1 * typeManager.getQueryType(_ as PersistentEntity, OUTPUT_EMBEDDED) >> GraphQLObjectType.newObject().name('x').build()
+        !(type instanceof GraphQLList)
+    }
 }
 
 @Entity
@@ -255,14 +327,20 @@ class Book {
     String description
     Metadata metadata
     BookType bookType
+    BookType nullBookType
     
     OtherMetadata otherMetadata
+    OtherMetadata otherMetadata2
+    SomeOtherMetadata someOtherMetadata
 
-    static hasMany = [authors: Author, tags: Tag, basics: String]
+    static hasMany = [authors: Author, tags: Tag, basics: String, otherBookTypes: BookType]
 
     static constraints = {
         description nullable: true
+        nullBookType nullable: true
     }
+
+    static embedded = ['otherMetadata2', 'someOtherMetadata']
 }
 
 @Entity
@@ -324,6 +402,10 @@ class OtherMetadata {
     String y
 
     static graphql = true
+}
+
+class SomeOtherMetadata {
+    String foo
 }
 
 enum BookType {
