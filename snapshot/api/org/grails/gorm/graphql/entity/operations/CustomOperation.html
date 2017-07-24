@@ -180,31 +180,31 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a></code></td>
-                            <td class="colLast"><code><strong><a href="#argument(java.lang.String, Map<String, Class>, groovy.lang.Closure)">argument</a></strong>(java.lang.String name, java.util.Map&lt;java.lang.String, java.lang.Class&gt; returnType, groovy.lang.Closure closure = null)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#argument(java.lang.String, Map<String, Class>, groovy.lang.Closure)">argument</a></strong>(java.lang.String name, java.util.Map&lt;java.lang.String, java.lang.Class&gt; type, groovy.lang.Closure closure = null)</code><br>Creates an argument to the operation of a custom type</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a></code></td>
-                            <td class="colLast"><code><strong><a href="#argument(java.lang.String, java.util.List, groovy.lang.Closure)">argument</a></strong>(java.lang.String name, java.util.List returnType, groovy.lang.Closure closure = null)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#argument(java.lang.String, java.util.List, groovy.lang.Closure)">argument</a></strong>(java.lang.String name, java.util.List type, groovy.lang.Closure closure = null)</code><br>Creates an argument to the operation that is a list. </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a></code></td>
-                            <td class="colLast"><code><strong><a href="#argument(java.lang.String, java.lang.Class, groovy.lang.Closure)">argument</a></strong>(java.lang.String name, java.lang.Class returnType, groovy.lang.Closure closure = null)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#argument(java.lang.String, java.lang.Class, groovy.lang.Closure)">argument</a></strong>(java.lang.String name, java.lang.Class type, groovy.lang.Closure closure = null)</code><br>Creates an argument to the operation that is of the type provided.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildCustomType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)">buildCustomType</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#buildCustomType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)">buildCustomType</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br>Builds a custom object type if the supplied return type is a Map</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#createField(PersistentEntity, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, MappingContext)">createField</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html'>GraphQLInterceptorManager</a> interceptorManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#createField(PersistentEntity, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, MappingContext)">createField</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html'>GraphQLInterceptorManager</a> interceptorManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br>Creates the field to be added to the query or mutation type in the schema.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -314,24 +314,29 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="argument(java.lang.String, Map<String, Class>, groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a> <strong>argument</strong>(java.lang.String name, java.util.Map&lt;java.lang.String, java.lang.Class&gt; returnType, @groovy.lang.DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure = null)</h4>
-                                <p></p>
+                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a> <strong>argument</strong>(java.lang.String name, java.util.Map&lt;java.lang.String, java.lang.Class&gt; type, @groovy.lang.DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure = null)</h4>
+                                <p> Creates an argument to the operation of a custom type
+     <DL><DT><B>Returns:</B></DT><DD>The operation in order to chain method calls</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The name of the argument</DD><DD><code>type</code> -  The type of the argument</DD><DD><code>closure</code> -  To provide additional data about the argument</DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="argument(java.lang.String, java.util.List, groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a> <strong>argument</strong>(java.lang.String name, java.util.List returnType, @groovy.lang.DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure = null)</h4>
-                                <p></p>
+                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a> <strong>argument</strong>(java.lang.String name, java.util.List type, @groovy.lang.DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure = null)</h4>
+                                <p> Creates an argument to the operation that is a list. The list
+ can not have more than 1 element. That element can either be
+ a class or a map.
+     <DL><DT><B>Returns:</B></DT><DD>The operation in order to chain method calls</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The name of the argument</DD><DD><code>type</code> -  The type of the argument</DD><DD><code>closure</code> -  To provide additional data about the argument</DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="argument(java.lang.String, java.lang.Class, groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a> <strong>argument</strong>(java.lang.String name, java.lang.Class returnType, @groovy.lang.DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure = null)</h4>
-                                <p></p>
+                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a> <strong>argument</strong>(java.lang.String name, java.lang.Class type, @groovy.lang.DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) groovy.lang.Closure closure = null)</h4>
+                                <p> Creates an argument to the operation that is of the type provided.
+     <DL><DT><B>Returns:</B></DT><DD>The operation in order to chain method calls</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The name of the argument</DD><DD><code>type</code> -  The type of the argument</DD><DD><code>closure</code> -  To provide additional data about the argument</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -339,7 +344,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>buildCustomType</strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</h4>
-                                <p></p>
+                                <p> Builds a custom object type if the supplied return type is a Map
+     <DL><DT><B>Returns:</B></DT><DD>The custom type</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>typeManager</code> -  The type manager</DD><DD><code>mappingContext</code> -  The mapping context</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -347,7 +353,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a> <strong>createField</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html'>GraphQLInterceptorManager</a> interceptorManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</h4>
-                                <p></p>
+                                <p> Creates the field to be added to the query or mutation type in the schema.
+     <DL><DT><B>Returns:</B></DT><DD>The custom field</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity the type was created for</DD><DD><code>typeManager</code> -  The type manager</DD><DD><code>interceptorManager</code> -  The interceptor manager to be used for executing
+ interceptors with the custom data fetcher</DD><DD><code>mappingContext</code> -  The mapping context</DD></DL></p>
                             </li>
                         </ul>
                     
