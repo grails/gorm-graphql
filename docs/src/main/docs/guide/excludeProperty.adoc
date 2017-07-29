@@ -1,0 +1,52 @@
+In the previous example, Speakers' email is an internal detail for conference
+organizers. We do not want to expose that property in the GraphQL API.
+In `Speaker` Domain Class, replace:
+
+[source, groovy]
+----
+static graphql = true
+----
+
+with:
+
+[source, groovy]
+----
+static graphql = GraphQLMapping.build {
+    property('email', output: false, input: false)
+}
+----
+
+If we try to fetch the speakers' email addresses:
+
+[source, bash]
+----
+curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
+     -d $'{
+  speakerList {
+    id
+    email
+  }
+}'
+----
+
+we get an error:
+
+[source, json]
+----
+{
+  "data": null,
+  "errors": [
+    {
+      "message": "Validation error of type FieldUndefined: Field email is undefined",
+      "errorType": "ValidationError",
+      "locations": [
+        {
+          "line": 4,
+          "column": 5
+        }
+      ]
+    }
+  ]
+}
+----

@@ -1,0 +1,110 @@
+You can expose a domain class within the GraphQL API by adding:
+
+[source, groovy]
+----
+static graphql = true
+----
+
+Imagine you are building an API for a Conference. A talk can be presented
+by a single speaker. A speaker can have many talks within the conference.
+A typical one-to-many relationship which in http://gorm.grails.org[GORM]
+could be expressed with:
+
+[source, groovy]
+----
+package demo
+
+class Speaker {
+    String firstName
+    String lastName
+    String name
+    String email
+    String bio
+    static hasMany = [talks: Talk]
+
+    static graphql = true // <1>
+
+    static constraints = {
+        lastName nullable: true
+        email nullable: true, email: true
+        bio nullable: true
+    }
+
+    static mapping = {
+        bio type: 'text'
+        name formula: 'concat(FIRST_NAME,\' \',LAST_NAME)'
+    }
+}
+----
+
+<1> it exposes this domain class to the GraphQL API
+
+[source, groovy]
+----
+package demo
+
+class Talk {
+    String title
+    int duration
+
+    static belongsTo = [speaker: Speaker]
+}
+----
+
+Adding the `graphql` property allows us inmediately to query our domain class with
+a GraphQL query:
+
+[source, bash]
+----
+curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
+     -d $'{
+  speakerList {
+    id
+    name
+  }
+}'
+----
+
+which returns:
+
+[source, json]
+----
+{
+  "data": {
+    "speakerList": [
+      {
+        "id": 1,
+        "name": "Jeff Scott Brown"
+      },
+      {
+        "id": 2,
+        "name": "Graeme Rocher"
+      },
+      {
+        "id": 3,
+        "name": "Paul King"
+      },
+      {
+        "id": 4,
+        "name": "Iván López"
+      },
+      {
+        "id": 5,
+        "name": "Ryan Vanderwerf"
+      },
+      {
+        "id": 6,
+        "name": "Colin Harrington"
+      },
+      {
+        "id": 7,
+        "name": "Zachary Klein"
+      }
+    ]
+  }
+}
+----
+
+TIP: GORM GraphQL plugin supports http://gorm.grails.org/latest/hibernate/manual/index.html#derivedProperties[Derived Properties] as illustrated in the previous example; `name` is derived property which concatenates `firstName` and `lastName`
+

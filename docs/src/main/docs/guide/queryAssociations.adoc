@@ -1,0 +1,124 @@
+we can query associations too:
+
+[source, bash]
+----
+curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
+     -d $'{
+  speakerList {
+    id
+    name
+    talks {
+        title
+    }
+  }
+}'
+----
+
+which returns:
+
+[source, json]
+----
+{
+  "data": {
+    "speakerList": [
+      {
+        "id": 1,
+        "name": "Jeff Scott Brown",
+        "talks": [
+          {
+            "title": "REST With Grails 3"
+          },
+          {
+            "title": "Polyglot Web Development with Grails 3"
+          },
+          {
+            "title": "Testing in Grails 3"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Graeme Rocher",
+        "talks": [
+          {
+            "title": "Graph Applications with GORM and Neo4j"
+          },
+          {
+            "title": "What's New in Grails?"
+          },
+          {
+            "title": "The Latest and Greatest in GORM"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Paul King",
+        "talks": [
+          {
+            "title": "Make your testing Groovy"
+          },
+          {
+            "title": "Groovy update: What's new in Groovy 2.5+"
+          },
+          {
+            "title": "Groovy: The Awesome Parts"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Iván López",
+        "talks": [
+          {
+            "title": "From Java to Groovy: Adventure time!"
+          },
+          {
+            "title": "Dockerize your Grails!"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Ryan Vanderwerf",
+        "talks": [
+          {
+            "title": "Amazon Alexa Workshop"
+          },
+          {
+            "title": "Getting Groovy with Google Home"
+          },
+          {
+            "title": "Alexa, Tell Me I'm Groovy!"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Colin Harrington",
+        "talks": [
+          {
+            "title": "Performance tuning your Grails apps"
+          },
+          {
+            "title": "Grails and Docker"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "name": "Zachary Klein",
+        "talks": [
+          {
+            "title": "Using React with Grails 3"
+          },
+          {
+            "title": "Grails and the Wonderful World of Javascript Frameworks"
+          }
+        ]
+      }
+    ]
+  }
+}
+----
