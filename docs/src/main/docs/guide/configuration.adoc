@@ -1,0 +1,26 @@
+|===
+|code|Type|Default Value|Description
+|`grails.gorm.graphql.enabled`
+|Boolean
+|True
+|Whether the plugin is enabled
+|`grails.gorm.graphql.dateFormats`
+|List<String>
+| - yyyy-MM-dd HH:mm:ss.S,
+  - yyyy-MM-dd'T'HH:mm:ss'Z'
+  - yyyy-MM-dd HH:mm:ss.S z
+  - yyyy-MM-dd'T'HH:mm:ss.SSSX
+|
+|`grails.gorm.graphql.dateFormatLenient`
+|Boolean
+|False
+|
+|`grails.gorm.graphql.runtimeDataFetching`
+|Boolean
+|True
+|
+|`grails.gorm.graphql.browser`
+| Boolean
+| True
+|Whether the `GraphqlController.browser` action which by default responds on the `graphql/browser` endpoint is enabled
+|===

@@ -52,6 +52,7 @@ Brief summary/description of the plugin.
     public static MimeType GRAPHQL_MIME =  new MimeType('application/graphql')
 
     Closure doWithSpring() {{ ->
+        grailsGraphQLConfiguration(GrailsGraphQLConfiguration)
 
         if (!config.getProperty('grails.gorm.graphql.enabled', Boolean, true)) {
             return
@@ -68,7 +69,6 @@ Brief summary/description of the plugin.
         graphQLInterceptorManager(DefaultGraphQLInterceptorManager)
         graphQLSchemaInterceptor(EmptyGraphQLSchemaInterceptor)
 
-        grailsGraphQLConfiguration(GrailsGraphQLConfiguration)
 
         graphQLSchemaGenerator(Schema, ref("grailsDomainClassMappingContext")) {
             deleteResponseHandler = ref("graphQLDeleteResponseHandler")
