@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>7 API Docs 1.0.0.BUILD-SNAPSHOT</title>
+    <title>6 Configuration 1.0.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -68,16 +68,18 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../guide/configuration.html">&lt;&lt; <strong>6</strong><span>Configuration</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/gettingStarted.html">&lt;&lt; <strong>5</strong><span>Getting Started</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
+                    <div class="toc-item next-right"><a href="../guide/APIDocs.html"><strong>7</strong><span>API Docs</span> >></a></div>
+                
 
 
                 <div class="project">
-                    <h1>7 API Docs</h1>
+                    <h1>6 Configuration</h1>
 
                     <p><strong>Version:</strong> 1.0.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -86,23 +88,71 @@ function addJsClass() {
 
                 
 
-<h1 id="APIDocs">7 API Docs</h1>
+<h1 id="configuration">6 Configuration</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/APIDocs.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/configuration.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
-<div class="paragraph">
-<p>Click <a href="../api/index.html">here</a> to view the API Documentation.</p>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">code</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the plugin is enabled</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.dateFormats</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List&lt;String&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- yyyy-MM-dd HH:mm:ss.S,
+  - yyyy-MM-dd&#8217;T&#8217;HH:mm:ss&#8217;Z'
+  - yyyy-MM-dd HH:mm:ss.S z
+  - yyyy-MM-dd&#8217;T&#8217;HH:mm:ss.SSSX</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.dateFormatLenient</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">False</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.runtimeDataFetching</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.browser</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the <code>GraphqlController.browser</code> action which by default responds on the <code>graphql/browser</code> endpoint is enabled</p></td>
+</tr>
+</tbody>
+</table>
 
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../guide/configuration.html">&lt;&lt; <strong>6</strong><span>Configuration</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/gettingStarted.html">&lt;&lt; <strong>5</strong><span>Getting Started</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/APIDocs.html"><strong>7</strong><span>API Docs</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>
