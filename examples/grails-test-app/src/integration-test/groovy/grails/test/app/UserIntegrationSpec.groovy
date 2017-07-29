@@ -32,7 +32,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         then:
         obj.data == null
         obj.errors.size() == 1
-        obj.errors[0].message.startsWith('Validation error of type WrongType')
+        obj.errors[0].message.startsWith('Validation error of returnType WrongType')
 
         when: 'The profile is provided, but missing a required field'
         resp = graphQL.graphql("""
@@ -59,7 +59,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         then:
         obj.data == null
         obj.errors.size() == 1
-        obj.errors[0].message.startsWith('Validation error of type WrongType')
+        obj.errors[0].message.startsWith('Validation error of returnType WrongType')
     }
 
     void "test creating a user without an address"() {
@@ -84,7 +84,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         then:
         obj.data == null
         obj.errors.size() == 1
-        obj.errors[0].message.startsWith('Validation error of type WrongType')
+        obj.errors[0].message.startsWith('Validation error of returnType WrongType')
 
         when: 'The address is provided, but missing a required field'
         resp = graphQL.graphql("""
@@ -111,7 +111,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         then:
         obj.data == null
         obj.errors.size() == 1
-        obj.errors[0].message.startsWith('Validation error of type WrongType')
+        obj.errors[0].message.startsWith('Validation error of returnType WrongType')
     }
 
     void "test creating the top level manager"() {

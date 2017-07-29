@@ -49,7 +49,7 @@ interface GraphQLDataFetcherManager {
      *
      * @param entity The entity representing the domain used in the fetcher
      * @param dataBinder The data binder responsible for binding data to the domain instance
-     * @param type Which type of fetcher to return (CREATE or UPDATE)
+     * @param type Which returnType of fetcher to return (CREATE or UPDATE)
      * @return The matched data binder
      */
     DataFetcher getBindingFetcher(PersistentEntity entity, GraphQLDataBinder dataBinder, GraphQLDataFetcherType type)
@@ -67,7 +67,7 @@ interface GraphQLDataFetcherManager {
      * Returns a data fetcher instance to be used in GET or LIST
      *
      * @param entity The entity representing the domain used in the fetcher
-     * @param type Which type of fetcher to return (GET or LIST)
+     * @param type Which returnType of fetcher to return (GET or LIST)
      * @return The matched data binder
      */
     DataFetcher getReadingFetcher(PersistentEntity entity, GraphQLDataFetcherType type)

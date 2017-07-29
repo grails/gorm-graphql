@@ -12,22 +12,14 @@ import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.gorm.graphql.HibernateSpec
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.types.GraphQLTypeManager
-import org.grails.orm.hibernate.cfg.HibernateMappingContext
-import spock.lang.Shared
 
 import static org.grails.gorm.graphql.types.GraphQLPropertyType.*
 
 class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
 
-    @Shared HibernateMappingContext mappingContext
-
     GraphQLTypeManager typeManager
 
     List<Class> getDomainClasses() { [Book, Book2, Author, Tag, Metadata, OtherMetadata] }
-
-    void setupSpec() {
-        mappingContext = hibernateDatastore.mappingContext
-    }
 
     void setup() {
         typeManager = Mock(GraphQLTypeManager)
@@ -274,7 +266,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         when:
         property.getGraphQLType(typeManager, OUTPUT_EMBEDDED)
 
-        then: 'The type gets set to OUTPUT since the property is not embedded'
+        then: 'The returnType gets set to OUTPUT since the property is not embedded'
         1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Metadata.name), OUTPUT)
     }
 
@@ -304,7 +296,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         when:
         property.getGraphQLType(typeManager, OUTPUT_EMBEDDED)
 
-        then: 'The type stays the same since the property is embedded'
+        then: 'The returnType stays the same since the property is embedded'
         1 * typeManager.getQueryType(mappingContext.getPersistentEntity(OtherMetadata.name), OUTPUT_EMBEDDED)
     }
 
@@ -314,7 +306,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         when:
         GraphQLType type = property.getGraphQLType(typeManager, OUTPUT_EMBEDDED)
 
-        then: 'The type stays the same since the property is embedded'
+        then: 'The returnType stays the same since the property is embedded'
         1 * typeManager.getQueryType(_ as PersistentEntity, OUTPUT_EMBEDDED) >> GraphQLObjectType.newObject().name('x').build()
         !(type instanceof GraphQLList)
     }

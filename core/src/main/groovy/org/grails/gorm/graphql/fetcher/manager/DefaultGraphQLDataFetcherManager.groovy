@@ -41,7 +41,7 @@ class DefaultGraphQLDataFetcherManager implements GraphQLDataFetcherManager {
 
     protected void verifyFetcher(DataFetcher instance, Class requiredType) {
         if (instance != null && !(requiredType.isAssignableFrom(instance.class))) {
-            throw new IllegalArgumentException("Data binder supplied ${instance.class.name} must be of type ${requiredType.name}")
+            throw new IllegalArgumentException("Data binder supplied ${instance.class.name} must be of returnType ${requiredType.name}")
         }
     }
 

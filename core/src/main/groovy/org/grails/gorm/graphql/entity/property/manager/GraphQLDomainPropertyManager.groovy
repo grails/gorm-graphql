@@ -50,7 +50,7 @@ interface GraphQLDomainPropertyManager {
         Builder exclude(String... props)
 
         /**
-         * Exclude properties based on the return type of the provided
+         * Exclude properties based on the return returnType of the provided
          * closure. If the closure returns false, the property will not
          * be returned.
          *

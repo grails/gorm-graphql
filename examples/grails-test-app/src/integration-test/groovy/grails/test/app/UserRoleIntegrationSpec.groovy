@@ -164,7 +164,7 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
 
         then:
         result.errors.size() == 1
-        result.errors[0].message == "Validation error of type FieldUndefined: Field userRoleUpdate is undefined"
+        result.errors[0].message == "Validation error of returnType FieldUndefined: Field userRoleUpdate is undefined"
     }
 
     void "test listing entities with a complex composite id"() {

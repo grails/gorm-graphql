@@ -53,14 +53,28 @@ class GraphQLEntityNamingConvention {
         entity.decapitalizedName + 'Delete'
     }
 
-    /**
-     * @param entity The persistent entity
-     * @param type The property type
-     * @return The name to use. Ex: "Person", "PersonCreate", "PersonUpdate", "PersonInputNested"
-     */
-    String getType(PersistentEntity entity, GraphQLPropertyType type) {
-        entity.javaClass.simpleName + type.name().split('_').collect { String name ->
+    private String normalizeType(GraphQLPropertyType type) {
+        type.name().split('_').collect { String name ->
             name.toLowerCase().capitalize()
         }.join('').replace('Output', '')
     }
+
+    /**
+     * @param entity The persistent entity
+     * @param type The property returnType
+     * @return The name to use. Ex: "Person", "PersonCreate", "PersonUpdate", "PersonInputNested"
+     */
+    String getType(PersistentEntity entity, GraphQLPropertyType type) {
+        getType(entity.javaClass.simpleName, type)
+    }
+
+    /**
+     * @param typeName The custom type name
+     * @param type The property returnType
+     * @return The name to use. Ex: "Person", "PersonCreate", "PersonUpdate", "PersonInputNested"
+     */
+    String getType(String typeName, GraphQLPropertyType type) {
+        typeName + normalizeType(type)
+    }
+
 }

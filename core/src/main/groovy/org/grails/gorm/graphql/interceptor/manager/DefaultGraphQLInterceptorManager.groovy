@@ -1,21 +1,26 @@
 package org.grails.gorm.graphql.interceptor.manager
 
 import groovy.transform.CompileStatic
+import org.grails.datastore.mapping.core.order.OrderedComparator
 import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
 import org.grails.gorm.graphql.types.KeyClassQuery
-
 /**
  * Default implementation of {@link GraphQLInterceptorManager} that
  * will also return a result if the class requested is a subclass
- * of a class that exists in the registry. The order of which interceptors
- * are registered is relevant to their resolution. The items added last
- * have priority when searching for subclass matches.
+ * of a class that exists in the registry. All interceptors for the
+ * exact class searched and any parent classes will be returned. Multiple
+ * interceptors for the same class can be registered.
  *
  * Example:
- * register(Collection)
- * register(List)
+ * registerInterceptor(Collection, interceptor1)
+ * registerInterceptor(Collection, interceptor2)
+ * registerInterceptor(List, interceptor3)
  *
- * When the binder is searched for ArrayList, List will be returned.
+ * If an ArrayList is being intercepted, all 3 interceptors will fire
+ *
+ * The resulting list will be sorted based on order. Implement the
+ * {@link org.grails.datastore.mapping.core.Ordered} trait to
+ * control the order of your interceptors.
  *
  * @author James Kleeh
  * @since 1.0.0
@@ -25,12 +30,14 @@ class DefaultGraphQLInterceptorManager implements GraphQLInterceptorManager, Key
 
     protected Map<Class, List<GraphQLFetcherInterceptor>> interceptors = Collections.synchronizedMap([:]).withDefault { [] }
 
+    protected Comparator interceptorComparator = new OrderedComparator<GraphQLFetcherInterceptor>()
+
     /**
      * @see GraphQLInterceptorManager#registerInterceptor
      */
     @Override
-    void registerInterceptor(GraphQLFetcherInterceptor interceptor) {
-        interceptors.get(interceptor.supportedType).add(interceptor)
+    void registerInterceptor(Class type, GraphQLFetcherInterceptor interceptor) {
+        interceptors.get(type).add(interceptor)
     }
 
     /**
@@ -40,6 +47,6 @@ class DefaultGraphQLInterceptorManager implements GraphQLInterceptorManager, Key
      */
     @Override
     List<GraphQLFetcherInterceptor> getInterceptors(Class clazz) {
-        searchMap(interceptors, clazz)
+        searchMapAll(interceptors, clazz).sort(true, interceptorComparator)
     }
 }

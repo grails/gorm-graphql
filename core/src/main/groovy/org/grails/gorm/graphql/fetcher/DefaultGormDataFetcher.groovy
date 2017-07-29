@@ -12,11 +12,12 @@ import org.grails.datastore.gorm.GormStaticApi
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.types.Association
+import org.grails.datastore.mapping.model.types.ToOne
 
 /**
  * A generic class to assist with querying entities with GraphQL
  *
- * @param <T> The domain type to query
+ * @param <T> The domain returnType to query
  * @author James Kleeh
  * @since 1.0.0
  */
@@ -47,16 +48,23 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         associationNames = associations.keySet()
     }
 
+    protected boolean isForeignKeyInChild(Association association) {
+        association instanceof ToOne && ((ToOne)association).foreignKeyInChild
+    }
+
     protected boolean shouldJoinProperty(Field selectedField) {
         boolean join = false
         if (associationNames.contains(selectedField.name)) {
             join = true
-            PersistentEntity entity = associations.get(selectedField.name).associatedEntity
-            List<Selection> selections = selectedField.selectionSet?.selections
-            if (selections?.size() == 1 && selections[0] instanceof Field) {
-                Field field = (Field)selections[0]
-                if (entity.isIdentityName(field.name)) {
-                    join = false
+            Association association = associations.get(selectedField.name)
+            if (!isForeignKeyInChild(association)) {
+                PersistentEntity entity = association.associatedEntity
+                List<Selection> selections = selectedField.selectionSet?.selections
+                if (selections?.size() == 1 && selections[0] instanceof Field) {
+                    Field field = (Field)selections[0]
+                    if (entity.isIdentityName(field.name)) {
+                        join = false
+                    }
                 }
             }
         }

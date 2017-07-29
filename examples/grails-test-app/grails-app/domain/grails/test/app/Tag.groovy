@@ -1,5 +1,7 @@
 package grails.test.app
 
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
+
 class Tag {
 
     String name
@@ -7,5 +9,13 @@ class Tag {
     static constraints = {
     }
 
-    static graphql = true
+    Set<Post> getPosts() {
+        Post.executeQuery("select p from Post p join fetch p.tags t where t.id = ${id}")
+    }
+
+    static graphql = GraphQLMapping.build {
+        add('posts', [Post]) {
+            input false
+        }
+    }
 }

@@ -67,18 +67,60 @@ class UserRole implements Serializable {
      * class is initialized
      */
     static graphql = GraphQLMapping.lazy {
-        operations.update = false
+        operations.update.enabled false
 
         query('usersByRole') {
             argument('role', Long)
-            type([User])
+            returnType([User])
             dataFetcher(new UsersByRoleDataFetcher())
         }
 
         mutation('revokeAllRoles') {
             argument('user', Long)
-            type([success: Boolean])
+            argument('book', [name: String, authors: [[id: Long]], editors: [Long]])
+            argument('book') {
+                nullable false
+                description "The book in question"
+
+                argument('name', String) {
+                    nullable true
+                    description "The book name"
+                }
+                argument('authors', [{
+                    nullable true
+                    description "The authors"
+                    argument('id', Long)
+                }])
+                argument('editors', [Long]) {
+                    nullable false
+                    description "The editors"
+                }
+            }
+            argument('authors', [{
+                 nullable true
+                 description "The authors"
+                 argument('id', Long)
+             }])
+            returns {
+                field('book') {
+                    field('id', Long)
+                }
+            }
+            returns {
+                field('name', Long)
+                collection true
+            }
+
+            returns(Long) {
+                collection true
+            }
+            returnsObject {
+                field()
+            }
+            returnType([success: Boolean])
             dataFetcher(new RevokeAllRolesDataFetcher())
         }
+
+
     }
 }

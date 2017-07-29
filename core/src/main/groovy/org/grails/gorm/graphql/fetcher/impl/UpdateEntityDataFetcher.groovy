@@ -13,7 +13,7 @@ import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 /**
  * A class for updating an entity with GraphQL
  *
- * @param <T> The domain type to update
+ * @param <T> The domain returnType to update
  * @author James Kleeh
  * @since 1.0.0
  */

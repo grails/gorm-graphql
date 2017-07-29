@@ -29,8 +29,8 @@ interface GraphQLSchemaInterceptor {
      * Executed a single time before the schema is created. The types are
      * mutable and their changes will be applied in the schema.
      *
-     * @param queryType The root query type
-     * @param mutationType The root mutation type
+     * @param queryType The root query returnType
+     * @param mutationType The root mutation returnType
      */
     void interceptSchema(GraphQLObjectType.Builder queryType,
                          GraphQLObjectType.Builder mutationType)

@@ -5,7 +5,7 @@ import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.types.scalars.coercing.URLCoercion
 
 /**
- * Default {@link URL} scalar type
+ * Default {@link URL} scalar returnType
  *
  * @author James Kleeh
  * @since 1.0.0

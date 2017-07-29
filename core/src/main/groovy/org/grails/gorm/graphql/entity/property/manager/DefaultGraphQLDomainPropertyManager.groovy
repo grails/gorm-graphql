@@ -11,6 +11,7 @@ import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
 import org.grails.gorm.graphql.entity.property.impl.PersistentGraphQLProperty
+import org.grails.gorm.graphql.entity.property.impl.SimpleGraphQLProperty
 
 import java.lang.reflect.Method
 
@@ -158,25 +159,23 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
                 properties.add(new PersistentGraphQLProperty(mappingContext, prop, getPropertyMapping(prop, mapping)))
             }
 
-            if (overrideNullable) {
-                for (CustomGraphQLProperty property: mapping.additional) {
-                    if (property.nullable) {
-                        properties.add(property)
-                    }
-                    else {
-                        properties.add(property.clone().nullable(true))
-                    }
+            for (CustomGraphQLProperty property: mapping.additional) {
+                CustomGraphQLProperty prop
+                if (overrideNullable && !property.nullable) {
+                    prop = (CustomGraphQLProperty)property.clone().nullable(true)
                 }
-            }
-            else {
-                properties.addAll(mapping.additional)
+                else {
+                    prop = property
+                }
+                prop.mappingContext = mappingContext
+                properties.add(prop)
             }
 
             if (!mappingContext.getDirectChildEntities(entity).empty) {
-                properties.add(CustomGraphQLProperty.newProperty()
+                properties.add(new SimpleGraphQLProperty()
                     .input(false)
                     .name('className')
-                    .type(String)
+                    .returns(String)
                     .dataFetcher(classSimpleName)
                 )
             }

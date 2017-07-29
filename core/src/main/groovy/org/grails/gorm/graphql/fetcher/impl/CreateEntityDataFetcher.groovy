@@ -13,7 +13,7 @@ import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 /**
  * A class for creating entities with GraphQL
  *
- * @param <T> The domain type to create
+ * @param <T> The domain returnType to create
  * @author James Kleeh
  * @since 1.0.0
  */

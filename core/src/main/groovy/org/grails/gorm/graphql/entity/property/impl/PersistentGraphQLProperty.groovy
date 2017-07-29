@@ -133,7 +133,7 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
                     else {
                         propertyType = GraphQLPropertyType.OUTPUT
                         GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity)
-                        if (mapping?.operations?.output) {
+                        if (mapping != null) {
                             //This is necessary to avoid StackOverflow exceptions
                             graphQLType = typeManager.createReference(entity, propertyType)
                         }

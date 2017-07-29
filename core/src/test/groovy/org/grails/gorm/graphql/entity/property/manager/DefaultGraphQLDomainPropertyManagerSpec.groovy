@@ -6,18 +6,15 @@ import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.gorm.graphql.HibernateSpec
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
-import org.grails.orm.hibernate.cfg.HibernateMappingContext
 import spock.lang.Shared
 
 class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
 
-    @Shared HibernateMappingContext mappingContext
     @Shared GraphQLDomainPropertyManager manager
 
     List<Class> getDomainClasses() { [NormalId, CompositeId, EmbeddedEntity] }
 
     void setupSpec() {
-        mappingContext = hibernateDatastore.mappingContext
         manager = new DefaultGraphQLDomainPropertyManager()
     }
 

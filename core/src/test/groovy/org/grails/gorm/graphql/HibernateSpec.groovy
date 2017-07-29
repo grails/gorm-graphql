@@ -4,9 +4,7 @@ import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.config.Settings
 import org.grails.datastore.mapping.core.DatastoreUtils
 import org.grails.orm.hibernate.HibernateDatastore
-import org.springframework.transaction.PlatformTransactionManager
-import org.springframework.transaction.TransactionStatus
-import org.springframework.transaction.interceptor.DefaultTransactionAttribute
+import org.grails.orm.hibernate.cfg.HibernateMappingContext
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -15,27 +13,13 @@ import spock.lang.Specification
 class HibernateSpec extends Specification {
 
     @Shared @AutoCleanup HibernateDatastore hibernateDatastore
-    @Shared PlatformTransactionManager transactionManager
+    @Shared HibernateMappingContext mappingContext
 
     void setupSpec() {
         hibernateDatastore = new HibernateDatastore(
                 DatastoreUtils.createPropertyResolver(configuration),
                 domainClasses as Class[])
-
-        transactionManager = hibernateDatastore.transactionManager
-    }
-
-    /**
-     * The transaction status
-     */
-    TransactionStatus transactionStatus
-
-    void setup() {
-        transactionStatus = transactionManager.getTransaction(new DefaultTransactionAttribute())
-    }
-
-    void cleanup() {
-        transactionManager.rollback(transactionStatus)
+        mappingContext = hibernateDatastore.mappingContext
     }
 
     /**

@@ -169,7 +169,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             objectTypeBuilders.get(type).build(entity)
         }
         else {
-            throw new IllegalArgumentException("Invalid type specified. ${type.name()} is not a valid query type")
+            throw new IllegalArgumentException("Invalid returnType specified. ${type.name()} is not a valid query returnType")
         }
     }
 
@@ -185,7 +185,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             }
         }
         else {
-            throw new IllegalArgumentException("Invalid type specified. ${type.name()} is not a valid mutation type")
+            throw new IllegalArgumentException("Invalid returnType specified. ${type.name()} is not a valid mutation returnType")
         }
     }
 

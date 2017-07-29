@@ -1,5 +1,7 @@
 package org.grails.gorm.graphql.entity.dsl
 
+import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
+
 /**
  * A class to lazy initialize GraphQL mappings on
  * GORM entities. This is to allow users to access the
@@ -10,7 +12,7 @@ package org.grails.gorm.graphql.entity.dsl
  * @author James Kleeh
  * @since 1.0.0
  */
-class LazyGraphQLMapping {
+class LazyGraphQLMapping implements ExecutesClosures {
 
     Closure closure
 
@@ -20,15 +22,7 @@ class LazyGraphQLMapping {
 
     GraphQLMapping initialize() {
         GraphQLMapping mapping = new GraphQLMapping()
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = mapping
-
-        try {
-            closure.call()
-        } finally {
-            closure.delegate = null
-        }
-
+        withDelegate(closure, mapping)
         mapping
     }
 }

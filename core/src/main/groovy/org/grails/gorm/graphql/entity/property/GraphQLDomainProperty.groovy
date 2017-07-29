@@ -19,13 +19,8 @@ interface GraphQLDomainProperty {
     String getName()
 
     /**
-     * @return The type of the property
-     */
-    Class getType()
-
-    /**
-     * @param typeManager The type manager used to retrieve GraphQL types
-     * @param propertyType The type of property being created
+     * @param typeManager The returnType manager used to retrieve GraphQL types
+     * @param propertyType The returnType of property being created
      * @return The GraphQLType representing the property
      */
     GraphQLType getGraphQLType(GraphQLTypeManager typeManager, GraphQLPropertyType propertyType)
@@ -59,11 +54,6 @@ interface GraphQLDomainProperty {
      * @return True if the property allows nulls
      */
     boolean isNullable()
-
-    /**
-     * @return True if the property represents a collection
-     */
-    boolean isCollection()
 
     /**
      * @return The closure to retrieve the data for the property. If not null, it

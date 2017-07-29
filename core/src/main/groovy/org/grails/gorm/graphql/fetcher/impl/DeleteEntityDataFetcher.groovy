@@ -13,7 +13,7 @@ import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 /**
  * A class for deleting entities with GraphQL
  *
- * @param <T> The domain type to delete
+ * @param <T> The domain returnType to delete
  * @author James Kleeh
  * @since 1.0.0
  */

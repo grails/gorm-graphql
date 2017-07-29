@@ -12,7 +12,7 @@ import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
  *
  * @see AbstractRuntimeDataFetcher
  *
- * @param <T> The domain type to return
+ * @param <T> The domain returnType to return
  * @author James Kleeh
  * @since 1.0.0
  */

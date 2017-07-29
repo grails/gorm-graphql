@@ -5,7 +5,7 @@ import groovy.transform.CompileStatic
 /**
  * Generic class to help searching maps that have a class as their key
  *
- * @param <V> The type of value to return
+ * @param <V> The returnType of value to return
  *
  * @author James Kleeh
  * @since 1.0.0
@@ -39,5 +39,31 @@ trait KeyClassQuery<V> {
             }
         }
         null
+    }
+
+    /**
+     * Searches for any class that is a super class of the class being
+     * searched. Return all results found.
+     *
+     * @param map The map to search
+     * @param clazz The class to search for
+     *
+     * @return The result. If no results found, returns an empty list.
+     */
+    List searchMapAll(Map<Class, V> map, Class clazz) {
+        List values = []
+        List<Class> keys = map.keySet().toList()
+        for (Class key: keys) {
+            if (key.isAssignableFrom(clazz)) {
+                V value = map.get(key)
+                if (value instanceof Collection) {
+                    values.addAll((Collection)value)
+                }
+                else {
+                    values.add(value)
+                }
+            }
+        }
+        values
     }
 }

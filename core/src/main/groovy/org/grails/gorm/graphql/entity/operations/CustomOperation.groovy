@@ -6,13 +6,19 @@ import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
+import org.grails.gorm.graphql.entity.dsl.helpers.Describable
+import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
+import org.grails.gorm.graphql.entity.dsl.helpers.Named
+import org.grails.gorm.graphql.entity.operations.arguments.ComplexArgument
+import org.grails.gorm.graphql.entity.operations.arguments.CustomArgument
+import org.grails.gorm.graphql.entity.operations.arguments.SimpleArgument
 import org.grails.gorm.graphql.fetcher.impl.CustomOperationInterceptorDataFetcher
 import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
-import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
-import org.grails.gorm.graphql.types.TypeNotFoundException
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
+
 /**
  * This class stores data about custom query operations
  * that users provide in the mapping of the entity.
@@ -20,111 +26,83 @@ import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
  * @author James Kleeh
  * @since 1.0.0
  */
-@Builder(builderStrategy = SimpleStrategy, prefix = '', includes = ['deprecated', 'deprecationReason', 'description', 'dataFetcher'])
+@Builder(builderStrategy = SimpleStrategy, prefix = '', includes = ['dataFetcher'])
 @CompileStatic
-class CustomOperation extends ReturnsType<CustomOperation> {
+abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecatable<T>, ExecutesClosures {
 
     private List<CustomArgument> arguments = []
     DataFetcher dataFetcher
-    boolean deprecated = false
-    String deprecationReason
-    String description
+
+    OperationType operationType
 
     private void handleArgumentClosure(CustomArgument argument, Closure closure) {
-        if (closure != null) {
-            closure.resolveStrategy = Closure.DELEGATE_FIRST
-            closure.delegate = argument
-
-            try {
-                closure.call()
-            } finally {
-                closure.delegate = null
-            }
-        }
+        withDelegate(closure, argument)
+        argument.validate()
         arguments.add(argument)
     }
 
     /**
-     * Creates an argument to the operation of a custom type
+     * Creates an argument to the operation that is a list of a simple type.
+     * The list can not have more than 1 element and that element must be a class.
      *
      * @param name The name of the argument
-     * @param type The type of the argument
+     * @param type The returnType of the argument
      * @param closure To provide additional data about the argument
      * @return The operation in order to chain method calls
      */
-    CustomOperation argument(String name, Map<String, Class> type, @DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) Closure closure = null) {
-        CustomArgument argument = new CustomArgument().name(name).type(type)
+    CustomOperation argument(String name, List<Class> type, @DelegatesTo(value = SimpleArgument, strategy = Closure.DELEGATE_ONLY) Closure closure = null) {
+        CustomArgument argument = new SimpleArgument().name(name).returns(type)
         handleArgumentClosure(argument, closure)
         this
     }
 
     /**
-     * Creates an argument to the operation that is a list. The list
-     * can not have more than 1 element. That element can either be
-     * a class or a map.
+     * Creates an argument to the operation that is of the returnType provided.
      *
      * @param name The name of the argument
-     * @param type The type of the argument
+     * @param type The returnType of the argument
      * @param closure To provide additional data about the argument
      * @return The operation in order to chain method calls
      */
-    CustomOperation argument(String name, List type, @DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) Closure closure = null) {
-        CustomArgument argument = new CustomArgument().name(name).type(type)
+    CustomOperation argument(String name, Class type, @DelegatesTo(value = SimpleArgument, strategy = Closure.DELEGATE_ONLY) Closure closure = null) {
+        CustomArgument argument = new SimpleArgument().name(name).returns(type)
         handleArgumentClosure(argument, closure)
         this
     }
 
     /**
-     * Creates an argument to the operation that is of the type provided.
+     * Creates an argument to the operation that is a custom type.
      *
      * @param name The name of the argument
-     * @param type The type of the argument
      * @param closure To provide additional data about the argument
      * @return The operation in order to chain method calls
      */
-    CustomOperation argument(String name, Class type, @DelegatesTo(value = CustomArgument, strategy = Closure.DELEGATE_FIRST) Closure closure = null) {
-        CustomArgument argument = new CustomArgument().name(name).type(type)
+    CustomOperation argument(String name, String typeName, @DelegatesTo(value = ComplexArgument, strategy = Closure.DELEGATE_ONLY) Closure closure) {
+        CustomArgument argument = new ComplexArgument().name(name).typeName(typeName)
         handleArgumentClosure(argument, closure)
         this
     }
 
-    protected GraphQLOutputType resolveType(GraphQLTypeManager typeManager, MappingContext mappingContext, Class clazz) {
-        GraphQLOutputType type
-        if (typeManager.hasType(clazz)) {
-            type = (GraphQLOutputType)typeManager.getType(clazz)
-        }
-        else {
-            PersistentEntity entity = mappingContext.getPersistentEntity(clazz.name)
-            if (entity != null) {
-                type = typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT)
-            }
-            else {
-                throw new TypeNotFoundException(clazz)
-            }
-        }
-        type
-    }
+//    /**
+//     * Builds a custom object returnType if the supplied return returnType is a Map
+//     *
+//     * @param typeManager The returnType manager
+//     * @param mappingContext The mapping context
+//     * @return The custom returnType
+//     */
+//    GraphQLObjectType buildCustomType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
+//        GraphQLObjectType.Builder builder = GraphQLObjectType.newObject()
+//                .name(typeManager.namingConvention.getCustomType(name, GraphQLPropertyType.OUTPUT))
+//
+//        for (Map.Entry<String, Class> entry: customReturnFields) {
+//            builder.field(newFieldDefinition()
+//                    .name(entry.key)
+//                    .type(resolveType(typeManager, mappingContext, entry.value)))
+//        }
+//        builder.build()
+//    }
 
-    /**
-     * Builds a custom object type if the supplied return type is a Map
-     *
-     * @param typeManager The type manager
-     * @param mappingContext The mapping context
-     * @return The custom type
-     */
-    GraphQLObjectType buildCustomType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
-        GraphQLObjectType.Builder builder = GraphQLObjectType.newObject()
-                .name(name.capitalize() + 'Custom')
-
-        for (Map.Entry<String, Class> entry: customReturnFields) {
-            builder.field(newFieldDefinition()
-                    .name(entry.key)
-                    .type(resolveType(typeManager, mappingContext, entry.value)))
-        }
-        builder.build()
-    }
-
-    protected GraphQLOutputType getType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
+    protected abstract GraphQLOutputType getType(GraphQLTypeManager typeManager, MappingContext mappingContext)/* {
         GraphQLOutputType type
         if (customReturnFields != null) {
             type = buildCustomType(typeManager, mappingContext)
@@ -137,25 +115,22 @@ class CustomOperation extends ReturnsType<CustomOperation> {
             type = GraphQLList.list(type)
         }
         type
-    }
+    }*/
 
-    private void validate() {
+    void validate() {
         if (name == null) {
             throw new IllegalArgumentException('A name is required for creating custom operations')
         }
         if (dataFetcher == null) {
             throw new IllegalArgumentException('A data fetcher is required for creating custom operations')
         }
-        if (returnType == null && customReturnFields == null) {
-            throw new IllegalArgumentException('A return type is required for creating custom operations')
-        }
     }
 
     /**
-     * Creates the field to be added to the query or mutation type in the schema.
+     * Creates the field to be added to the query or mutation returnType in the schema.
      *
-     * @param entity The persistent entity the type was created for
-     * @param typeManager The type manager
+     * @param entity The persistent entity the returnType was created for
+     * @param typeManager The returnType manager
      * @param interceptorManager The interceptor manager to be used for executing
      * interceptors with the custom data fetcher
      * @param mappingContext The mapping context
@@ -174,12 +149,12 @@ class CustomOperation extends ReturnsType<CustomOperation> {
                 .name(name)
                 .type(outputType)
                 .description(description)
-                .deprecate(deprecationReason ?: (deprecated ? 'Deprecated' : null))
-                .dataFetcher(new CustomOperationInterceptorDataFetcher(entity.javaClass, dataFetcher, interceptorManager))
+                .deprecate(deprecationReason)
+                .dataFetcher(new CustomOperationInterceptorDataFetcher(entity.javaClass, dataFetcher, interceptorManager, operationType))
 
         if (!arguments.isEmpty()) {
             for (CustomArgument argument: arguments) {
-                customQuery.argument(argument.getArgument(typeManager))
+                customQuery.argument(argument.getArgument(typeManager, mappingContext))
             }
         }
 

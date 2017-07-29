@@ -45,7 +45,11 @@ class TypedGraphQLFetcherInterceptor<T> implements GraphQLFetcherInterceptor {
         true
     }
 
-    boolean onCustomOperation(String name, DataFetchingEnvironment environment) {
+    boolean onCustomQuery(String name, DataFetchingEnvironment environment) {
+        true
+    }
+
+    boolean onCustomMutation(String name, DataFetchingEnvironment environment) {
         true
     }
 

@@ -5,7 +5,7 @@ import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.types.scalars.coercing.UUIDCoercion
 
 /**
- * Default {@link UUID} scalar type
+ * Default {@link UUID} scalar returnType
  *
  * @author James Kleeh
  * @since 1.0.0

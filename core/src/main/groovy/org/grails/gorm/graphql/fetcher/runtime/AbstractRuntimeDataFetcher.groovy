@@ -17,7 +17,7 @@ import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
  * instead of during schema generation. This allows new fetchers, data binders,
  * etc to be registered after the schema is created, but before it is used.
  *
- * @param <T> The domain type to return
+ * @param <T> The domain returnType to return
  * @author James Kleeh
  * @since 1.0.0
  */

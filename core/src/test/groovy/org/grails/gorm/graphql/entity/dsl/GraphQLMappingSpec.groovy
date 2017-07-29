@@ -39,11 +39,11 @@ class GraphQLMappingSpec extends Specification {
         GraphQLMapping mapping = GraphQLMapping.build {
             add {
                 name 'fooBar'
-                type Integer
+                returnType Integer
                 description 'Foo Bar'
             }
             add('foo', String)
-            add(CustomGraphQLProperty.newProperty().name('barFoo').type(Long))
+            add(CustomGraphQLProperty.newProperty().name('barFoo').returnType(Long))
             add('bar', String) {
                 deprecationReason 'Deprecated'
             }
@@ -73,7 +73,7 @@ class GraphQLMappingSpec extends Specification {
 
         then:
         Exception ex = thrown(IllegalArgumentException)
-        ex.message == 'null: GraphQL properties must have both a name and type'
+        ex.message == 'null: GraphQL properties must have both a name and returnType'
     }
 
     void "test modify existing property"() {
@@ -140,7 +140,7 @@ class GraphQLMappingSpec extends Specification {
                     defaultValue 'b'
                     nullable false
                 }
-                type(BigDecimal)
+                returnType(BigDecimal)
                 dataFetcher(defaultFetcher)
                 description('Foo Query')
                 deprecationReason('Foo Query is deprecated')
@@ -148,7 +148,7 @@ class GraphQLMappingSpec extends Specification {
 
             query('bar') {
                 argument('foo', [String])
-                type([BigDecimal])
+                returnType([BigDecimal])
                 dataFetcher(defaultFetcher)
                 description('Bar Query')
                 deprecated(true)
@@ -156,16 +156,16 @@ class GraphQLMappingSpec extends Specification {
 
             mutation('xyz') {
                 argument('fooBar', [foo: Integer])
-                type([bar: String])
+                returnType([bar: String])
                 dataFetcher(defaultFetcher)
                 description('ZYX mutation')
             }
 
             mutation('no fetcher') {
-                type(String)
+                returnType(String)
             }
 
-            mutation('no type') {
+            mutation('no returnType') {
                 dataFetcher(defaultFetcher)
             }
         }
@@ -197,7 +197,8 @@ class GraphQLMappingSpec extends Specification {
         bar.getArgument('foo').type instanceof GraphQLList
         bar.getArgument('foo').description == null
         bar.getArgument('foo').defaultValue == null
-        ((GraphQLList)bar.getArgument('foo').type).wrappedType == Scalars.GraphQLString
+        ((GraphQLList)bar.getArgument('foo').type).wrappedType instanceof GraphQLNonNull
+        ((GraphQLNonNull)((GraphQLList)bar.getArgument('foo').type).wrappedType).wrappedType == Scalars.GraphQLString
 
         xyz.description == 'ZYX mutation'
         !xyz.deprecated
@@ -209,7 +210,8 @@ class GraphQLMappingSpec extends Specification {
         xyz.arguments.size() == 1
         xyz.arguments[0].type instanceof GraphQLInputObjectType
         xyz.arguments[0].name == 'fooBar'
-        ((GraphQLInputObjectType)xyz.arguments[0].type).getField('foo').type == Scalars.GraphQLInt
+        ((GraphQLInputObjectType)xyz.arguments[0].type).getField('foo').type instanceof GraphQLNonNull
+        ((GraphQLNonNull)((GraphQLInputObjectType)xyz.arguments[0].type).getField('foo').type).wrappedType == Scalars.GraphQLInt
         ((GraphQLInputObjectType)xyz.arguments[0].type).fieldDefinitions.size() == 1
 
         when:
@@ -221,12 +223,12 @@ class GraphQLMappingSpec extends Specification {
         ex.message == 'A data fetcher is required for creating custom operations'
 
         when:
-        CustomOperation noType = mapping.customMutationOperations.find { it.name == 'no type' }
+        CustomOperation noType = mapping.customMutationOperations.find { it.name == 'no returnType' }
         noType.createField(entity, typeManager, interceptorManager, null)
 
         then:
         ex = thrown(IllegalArgumentException)
-        ex.message == 'A return type is required for creating custom operations'
+        ex.message == 'A return returnType is required for creating custom operations'
 
     }
 }

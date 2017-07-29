@@ -57,8 +57,8 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               postCreate(post: {
                 title: "Grails 3.3 Release",
                 tags: [
-                  {name: "Grails"}
-                  {name: "Groovy"}
+                  {name: "Grails"},
+                  {name: "Groovy"},
                   {name: "Java"}
                 ]
               }) {
@@ -243,5 +243,22 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
+        def resp = graphQL.graphql("""
+            { 
+              tagList {
+                id
+              }
+            }
+        """)
+        def tags = resp.json.data.tagList
+        tags.each {
+            resp = graphQL.graphql("""
+              mutation {
+                tagDelete(id: ${it.id}) {
+                  success
+                }
+              }
+            """)
+        }
     }
 }

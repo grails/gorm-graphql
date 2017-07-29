@@ -2,10 +2,17 @@ package org.grails.gorm.graphql.entity.dsl
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import groovy.transform.builder.Builder
-import groovy.transform.builder.SimpleStrategy
+import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
+import org.grails.gorm.graphql.entity.dsl.helpers.Describable
+import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
+import org.grails.gorm.graphql.entity.operations.ComplexOperation
 import org.grails.gorm.graphql.entity.operations.CustomOperation
+import org.grails.gorm.graphql.entity.operations.OperationType
+import org.grails.gorm.graphql.entity.operations.ProvidedOperation
+import org.grails.gorm.graphql.entity.operations.SimpleOperation
+import org.grails.gorm.graphql.entity.property.impl.ComplexGraphQLProperty
 import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
+import org.grails.gorm.graphql.entity.property.impl.SimpleGraphQLProperty
 import org.springframework.beans.MutablePropertyValues
 import org.springframework.validation.DataBinder
 
@@ -19,7 +26,7 @@ import static CustomGraphQLProperty.newProperty
  * {@code
  * static graphql = {
  *     exclude 'foo'
- *     add new AdditionalGraphQLProperty().name('bar').type(String)
+ *     add('bar', String)
  *     description 'Business users'
  * }
  * //OR: For code completion
@@ -32,16 +39,12 @@ import static CustomGraphQLProperty.newProperty
  * @author James Kleeh
  * @since 1.0.0
  */
-@Builder(builderStrategy = SimpleStrategy, prefix = '', includes = ['deprecated', 'deprecationReason', 'description'])
 @CompileStatic
-class GraphQLMapping {
+class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQLMapping>, ExecutesClosures {
 
     List<CustomGraphQLProperty> additional = []
     Map<String, GraphQLPropertyMapping> propertyMappings = [:]
     Set<String> excluded = [] as Set
-    boolean deprecated = false
-    String deprecationReason
-    String description
     Operations operations = new Operations()
     List<CustomOperation> customQueryOperations = []
     List<CustomOperation> customMutationOperations = []
@@ -63,64 +66,57 @@ class GraphQLMapping {
      * @param property The property to include
      */
     void add(CustomGraphQLProperty property) {
-        if (property.name == null || property.type == null) {
-            throw new IllegalArgumentException("${property.name}: GraphQL properties must have both a name and type")
-        }
+        property.validate()
         additional.add(property)
     }
 
     /**
      * Add a new property to be included in the schema. The property may
      * or may not be backed by an instance method depending on whether or
-     * not the property is to be used for response.
+     * not the property is to be used as a part of a response.
      *
      * @param name The name of property to include
-     * @param type The type of property to include
+     * @param type The returnType of property to include
+     * @param closure A closure to further configure the property
      */
-    void add(String name, Class type) {
-        add(newProperty().name(name).type(type))
-    }
-
-    private void handleAddClosure(CustomGraphQLProperty property, Closure closure) {
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = property
-
-        try {
-            closure.call()
-        } finally {
-            closure.delegate = null
-        }
-
+    void add(String name, Class type, @DelegatesTo(value = SimpleGraphQLProperty, strategy = Closure.DELEGATE_ONLY) Closure closure = null) {
+        CustomGraphQLProperty property = new SimpleGraphQLProperty().name(name).returns(type)
+        withDelegate(closure, property)
         add(property)
     }
 
     /**
      * Add a new property to be included in the schema. The property may
      * or may not be backed by an instance method depending on whether or
-     * not the property is to be used for response.
+     * not the property is to be used as a part of a response. The provided
+     * list must contain exactly 1 element that is a class.
      *
      * @param name The name of property to include
-     * @param type The type of property to include
+     * @param type The returnType of property to include
      * @param closure A closure to further configure the property
      */
-    void add(String name, Class type, @DelegatesTo(value = CustomGraphQLProperty, strategy = Closure.DELEGATE_FIRST) Closure closure) {
-        CustomGraphQLProperty property = newProperty().name(name).type(type)
-        handleAddClosure(property, closure)
+    void add(String name, List<Class> type, @DelegatesTo(value = SimpleGraphQLProperty, strategy = Closure.DELEGATE_ONLY) Closure closure = null) {
+        CustomGraphQLProperty property = new SimpleGraphQLProperty().name(name).returns(type)
+        withDelegate(closure, property)
+        add(property)
     }
 
     /**
      * Add a new property to be included in the schema. The property may
      * or may not be backed by an instance method depending on whether or
-     * not the property is to be used for response.
+     * not the property is to be used for response. Use this method to define
+     * a complex type for the property with the returns block.
      *
-     * Both name and type must be configured in the provided closure
-     *
-     * @param closure A closure to configure the property
+     * @param name The name of property to include
+     * @param typeName The name of the custom type being created
+     * @param closure A closure to further configure the property
      */
-    void add(@DelegatesTo(value = CustomGraphQLProperty, strategy = Closure.DELEGATE_FIRST) Closure closure) {
-        CustomGraphQLProperty property = newProperty()
-        handleAddClosure(property, closure)
+    void add(String name, String typeName, @DelegatesTo(value = ComplexGraphQLProperty, strategy = Closure.DELEGATE_ONLY) Closure closure) {
+        CustomGraphQLProperty property = new ComplexGraphQLProperty().name(name).typeName(typeName)
+        withDelegate(closure, property)
+        add(property)
     }
+
 
     /**
      * Supply metadata about an existing property
@@ -129,7 +125,7 @@ class GraphQLMapping {
      * @param closure The closure to build the metadata
      * @return The property mapping instance
      */
-    GraphQLPropertyMapping property(String name, @DelegatesTo(value = GraphQLPropertyMapping, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+    GraphQLPropertyMapping property(String name, @DelegatesTo(value = GraphQLPropertyMapping, strategy = Closure.DELEGATE_ONLY) Closure closure) {
         GraphQLPropertyMapping mapping = GraphQLPropertyMapping.build(closure)
         property(name, mapping)
     }
@@ -222,7 +218,7 @@ class GraphQLMapping {
      * @param closure The closure to execute in the context of a mapping
      * @return The mapping instance
      */
-    static LazyGraphQLMapping lazy(@DelegatesTo(value = GraphQLMapping, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+    static LazyGraphQLMapping lazy(@DelegatesTo(value = GraphQLMapping, strategy = Closure.DELEGATE_ONLY) Closure closure) {
         new LazyGraphQLMapping(closure)
     }
 
@@ -232,53 +228,113 @@ class GraphQLMapping {
      * @param closure The closure to execute in the context of a mapping
      * @return The mapping instance
      */
-    static GraphQLMapping build(@DelegatesTo(value = GraphQLMapping, strategy = Closure.DELEGATE_FIRST) Closure closure) {
+    static GraphQLMapping build(@DelegatesTo(value = GraphQLMapping, strategy = Closure.DELEGATE_ONLY) Closure closure) {
         GraphQLMapping mapping = new GraphQLMapping()
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = mapping
-
-        try {
-            closure.call()
-        } finally {
-            closure.delegate = null
-        }
-
+        withDelegate(closure, mapping)
         mapping
     }
 
     /**
-     * Controls whether query or mutation types will be created for the entity
+     * Stores metadata about the default operations provided
+     * by this library
      */
     class Operations {
-        boolean get = true
-        boolean list = true
-        boolean create = true
-        boolean update = true
-        boolean delete = true
-
-        boolean isOutput() {
-            get || list
-        }
+        ProvidedOperation get = new ProvidedOperation()
+        ProvidedOperation list = new ProvidedOperation()
+        ProvidedOperation create = new ProvidedOperation()
+        ProvidedOperation update = new ProvidedOperation()
+        ProvidedOperation delete = new ProvidedOperation()
     }
 
-    private CustomOperation handleCustomOperation(String name, Closure closure) {
-        CustomOperation operation = new CustomOperation().name(name)
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = operation
-
-        try {
-            closure.call()
-        } finally {
-            closure.delegate = null
-        }
+    private CustomOperation handleCustomOperation(CustomOperation operation, OperationType type, Closure closure) {
+        operation.operationType = type
+        withDelegate(closure, operation)
+        operation.validate()
         operation
     }
 
-    void query(String name, @DelegatesTo(value = CustomOperation, strategy = Closure.DELEGATE_FIRST) Closure closure) {
-        customQueryOperations.add(handleCustomOperation(name, closure))
+    /**
+     * Builds a custom query operation with a complex type to be 
+     * built in the provided closure.
+     *
+     * @param name The name used by clients of the GraphQL API to execute the operation
+     * @param typeName The name of the custom type returned from the operation
+     * @param closure The closure to build the operation
+     */
+    void query(String name, String typeName, @DelegatesTo(value = ComplexOperation, strategy = Closure.DELEGATE_ONLY) Closure closure) {
+        ComplexOperation operation = new ComplexOperation().name(name).typeName(typeName)
+        handleCustomOperation(operation, OperationType.QUERY, closure)
+        customQueryOperations.add(operation)
     }
 
-    void mutation(String name, @DelegatesTo(value = CustomOperation, strategy = Closure.DELEGATE_FIRST) Closure closure) {
-        customMutationOperations.add(handleCustomOperation(name, closure))
+    /**
+     * Builds a custom query operation. The provided list must ontain exactly 1 
+     * element that is a class. This method indicates the return type will be a list.
+     *
+     * @param name The name used by clients of the GraphQL API to execute the operation
+     * @param type The return type. A list with exactly 1 element that is a class. The 
+     *             class may be an enum, simple type, or domain class.
+     * @param closure The closure to build the operation
+     */
+    void query(String name, List<Class> type, @DelegatesTo(value = SimpleOperation, strategy = Closure.DELEGATE_ONLY) Closure closure) {
+        SimpleOperation operation = new SimpleOperation().name(name).returns(type)
+        handleCustomOperation(operation, OperationType.QUERY, closure)
+        customQueryOperations.add(operation)
     }
+
+    /**
+     * Builds a custom query operation.
+     *
+     * @param name The name used by clients of the GraphQL API to execute the operation
+     * @param type The return type. May be an enum, simple class, or domain class.
+     * @param closure The closure to build the operation
+     */
+    void query(String name, Class type, @DelegatesTo(value = SimpleOperation, strategy = Closure.DELEGATE_ONLY) Closure closure) {
+        SimpleOperation operation = new SimpleOperation().name(name).returns(type)
+        handleCustomOperation(operation, OperationType.QUERY, closure)
+        customQueryOperations.add(operation)
+    }
+
+    /**
+     * Builds a custom mutation operation with a complex type to be 
+     * built in the provided closure.
+     *
+     * @param name The name used by clients of the GraphQL API to execute the operation
+     * @param typeName The name of the custom type returned from the operation
+     * @param closure The closure to build the operation
+     */
+    void mutation(String name, String typeName, @DelegatesTo(value = ComplexOperation, strategy = Closure.DELEGATE_ONLY) Closure closure) {
+        ComplexOperation operation = new ComplexOperation().name(name).typeName(typeName)
+        handleCustomOperation(operation, OperationType.MUTATION, closure)
+        customMutationOperations.add(operation)
+    }
+
+    /**
+     * Builds a custom mutation operation.
+     *
+     * @param name The name used by clients of the GraphQL API to execute the operation
+     * @param type The return type. May be an enum, simple class, or domain class.
+     * @param closure The closure to build the operation
+     */
+    void mutation(String name, Class type, @DelegatesTo(value = SimpleOperation, strategy = Closure.DELEGATE_ONLY) Closure closure) {
+        SimpleOperation operation = new SimpleOperation().name(name).returns(type)
+        handleCustomOperation(operation, OperationType.MUTATION, closure)
+        customMutationOperations.add(operation)
+    }
+
+    /**
+     * Builds a custom mutation operation. The provided list must ontain exactly 1 
+     * element that is a class. This method indicates the return type will be a list.
+     *
+     * @param name The name used by clients of the GraphQL API to execute the operation
+     * @param type The return type. A list with exactly 1 element that is a class. The 
+     *             class may be an enum, simple type, or domain class.
+     * @param closure The closure to build the operation
+     */
+    void mutation(String name, List<Class> type, @DelegatesTo(value = SimpleOperation, strategy = Closure.DELEGATE_ONLY) Closure closure) {
+        SimpleOperation operation = new SimpleOperation().name(name).returns(type)
+        handleCustomOperation(operation, OperationType.MUTATION, closure)
+        customMutationOperations.add(operation)
+    }
+
 }

@@ -5,7 +5,7 @@ import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.types.scalars.coercing.FloatCoercion
 
 /**
- * Default {@link Float} scalar type
+ * Default {@link Float} scalar returnType
  *
  * @author James Kleeh
  * @since 1.0.0

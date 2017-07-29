@@ -20,3 +20,7 @@ codenarc {
     maxPriority2Violations = 2
     maxPriority3Violations = 8
 }
+
+codenarcTest {
+    ignoreFailures = true
+}

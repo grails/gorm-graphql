@@ -11,7 +11,7 @@ import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
 /**
  * A class for querying a single entity with GraphQL
  *
- * @param <T> The domain type to query
+ * @param <T> The domain returnType to query
  * @author James Kleeh
  * @since 1.0.0
  */

@@ -4,6 +4,10 @@ import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+import org.grails.gorm.graphql.entity.operations.OperationType
+import org.grails.gorm.graphql.fetcher.invoker.InterceptorInvoker
+import org.grails.gorm.graphql.fetcher.invoker.MutationInterceptorInvoker
+import org.grails.gorm.graphql.fetcher.invoker.QueryInterceptorInvoker
 import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
 import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
 
@@ -21,15 +25,25 @@ class CustomOperationInterceptorDataFetcher implements DataFetcher {
     protected Class clazz
     protected DataFetcher wrappedFetcher
     protected GraphQLInterceptorManager interceptorManager
+    protected InterceptorInvoker interceptorInvoker
 
     private List<GraphQLFetcherInterceptor> interceptors
+    private static InterceptorInvoker queryInterceptorInvoker = new QueryInterceptorInvoker()
+    private static InterceptorInvoker mutationInterceptorInvoker = new MutationInterceptorInvoker()
 
     CustomOperationInterceptorDataFetcher(Class clazz,
                                           DataFetcher wrappedFetcher,
-                                          GraphQLInterceptorManager interceptorManager) {
+                                          GraphQLInterceptorManager interceptorManager,
+                                          OperationType operationType) {
         this.clazz = clazz
         this.wrappedFetcher = wrappedFetcher
         this.interceptorManager = interceptorManager
+        if (operationType == OperationType.QUERY) {
+            this.interceptorInvoker = queryInterceptorInvoker
+        }
+        else if (operationType == OperationType.MUTATION) {
+            this.interceptorInvoker = mutationInterceptorInvoker
+        }
     }
 
     @Override
@@ -41,11 +55,13 @@ class CustomOperationInterceptorDataFetcher implements DataFetcher {
         final String NAME = environment.fields.empty ? 'UNKNOWN' : environment.fields[0].name
 
         for (GraphQLFetcherInterceptor i: interceptors) {
-            if (!i.onCustomOperation(NAME, environment)) {
+            if (!interceptorInvoker.invoke(i, NAME, environment)) {
                 log.info("Execution of ${NAME} was prevented by an interceptor")
                 return null
             }
         }
+
         wrappedFetcher.get(environment)
     }
+
 }

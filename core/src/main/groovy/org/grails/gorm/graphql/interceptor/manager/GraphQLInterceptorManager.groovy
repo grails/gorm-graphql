@@ -14,9 +14,10 @@ interface GraphQLInterceptorManager {
     /**
      * Registers the interceptor
      *
+     * @param clazz The class operations should be intercepted for
      * @param interceptor The interceptor to register
      */
-    void registerInterceptor(GraphQLFetcherInterceptor interceptor)
+    void registerInterceptor(Class clazz, GraphQLFetcherInterceptor interceptor)
 
     /**
      * @param clazz The class to search for

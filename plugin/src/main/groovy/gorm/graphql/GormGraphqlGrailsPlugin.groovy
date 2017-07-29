@@ -8,6 +8,8 @@ import org.grails.gorm.graphql.binding.manager.DefaultGraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
+import org.grails.gorm.graphql.interceptor.impl.EmptyGraphQLSchemaInterceptor
+import org.grails.gorm.graphql.interceptor.manager.DefaultGraphQLInterceptorManager
 import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
@@ -63,6 +65,8 @@ Brief summary/description of the plugin.
         graphQLTypeManager(DefaultGraphQLTypeManager, ref("graphQLEntityNamingConvention"), ref("graphQLErrorsResponseHandler"), ref("graphQLDomainPropertyManager"))
         graphQLDataBinderManager(DefaultGraphQLDataBinderManager, ref("graphQLDataBinder"))
         graphQLDataFetcherManager(DefaultGraphQLDataFetcherManager)
+        graphQLInterceptorManager(DefaultGraphQLInterceptorManager)
+        graphQLSchemaInterceptor(EmptyGraphQLSchemaInterceptor)
 
         grailsGraphQLConfiguration(GrailsGraphQLConfiguration)
 
@@ -72,6 +76,8 @@ Brief summary/description of the plugin.
             typeManager = ref("graphQLTypeManager")
             dataBinderManager = ref("graphQLDataBinderManager")
             dataFetcherManager = ref("graphQLDataFetcherManager")
+            interceptorManager = ref("graphQLInterceptorManager")
+            schemaInterceptor = ref("graphQLSchemaInterceptor")
             dateFormats = '#{grailsGraphQLConfiguration.getDateFormats()}'
             dateFormatLenient = '#{grailsGraphQLConfiguration.getDateFormatLenient()}'
             listArguments = '#{grailsGraphQLConfiguration.getListArguments()}'

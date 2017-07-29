@@ -12,6 +12,7 @@ import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.operations.CustomOperation
+import org.grails.gorm.graphql.entity.operations.ProvidedOperation
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
 import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
@@ -25,11 +26,14 @@ import org.grails.gorm.graphql.interceptor.manager.DefaultGraphQLInterceptorMana
 import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
 import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
+import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
+import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.grails.gorm.graphql.types.scalars.GraphQLDate
 import org.grails.gorm.graphql.types.scalars.coercing.DateCoercion
+import org.springframework.context.support.StaticMessageSource
 
 import javax.annotation.PostConstruct
 
@@ -61,11 +65,6 @@ class Schema {
 
     private boolean initialized = false
 
-    Schema(MappingContext mappingContext, GraphQLTypeManager typeManager) {
-        this(mappingContext)
-        this.typeManager = typeManager
-    }
-
     Schema(MappingContext mappingContext) {
         this.mappingContext = mappingContext
     }
@@ -76,7 +75,7 @@ class Schema {
             for (Map.Entry<String, Class> entry: arguments) {
                 GraphQLType type = typeManager.getType(entry.value)
                 if (!(type instanceof GraphQLInputType)) {
-                    throw new IllegalArgumentException("Error while setting list arguments. Invalid type found for ${entry.value.name}. GraphQLType found ${type.name} of type ${type.class.name} is not an instance of ${GraphQLInputType.name}")
+                    throw new IllegalArgumentException("Error while setting list arguments. Invalid returnType found for ${entry.value.name}. GraphQLType found ${type.name} of returnType ${type.class.name} is not an instance of ${GraphQLInputType.name}")
                 }
                 listArguments.put(entry.key, (GraphQLInputType)type)
             }
@@ -89,7 +88,8 @@ class Schema {
             if (namingConvention == null) {
                 namingConvention = new GraphQLEntityNamingConvention()
             }
-            typeManager = new DefaultGraphQLTypeManager(namingConvention, null, new DefaultGraphQLDomainPropertyManager())
+            GraphQLErrorsResponseHandler errorsResponseHandler = new DefaultGraphQLErrorsResponseHandler(new StaticMessageSource())
+            typeManager = new DefaultGraphQLTypeManager(namingConvention, errorsResponseHandler, new DefaultGraphQLDomainPropertyManager())
         } else {
             if (namingConvention == null) {
                 namingConvention = typeManager.namingConvention
@@ -178,22 +178,28 @@ class Schema {
             List<GraphQLFieldDefinition.Builder> requiresIdentityArguments = []
             List<Closure> postIdentityExecutables = []
 
-            if (mapping.operations.get) {
+            ProvidedOperation getOperation = mapping.operations.get
+            if (getOperation.enabled) {
 
                 GraphQLFieldDefinition.Builder queryOne = newFieldDefinition()
                         .name(namingConvention.getGet(entity))
                         .type(objectType)
+                        .description(getOperation.description)
+                        .deprecate(getOperation.deprecationReason)
                         .dataFetcher(new ReadingRuntimeDataFetcher(entity, dataFetcherManager, interceptorManager, GET))
 
                 requiresIdentityArguments.add(queryOne)
                 queryFields.add(queryOne)
             }
 
-            if (mapping.operations.list) {
+            ProvidedOperation listOperation = mapping.operations.list
+            if (listOperation.enabled) {
 
                 GraphQLFieldDefinition.Builder queryAll = newFieldDefinition()
                         .name(namingConvention.getList(entity))
                         .type(list(objectType))
+                        .description(listOperation.description)
+                        .deprecate(listOperation.deprecationReason)
                         .dataFetcher(new ReadingRuntimeDataFetcher(entity, dataFetcherManager, interceptorManager, LIST))
 
                 queryFields.add(queryAll)
@@ -205,27 +211,33 @@ class Schema {
                 }
             }
 
-            if (mapping.operations.create && !Modifier.isAbstract(entity.javaClass.modifiers)) {
+            ProvidedOperation createOperation = mapping.operations.create
+            if (createOperation.enabled && !Modifier.isAbstract(entity.javaClass.modifiers)) {
                 GraphQLInputType createObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.CREATE, true)
 
                 GraphQLFieldDefinition.Builder create = newFieldDefinition()
                         .name(namingConvention.getCreate(entity))
                         .type(objectType)
+                        .description(createOperation.description)
+                        .deprecate(createOperation.deprecationReason)
                         .argument(newArgument()
-                        .name(entity.decapitalizedName)
-                        .type(createObjectType))
-                        .dataFetcher(new BindingRuntimeDataFetcher(entity, dataFetcherManager, interceptorManager, CREATE, dataBinderManager))
+                            .name(entity.decapitalizedName)
+                            .type(createObjectType))
+                            .dataFetcher(new BindingRuntimeDataFetcher(entity, dataFetcherManager, interceptorManager, CREATE, dataBinderManager))
 
                 mutationFields.add(create)
             }
 
-            if (mapping.operations.update) {
+            ProvidedOperation updateOperation = mapping.operations.update
+            if (updateOperation.enabled) {
 
                 GraphQLInputType updateObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.UPDATE, true)
 
                 GraphQLFieldDefinition.Builder update = newFieldDefinition()
                         .name(namingConvention.getUpdate(entity))
                         .type(objectType)
+                        .description(updateOperation.description)
+                        .deprecate(updateOperation.deprecationReason)
                         .dataFetcher(new BindingRuntimeDataFetcher(entity, dataFetcherManager, interceptorManager, UPDATE, dataBinderManager))
 
                 postIdentityExecutables.add {
@@ -238,11 +250,14 @@ class Schema {
                 mutationFields.add(update)
             }
 
-            if (mapping.operations.delete) {
+            ProvidedOperation deleteOperation = mapping.operations.delete
+            if (deleteOperation.enabled) {
 
                 GraphQLFieldDefinition.Builder delete = newFieldDefinition()
                         .name(namingConvention.getDelete(entity))
                         .type(deleteResponseHandler.objectType)
+                        .description(deleteOperation.description)
+                        .deprecate(deleteOperation.deprecationReason)
                         .dataFetcher(new DeletingRuntimeDataFetcher(entity, dataFetcherManager, interceptorManager, deleteResponseHandler))
 
                 requiresIdentityArguments.add(delete)
