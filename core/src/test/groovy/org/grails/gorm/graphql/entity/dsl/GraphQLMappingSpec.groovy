@@ -12,6 +12,7 @@ import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.operations.CustomOperation
 import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
+import org.grails.gorm.graphql.entity.property.impl.SimpleGraphQLProperty
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.fetcher.impl.CustomOperationInterceptorDataFetcher
 import org.grails.gorm.graphql.interceptor.manager.DefaultGraphQLInterceptorManager
@@ -37,13 +38,11 @@ class GraphQLMappingSpec extends Specification {
     void "test add"() {
         given:
         GraphQLMapping mapping = GraphQLMapping.build {
-            add {
-                name 'fooBar'
-                returnType Integer
+            add('fooBar', Integer) {
                 description 'Foo Bar'
             }
             add('foo', String)
-            add(CustomGraphQLProperty.newProperty().name('barFoo').returnType(Long))
+            add(new SimpleGraphQLProperty().name('barFoo').returns(Long))
             add('bar', String) {
                 deprecationReason 'Deprecated'
             }
@@ -52,28 +51,22 @@ class GraphQLMappingSpec extends Specification {
         expect:
         mapping.additional.size() == 4
         mapping.additional[0].name == 'fooBar'
-        mapping.additional[0].type == Integer
+        ((SimpleGraphQLProperty)mapping.additional[0]).returnType == Integer
         mapping.additional[0].description == 'Foo Bar'
         mapping.additional[1].name == 'foo'
-        mapping.additional[1].type == String
+        ((SimpleGraphQLProperty)mapping.additional[1]).returnType == String
         mapping.additional[2].name == 'barFoo'
-        mapping.additional[2].type == Long
+        ((SimpleGraphQLProperty)mapping.additional[2]).returnType == Long
         mapping.additional[3].name == 'bar'
-        mapping.additional[3].type == String
+        ((SimpleGraphQLProperty)mapping.additional[3]).returnType == String
         mapping.additional[3].deprecationReason == 'Deprecated'
 
         when:
-        mapping.add { }
-
-        then:
-        thrown(IllegalArgumentException)
-
-        when:
-        mapping.add(CustomGraphQLProperty.newProperty())
+        mapping.add(new SimpleGraphQLProperty())
 
         then:
         Exception ex = thrown(IllegalArgumentException)
-        ex.message == 'null: GraphQL properties must have both a name and returnType'
+        ex.message == 'A name is required for creating custom properties'
     }
 
     void "test modify existing property"() {
@@ -134,39 +127,34 @@ class GraphQLMappingSpec extends Specification {
         }
 
         GraphQLMapping mapping = GraphQLMapping.build {
-            query('foo') {
+            query('foo', BigDecimal) {
                 argument('bar', String) {
                     description('Bar argument')
                     defaultValue 'b'
-                    nullable false
                 }
-                returnType(BigDecimal)
                 dataFetcher(defaultFetcher)
                 description('Foo Query')
                 deprecationReason('Foo Query is deprecated')
             }
 
-            query('bar') {
+            query('bar', [BigDecimal]) {
                 argument('foo', [String])
-                returnType([BigDecimal])
                 dataFetcher(defaultFetcher)
                 description('Bar Query')
                 deprecated(true)
             }
 
-            mutation('xyz') {
-                argument('fooBar', [foo: Integer])
-                returnType([bar: String])
+            mutation('xyz', 'BarObject') {
+                returns {
+                    field('bar', String)
+                }
+                argument('fooBar', 'FooArgument') {
+                    accepts {
+                        field('foo', Integer)
+                    }
+                }
                 dataFetcher(defaultFetcher)
                 description('ZYX mutation')
-            }
-
-            mutation('no fetcher') {
-                returnType(String)
-            }
-
-            mutation('no returnType') {
-                dataFetcher(defaultFetcher)
             }
         }
 
@@ -208,27 +196,12 @@ class GraphQLMappingSpec extends Specification {
         ((GraphQLObjectType)xyz.type).fieldDefinitions.size() == 1
         xyz.dataFetcher instanceof CustomOperationInterceptorDataFetcher
         xyz.arguments.size() == 1
-        xyz.arguments[0].type instanceof GraphQLInputObjectType
+        xyz.arguments[0].type instanceof GraphQLNonNull
+        ((GraphQLNonNull)xyz.arguments[0].type).wrappedType instanceof GraphQLInputObjectType
         xyz.arguments[0].name == 'fooBar'
-        ((GraphQLInputObjectType)xyz.arguments[0].type).getField('foo').type instanceof GraphQLNonNull
-        ((GraphQLNonNull)((GraphQLInputObjectType)xyz.arguments[0].type).getField('foo').type).wrappedType == Scalars.GraphQLInt
-        ((GraphQLInputObjectType)xyz.arguments[0].type).fieldDefinitions.size() == 1
 
-        when:
-        CustomOperation noFetcher = mapping.customMutationOperations.find { it.name == 'no fetcher' }
-        noFetcher.createField(entity, typeManager, interceptorManager, null)
-
-        then:
-        def ex = thrown(IllegalArgumentException)
-        ex.message == 'A data fetcher is required for creating custom operations'
-
-        when:
-        CustomOperation noType = mapping.customMutationOperations.find { it.name == 'no returnType' }
-        noType.createField(entity, typeManager, interceptorManager, null)
-
-        then:
-        ex = thrown(IllegalArgumentException)
-        ex.message == 'A return returnType is required for creating custom operations'
-
+        ((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType).getField('foo').type instanceof GraphQLNonNull
+        ((GraphQLNonNull)(((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType)).getField('foo').type).wrappedType == Scalars.GraphQLInt
+        (((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType)).fieldDefinitions.size() == 1
     }
 }

@@ -9,6 +9,12 @@ import org.grails.gorm.graphql.types.GraphQLOperationType
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
+/**
+ * Used to represent a custom property that has a custom (complex) type
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @AutoClone
 @CompileStatic
 class ComplexGraphQLProperty extends CustomGraphQLProperty<ComplexGraphQLProperty> implements ExecutesClosures {

@@ -1,11 +1,19 @@
 package org.grails.gorm.graphql.entity.operations
 
 import graphql.schema.GraphQLOutputType
+import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.entity.dsl.helpers.ComplexTyped
 import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
+/**
+ * Used to create custom operations with custom (complex) types
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
+@CompileStatic
 class ComplexOperation extends CustomOperation<ComplexOperation> implements ExecutesClosures {
 
     String typeName

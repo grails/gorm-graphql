@@ -4,7 +4,6 @@ import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
-import groovy.transform.builder.Builder
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQLEntityHelper

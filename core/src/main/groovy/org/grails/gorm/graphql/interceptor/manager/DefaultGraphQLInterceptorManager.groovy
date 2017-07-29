@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.core.order.OrderedComparator
 import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
 import org.grails.gorm.graphql.types.KeyClassQuery
+
 /**
  * Default implementation of {@link GraphQLInterceptorManager} that
  * will also return a result if the class requested is a subclass

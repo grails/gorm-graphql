@@ -1,20 +1,29 @@
-package org.grails.gorm.graphql.entity.dsl
+package org.grails.gorm.graphql.entity.fields
 
 import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLOutputType
 import groovy.transform.CompileStatic
-import groovy.transform.builder.Builder
-import groovy.transform.builder.SimpleStrategy
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.entity.dsl.helpers.ComplexTyped
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
-@Builder(builderStrategy = SimpleStrategy, prefix = '', includes = ['typeName'])
+/**
+ * A class used to represent a field that has a custom (complex) type
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @CompileStatic
 class ComplexField extends Field<ComplexField> implements ComplexTyped<ComplexField> {
 
     String typeName
 
+    ComplexField typeName(String typeName) {
+        this.typeName = typeName
+        this
+    }
+
+    @Override
     GraphQLOutputType getType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
         buildCustomType(typeName, typeManager, mappingContext)
     }
@@ -24,6 +33,7 @@ class ComplexField extends Field<ComplexField> implements ComplexTyped<ComplexFi
         buildCustomInputType(typeName + 'Input', typeManager, mappingContext, nullable)
     }
 
+    @Override
     void validate() {
     	super.validate()
     	if (typeName == null) {

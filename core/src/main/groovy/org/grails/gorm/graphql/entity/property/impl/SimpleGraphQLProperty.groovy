@@ -7,6 +7,12 @@ import org.grails.gorm.graphql.entity.dsl.helpers.Typed
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
+/**
+ * A class for creating custom properties that have a simple type
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @AutoClone
 @CompileStatic
 class SimpleGraphQLProperty extends CustomGraphQLProperty<SimpleGraphQLProperty> implements Typed<SimpleGraphQLProperty> {

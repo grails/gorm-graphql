@@ -83,39 +83,7 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
         this
     }
 
-//    /**
-//     * Builds a custom object returnType if the supplied return returnType is a Map
-//     *
-//     * @param typeManager The returnType manager
-//     * @param mappingContext The mapping context
-//     * @return The custom returnType
-//     */
-//    GraphQLObjectType buildCustomType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
-//        GraphQLObjectType.Builder builder = GraphQLObjectType.newObject()
-//                .name(typeManager.namingConvention.getCustomType(name, GraphQLPropertyType.OUTPUT))
-//
-//        for (Map.Entry<String, Class> entry: customReturnFields) {
-//            builder.field(newFieldDefinition()
-//                    .name(entry.key)
-//                    .type(resolveType(typeManager, mappingContext, entry.value)))
-//        }
-//        builder.build()
-//    }
-
-    protected abstract GraphQLOutputType getType(GraphQLTypeManager typeManager, MappingContext mappingContext)/* {
-        GraphQLOutputType type
-        if (customReturnFields != null) {
-            type = buildCustomType(typeManager, mappingContext)
-        }
-        else {
-            type = resolveType(typeManager, mappingContext, returnType)
-        }
-
-        if (collection) {
-            type = GraphQLList.list(type)
-        }
-        type
-    }*/
+    protected abstract GraphQLOutputType getType(GraphQLTypeManager typeManager, MappingContext mappingContext)
 
     void validate() {
         if (name == null) {

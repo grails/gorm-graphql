@@ -1,14 +1,21 @@
 package org.grails.gorm.graphql.entity.operations.arguments
 
-import graphql.schema.GraphQLArgument
 import graphql.schema.GraphQLInputType
 import groovy.transform.CompileStatic
+import groovy.transform.InheritConstructors
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.entity.dsl.helpers.ComplexTyped
 import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
+/**
+ * Used to create arguments to custom operations that are a custom (complex) type
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @CompileStatic
+@InheritConstructors
 class ComplexArgument extends CustomArgument<ComplexArgument> implements ComplexTyped<ComplexArgument>, ExecutesClosures {
 
     String typeName
@@ -18,7 +25,7 @@ class ComplexArgument extends CustomArgument<ComplexArgument> implements Complex
         this
     }
 
-    private ComplexTyped accepts = new Object().withTraits(ComplexTyped)
+    private ComplexTyped accepts = (ComplexTyped)new Object().withTraits(ComplexTyped).defaultNull(false)
 
     void accepts(@DelegatesTo(value = ComplexTyped, strategy = Closure.DELEGATE_ONLY) Closure closure) {
         withDelegate(closure, accepts)

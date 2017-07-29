@@ -8,14 +8,21 @@ import graphql.schema.GraphQLOutputType
 import groovy.transform.CompileStatic
 import graphql.schema.GraphQLObjectType
 import org.grails.datastore.mapping.model.MappingContext
-import org.grails.gorm.graphql.entity.dsl.ComplexField
-import org.grails.gorm.graphql.entity.dsl.Field
-import org.grails.gorm.graphql.entity.dsl.SimpleField
+import org.grails.gorm.graphql.entity.fields.ComplexField
+import org.grails.gorm.graphql.entity.fields.Field
+import org.grails.gorm.graphql.entity.fields.SimpleField
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLInputObjectField.newInputObjectField
 
+/**
+ * Decorates a class with the ability to build a custom type
+ *
+ * @param <T> The implementing class
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @CompileStatic
 trait ComplexTyped<T> {
 
@@ -27,6 +34,13 @@ trait ComplexTyped<T> {
     }
 
     List<Field> fields = []
+
+    boolean defaultNull = true
+
+    T defaultNull(boolean defaultNull) {
+        this.defaultNull = defaultNull
+        (T)this
+    }
 
     /**
      * This method exists because of https://issues.apache.org/jira/browse/GROOVY-8272
@@ -111,6 +125,7 @@ trait ComplexTyped<T> {
     }
 
     private void handleField(Closure closure, Field field) {
+        field.nullable(defaultNull)
         withDelegate(closure, field)
         field.validate()
         fields.add(field)

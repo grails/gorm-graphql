@@ -16,8 +16,6 @@ import org.grails.gorm.graphql.entity.property.impl.SimpleGraphQLProperty
 import org.springframework.beans.MutablePropertyValues
 import org.springframework.validation.DataBinder
 
-import static CustomGraphQLProperty.newProperty
-
 /**
  * DSL to provide GraphQL specific data for a GORM entity
  *
@@ -116,7 +114,6 @@ class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQ
         withDelegate(closure, property)
         add(property)
     }
-
 
     /**
      * Supply metadata about an existing property

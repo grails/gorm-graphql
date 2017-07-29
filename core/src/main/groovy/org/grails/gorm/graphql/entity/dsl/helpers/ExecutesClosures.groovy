@@ -2,6 +2,13 @@ package org.grails.gorm.graphql.entity.dsl.helpers
 
 import groovy.transform.CompileStatic
 
+/**
+ * Decorates a class with the ability to execute closures with
+ * a delegate
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @CompileStatic
 trait ExecutesClosures {
 

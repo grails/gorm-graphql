@@ -2,6 +2,7 @@ package org.grails.gorm.graphql.entity.operations.arguments
 
 import graphql.schema.GraphQLArgument
 import graphql.schema.GraphQLInputType
+import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.entity.dsl.helpers.Defaultable
 import org.grails.gorm.graphql.entity.dsl.helpers.Describable
@@ -17,9 +18,10 @@ import static graphql.schema.GraphQLArgument.newArgument
  * @author James Kleeh
  * @since 1.0.0
  */
+@CompileStatic
 abstract class CustomArgument<T> implements Named<T>, Describable<T>, Nullable<T>, Defaultable<T> {
 
-    {
+    CustomArgument() {
         nullable = false
     }
 

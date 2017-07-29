@@ -1,15 +1,16 @@
 package org.grails.gorm.graphql.entity.property.impl
 
+import graphql.schema.GraphQLType
 import groovy.transform.AutoClone
 import groovy.transform.CompileStatic
-import groovy.transform.builder.Builder
-import groovy.transform.builder.SimpleStrategy
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
 import org.grails.gorm.graphql.entity.dsl.helpers.Describable
 import org.grails.gorm.graphql.entity.dsl.helpers.Named
 import org.grails.gorm.graphql.entity.dsl.helpers.Nullable
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
+import org.grails.gorm.graphql.types.GraphQLPropertyType
+import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 /**
  * Implementation of {@link GraphQLDomainProperty} to be used to define
@@ -20,7 +21,7 @@ import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
  */
 @AutoClone
 @CompileStatic
-abstract class CustomGraphQLProperty<T> implements GraphQLDomainProperty, Cloneable, Named<T>, Describable<T>, Deprecatable<T>, Nullable<T> {
+abstract class CustomGraphQLProperty<T> implements GraphQLDomainProperty, Named<T>, Describable<T>, Deprecatable<T>, Nullable<T> {
 
     boolean input = true
     boolean output = true
@@ -47,6 +48,9 @@ abstract class CustomGraphQLProperty<T> implements GraphQLDomainProperty, Clonea
     void setMappingContext(MappingContext mappingContext) {
         this.mappingContext = mappingContext
     }
+
+    @Override
+    abstract GraphQLType getGraphQLType(GraphQLTypeManager typeManager, GraphQLPropertyType propertyType)
 
     void validate() {
         if (name == null) {

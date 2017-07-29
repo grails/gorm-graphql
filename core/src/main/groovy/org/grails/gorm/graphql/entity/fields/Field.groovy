@@ -1,4 +1,4 @@
-package org.grails.gorm.graphql.entity.dsl
+package org.grails.gorm.graphql.entity.fields
 
 import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLOutputType
@@ -10,6 +10,14 @@ import org.grails.gorm.graphql.entity.dsl.helpers.Named
 import org.grails.gorm.graphql.entity.dsl.helpers.Nullable
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
+/**
+ * Generic class used to represent a field in a custom object. Used
+ * in arguments, operations, and custom properties.
+ *
+ * @param <T> The implementing class
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @CompileStatic
 abstract class Field<T> implements Named<T>, Describable<T>, Deprecatable<T>, Nullable<T> {
 
