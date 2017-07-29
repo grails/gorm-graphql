@@ -100,7 +100,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
 
     <p> Generic class to help searching maps that have a class as their key
- <DL><DT><B>Parameters:</B></DT><DD><code><V></code> -  The type of value to return</DD></DL><DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
+ <DL><DT><B>Parameters:</B></DT><DD><code><V></code> -  The returnType of value to return</DD></DL><DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
 
           </li>
     </ul>
@@ -146,6 +146,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <td class="colLast"><code><strong><a href="#searchMap(Map<Class, V>, java.lang.Class, boolean)">searchMap</a></strong>(java.util.Map&lt;java.lang.Class, V&gt; map, java.lang.Class clazz, boolean reverse = true)</code><br>Searches for exact matches first. </td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#searchMapAll(Map<Class, V>, java.lang.Class)">searchMapAll</a></strong>(java.util.Map&lt;java.lang.Class, V&gt; map, java.lang.Class clazz)</code><br>Searches for any class that is a super class of the class being
+ searched. </td>
+                        </tr>
+                        
                     </table>
                    </ul>
               </li>
@@ -187,6 +194,16 @@ if (location.href.indexOf('is-external=true') == -1) {
  that is a super class of the class being searched. Return the first
  result found.
      <DL><DT><B>Returns:</B></DT><DD>The result. If no result found, returns NULL.</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>map</code> -  The map to search</DD><DD><code>clazz</code> -  The class to search for</DD><DD><code>reverse</code> -  Whether to search in reverse order (last in has priority)</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="searchMapAll(Map<Class, V>, java.lang.Class)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.List <strong>searchMapAll</strong>(java.util.Map&lt;java.lang.Class, V&gt; map, java.lang.Class clazz)</h4>
+                                <p> Searches for any class that is a super class of the class being
+ searched. Return all results found.
+     <DL><DT><B>Returns:</B></DT><DD>The result. If no results found, returns an empty list.</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>map</code> -  The map to search</DD><DD><code>clazz</code> -  The class to search for</DD></DL></p>
                             </li>
                         </ul>
                     

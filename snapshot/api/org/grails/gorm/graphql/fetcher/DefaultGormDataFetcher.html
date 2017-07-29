@@ -112,7 +112,7 @@ abstract&nbsp;class DefaultGormDataFetcher
 
 
     <p> A generic class to assist with querying entities with GraphQL
- <DL><DT><B>Parameters:</B></DT><DD><code><T></code> -  The domain type to query</DD></DL><DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
+ <DL><DT><B>Parameters:</B></DT><DD><code><T></code> -  The domain returnType to query</DD></DL><DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
 
           </li>
     </ul>
@@ -248,17 +248,23 @@ abstract&nbsp;class DefaultGormDataFetcher
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;boolean</code></td>
+                            <td class="colLast"><code><strong><a href="#isForeignKeyInChild(Association)">isForeignKeyInChild</a></strong>(<a href='../../../../../Association.html'>Association</a> association)</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#loadEntity(PersistentEntity, java.lang.Object)">loadEntity</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.Object argument)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../GormEntity.html'>GormEntity</a></code></td>
                             <td class="colLast"><code><strong><a href="#queryInstance(DataFetchingEnvironment)">queryInstance</a></strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#shouldJoinProperty(Field)">shouldJoinProperty</a></strong>(<a href='../../../../../Field.html'>Field</a> selectedField)</code><br></td>
@@ -411,6 +417,14 @@ protected&nbsp;java.util.Map <strong>getFetchArguments</strong>(<a href='../../.
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>protected&nbsp;void <strong>initializeEntity</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="isForeignKeyInChild(Association)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;boolean <strong>isForeignKeyInChild</strong>(<a href='../../../../../Association.html'>Association</a> association)</h4>
                                 <p></p>
                             </li>
                         </ul>

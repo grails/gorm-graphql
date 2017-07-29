@@ -161,25 +161,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../GraphQLType.html'>GraphQLType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)">getGraphQLType</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> propertyType)</code><br>@param typeManager The type manager used to retrieve GraphQL types</td>
+                            <td class="colLast"><code><strong><a href="#getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)">getGraphQLType</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> propertyType)</code><br>@param typeManager The returnType manager used to retrieve GraphQL types</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#getName()">getName</a></strong>()</code><br>@return The name of the property</td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#getType()">getType</a></strong>()</code><br>@return The type of the property</td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isCollection()">isCollection</a></strong>()</code><br>@return True if the property represents a collection</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -272,7 +260,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <li class="blockList">
                                 <h4><a href='../../../../../../GraphQLType.html'>GraphQLType</a> <strong>getGraphQLType</strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> propertyType)</h4>
                                 <p>
-     <DL><DT><B>Returns:</B></DT><DD>The GraphQLType representing the property</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>typeManager</code> -  The type manager used to retrieve GraphQL types</DD><DD><code>propertyType</code> -  The type of property being created</DD></DL></p>
+     <DL><DT><B>Returns:</B></DT><DD>The GraphQLType representing the property</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>typeManager</code> -  The returnType manager used to retrieve GraphQL types</DD><DD><code>propertyType</code> -  The returnType of property being created</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -282,24 +270,6 @@ if (location.href.indexOf('is-external=true') == -1) {
                                 <h4>java.lang.String <strong>getName</strong>()</h4>
                                 <p>
      <DL><DT><B>Returns:</B></DT><DD>The name of the property</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="getType()"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>java.lang.Class <strong>getType</strong>()</h4>
-                                <p>
-     <DL><DT><B>Returns:</B></DT><DD>The type of the property</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="isCollection()"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>boolean <strong>isCollection</strong>()</h4>
-                                <p>
-     <DL><DT><B>Returns:</B></DT><DD>True if the property represents a collection</DD></DL></p>
                             </li>
                         </ul>
                     

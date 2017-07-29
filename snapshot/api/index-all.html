@@ -130,13 +130,15 @@ if (location.href.indexOf('is-external=true') == -1) {
  instead of during schema generation. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/runtime/AbstractRuntimeDataFetcher.html#AbstractRuntimeDataFetcher(PersistentEntity, org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Constructor in AbstractRuntimeDataFetcher">AbstractRuntimeDataFetcher(PersistentEntity, GraphQLDataFetcherManager, GraphQLInterceptorManager, GraphQLDataFetcherType)</a></span> - Constructor in <a href="org/grails/gorm/graphql/fetcher/runtime/AbstractRuntimeDataFetcher.html">AbstractRuntimeDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html#add(groovy.lang.Closure)" title="Method in GraphQLMapping">add(Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html">GraphQLMapping</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/ComplexArgument.html#accepts(groovy.lang.Closure)" title="Method in ComplexArgument">accepts(Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/arguments/ComplexArgument.html">ComplexArgument</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html#add(java.lang.String, java.lang.String, groovy.lang.Closure)" title="Method in GraphQLMapping">add(String, String, Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html">GraphQLMapping</a>
 </dt><dd> <div class="block">Add a new property to be included in the schema. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.Builder.html#alwaysNullable()" title="Method in GraphQLDomainPropertyManager.Builder">alwaysNullable()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.Builder.html">GraphQLDomainPropertyManager.Builder</a>
 </dt><dd> <div class="block">Whether or not properties should allow nulls should be overridden
  so that properties are nullable, even if they otherwise would not be.</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html#argument(java.lang.String, java.lang.Class, groovy.lang.Closure)" title="Method in CustomOperation">argument(String, Class, Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html">CustomOperation</a>
-</dt><dd> <div class="block">Creates an argument to the operation that is of the type provided.</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html#argument(java.lang.String, java.lang.String, groovy.lang.Closure)" title="Method in CustomOperation">argument(String, String, Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html">CustomOperation</a>
+</dt><dd> <div class="block">Creates an argument to the operation that is a custom type.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#associationNames" title="Field in DefaultGormDataFetcher">associationNames</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#associations" title="Field in DefaultGormDataFetcher">associations</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
@@ -169,10 +171,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/ObjectTypeBuilder.html#build(PersistentEntity)" title="Method in ObjectTypeBuilder">build(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/types/output/ObjectTypeBuilder.html">ObjectTypeBuilder</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomArgument.html#buildCustomType(org.grails.gorm.graphql.types.GraphQLTypeManager)" title="Method in CustomArgument">buildCustomType(GraphQLTypeManager)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomArgument.html">CustomArgument</a>
-</dt><dd> <div class="block">Builds a custom input type if the supplied type is a Map</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html#buildCustomType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in CustomOperation">buildCustomType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html">CustomOperation</a>
-</dt><dd> <div class="block">Builds a custom object type if the supplied return type is a Map</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html#buildCustomInputType(java.lang.String, org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext, boolean)" title="Method in ComplexTyped">buildCustomInputType(String, GraphQLTypeManager, MappingContext, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html">ComplexTyped</a>
+</dt><dd> <div class="block">Builds a custom object returnType if the supplied return returnType is a Map</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html#buildCustomType(java.lang.String, org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in ComplexTyped">buildCustomType(String, GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html">ComplexTyped</a>
+</dt><dd> <div class="block">Builds a custom object returnType if the supplied return returnType is a Map</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/CachingGraphQLResponseHandler.html#buildDefinition()" title="Method in CachingGraphQLResponseHandler">buildDefinition()</a></span> - Method in <a href="org/grails/gorm/graphql/response/CachingGraphQLResponseHandler.html">CachingGraphQLResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/delete/DefaultGraphQLDeleteResponseHandler.html#buildDefinition()" title="Method in DefaultGraphQLDeleteResponseHandler">buildDefinition()</a></span> - Method in <a href="org/grails/gorm/graphql/response/delete/DefaultGraphQLDeleteResponseHandler.html">DefaultGraphQLDeleteResponseHandler</a>
@@ -206,27 +208,40 @@ if (location.href.indexOf('is-external=true') == -1) {
  with a closure.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetcher.html#ClosureDataFetcher(groovy.lang.Closure)" title="Constructor in ClosureDataFetcher">ClosureDataFetcher(Closure)</a></span> - Constructor in <a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetcher.html">ClosureDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html#collection(boolean)" title="Method in ComplexTyped">collection(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html">ComplexTyped</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/ComplexArgument.html" title="Class in org.grails.gorm.graphql.entity.operations.arguments">ComplexArgument</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/operations/arguments/package-summary.html">org.grails.gorm.graphql.entity.operations.arguments</a>
+</dt><dd><div class="block">Used to create arguments to custom operations that are a custom (complex) type</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/ComplexField.html" title="Class in org.grails.gorm.graphql.entity.fields">ComplexField</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/fields/package-summary.html">org.grails.gorm.graphql.entity.fields</a>
+</dt><dd><div class="block">A class used to represent a field that has a custom (complex) type</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/ComplexGraphQLProperty.html" title="Class in org.grails.gorm.graphql.entity.property.impl">ComplexGraphQLProperty</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/property/impl/package-summary.html">org.grails.gorm.graphql.entity.property.impl</a>
+</dt><dd><div class="block">Used to represent a custom property that has a custom (complex) type</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/ComplexOperation.html" title="Class in org.grails.gorm.graphql.entity.operations">ComplexOperation</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/operations/package-summary.html">org.grails.gorm.graphql.entity.operations</a>
+</dt><dd><div class="block">Used to create custom operations with custom (complex) types</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html" title="Trait in org.grails.gorm.graphql.entity.dsl.helpers">ComplexTyped</a></span> - Trait in <a href="./org/grails/gorm/graphql/entity/dsl/helpers/package-summary.html">org.grails.gorm.graphql.entity.dsl.helpers</a>
+</dt><dd><div class="block">Decorates a class with the ability to build a custom type</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.Builder.html#condition(groovy.lang.Closure)" title="Method in GraphQLDomainPropertyManager.Builder">condition(Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.Builder.html">GraphQLDomainPropertyManager.Builder</a>
-</dt><dd> <div class="block">Exclude properties based on the return type of the provided
+</dt><dd> <div class="block">Exclude properties based on the return returnType of the provided
  closure. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/CreateEntityDataFetcher.html" title="Class in org.grails.gorm.graphql.fetcher.impl">CreateEntityDataFetcher</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/impl/package-summary.html">org.grails.gorm.graphql.fetcher.impl</a>
 </dt><dd><div class="block">A class for creating entities with GraphQL</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html#createField(PersistentEntity, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, MappingContext)" title="Method in CustomOperation">createField(PersistentEntity, GraphQLTypeManager, GraphQLInterceptorManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html">CustomOperation</a>
-</dt><dd> <div class="block">Creates the field to be added to the query or mutation type in the schema.</div></dd>
+</dt><dd> <div class="block">Creates the field to be added to the query or mutation returnType in the schema.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/input/CreateInputObjectTypeBuilder.html" title="Class in org.grails.gorm.graphql.types.input">CreateInputObjectTypeBuilder</a></span> - Class in <a href="./org/grails/gorm/graphql/types/input/package-summary.html">org.grails.gorm.graphql.types.input</a>
 </dt><dd><div class="block">The class used to define which properties are available
  when creating an entity</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#createReference(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in DefaultGraphQLTypeManager">createReference(PersistentEntity, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html#createReference(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in GraphQLTypeManager">createReference(PersistentEntity, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>
-</dt><dd> <div class="block">Creates a reference to domain type</div></dd>
+</dt><dd> <div class="block">Creates a reference to domain returnType</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/delete/DefaultGraphQLDeleteResponseHandler.html#createResponse(DataFetchingEnvironment, boolean)" title="Method in DefaultGraphQLDeleteResponseHandler">createResponse(DataFetchingEnvironment, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/response/delete/DefaultGraphQLDeleteResponseHandler.html">DefaultGraphQLDeleteResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/delete/GraphQLDeleteResponseHandler.html#createResponse(DataFetchingEnvironment, boolean)" title="Method in GraphQLDeleteResponseHandler">createResponse(DataFetchingEnvironment, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/response/delete/GraphQLDeleteResponseHandler.html">GraphQLDeleteResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomArgument.html" title="Class in org.grails.gorm.graphql.entity.operations">CustomArgument</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/operations/package-summary.html">org.grails.gorm.graphql.entity.operations</a>
-</dt><dd><div class="block">A class to store data about an argument used in
- a custom query or mutation.</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/CustomArgument.html" title="Class in org.grails.gorm.graphql.entity.operations.arguments">CustomArgument</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/operations/arguments/package-summary.html">org.grails.gorm.graphql.entity.operations.arguments</a>
+</dt><dd><div class="block">Describes an argument to a custom operation</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/CustomArgument.html#CustomArgument()" title="Constructor in CustomArgument">CustomArgument()</a></span> - Constructor in <a href="org/grails/gorm/graphql/entity/operations/arguments/CustomArgument.html">CustomArgument</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html" title="Class in org.grails.gorm.graphql.entity.property.impl">CustomGraphQLProperty</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/property/impl/package-summary.html">org.grails.gorm.graphql.entity.property.impl</a>
 </dt><dd><div class="block">Implementation of GraphQLDomainProperty to be used to define
  additional properties beyond the ones defined in GORM entities</div></dd>
@@ -236,7 +251,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/CustomOperationInterceptorDataFetcher.html" title="Class in org.grails.gorm.graphql.fetcher.impl">CustomOperationInterceptorDataFetcher</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/impl/package-summary.html">org.grails.gorm.graphql.fetcher.impl</a>
 </dt><dd><div class="block">Used to wrap data fetchers provided by custom operations to apply
  interceptor behavior.</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/CustomOperationInterceptorDataFetcher.html#CustomOperationInterceptorDataFetcher(java.lang.Class, DataFetcher, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager)" title="Constructor in CustomOperationInterceptorDataFetcher">CustomOperationInterceptorDataFetcher(Class, DataFetcher, GraphQLInterceptorManager)</a></span> - Constructor in <a href="org/grails/gorm/graphql/fetcher/impl/CustomOperationInterceptorDataFetcher.html">CustomOperationInterceptorDataFetcher</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/CustomOperationInterceptorDataFetcher.html#CustomOperationInterceptorDataFetcher(java.lang.Class, DataFetcher, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, org.grails.gorm.graphql.entity.operations.OperationType)" title="Constructor in CustomOperationInterceptorDataFetcher">CustomOperationInterceptorDataFetcher(Class, DataFetcher, GraphQLInterceptorManager, OperationType)</a></span> - Constructor in <a href="org/grails/gorm/graphql/fetcher/impl/CustomOperationInterceptorDataFetcher.html">CustomOperationInterceptorDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 </dl>
 
@@ -251,6 +266,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/binding/manager/DefaultGraphQLDataBinderManager.html#dataBinders" title="Field in DefaultGraphQLDataBinderManager">dataBinders</a></span> - Field in <a href="org/grails/gorm/graphql/binding/manager/DefaultGraphQLDataBinderManager.html">DefaultGraphQLDataBinderManager</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html#dataFetcher(groovy.lang.Closure)" title="Method in CustomGraphQLProperty">dataFetcher(Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html">CustomGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DataFetcherNotFoundException.html" title="Class in org.grails.gorm.graphql.fetcher">DataFetcherNotFoundException</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/package-summary.html">org.grails.gorm.graphql.fetcher</a>
 </dt><dd><div class="block">@author James Kleeh</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DataFetcherNotFoundException.html#DataFetcherNotFoundException(PersistentEntity, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Constructor in DataFetcherNotFoundException">DataFetcherNotFoundException(PersistentEntity, GraphQLDataFetcherType)</a></span> - Constructor in <a href="org/grails/gorm/graphql/fetcher/DataFetcherNotFoundException.html">DataFetcherNotFoundException</a>
@@ -261,6 +278,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">Default java.util.Date coercion</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/coercing/DateCoercion.html#DateCoercion(List<String>, boolean)" title="Constructor in DateCoercion">DateCoercion(List&lt;String&gt;, boolean)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/scalars/coercing/DateCoercion.html">DateCoercion</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Defaultable.html" title="Trait in org.grails.gorm.graphql.entity.dsl.helpers">Defaultable</a></span> - Trait in <a href="./org/grails/gorm/graphql/entity/dsl/helpers/package-summary.html">org.grails.gorm.graphql.entity.dsl.helpers</a>
+</dt><dd><div class="block">Decorates a class with the ability to store a default value</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html" title="Class in org.grails.gorm.graphql.fetcher">DefaultGormDataFetcher</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/package-summary.html">org.grails.gorm.graphql.fetcher</a>
 </dt><dd><div class="block">A generic class to assist with querying entities with GraphQL</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#DefaultGormDataFetcher(PersistentEntity, java.lang.String)" title="Constructor in DefaultGormDataFetcher">DefaultGormDataFetcher(PersistentEntity, String)</a></span> - Constructor in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
@@ -294,6 +313,12 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">The default implementation of <a href='../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html' title='GraphQLTypeManager'>GraphQLTypeManager</a></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#DefaultGraphQLTypeManager(org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention, org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler, org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager)" title="Constructor in DefaultGraphQLTypeManager">DefaultGraphQLTypeManager(GraphQLEntityNamingConvention, GraphQLErrorsResponseHandler, GraphQLDomainPropertyManager)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html#defaultNull(boolean)" title="Method in ComplexTyped">defaultNull(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html">ComplexTyped</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Defaultable.html#defaultValue(java.lang.Object)" title="Method in Defaultable">defaultValue(Object)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Defaultable.html">Defaultable</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/Field.html#defaultValue(java.lang.Object)" title="Method in Field">defaultValue(Object)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/Field.html">Field</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/DeleteEntityDataFetcher.html#delete(DataFetchingEnvironment)" title="Method in DeleteEntityDataFetcher">delete(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/DeleteEntityDataFetcher.html">DeleteEntityDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/DeleteEntityDataFetcher.html" title="Class in org.grails.gorm.graphql.fetcher.impl">DeleteEntityDataFetcher</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/impl/package-summary.html">org.grails.gorm.graphql.fetcher.impl</a>
@@ -305,13 +330,24 @@ if (location.href.indexOf('is-external=true') == -1) {
  that delete</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/runtime/DeletingRuntimeDataFetcher.html#DeletingRuntimeDataFetcher(PersistentEntity, org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler)" title="Constructor in DeletingRuntimeDataFetcher">DeletingRuntimeDataFetcher(PersistentEntity, GraphQLDataFetcherManager, GraphQLInterceptorManager, GraphQLDeleteResponseHandler)</a></span> - Constructor in <a href="org/grails/gorm/graphql/fetcher/runtime/DeletingRuntimeDataFetcher.html">DeletingRuntimeDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Deprecatable.html" title="Trait in org.grails.gorm.graphql.entity.dsl.helpers">Deprecatable</a></span> - Trait in <a href="./org/grails/gorm/graphql/entity/dsl/helpers/package-summary.html">org.grails.gorm.graphql.entity.dsl.helpers</a>
+</dt><dd><div class="block">Decorates a class with a builder syntax to provide
+ deprecation data.</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Deprecatable.html#deprecated(boolean)" title="Method in Deprecatable">deprecated(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Deprecatable.html">Deprecatable</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/GraphQL.html#deprecated()" title="Method in GraphQL">deprecated()</a></span> - Method in <a href="org/grails/gorm/graphql/GraphQL.html">GraphQL</a>
 </dt><dd> <div class="block">@default false</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Deprecatable.html#deprecationReason(java.lang.String)" title="Method in Deprecatable">deprecationReason(String)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Deprecatable.html">Deprecatable</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/GraphQL.html#deprecationReason()" title="Method in GraphQL">deprecationReason()</a></span> - Method in <a href="org/grails/gorm/graphql/GraphQL.html">GraphQL</a>
 </dt><dd> <div class="block">@default ''</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Describable.html" title="Trait in org.grails.gorm.graphql.entity.dsl.helpers">Describable</a></span> - Trait in <a href="./org/grails/gorm/graphql/entity/dsl/helpers/package-summary.html">org.grails.gorm.graphql.entity.dsl.helpers</a>
+</dt><dd><div class="block">Decorates a class with a description property and builder method.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/delete/DefaultGraphQLDeleteResponseHandler.html#description" title="Field in DefaultGraphQLDeleteResponseHandler">description</a></span> - Field in <a href="org/grails/gorm/graphql/response/delete/DefaultGraphQLDeleteResponseHandler.html">DefaultGraphQLDeleteResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#description" title="Field in DefaultGraphQLErrorsResponseHandler">description</a></span> - Field in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Describable.html#description(java.lang.String)" title="Method in Describable">description(String)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Describable.html">Describable</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="gorm/graphql/GormGraphqlGrailsPlugin.html#doWithSpring()" title="Method in GormGraphqlGrailsPlugin">doWithSpring()</a></span> - Method in <a href="gorm/graphql/GormGraphqlGrailsPlugin.html">GormGraphqlGrailsPlugin</a>
 </dt><dd> <div class="block"></div></dd>
@@ -333,6 +369,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/impl/EmptyGraphQLSchemaInterceptor.html" title="Class in org.grails.gorm.graphql.interceptor.impl">EmptyGraphQLSchemaInterceptor</a></span> - Class in <a href="./org/grails/gorm/graphql/interceptor/impl/package-summary.html">org.grails.gorm.graphql.interceptor.impl</a>
 </dt><dd><div class="block">Default implementation of GraphQLSchemaInterceptor that
  has no operations.</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/ProvidedOperation.html#enabled(boolean)" title="Method in ProvidedOperation">enabled(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/ProvidedOperation.html">ProvidedOperation</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#entity" title="Field in DefaultGormDataFetcher">entity</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html" title="Class in org.grails.gorm.graphql.fetcher.impl">EntityDataFetcher</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/impl/package-summary.html">org.grails.gorm.graphql.fetcher.impl</a>
@@ -355,6 +393,9 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Exclude the version property from being returned</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html#executeQuery(DataFetchingEnvironment, java.util.Map)" title="Method in EntityDataFetcher">executeQuery(DataFetchingEnvironment, Map)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html">EntityDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/ExecutesClosures.html" title="Trait in org.grails.gorm.graphql.entity.dsl.helpers">ExecutesClosures</a></span> - Trait in <a href="./org/grails/gorm/graphql/entity/dsl/helpers/package-summary.html">org.grails.gorm.graphql.entity.dsl.helpers</a>
+</dt><dd><div class="block">Decorates a class with the ability to execute closures with
+ a delegate</div></dd>
 </dl>
 
     
@@ -362,6 +403,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">F</h2>
 <dl>
 
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/Field.html" title="Class in org.grails.gorm.graphql.entity.fields">Field</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/fields/package-summary.html">org.grails.gorm.graphql.entity.fields</a>
+</dt><dd><div class="block">Generic class used to represent a field in a custom object. </div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html#field(java.lang.String, java.lang.String, groovy.lang.Closure)" title="Method in ComplexTyped">field(String, String, Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html">ComplexTyped</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#fieldDescription" title="Field in DefaultGraphQLErrorsResponseHandler">fieldDescription</a></span> - Field in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#fieldFetcher" title="Field in DefaultGraphQLErrorsResponseHandler">fieldFetcher</a></span> - Field in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
@@ -399,8 +444,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/UpdateEntityDataFetcher.html#get(DataFetchingEnvironment)" title="Method in UpdateEntityDataFetcher">get(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/UpdateEntityDataFetcher.html">UpdateEntityDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomArgument.html#getArgument(org.grails.gorm.graphql.types.GraphQLTypeManager)" title="Method in CustomArgument">getArgument(GraphQLTypeManager)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomArgument.html">CustomArgument</a>
-</dt><dd> <div class="block">Builds the GraphQL argument this class represents</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/CustomArgument.html#getArgument(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in CustomArgument">getArgument(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/arguments/CustomArgument.html">CustomArgument</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html#getArguments(DataFetchingEnvironment)" title="Method in EntityDataFetcher">getArguments(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html">EntityDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html#getBaseType(PersistentProperty)" title="Method in PersistentGraphQLProperty">getBaseType(PersistentProperty)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html">PersistentGraphQLProperty</a>
@@ -431,6 +476,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/manager/GraphQLDataFetcherManager.html#getDeletingFetcher(PersistentEntity, org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler)" title="Method in GraphQLDataFetcherManager">getDeletingFetcher(PersistentEntity, GraphQLDeleteResponseHandler)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/manager/GraphQLDataFetcherManager.html">GraphQLDataFetcherManager</a>
 </dt><dd> <div class="block">Returns a data fetcher instance to be used in DELETE</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Deprecatable.html#getDeprecationReason()" title="Method in Deprecatable">getDeprecationReason()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Deprecatable.html">Deprecatable</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#getDeprecationReason()" title="Method in GraphQLDomainProperty">getDeprecationReason()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
 </dt><dd> <div class="block">@return The reason why the property is deprecated, or null if it isn't</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#getDescription()" title="Method in GraphQLDomainProperty">getDescription()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
@@ -442,7 +489,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#getEnumType(Class<? extends Enum>, boolean)" title="Method in DefaultGraphQLTypeManager">getEnumType(Class&lt;? extends Enum&gt;, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html#getEnumType(Class<? extends Enum>, boolean)" title="Method in GraphQLTypeManager">getEnumType(Class&lt;? extends Enum&gt;, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>
-</dt><dd> <div class="block">Retrieves an enum type for the provided class</div></dd>
+</dt><dd> <div class="block">Retrieves an enum returnType for the provided class</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#getFetchArguments(DataFetchingEnvironment)" title="Method in DefaultGormDataFetcher">getFetchArguments(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#getFieldDefinition()" title="Method in DefaultGraphQLErrorsResponseHandler">getFieldDefinition()</a></span> - Method in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
@@ -453,13 +500,23 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html#getGet(PersistentEntity)" title="Method in GraphQLEntityNamingConvention">getGet(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>
 </dt><dd> <div class="block">@param entity The persistent entity</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/ComplexGraphQLProperty.html#getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in ComplexGraphQLProperty">getGraphQLType(GraphQLTypeManager, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/ComplexGraphQLProperty.html">ComplexGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html#getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in CustomGraphQLProperty">getGraphQLType(GraphQLTypeManager, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html">CustomGraphQLProperty</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in GraphQLDomainProperty">getGraphQLType(GraphQLTypeManager, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
-</dt><dd> <div class="block">@param typeManager The type manager used to retrieve GraphQL types</div></dd>
+</dt><dd> <div class="block">@param typeManager The returnType manager used to retrieve GraphQL types</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html#getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in PersistentGraphQLProperty">getGraphQLType(GraphQLTypeManager, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html">PersistentGraphQLProperty</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/SimpleGraphQLProperty.html#getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in SimpleGraphQLProperty">getGraphQLType(GraphQLTypeManager, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/SimpleGraphQLProperty.html">SimpleGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#getIdentifierValues(DataFetchingEnvironment)" title="Method in DefaultGormDataFetcher">getIdentifierValues(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/ComplexField.html#getInputType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in ComplexField">getInputType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/ComplexField.html">ComplexField</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/Field.html#getInputType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in Field">getInputType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/Field.html">Field</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/SimpleField.html#getInputType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in SimpleField">getInputType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/SimpleField.html">SimpleField</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html#getInterceptors(java.lang.Class)" title="Method in DefaultGraphQLInterceptorManager">getInterceptors(Class)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html">DefaultGraphQLInterceptorManager</a>
 </dt><dd> <div class="block">@see GraphQLInterceptorManager#getInterceptors</div></dd>
@@ -474,7 +531,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#getMutationType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType, boolean)" title="Method in DefaultGraphQLTypeManager">getMutationType(PersistentEntity, GraphQLPropertyType, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html#getMutationType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType, boolean)" title="Method in GraphQLTypeManager">getMutationType(PersistentEntity, GraphQLPropertyType, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>
-</dt><dd> <div class="block">Retrieves a GraphQL type used for mutations that represents the provided entity</div></dd>
+</dt><dd> <div class="block">Retrieves a GraphQL returnType used for mutations that represents the provided entity</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#getName()" title="Method in GraphQLDomainProperty">getName()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
 </dt><dd> <div class="block">@return The name of the property</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html#getNamingConvention()" title="Method in GraphQLTypeManager">getNamingConvention()</a></span> - Method in <a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>
@@ -490,29 +547,41 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#getQueryType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in DefaultGraphQLTypeManager">getQueryType(PersistentEntity, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html#getQueryType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in GraphQLTypeManager">getQueryType(PersistentEntity, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>
-</dt><dd> <div class="block">Retrieves a GraphQL type used for queries that represents the provided entity</div></dd>
+</dt><dd> <div class="block">Retrieves a GraphQL returnType used for queries that represents the provided entity</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html#getReadingFetcher(PersistentEntity, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Method in DefaultGraphQLDataFetcherManager">getReadingFetcher(PersistentEntity, GraphQLDataFetcherType)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html">DefaultGraphQLDataFetcherManager</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/manager/GraphQLDataFetcherManager.html#getReadingFetcher(PersistentEntity, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Method in GraphQLDataFetcherManager">getReadingFetcher(PersistentEntity, GraphQLDataFetcherType)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/manager/GraphQLDataFetcherManager.html">GraphQLDataFetcherManager</a>
 </dt><dd> <div class="block">Returns a data fetcher instance to be used in GET or LIST</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html#getSupportedType()" title="Method in GraphQLFetcherInterceptor">getSupportedType()</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html">GraphQLFetcherInterceptor</a>
-</dt><dd> <div class="block">The supported type this interceptor will intercept. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/impl/TypedGraphQLFetcherInterceptor.html#getSupportedType()" title="Method in TypedGraphQLFetcherInterceptor">getSupportedType()</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/impl/TypedGraphQLFetcherInterceptor.html">TypedGraphQLFetcherInterceptor</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/ComplexArgument.html#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in ComplexArgument">getType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/arguments/ComplexArgument.html">ComplexArgument</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/ComplexField.html#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in ComplexField">getType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/ComplexField.html">ComplexField</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/ComplexOperation.html#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in ComplexOperation">getType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/ComplexOperation.html">ComplexOperation</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/CustomArgument.html#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in CustomArgument">getType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/arguments/CustomArgument.html">CustomArgument</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in CustomOperation">getType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html">CustomOperation</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#getType(java.lang.Class, boolean)" title="Method in DefaultGraphQLTypeManager">getType(Class, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#getType()" title="Method in GraphQLDomainProperty">getType()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
-</dt><dd> <div class="block">@return The type of the property</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html#getType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in GraphQLEntityNamingConvention">getType(PersistentEntity, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>
-</dt><dd> <div class="block">@param entity The persistent entity</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/Field.html#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in Field">getType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/Field.html">Field</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html#getType(java.lang.String, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in GraphQLEntityNamingConvention">getType(String, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>
+</dt><dd> <div class="block">@param typeName The custom type name</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html#getType(java.lang.Class, boolean)" title="Method in GraphQLTypeManager">getType(Class, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>
-</dt><dd> <div class="block">Retrieves the corresponding GraphQL type for the specified class.
+</dt><dd> <div class="block">Retrieves the corresponding GraphQL returnType for the specified class.
  </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/input/InputObjectTypeBuilder.html#getType()" title="Method in InputObjectTypeBuilder">getType()</a></span> - Method in <a href="org/grails/gorm/graphql/types/input/InputObjectTypeBuilder.html">InputObjectTypeBuilder</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/ObjectTypeBuilder.html#getType()" title="Method in ObjectTypeBuilder">getType()</a></span> - Method in <a href="org/grails/gorm/graphql/types/output/ObjectTypeBuilder.html">ObjectTypeBuilder</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/SimpleArgument.html#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in SimpleArgument">getType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/arguments/SimpleArgument.html">SimpleArgument</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/SimpleField.html#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in SimpleField">getType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/SimpleField.html">SimpleField</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/SimpleOperation.html#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in SimpleOperation">getType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/SimpleOperation.html">SimpleOperation</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html#getUpdate(PersistentEntity)" title="Method in GraphQLEntityNamingConvention">getUpdate(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>
 </dt><dd> <div class="block">@param entity The persistent entity</div></dd>
@@ -543,7 +612,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html#GraphQLDataFetcherType(java.lang.Class)" title="Constructor in GraphQLDataFetcherType">GraphQLDataFetcherType(Class)</a></span> - Constructor in <a href="org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html">GraphQLDataFetcherType</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/GraphQLDate.html" title="Class in org.grails.gorm.graphql.types.scalars">GraphQLDate</a></span> - Class in <a href="./org/grails/gorm/graphql/types/scalars/package-summary.html">org.grails.gorm.graphql.types.scalars</a>
-</dt><dd><div class="block">Default java.util.Date scalar type</div></dd>
+</dt><dd><div class="block">Default java.util.Date scalar returnType</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/GraphQLDate.html#GraphQLDate(Coercing)" title="Constructor in GraphQLDate">GraphQLDate(Coercing)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/scalars/GraphQLDate.html">GraphQLDate</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/delete/GraphQLDeleteResponseHandler.html" title="Interface in org.grails.gorm.graphql.response.delete">GraphQLDeleteResponseHandler</a></span> - Interface in <a href="./org/grails/gorm/graphql/response/delete/package-summary.html">org.grails.gorm.graphql.response.delete</a>
@@ -567,7 +636,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">Interface to describe a class that can intercept GraphQL data
  fetchers and prevent the execution of their functionality.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/GraphQLFloat.html" title="Class in org.grails.gorm.graphql.types.scalars">GraphQLFloat</a></span> - Class in <a href="./org/grails/gorm/graphql/types/scalars/package-summary.html">org.grails.gorm.graphql.types.scalars</a>
-</dt><dd><div class="block">Default java.lang.Float scalar type</div></dd>
+</dt><dd><div class="block">Default java.lang.Float scalar returnType</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/GraphQLFloat.html#GraphQLFloat()" title="Constructor in GraphQLFloat">GraphQLFloat()</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/scalars/GraphQLFloat.html">GraphQLFloat</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html" title="Interface in org.grails.gorm.graphql.interceptor.manager">GraphQLInterceptorManager</a></span> - Interface in <a href="./org/grails/gorm/graphql/interceptor/manager/package-summary.html">org.grails.gorm.graphql.interceptor.manager</a>
@@ -576,13 +645,14 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html" title="Class in org.grails.gorm.graphql.entity.dsl">GraphQLMapping</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/dsl/package-summary.html">org.grails.gorm.graphql.entity.dsl</a>
 </dt><dd><div class="block">DSL to provide GraphQL specific data for a GORM entity</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.Operations.html" title="Class in org.grails.gorm.graphql.entity.dsl.GraphQLMapping">GraphQLMapping.Operations</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/dsl/package-summary.html">org.grails.gorm.graphql.entity.dsl</a>
-</dt><dd><div class="block">Controls whether query or mutation types will be created for the entity</div></dd>
+</dt><dd><div class="block">Stores metadata about the default operations provided
+ by this library</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLOperationType.html" title="Enum in org.grails.gorm.graphql.types">GraphQLOperationType</a></span> - Enum in <a href="./org/grails/gorm/graphql/types/package-summary.html">org.grails.gorm.graphql.types</a>
 </dt><dd><div class="block">An enum to store the base operations provided</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html" title="Class in org.grails.gorm.graphql.entity.dsl">GraphQLPropertyMapping</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/dsl/package-summary.html">org.grails.gorm.graphql.entity.dsl</a>
 </dt><dd><div class="block">Builder to provide GraphQL specific data for a GORM entity property</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLPropertyType.html" title="Enum in org.grails.gorm.graphql.types">GraphQLPropertyType</a></span> - Enum in <a href="./org/grails/gorm/graphql/types/package-summary.html">org.grails.gorm.graphql.types</a>
-</dt><dd><div class="block">Represents what type of property is being created</div></dd>
+</dt><dd><div class="block">Represents what returnType of property is being created</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLPropertyType.html#GraphQLPropertyType(org.grails.gorm.graphql.types.GraphQLOperationType)" title="Constructor in GraphQLPropertyType">GraphQLPropertyType(GraphQLOperationType)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/GraphQLPropertyType.html">GraphQLPropertyType</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="gorm/graphql/GraphQLRequest.html" title="Class in gorm.graphql">GraphQLRequest</a></span> - Class in <a href="./gorm/graphql/package-summary.html">gorm.graphql</a>
@@ -601,13 +671,13 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">Interface to describe a class that can modify the fields and types used
  to build the GraphQL schema.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html" title="Interface in org.grails.gorm.graphql.types">GraphQLTypeManager</a></span> - Interface in <a href="./org/grails/gorm/graphql/types/package-summary.html">org.grails.gorm.graphql.types</a>
-</dt><dd><div class="block">An interface for handling type conversion and creation with GraphQL</div></dd>
+</dt><dd><div class="block">An interface for handling returnType conversion and creation with GraphQL</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/GraphQLURL.html" title="Class in org.grails.gorm.graphql.types.scalars">GraphQLURL</a></span> - Class in <a href="./org/grails/gorm/graphql/types/scalars/package-summary.html">org.grails.gorm.graphql.types.scalars</a>
-</dt><dd><div class="block">Default java.net.URL scalar type</div></dd>
+</dt><dd><div class="block">Default java.net.URL scalar returnType</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/GraphQLURL.html#GraphQLURL()" title="Constructor in GraphQLURL">GraphQLURL()</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/scalars/GraphQLURL.html">GraphQLURL</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/GraphQLUUID.html" title="Class in org.grails.gorm.graphql.types.scalars">GraphQLUUID</a></span> - Class in <a href="./org/grails/gorm/graphql/types/scalars/package-summary.html">org.grails.gorm.graphql.types.scalars</a>
-</dt><dd><div class="block">Default java.util.UUID scalar type</div></dd>
+</dt><dd><div class="block">Default java.util.UUID scalar returnType</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/GraphQLUUID.html#GraphQLUUID()" title="Constructor in GraphQLUUID">GraphQLUUID()</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/scalars/GraphQLUUID.html">GraphQLUUID</a>
 </dt><dd> <div class="block"></div></dd>
 </dl>
@@ -620,7 +690,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#hasType(java.lang.Class)" title="Method in DefaultGraphQLTypeManager">hasType(Class)</a></span> - Method in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html#hasType(java.lang.Class)" title="Method in GraphQLTypeManager">hasType(Class)</a></span> - Method in <a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>
-</dt><dd> <div class="block">Retrieves whether or not a GraphQL type has been registered for the
+</dt><dd> <div class="block">Retrieves whether or not a GraphQL returnType has been registered for the
  provided class</div></dd>
 </dl>
 
@@ -641,6 +711,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html#initializeEntity(PersistentEntity)" title="Method in EntityDataFetcher">initializeEntity(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html">EntityDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html#input(boolean)" title="Method in CustomGraphQLProperty">input(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html">CustomGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/Field.html#input(boolean)" title="Method in Field">input(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/Field.html">Field</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/input/InputObjectTypeBuilder.html" title="Class in org.grails.gorm.graphql.types.input">InputObjectTypeBuilder</a></span> - Class in <a href="./org/grails/gorm/graphql/types/input/package-summary.html">org.grails.gorm.graphql.types.input</a>
 </dt><dd><div class="block">The base class used to build an input object based on an entity</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/input/InputObjectTypeBuilder.html#InputObjectTypeBuilder(org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager, org.grails.gorm.graphql.types.GraphQLTypeManager)" title="Constructor in InputObjectTypeBuilder">InputObjectTypeBuilder(GraphQLDomainPropertyManager, GraphQLTypeManager)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/input/InputObjectTypeBuilder.html">InputObjectTypeBuilder</a>
@@ -657,6 +731,13 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html#interceptEntity(PersistentEntity, List<GraphQLFieldDefinition.Builder>, List<GraphQLFieldDefinition.Builder>)" title="Method in GraphQLSchemaInterceptor">interceptEntity(PersistentEntity, Builder&gt;, Builder&gt;)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html">GraphQLSchemaInterceptor</a>
 </dt><dd> <div class="block">Executed for each entity mapped with GraphQL. </div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html#interceptorComparator" title="Field in DefaultGraphQLInterceptorManager">interceptorComparator</a></span> - Field in <a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html">DefaultGraphQLInterceptorManager</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/invoker/InterceptorInvoker.html" title="Interface in org.grails.gorm.graphql.fetcher.invoker">InterceptorInvoker</a></span> - Interface in <a href="./org/grails/gorm/graphql/fetcher/invoker/package-summary.html">org.grails.gorm.graphql.fetcher.invoker</a>
+</dt><dd><div class="block">A generic interface for custom operations to separate which event
+ will be called based on the returnType of the operation.</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/CustomOperationInterceptorDataFetcher.html#interceptorInvoker" title="Field in CustomOperationInterceptorDataFetcher">interceptorInvoker</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/impl/CustomOperationInterceptorDataFetcher.html">CustomOperationInterceptorDataFetcher</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/CustomOperationInterceptorDataFetcher.html#interceptorManager" title="Field in CustomOperationInterceptorDataFetcher">interceptorManager</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/impl/CustomOperationInterceptorDataFetcher.html">CustomOperationInterceptorDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/runtime/AbstractRuntimeDataFetcher.html#interceptors" title="Field in AbstractRuntimeDataFetcher">interceptors</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/runtime/AbstractRuntimeDataFetcher.html">AbstractRuntimeDataFetcher</a>
@@ -667,11 +748,17 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html#interceptSchema(GraphQLObjectType.Builder, GraphQLObjectType.Builder)" title="Method in GraphQLSchemaInterceptor">interceptSchema(Builder, Builder)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html">GraphQLSchemaInterceptor</a>
 </dt><dd> <div class="block">Executed a single time before the schema is created. </div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#isCollection()" title="Method in GraphQLDomainProperty">isCollection()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
-</dt><dd> <div class="block">@return True if the property represents a collection</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/invoker/InterceptorInvoker.html#invoke(org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor, java.lang.String, DataFetchingEnvironment)" title="Method in InterceptorInvoker">invoke(GraphQLFetcherInterceptor, String, DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/invoker/InterceptorInvoker.html">InterceptorInvoker</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/invoker/MutationInterceptorInvoker.html#invoke(org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor, java.lang.String, DataFetchingEnvironment)" title="Method in MutationInterceptorInvoker">invoke(GraphQLFetcherInterceptor, String, DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/invoker/MutationInterceptorInvoker.html">MutationInterceptorInvoker</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/invoker/QueryInterceptorInvoker.html#invoke(org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor, java.lang.String, DataFetchingEnvironment)" title="Method in QueryInterceptorInvoker">invoke(GraphQLFetcherInterceptor, String, DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/invoker/QueryInterceptorInvoker.html">QueryInterceptorInvoker</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#isDeprecated()" title="Method in GraphQLDomainProperty">isDeprecated()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
 </dt><dd> <div class="block">@return True if the property is deprecated</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html#isDeprecated()" title="Method in PersistentGraphQLProperty">isDeprecated()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html">PersistentGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#isForeignKeyInChild(Association)" title="Method in DefaultGormDataFetcher">isForeignKeyInChild(Association)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#isInput()" title="Method in GraphQLDomainProperty">isInput()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
 </dt><dd> <div class="block">@return True if the property is to be used for input operations (CREATE/UPDATE)</div></dd>
@@ -679,8 +766,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">@return True if the property allows nulls</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#isOutput()" title="Method in GraphQLDomainProperty">isOutput()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
 </dt><dd> <div class="block">@return True if the property is to be used for output operations (GET/LIST)</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.Operations.html#isOutput()" title="Method in GraphQLMapping.Operations">isOutput()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.Operations.html">GraphQLMapping.Operations</a>
-</dt><dd> <div class="block"></div></dd>
 </dl>
 
     
@@ -722,6 +807,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">M</h2>
 <dl>
 
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html#mappingContext" title="Field in CustomGraphQLProperty">mappingContext</a></span> - Field in <a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html">CustomGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/Schema.html#mappingContext" title="Field in Schema">mappingContext</a></span> - Field in <a href="org/grails/gorm/graphql/Schema.html">Schema</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#messageFetcher" title="Field in DefaultGraphQLErrorsResponseHandler">messageFetcher</a></span> - Field in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
@@ -730,8 +817,11 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html#methodMissing(java.lang.String, java.lang.Object)" title="Method in GraphQLMapping">methodMissing(String, Object)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html">GraphQLMapping</a>
 </dt><dd> <div class="block">Supplies configuration for an existing property</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html#mutation(java.lang.String, groovy.lang.Closure)" title="Method in GraphQLMapping">mutation(String, Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html">GraphQLMapping</a>
-</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html#mutation(java.lang.String, List<Class>, groovy.lang.Closure)" title="Method in GraphQLMapping">mutation(String, List&lt;Class&gt;, Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html">GraphQLMapping</a>
+</dt><dd> <div class="block">Builds a custom mutation operation. </div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/invoker/MutationInterceptorInvoker.html" title="Class in org.grails.gorm.graphql.fetcher.invoker">MutationInterceptorInvoker</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/invoker/package-summary.html">org.grails.gorm.graphql.fetcher.invoker</a>
+</dt><dd><div class="block">An interceptor invoker that will call the
+ GraphQLFetcherInterceptor#onCustomMutation#onCustomMutation method</div></dd>
 </dl>
 
     
@@ -743,14 +833,18 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#name" title="Field in DefaultGraphQLErrorsResponseHandler">name</a></span> - Field in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/ReturnsType.html#name(java.lang.String)" title="Method in ReturnsType">name(String)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/ReturnsType.html">ReturnsType</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Named.html#name(java.lang.String)" title="Method in Named">name(String)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Named.html">Named</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Named.html" title="Trait in org.grails.gorm.graphql.entity.dsl.helpers">Named</a></span> - Trait in <a href="./org/grails/gorm/graphql/entity/dsl/helpers/package-summary.html">org.grails.gorm.graphql.entity.dsl.helpers</a>
+</dt><dd><div class="block">Decorates a class with a name property and builder method</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/input/NestedInputObjectTypeBuilder.html" title="Class in org.grails.gorm.graphql.types.input">NestedInputObjectTypeBuilder</a></span> - Class in <a href="./org/grails/gorm/graphql/types/input/package-summary.html">org.grails.gorm.graphql.types.input</a>
 </dt><dd><div class="block">The class used to define which properties are available
  when providing an object as a part of a parent object</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/input/NestedInputObjectTypeBuilder.html#NestedInputObjectTypeBuilder(org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Constructor in NestedInputObjectTypeBuilder">NestedInputObjectTypeBuilder(GraphQLDomainPropertyManager, GraphQLTypeManager, GraphQLPropertyType)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/input/NestedInputObjectTypeBuilder.html">NestedInputObjectTypeBuilder</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html#newProperty()" title="Method in CustomGraphQLProperty">newProperty()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html">CustomGraphQLProperty</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Nullable.html" title="Trait in org.grails.gorm.graphql.entity.dsl.helpers">Nullable</a></span> - Trait in <a href="./org/grails/gorm/graphql/entity/dsl/helpers/package-summary.html">org.grails.gorm.graphql.entity.dsl.helpers</a>
+</dt><dd><div class="block">Decorates a class with a nullable property and builder method</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Nullable.html#nullable(boolean)" title="Method in Nullable">nullable(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Nullable.html">Nullable</a>
 </dt><dd> <div class="block"></div></dd>
 </dl>
 
@@ -767,10 +861,15 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/ObjectTypeBuilder.html#objectTypeCache" title="Field in ObjectTypeBuilder">objectTypeCache</a></span> - Field in <a href="org/grails/gorm/graphql/types/output/ObjectTypeBuilder.html">ObjectTypeBuilder</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html#onCustomOperation(java.lang.String, DataFetchingEnvironment)" title="Method in GraphQLFetcherInterceptor">onCustomOperation(String, DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html">GraphQLFetcherInterceptor</a>
-</dt><dd> <div class="block">This method will be executed before custom operations provided by the user of
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html#onCustomMutation(java.lang.String, DataFetchingEnvironment)" title="Method in GraphQLFetcherInterceptor">onCustomMutation(String, DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html">GraphQLFetcherInterceptor</a>
+</dt><dd> <div class="block">This method will be executed before custom mutation operations provided by the user of
  this library.</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/impl/TypedGraphQLFetcherInterceptor.html#onCustomOperation(java.lang.String, DataFetchingEnvironment)" title="Method in TypedGraphQLFetcherInterceptor">onCustomOperation(String, DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/impl/TypedGraphQLFetcherInterceptor.html">TypedGraphQLFetcherInterceptor</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/impl/TypedGraphQLFetcherInterceptor.html#onCustomMutation(java.lang.String, DataFetchingEnvironment)" title="Method in TypedGraphQLFetcherInterceptor">onCustomMutation(String, DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/impl/TypedGraphQLFetcherInterceptor.html">TypedGraphQLFetcherInterceptor</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html#onCustomQuery(java.lang.String, DataFetchingEnvironment)" title="Method in GraphQLFetcherInterceptor">onCustomQuery(String, DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html">GraphQLFetcherInterceptor</a>
+</dt><dd> <div class="block">This method will be executed before custom query operations provided by the user of
+ this library.</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/impl/TypedGraphQLFetcherInterceptor.html#onCustomQuery(java.lang.String, DataFetchingEnvironment)" title="Method in TypedGraphQLFetcherInterceptor">onCustomQuery(String, DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/impl/TypedGraphQLFetcherInterceptor.html">TypedGraphQLFetcherInterceptor</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html#onMutation(DataFetchingEnvironment, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Method in GraphQLFetcherInterceptor">onMutation(DataFetchingEnvironment, GraphQLDataFetcherType)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html">GraphQLFetcherInterceptor</a>
 </dt><dd> <div class="block">This method will be executed before mutation operations provided by this library.</div></dd>
@@ -779,6 +878,13 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html#onQuery(DataFetchingEnvironment, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Method in GraphQLFetcherInterceptor">onQuery(DataFetchingEnvironment, GraphQLDataFetcherType)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html">GraphQLFetcherInterceptor</a>
 </dt><dd> <div class="block">This method will be executed before query operations provided by this library.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/impl/TypedGraphQLFetcherInterceptor.html#onQuery(DataFetchingEnvironment, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Method in TypedGraphQLFetcherInterceptor">onQuery(DataFetchingEnvironment, GraphQLDataFetcherType)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/impl/TypedGraphQLFetcherInterceptor.html">TypedGraphQLFetcherInterceptor</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/OperationType.html" title="Enum in org.grails.gorm.graphql.entity.operations">OperationType</a></span> - Enum in <a href="./org/grails/gorm/graphql/entity/operations/package-summary.html">org.grails.gorm.graphql.entity.operations</a>
+</dt><dd><div class="block">Used to determine if a custom operation is for
+ querying or mutating.</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html#output(boolean)" title="Method in CustomGraphQLProperty">output(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html">CustomGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/Field.html#output(boolean)" title="Method in Field">output(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/Field.html">Field</a>
 </dt><dd> <div class="block"></div></dd>
 </dl>
 
@@ -820,6 +926,9 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#propertyName" title="Field in DefaultGormDataFetcher">propertyName</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/ProvidedOperation.html" title="Class in org.grails.gorm.graphql.entity.operations">ProvidedOperation</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/operations/package-summary.html">org.grails.gorm.graphql.entity.operations</a>
+</dt><dd><div class="block">Stores metadata about the operations that this library
+ provides by default. </div></dd>
 </dl>
 
     
@@ -827,10 +936,13 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">Q</h2>
 <dl>
 
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html#query(java.lang.String, groovy.lang.Closure)" title="Method in GraphQLMapping">query(String, Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html">GraphQLMapping</a>
-</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html#query(java.lang.String, java.lang.Class, groovy.lang.Closure)" title="Method in GraphQLMapping">query(String, Class, Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html">GraphQLMapping</a>
+</dt><dd> <div class="block">Builds a custom query operation.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#queryInstance(DataFetchingEnvironment)" title="Method in DefaultGormDataFetcher">queryInstance(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/invoker/QueryInterceptorInvoker.html" title="Class in org.grails.gorm.graphql.fetcher.invoker">QueryInterceptorInvoker</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/invoker/package-summary.html">org.grails.gorm.graphql.fetcher.invoker</a>
+</dt><dd><div class="block">An interceptor invoker that will call the
+ GraphQLFetcherInterceptor#onCustomQuery#onCustomQuery method</div></dd>
 </dl>
 
     
@@ -859,9 +971,9 @@ if (location.href.indexOf('is-external=true') == -1) {
  provided class.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html#registerFetcher(java.lang.Class, DataFetcher, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Method in DefaultGraphQLDataFetcherManager">registerFetcher(Class, DataFetcher, GraphQLDataFetcherType)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html">DefaultGraphQLDataFetcherManager</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html#registerInterceptor(org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor)" title="Method in DefaultGraphQLInterceptorManager">registerInterceptor(GraphQLFetcherInterceptor)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html">DefaultGraphQLInterceptorManager</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html#registerInterceptor(java.lang.Class, org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor)" title="Method in DefaultGraphQLInterceptorManager">registerInterceptor(Class, GraphQLFetcherInterceptor)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html">DefaultGraphQLInterceptorManager</a>
 </dt><dd> <div class="block">@see GraphQLInterceptorManager#registerInterceptor</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html#registerInterceptor(org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor)" title="Method in GraphQLInterceptorManager">registerInterceptor(GraphQLFetcherInterceptor)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html">GraphQLInterceptorManager</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html#registerInterceptor(java.lang.Class, org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor)" title="Method in GraphQLInterceptorManager">registerInterceptor(Class, GraphQLFetcherInterceptor)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html">GraphQLInterceptorManager</a>
 </dt><dd> <div class="block">Registers the interceptor</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html#registerReadingDataFetcher(java.lang.Class, org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher)" title="Method in DefaultGraphQLDataFetcherManager">registerReadingDataFetcher(Class, ReadingGormDataFetcher)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html">DefaultGraphQLDataFetcherManager</a>
 </dt><dd> <div class="block"></div></dd>
@@ -871,7 +983,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#registerType(java.lang.Class, GraphQLType)" title="Method in DefaultGraphQLTypeManager">registerType(Class, GraphQLType)</a></span> - Method in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html#registerType(java.lang.Class, GraphQLType)" title="Method in GraphQLTypeManager">registerType(Class, GraphQLType)</a></span> - Method in <a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>
-</dt><dd> <div class="block">Register a GraphQL type to represent the provided class</div></dd>
+</dt><dd> <div class="block">Register a GraphQL returnType to represent the provided class</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/runtime/AbstractRuntimeDataFetcher.html#resolveFetcher()" title="Method in AbstractRuntimeDataFetcher">resolveFetcher()</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/runtime/AbstractRuntimeDataFetcher.html">AbstractRuntimeDataFetcher</a>
 </dt><dd> <div class="block"> <DL><DT><B>Returns:</B></DT><DD>The data fetcher to be used.</DD></DL></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/runtime/BindingRuntimeDataFetcher.html#resolveFetcher()" title="Method in BindingRuntimeDataFetcher">resolveFetcher()</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/runtime/BindingRuntimeDataFetcher.html">BindingRuntimeDataFetcher</a>
@@ -880,10 +992,16 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/runtime/ReadingRuntimeDataFetcher.html#resolveFetcher()" title="Method in ReadingRuntimeDataFetcher">resolveFetcher()</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/runtime/ReadingRuntimeDataFetcher.html">ReadingRuntimeDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html#resolveType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext, java.lang.Class)" title="Method in CustomOperation">resolveType(GraphQLTypeManager, MappingContext, Class)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html">CustomOperation</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Typed.html#resolveInputType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext, boolean)" title="Method in Typed">resolveInputType(GraphQLTypeManager, MappingContext, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Typed.html">Typed</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/ReturnsType.html" title="Class in org.grails.gorm.graphql.entity.operations">ReturnsType</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/operations/package-summary.html">org.grails.gorm.graphql.entity.operations</a>
-</dt><dd><div class="block">Parses return types for custom arguments and operations</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Typed.html#resolveOutputType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)" title="Method in Typed">resolveOutputType(GraphQLTypeManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Typed.html">Typed</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Typed.html#resolveType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext, org.grails.gorm.graphql.types.GraphQLPropertyType, boolean)" title="Method in Typed">resolveType(GraphQLTypeManager, MappingContext, GraphQLPropertyType, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Typed.html">Typed</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/ComplexOperation.html#returns(groovy.lang.Closure)" title="Method in ComplexOperation">returns(Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/ComplexOperation.html">ComplexOperation</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Typed.html#returns(java.lang.Class)" title="Method in Typed">returns(Class)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Typed.html">Typed</a>
+</dt><dd> <div class="block"></div></dd>
 </dl>
 
     
@@ -897,6 +1015,9 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/KeyClassQuery.html#searchMap(Map<Class, V>, java.lang.Class, boolean)" title="Method in KeyClassQuery">searchMap(Map&lt;Class, V&gt;, Class, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/types/KeyClassQuery.html">KeyClassQuery</a>
 </dt><dd> <div class="block">Searches for exact matches first. </div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/types/KeyClassQuery.html#searchMapAll(Map<Class, V>, java.lang.Class)" title="Method in KeyClassQuery">searchMapAll(Map&lt;Class, V&gt;, Class)</a></span> - Method in <a href="org/grails/gorm/graphql/types/KeyClassQuery.html">KeyClassQuery</a>
+</dt><dd> <div class="block">Searches for any class that is a super class of the class being
+ searched. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/coercing/DateCoercion.html#serialize(java.lang.Object)" title="Method in DateCoercion">serialize(Object)</a></span> - Method in <a href="org/grails/gorm/graphql/types/scalars/coercing/DateCoercion.html">DateCoercion</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/coercing/FloatCoercion.html#serialize(java.lang.Object)" title="Method in FloatCoercion">serialize(Object)</a></span> - Method in <a href="org/grails/gorm/graphql/types/scalars/coercing/FloatCoercion.html">FloatCoercion</a>
@@ -911,6 +1032,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/Schema.html#setListArguments(Map<String, Class>)" title="Method in Schema">setListArguments(Map&lt;String, Class&gt;)</a></span> - Method in <a href="org/grails/gorm/graphql/Schema.html">Schema</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html#setMappingContext(MappingContext)" title="Method in CustomGraphQLProperty">setMappingContext(MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html">CustomGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DeletingGormDataFetcher.html#setResponseHandler(org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler)" title="Method in DeletingGormDataFetcher">setResponseHandler(GraphQLDeleteResponseHandler)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/DeletingGormDataFetcher.html">DeletingGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#shouldJoinProperty(Field)" title="Method in DefaultGormDataFetcher">shouldJoinProperty(Field)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
@@ -918,6 +1041,14 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/ShowObjectTypeBuilder.html" title="Class in org.grails.gorm.graphql.types.output">ShowObjectTypeBuilder</a></span> - Class in <a href="./org/grails/gorm/graphql/types/output/package-summary.html">org.grails.gorm.graphql.types.output</a>
 </dt><dd><div class="block">The class used to define which properties are available
  when responding with an entity</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/SimpleArgument.html" title="Class in org.grails.gorm.graphql.entity.operations.arguments">SimpleArgument</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/operations/arguments/package-summary.html">org.grails.gorm.graphql.entity.operations.arguments</a>
+</dt><dd><div class="block">Used to create arguments to custom operations that are a simple type</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/SimpleField.html" title="Class in org.grails.gorm.graphql.entity.fields">SimpleField</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/fields/package-summary.html">org.grails.gorm.graphql.entity.fields</a>
+</dt><dd><div class="block">A field with a simple type. </div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/SimpleGraphQLProperty.html" title="Class in org.grails.gorm.graphql.entity.property.impl">SimpleGraphQLProperty</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/property/impl/package-summary.html">org.grails.gorm.graphql.entity.property.impl</a>
+</dt><dd><div class="block">A class for creating custom properties that have a simple type</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/SimpleOperation.html" title="Class in org.grails.gorm.graphql.entity.operations">SimpleOperation</a></span> - Class in <a href="./org/grails/gorm/graphql/entity/operations/package-summary.html">org.grails.gorm.graphql.entity.operations</a>
+</dt><dd><div class="block">Used to create custom operations with simple types</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/SingleEntityDataFetcher.html" title="Class in org.grails.gorm.graphql.fetcher.impl">SingleEntityDataFetcher</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/impl/package-summary.html">org.grails.gorm.graphql.fetcher.impl</a>
 </dt><dd><div class="block">A class for querying a single entity with GraphQL</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/runtime/AbstractRuntimeDataFetcher.html#supports(org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Method in AbstractRuntimeDataFetcher">supports(GraphQLDataFetcherType)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/runtime/AbstractRuntimeDataFetcher.html">AbstractRuntimeDataFetcher</a>
@@ -941,15 +1072,25 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">T</h2>
 <dl>
 
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/ComplexGraphQLProperty.html#type(groovy.lang.Closure)" title="Method in ComplexGraphQLProperty">type(Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/ComplexGraphQLProperty.html">ComplexGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#TYPE_MAP" title="Field in DefaultGraphQLTypeManager">TYPE_MAP</a></span> - Field in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/ReturnsType.html#type(java.lang.Class)" title="Method in ReturnsType">type(Class)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/ReturnsType.html">ReturnsType</a>
-</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Typed.html" title="Trait in org.grails.gorm.graphql.entity.dsl.helpers">Typed</a></span> - Trait in <a href="./org/grails/gorm/graphql/entity/dsl/helpers/package-summary.html">org.grails.gorm.graphql.entity.dsl.helpers</a>
+</dt><dd><div class="block">Parses types for custom arguments, operations, and properties</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/impl/TypedGraphQLFetcherInterceptor.html" title="Class in org.grails.gorm.graphql.interceptor.impl">TypedGraphQLFetcherInterceptor</a></span> - Class in <a href="./org/grails/gorm/graphql/interceptor/impl/package-summary.html">org.grails.gorm.graphql.interceptor.impl</a>
 </dt><dd><div class="block">Base class to extend from for custom data fetcher interceptors. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/input/InputObjectTypeBuilder.html#typeManager" title="Field in InputObjectTypeBuilder">typeManager</a></span> - Field in <a href="org/grails/gorm/graphql/types/input/InputObjectTypeBuilder.html">InputObjectTypeBuilder</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/ObjectTypeBuilder.html#typeManager" title="Field in ObjectTypeBuilder">typeManager</a></span> - Field in <a href="org/grails/gorm/graphql/types/output/ObjectTypeBuilder.html">ObjectTypeBuilder</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/ComplexArgument.html#typeName(java.lang.String)" title="Method in ComplexArgument">typeName(String)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/arguments/ComplexArgument.html">ComplexArgument</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/ComplexField.html#typeName(java.lang.String)" title="Method in ComplexField">typeName(String)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/ComplexField.html">ComplexField</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/ComplexGraphQLProperty.html#typeName(java.lang.String)" title="Method in ComplexGraphQLProperty">typeName(String)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/ComplexGraphQLProperty.html">ComplexGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/ComplexOperation.html#typeName(java.lang.String)" title="Method in ComplexOperation">typeName(String)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/ComplexOperation.html">ComplexOperation</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/TypeNotFoundException.html" title="Class in org.grails.gorm.graphql.types">TypeNotFoundException</a></span> - Class in <a href="./org/grails/gorm/graphql/types/package-summary.html">org.grails.gorm.graphql.types</a>
 </dt><dd><div class="block">@author James Kleeh</div></dd>
@@ -978,6 +1119,28 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">V</h2>
 <dl>
 
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/ComplexArgument.html#validate()" title="Method in ComplexArgument">validate()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/arguments/ComplexArgument.html">ComplexArgument</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/ComplexField.html#validate()" title="Method in ComplexField">validate()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/ComplexField.html">ComplexField</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/ComplexGraphQLProperty.html#validate()" title="Method in ComplexGraphQLProperty">validate()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/ComplexGraphQLProperty.html">ComplexGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/ComplexOperation.html#validate()" title="Method in ComplexOperation">validate()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/ComplexOperation.html">ComplexOperation</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/CustomArgument.html#validate()" title="Method in CustomArgument">validate()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/arguments/CustomArgument.html">CustomArgument</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html#validate()" title="Method in CustomGraphQLProperty">validate()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html">CustomGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html#validate()" title="Method in CustomOperation">validate()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html">CustomOperation</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/Field.html#validate()" title="Method in Field">validate()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/Field.html">Field</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/SimpleArgument.html#validate()" title="Method in SimpleArgument">validate()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/arguments/SimpleArgument.html">SimpleArgument</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/fields/SimpleField.html#validate()" title="Method in SimpleField">validate()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/fields/SimpleField.html">SimpleField</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/SimpleOperation.html#validate()" title="Method in SimpleOperation">validate()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/SimpleOperation.html">SimpleOperation</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/GraphQL.html#value()" title="Method in GraphQL">value()</a></span> - Method in <a href="org/grails/gorm/graphql/GraphQL.html">GraphQL</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html#verifyFetcher(DataFetcher, java.lang.Class)" title="Method in DefaultGraphQLDataFetcherManager">verifyFetcher(DataFetcher, Class)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html">DefaultGraphQLDataFetcherManager</a>
@@ -989,6 +1152,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">W</h2>
 <dl>
 
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/ExecutesClosures.html#withDelegate(groovy.lang.Closure, java.lang.Object)" title="Method in ExecutesClosures">withDelegate(Closure, Object)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/ExecutesClosures.html">ExecutesClosures</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/CustomOperationInterceptorDataFetcher.html#wrappedFetcher" title="Field in CustomOperationInterceptorDataFetcher">wrappedFetcher</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/impl/CustomOperationInterceptorDataFetcher.html">CustomOperationInterceptorDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 </dl>

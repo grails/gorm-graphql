@@ -70,11 +70,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            Field&nbsp;&nbsp;&nbsp;<li><a href="#prop_detail">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#prop_detail">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     <a name="skip-navbar_top">
@@ -87,7 +87,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
     <div class="subTitle">Package: <strong>org.grails.gorm.graphql.entity.property.impl</strong></div>
 
-    <h2 title="[Groovy] Class CustomGraphQLProperty" class="title">[Groovy] Class CustomGraphQLProperty</h2>
+    <h2 title="[Groovy] Class CustomGraphQLProperty&lt;T&gt;" class="title">[Groovy] Class CustomGraphQLProperty&lt;T&gt;</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
@@ -99,15 +99,14 @@ if (location.href.indexOf('is-external=true') == -1) {
 
             <dl>
                 <dt>All Implemented Interfaces and Traits:</dt>
-                <dd><a href='../../../../../../../org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html'>GraphQLDomainProperty</a></dd>
+                <dd><a href='../../../../../../../org/grails/gorm/graphql/entity/dsl/helpers/Deprecatable.html'>Deprecatable</a>, <a href='../../../../../../../org/grails/gorm/graphql/entity/dsl/helpers/Describable.html'>Describable</a>, <a href='../../../../../../../org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html'>GraphQLDomainProperty</a>, <a href='../../../../../../../org/grails/gorm/graphql/entity/dsl/helpers/Named.html'>Named</a>, <a href='../../../../../../../org/grails/gorm/graphql/entity/dsl/helpers/Nullable.html'>Nullable</a></dd>
             </dl>
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
 <pre>@groovy.transform.AutoClone
-@groovy.transform.builder.Builder(builderStrategy = SimpleStrategy, prefix = '')
 @groovy.transform.CompileStatic
-class CustomGraphQLProperty
+abstract&nbsp;class CustomGraphQLProperty
 
 </pre>
 
@@ -131,6 +130,30 @@ class CustomGraphQLProperty
         
         <!-- =========== FIELD SUMMARY =========== -->
         
+            <ul class="blockList">
+                <li class="blockList"><a name="field_summary"><!--   --></a>
+                    <h3>Field Summary</h3>
+                    <ul class="blockList">
+                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Enum constants summary table">
+                        <caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+                        <tr>
+                            <th class="colFirst" scope="col">Modifiers</th>
+                            <th class="colLast" scope="col">Name</th>
+                            <th class="colLast" scope="col">Description</th>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../../../MappingContext.html'>MappingContext</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#mappingContext">mappingContext</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                    </table>
+                   </ul>
+                </li>
+                
+            </ul>
+        
 
         <!-- =========== PROPERTY SUMMARY =========== -->
         
@@ -146,28 +169,8 @@ class CustomGraphQLProperty
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>boolean</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#collection">collection</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>groovy.lang.Closure</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dataFetcher">dataFetcher</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong>boolean</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#deprecated">deprecated</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code><strong>java.lang.String</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#deprecationReason">deprecationReason</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.lang.String</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#description">description</a></code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -176,23 +179,8 @@ class CustomGraphQLProperty
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.lang.String</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#name">name</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code><strong>boolean</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#nullable">nullable</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
                             <td class="colFirst"><code><strong>boolean</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#output">output</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code><strong>java.lang.Class</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#type">type</a></code><br></td>
                         </tr>
                         
                     </table>
@@ -223,14 +211,38 @@ class CustomGraphQLProperty
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../../GraphQLType.html'>GraphQLType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)">getGraphQLType</a></strong>(<a href='../../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> propertyType)</code><br></td>
+                            <td class="colLast"><code>T</code></td>
+                            <td class="colLast"><code><strong><a href="#dataFetcher(groovy.lang.Closure)">dataFetcher</a></strong>(groovy.lang.Closure dataFetcher)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../../../../org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html'>CustomGraphQLProperty</a></code></td>
-                            <td class="colLast"><code><strong><a href="#newProperty()">newProperty</a></strong>()</code><br></td>
+                            <td class="colLast"><code><a href='../../../../../../../GraphQLType.html'>GraphQLType</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)">getGraphQLType</a></strong>(<a href='../../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> propertyType)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>T</code></td>
+                            <td class="colLast"><code><strong><a href="#input(boolean)">input</a></strong>(boolean input)</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>T</code></td>
+                            <td class="colLast"><code><strong><a href="#output(boolean)">output</a></strong>(boolean output)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#setMappingContext(MappingContext)">setMappingContext</a></strong>(<a href='../../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br></td>
                         </tr>
                         
                     </table>
@@ -267,6 +279,24 @@ class CustomGraphQLProperty
            
 
             
+            <!-- =========== FIELD DETAIL =========== -->
+            <ul class="blockList">
+                <li class="blockList"><a name="field_detail">
+                    <!--   -->
+                </a>
+                    <h3>Field Detail</h3>
+                    
+                        <a name="mappingContext"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;<a href='../../../../../../../MappingContext.html'>MappingContext</a> <strong>mappingContext</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                </li>
+            </ul>
+            
 
             
             <!-- =========== PROPERTY DETAIL =========== -->
@@ -276,42 +306,10 @@ class CustomGraphQLProperty
                 </a>
                     <h3>Property Detail</h3>
                     
-                        <a name="collection"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>boolean <strong>collection</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
                         <a name="dataFetcher"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>groovy.lang.Closure <strong>dataFetcher</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="deprecated"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>boolean <strong>deprecated</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="deprecationReason"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>java.lang.String <strong>deprecationReason</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="description"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>java.lang.String <strong>description</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -324,34 +322,10 @@ class CustomGraphQLProperty
                             </li>
                         </ul>
                     
-                        <a name="name"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>java.lang.String <strong>name</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="nullable"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>boolean <strong>nullable</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
                         <a name="output"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>boolean <strong>output</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="type"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>java.lang.Class <strong>type</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -373,18 +347,51 @@ class CustomGraphQLProperty
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)"><!-- --></a>
+                        <a name="dataFetcher(groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../../GraphQLType.html'>GraphQLType</a> <strong>getGraphQLType</strong>(<a href='../../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> propertyType)</h4>
+                                <h4>T <strong>dataFetcher</strong>(groovy.lang.Closure dataFetcher)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="newProperty()"><!-- --></a>
+                        <a name="getGraphQLType(org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.types.GraphQLPropertyType)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../../../../org/grails/gorm/graphql/entity/property/impl/CustomGraphQLProperty.html'>CustomGraphQLProperty</a> <strong>newProperty</strong>()</h4>
+                                <h4>@java.lang.Override
+<a href='../../../../../../../GraphQLType.html'>GraphQLType</a> <strong>getGraphQLType</strong>(<a href='../../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> propertyType)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="input(boolean)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>T <strong>input</strong>(boolean input)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="output(boolean)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>T <strong>output</strong>(boolean output)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="setMappingContext(MappingContext)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>setMappingContext</strong>(<a href='../../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="validate()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>validate</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -423,11 +430,11 @@ class CustomGraphQLProperty
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            Field&nbsp;&nbsp;&nbsp;<li><a href="#prop_detail">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#prop_detail">Property</a></li>&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     
