@@ -1,6 +1,5 @@
 package org.grails.gorm.graphql.types
 
-import graphql.Scalars
 import graphql.schema.*
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
@@ -13,10 +12,11 @@ import org.grails.gorm.graphql.types.input.*
 import org.grails.gorm.graphql.types.output.EmbeddedObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ShowObjectTypeBuilder
-import org.grails.gorm.graphql.types.scalars.GraphQLFloat
-import org.grails.gorm.graphql.types.scalars.GraphQLURL
-import org.grails.gorm.graphql.types.scalars.GraphQLUUID
+import org.grails.gorm.graphql.types.scalars.*
 
+import java.lang.reflect.Array
+import java.sql.Time
+import java.sql.Timestamp
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -29,19 +29,27 @@ import java.util.concurrent.ConcurrentHashMap
 class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
     protected static final Map<Class, GraphQLType> TYPE_MAP = new ConcurrentHashMap<>([
-        (Integer): Scalars.GraphQLInt,
-        (Long): Scalars.GraphQLLong,
-        (Short): Scalars.GraphQLShort,
-        (Byte): Scalars.GraphQLByte,
-        (Double): Scalars.GraphQLFloat,
+        (Integer): new GraphQLInteger(),
+        (Long): new GraphQLLong(),
+        (Short): new GraphQLShort(),
+        (Byte): new GraphQLByte(),
+        (Byte[]): new GraphQLByteArray(),
+        (Double): new GraphQLDouble(),
         (Float): new GraphQLFloat(),
-        (BigInteger): Scalars.GraphQLBigInteger,
-        (BigDecimal): Scalars.GraphQLBigDecimal,
-        (String): Scalars.GraphQLString,
-        (Boolean): Scalars.GraphQLBoolean,
-        (Character): Scalars.GraphQLChar,
+        (BigInteger): new GraphQLBigInteger(),
+        (BigDecimal): new GraphQLBigDecimal(),
+        (String): new GraphQLString(),
+        (Boolean): new GraphQLBoolean(),
+        (Character): new GraphQLCharacter(),
+        (Character[]): new GraphQLCharacterArray(),
         (UUID): new GraphQLUUID(),
-        (URL): new GraphQLURL()
+        (URL): new GraphQLURL(),
+        (URI): new GraphQLURI(),
+        (Time): new GraphQLTime(),
+        (java.sql.Date): new GraphQLSqlDate(),
+        (Timestamp): new GraphQLTimestamp(),
+        (Currency): new GraphQLCurrency(),
+        (TimeZone): new GraphQLTimeZone()
     ])
 
     protected static final Map<Class, GraphQLEnumType> ENUM_TYPES = new ConcurrentHashMap<>()
@@ -87,9 +95,15 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
     @Override
     GraphQLType getType(Class clazz, boolean nullable = true) {
-        if (clazz.isPrimitive()) {
+        if (clazz.array) {
+            if (clazz.componentType.primitive) {
+                clazz = Array.newInstance(boxPrimitive(clazz.componentType), 0).getClass()
+            }
+        }
+        else if (clazz.isPrimitive()) {
             clazz = boxPrimitive(clazz)
         }
+
         GraphQLType type = TYPE_MAP.get(clazz)
         if (type == null) {
             throw new TypeNotFoundException(clazz)
@@ -169,7 +183,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             objectTypeBuilders.get(type).build(entity)
         }
         else {
-            throw new IllegalArgumentException("Invalid returnType specified. ${type.name()} is not a valid query returnType")
+            throw new IllegalArgumentException("Invalid type specified. ${type.name()} is not a valid query type")
         }
     }
 
@@ -185,7 +199,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             }
         }
         else {
-            throw new IllegalArgumentException("Invalid returnType specified. ${type.name()} is not a valid mutation returnType")
+            throw new IllegalArgumentException("Invalid type specified. ${type.name()} is not a valid mutation type")
         }
     }
 

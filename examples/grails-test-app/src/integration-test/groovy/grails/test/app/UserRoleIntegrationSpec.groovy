@@ -1,5 +1,6 @@
 package grails.test.app
 
+import gorm.graphql.testing.GraphQLSpec
 import grails.testing.mixin.integration.Integration
 import grails.testing.spock.OnceBefore
 import org.grails.web.json.JSONArray
@@ -116,7 +117,7 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
         obj.user.id == userId
         obj.role.id == roleId
         outCount == 1
-        query == 'Hibernate: select this_.user_id as user_id1_12_0_, this_.role_id as role_id2_12_0_ from user_role this_ where this_.user_id=? and this_.role_id=? limit ?\n'
+        query ==~ 'Hibernate: select this_.user_id as user_id[0-9]+_[0-9]+_[0-9]+_, this_.role_id as role_id[0-9]+_[0-9]+_[0-9]+_ from user_role this_ where this_.user_id=\\? and this_.role_id=\\? limit \\?\n'
 
         when:
         outCount = 0
@@ -140,7 +141,7 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
         obj.user.profile.email == 'admin@email.com'
         obj.role.authority == 'ROLE_ADMIN'
         outCount == 1
-        query == 'Hibernate: select this_.user_id as user_id1_12_2_, this_.role_id as role_id2_12_2_, user2_.id as id1_11_0_, user2_.version as version2_11_0_, user2_.manager_id as manager_3_11_0_, user2_.added_numbers as added_nu4_11_0_, user2_.address_zip as address_5_11_0_, user2_.address_city as address_6_11_0_, user2_.address_state as address_7_11_0_, user2_.profile_first_name as profile_8_11_0_, user2_.profile_last_name as profile_9_11_0_, user2_.profile_email as profile10_11_0_, role3_.id as id1_8_1_, role3_.version as version2_8_1_, role3_.authority as authorit3_8_1_ from user_role this_ inner join user user2_ on this_.user_id=user2_.id inner join role role3_ on this_.role_id=role3_.id where this_.user_id=? and this_.role_id=?\n'
+        query ==~ 'Hibernate: select this_.user_id as user_id[0-9]+_[0-9]{2}_[0-9]_, this_.role_id as role_id[0-9]+_[0-9]+_[0-9]+_, user2_.id as id[0-9]+_[0-9]+_[0-9]+_, user2_.version as version[0-9]+_[0-9]+_[0-9]+_, user2_.manager_id as manager_[0-9]+_[0-9]+_[0-9]+_, user2_.added_numbers as added_nu[0-9]+_[0-9]+_[0-9]+_, user2_.address_zip as address_[0-9]+_[0-9]+_[0-9]+_, user2_.address_city as address_[0-9]+_[0-9]+_[0-9]+_, user2_.address_state as address_[0-9]+_[0-9]+_[0-9]+_, user2_.profile_first_name as profile_[0-9]+_[0-9]+_[0-9]+_, user2_.profile_last_name as profile_[0-9]+_[0-9]+_[0-9]+_, user2_.profile_email as profile[0-9]+_[0-9]+_[0-9]+_, role3_.id as id[0-9]+_[0-9]+_[0-9]+_, role3_.version as version[0-9]+_[0-9]+_[0-9]+_, role3_.authority as authorit[0-9]+_[0-9]+_[0-9]+_ from user_role this_ inner join user user2_ on this_.user_id=user2_.id inner join role role3_ on this_.role_id=role3_.id where this_.user_id=\\? and this_.role_id=\\?\n'
 
         cleanup:
         System.setOut(originalOut)

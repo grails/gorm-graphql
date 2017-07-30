@@ -5,7 +5,7 @@ import groovy.transform.CompileStatic
 /**
  * Generic class to help searching maps that have a class as their key
  *
- * @param <V> The returnType of value to return
+ * @param <V> The type of value to return
  *
  * @author James Kleeh
  * @since 1.0.0

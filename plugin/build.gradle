@@ -22,6 +22,7 @@ dependencies {
     compile "org.grails.plugins:views-json:1.2.3"
     compile "javax.servlet:javax.servlet-api:3.0.1"
     compileOnly "org.grails:grails-datastore-rest-client"
+    compileOnly "org.grails.plugins:converters:3.3.0"
     testCompile "org.grails:grails-web-testing-support"
     testCompile "cglib:cglib-nodep:3.2.5"
     profile "org.grails.profiles:web-plugin"

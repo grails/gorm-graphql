@@ -7,7 +7,7 @@ import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 
 /**
- * An interface for handling returnType conversion and creation with GraphQL
+ * An interface for handling type conversion and creation with GraphQL
  *
  * @author James Kleeh
  * @since 1.0.0
@@ -15,38 +15,38 @@ import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 interface GraphQLTypeManager {
 
     /**
-     * Retrieves the corresponding GraphQL returnType for the specified class.
+     * Retrieves the corresponding GraphQL type for the specified class.
      * This method should typically return a {@link graphql.schema.GraphQLScalarType}
      *
-     * @param clazz The class to retrieve a returnType for
+     * @param clazz The class to retrieve a type for
      * @return The GraphQLType
      */
     GraphQLType getType(Class clazz) throws TypeNotFoundException
 
     /**
-     * Retrieves whether or not a GraphQL returnType has been registered for the
+     * Retrieves whether or not a GraphQL type has been registered for the
      * provided class
      *
-     * @param clazz The class to search for a returnType for
-     * @return True if a returnType was found
+     * @param clazz The class to search for a type for
+     * @return True if a type was found
      */
     boolean hasType(Class clazz)
 
     /**
-     * Retrieves the corresponding GraphQL returnType for the specified class.
+     * Retrieves the corresponding GraphQL type for the specified class.
      * This method should typically return a {@link graphql.schema.GraphQLScalarType}
      *
-     * @param clazz The class to retrieve a returnType for
+     * @param clazz The class to retrieve a type for
      * @param nullable If true, wrap the normal result with a {@link graphql.schema.GraphQLNonNull}
      * @return The GraphQLType
      */
     GraphQLType getType(Class clazz, boolean nullable)
 
     /**
-     * Register a GraphQL returnType to represent the provided class
+     * Register a GraphQL type to represent the provided class
      *
-     * @param clazz The class the returnType represents
-     * @param type The returnType
+     * @param clazz The class the type represents
+     * @param type The type
      */
     void registerType(Class clazz, GraphQLType type)
 
@@ -56,39 +56,39 @@ interface GraphQLTypeManager {
     GraphQLEntityNamingConvention getNamingConvention()
 
     /**
-     * Retrieves an enum returnType for the provided class
+     * Retrieves an enum type for the provided class
      *
      * @param clazz The clazz to create
      * @param nullable True if the property allows nulls
-     * @return The returnType representing the provided enum
+     * @return The type representing the provided enum
      */
     GraphQLType getEnumType(Class<? extends Enum> clazz, boolean nullable)
 
     /**
-     * Creates a reference to domain returnType
+     * Creates a reference to domain type
      *
      * @param entity The entity to reference
-     * @param type The returnType of reference
+     * @param type The type of reference
      * @return The domain reference
      */
     GraphQLType createReference(PersistentEntity entity, GraphQLPropertyType type)
 
     /**
-     * Retrieves a GraphQL returnType used for mutations that represents the provided entity
+     * Retrieves a GraphQL type used for mutations that represents the provided entity
      *
-     * @param entity The persistent entity to retrieve the returnType for
-     * @param type The returnType of property to retrieve
+     * @param entity The persistent entity to retrieve the type for
+     * @param type The type of property to retrieve
      * @param nullable True if the property allows nulls
-     * @return The returnType representing the provided entity
+     * @return The type representing the provided entity
      */
     GraphQLInputType getMutationType(PersistentEntity entity, GraphQLPropertyType type, boolean nullable)
 
     /**
-     * Retrieves a GraphQL returnType used for queries that represents the provided entity
+     * Retrieves a GraphQL type used for queries that represents the provided entity
      *
-     * @param entity The persistent entity to retrieve the returnType for
-     * @param type The returnType of property to retrieve
-     * @return The returnType representing the provided entity
+     * @param entity The persistent entity to retrieve the type for
+     * @param type The type of property to retrieve
+     * @return The type representing the provided entity
      */
     GraphQLOutputType getQueryType(PersistentEntity entity, GraphQLPropertyType type)
 

@@ -37,7 +37,7 @@ trait GraphQLSpec {
     }
 
     @TupleConstructor
-    private static class GraphQLRequestHelper {
+    static class GraphQLRequestHelper {
 
         RestBuilder rest
         String url

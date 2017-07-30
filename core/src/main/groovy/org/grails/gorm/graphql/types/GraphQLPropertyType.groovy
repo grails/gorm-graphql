@@ -3,7 +3,7 @@ package org.grails.gorm.graphql.types
 import groovy.transform.CompileStatic
 
 /**
- * Represents what returnType of property is being created
+ * Represents what type of property is being created
  *
  * @author James Kleeh
  * @since 1.0.0
@@ -69,7 +69,7 @@ enum GraphQLPropertyType {
                 UPDATE_EMBEDDED
                 break
             default:
-                throw new UnsupportedOperationException("No embedded returnType available for ${operationType.name()}")
+                throw new UnsupportedOperationException("No embedded type available for ${operationType.name()}")
         }
     }
 
@@ -85,7 +85,7 @@ enum GraphQLPropertyType {
                 UPDATE_NESTED
                 break
             default:
-                throw new UnsupportedOperationException("No nested returnType available for ${operationType.name()}")
+                throw new UnsupportedOperationException("No nested type available for ${operationType.name()}")
         }
     }
 }

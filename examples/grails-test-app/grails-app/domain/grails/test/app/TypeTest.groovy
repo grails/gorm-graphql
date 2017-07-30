@@ -1,17 +1,11 @@
-package org.grails.gorm.graphql.domain.toone
-
-import grails.gorm.annotation.Entity
+package grails.test.app
 
 import java.sql.Blob
 import java.sql.Clob
 import java.sql.Time
 import java.sql.Timestamp
 
-@Entity
-class ToOne {
-
-    One one
-    Enum anEnum
+class TypeTest {
 
     Integer integer
     Long aLong
@@ -27,7 +21,7 @@ class ToOne {
     UUID uuid
     URL url
     URI uri
-    Date date
+    java.util.Date date
     Byte[] bytes
     Character[] characters
     Time time
@@ -47,6 +41,8 @@ class ToOne {
     char charPrimitive
     boolean booleanPrimitive
 
+    static constraints = {
+    }
 
     static graphql = true
 }

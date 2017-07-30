@@ -5,15 +5,15 @@ import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.types.scalars.coercing.FloatingNumberCoercion
 
 /**
- * Default {@link Float} scalar type
+ * Default {@link BigDecimal} scalar type
  *
  * @author James Kleeh
  * @since 1.0.0
  */
 @CompileStatic
-class GraphQLFloat extends GraphQLScalarType {
+class GraphQLBigDecimal extends GraphQLScalarType {
 
-    GraphQLFloat() {
-        super('Float', 'Built-in Float', new FloatingNumberCoercion<Float>())
+    GraphQLBigDecimal() {
+        super('BigDecimal', 'Built-in BigDecimal', new FloatingNumberCoercion<BigDecimal>())
     }
 }

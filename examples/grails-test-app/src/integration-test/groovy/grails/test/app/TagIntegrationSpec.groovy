@@ -1,5 +1,6 @@
 package grails.test.app
 
+import gorm.graphql.testing.GraphQLSpec
 import grails.testing.mixin.integration.Integration
 import grails.testing.spock.OnceBefore
 import org.grails.web.json.JSONArray

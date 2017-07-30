@@ -28,7 +28,9 @@ class CreateEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements Bi
     T get(DataFetchingEnvironment environment) {
         GormEntity instance = (GormEntity)entity.javaClass.newInstance()
         dataBinder.bind(instance, (Map)environment.getArgument(entity.decapitalizedName))
-        instance.save()
+        if (!instance.hasErrors()) {
+            instance.save()
+        }
         (T)instance
     }
 

@@ -5,15 +5,15 @@ import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.types.scalars.coercing.FloatingNumberCoercion
 
 /**
- * Default {@link Float} scalar type
+ * Default {@link Double} scalar type
  *
  * @author James Kleeh
  * @since 1.0.0
  */
 @CompileStatic
-class GraphQLFloat extends GraphQLScalarType {
+class GraphQLDouble extends GraphQLScalarType {
 
-    GraphQLFloat() {
-        super('Float', 'Built-in Float', new FloatingNumberCoercion<Float>())
+    GraphQLDouble() {
+        super('Double', 'Built-in Double', new FloatingNumberCoercion<Double>())
     }
 }

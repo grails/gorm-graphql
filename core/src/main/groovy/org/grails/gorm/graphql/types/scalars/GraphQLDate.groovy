@@ -5,7 +5,7 @@ import graphql.schema.GraphQLScalarType
 import groovy.transform.CompileStatic
 
 /**
- * Default {@link Date} scalar returnType
+ * Default {@link Date} scalar type
  *
  * @author James Kleeh
  * @since 1.0.0
