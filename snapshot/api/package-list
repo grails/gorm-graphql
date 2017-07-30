@@ -1,4 +1,5 @@
 gorm.graphql
+gorm.graphql.testing
 org.grails.gorm.graphql
 org.grails.gorm.graphql.binding
 org.grails.gorm.graphql.binding.manager
@@ -22,6 +23,7 @@ org.grails.gorm.graphql.interceptor.manager
 org.grails.gorm.graphql.response
 org.grails.gorm.graphql.response.delete
 org.grails.gorm.graphql.response.errors
+org.grails.gorm.graphql.testing
 org.grails.gorm.graphql.types
 org.grails.gorm.graphql.types.input
 org.grails.gorm.graphql.types.output

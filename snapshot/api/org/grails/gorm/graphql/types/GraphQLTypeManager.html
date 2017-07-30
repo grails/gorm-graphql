@@ -98,7 +98,7 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
-    <p> An interface for handling returnType conversion and creation with GraphQL
+    <p> An interface for handling type conversion and creation with GraphQL
  <DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
 
           </li>
@@ -142,19 +142,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../GraphQLType.html'>GraphQLType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#createReference(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)">createReference</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br>Creates a reference to domain returnType</td>
+                            <td class="colLast"><code><strong><a href="#createReference(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)">createReference</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br>Creates a reference to domain type</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../GraphQLType.html'>GraphQLType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getEnumType(Class<? extends Enum>, boolean)">getEnumType</a></strong>(java.lang.Class&lt;? extends java.lang.Enum&gt; clazz, boolean nullable)</code><br>Retrieves an enum returnType for the provided class</td>
+                            <td class="colLast"><code><strong><a href="#getEnumType(Class<? extends Enum>, boolean)">getEnumType</a></strong>(java.lang.Class&lt;? extends java.lang.Enum&gt; clazz, boolean nullable)</code><br>Retrieves an enum type for the provided class</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../GraphQLInputType.html'>GraphQLInputType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getMutationType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType, boolean)">getMutationType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type, boolean nullable)</code><br>Retrieves a GraphQL returnType used for mutations that represents the provided entity</td>
+                            <td class="colLast"><code><strong><a href="#getMutationType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType, boolean)">getMutationType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type, boolean nullable)</code><br>Retrieves a GraphQL type used for mutations that represents the provided entity</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -166,34 +166,34 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../GraphQLOutputType.html'>GraphQLOutputType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getQueryType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)">getQueryType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br>Retrieves a GraphQL returnType used for queries that represents the provided entity</td>
+                            <td class="colLast"><code><strong><a href="#getQueryType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)">getQueryType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br>Retrieves a GraphQL type used for queries that represents the provided entity</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../GraphQLType.html'>GraphQLType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getType(java.lang.Class)">getType</a></strong>(java.lang.Class clazz)</code><br>Retrieves the corresponding GraphQL returnType for the specified class.
+                            <td class="colLast"><code><strong><a href="#getType(java.lang.Class)">getType</a></strong>(java.lang.Class clazz)</code><br>Retrieves the corresponding GraphQL type for the specified class.
  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../GraphQLType.html'>GraphQLType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getType(java.lang.Class, boolean)">getType</a></strong>(java.lang.Class clazz, boolean nullable)</code><br>Retrieves the corresponding GraphQL returnType for the specified class.
+                            <td class="colLast"><code><strong><a href="#getType(java.lang.Class, boolean)">getType</a></strong>(java.lang.Class clazz, boolean nullable)</code><br>Retrieves the corresponding GraphQL type for the specified class.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#hasType(java.lang.Class)">hasType</a></strong>(java.lang.Class clazz)</code><br>Retrieves whether or not a GraphQL returnType has been registered for the
+                            <td class="colLast"><code><strong><a href="#hasType(java.lang.Class)">hasType</a></strong>(java.lang.Class clazz)</code><br>Retrieves whether or not a GraphQL type has been registered for the
  provided class</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#registerType(java.lang.Class, GraphQLType)">registerType</a></strong>(java.lang.Class clazz, <a href='../../../../../GraphQLType.html'>GraphQLType</a> type)</code><br>Register a GraphQL returnType to represent the provided class</td>
+                            <td class="colLast"><code><strong><a href="#registerType(java.lang.Class, GraphQLType)">registerType</a></strong>(java.lang.Class clazz, <a href='../../../../../GraphQLType.html'>GraphQLType</a> type)</code><br>Register a GraphQL type to represent the provided class</td>
                         </tr>
                         
                     </table>
@@ -232,8 +232,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../GraphQLType.html'>GraphQLType</a> <strong>createReference</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</h4>
-                                <p> Creates a reference to domain returnType
-     <DL><DT><B>Returns:</B></DT><DD>The domain reference</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The entity to reference</DD><DD><code>type</code> -  The returnType of reference</DD></DL></p>
+                                <p> Creates a reference to domain type
+     <DL><DT><B>Returns:</B></DT><DD>The domain reference</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The entity to reference</DD><DD><code>type</code> -  The type of reference</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -241,8 +241,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../GraphQLType.html'>GraphQLType</a> <strong>getEnumType</strong>(java.lang.Class&lt;? extends java.lang.Enum&gt; clazz, boolean nullable)</h4>
-                                <p> Retrieves an enum returnType for the provided class
-     <DL><DT><B>Returns:</B></DT><DD>The returnType representing the provided enum</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The clazz to create</DD><DD><code>nullable</code> -  True if the property allows nulls</DD></DL></p>
+                                <p> Retrieves an enum type for the provided class
+     <DL><DT><B>Returns:</B></DT><DD>The type representing the provided enum</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The clazz to create</DD><DD><code>nullable</code> -  True if the property allows nulls</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -250,8 +250,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../GraphQLInputType.html'>GraphQLInputType</a> <strong>getMutationType</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type, boolean nullable)</h4>
-                                <p> Retrieves a GraphQL returnType used for mutations that represents the provided entity
-     <DL><DT><B>Returns:</B></DT><DD>The returnType representing the provided entity</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity to retrieve the returnType for</DD><DD><code>type</code> -  The returnType of property to retrieve</DD><DD><code>nullable</code> -  True if the property allows nulls</DD></DL></p>
+                                <p> Retrieves a GraphQL type used for mutations that represents the provided entity
+     <DL><DT><B>Returns:</B></DT><DD>The type representing the provided entity</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity to retrieve the type for</DD><DD><code>type</code> -  The type of property to retrieve</DD><DD><code>nullable</code> -  True if the property allows nulls</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -268,8 +268,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../GraphQLOutputType.html'>GraphQLOutputType</a> <strong>getQueryType</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</h4>
-                                <p> Retrieves a GraphQL returnType used for queries that represents the provided entity
-     <DL><DT><B>Returns:</B></DT><DD>The returnType representing the provided entity</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity to retrieve the returnType for</DD><DD><code>type</code> -  The returnType of property to retrieve</DD></DL></p>
+                                <p> Retrieves a GraphQL type used for queries that represents the provided entity
+     <DL><DT><B>Returns:</B></DT><DD>The type representing the provided entity</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity to retrieve the type for</DD><DD><code>type</code> -  The type of property to retrieve</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -277,9 +277,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../GraphQLType.html'>GraphQLType</a> <strong>getType</strong>(java.lang.Class clazz)</h4>
-                                <p> Retrieves the corresponding GraphQL returnType for the specified class.
+                                <p> Retrieves the corresponding GraphQL type for the specified class.
  This method should typically return a graphql.schema.GraphQLScalarType
-     <DL><DT><B>Returns:</B></DT><DD>The GraphQLType</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class to retrieve a returnType for</DD></DL></p>
+     <DL><DT><B>Returns:</B></DT><DD>The GraphQLType</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class to retrieve a type for</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -287,9 +287,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../GraphQLType.html'>GraphQLType</a> <strong>getType</strong>(java.lang.Class clazz, boolean nullable)</h4>
-                                <p> Retrieves the corresponding GraphQL returnType for the specified class.
+                                <p> Retrieves the corresponding GraphQL type for the specified class.
  This method should typically return a graphql.schema.GraphQLScalarType
-     <DL><DT><B>Returns:</B></DT><DD>The GraphQLType</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class to retrieve a returnType for</DD><DD><code>nullable</code> -  If true, wrap the normal result with a graphql.schema.GraphQLNonNull</DD></DL></p>
+     <DL><DT><B>Returns:</B></DT><DD>The GraphQLType</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class to retrieve a type for</DD><DD><code>nullable</code> -  If true, wrap the normal result with a graphql.schema.GraphQLNonNull</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -297,9 +297,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>boolean <strong>hasType</strong>(java.lang.Class clazz)</h4>
-                                <p> Retrieves whether or not a GraphQL returnType has been registered for the
+                                <p> Retrieves whether or not a GraphQL type has been registered for the
  provided class
-     <DL><DT><B>Returns:</B></DT><DD>True if a returnType was found</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class to search for a returnType for</DD></DL></p>
+     <DL><DT><B>Returns:</B></DT><DD>True if a type was found</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class to search for a type for</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -307,8 +307,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>void <strong>registerType</strong>(java.lang.Class clazz, <a href='../../../../../GraphQLType.html'>GraphQLType</a> type)</h4>
-                                <p> Register a GraphQL returnType to represent the provided class
-     <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class the returnType represents</DD><DD><code>type</code> -  The returnType</DD></DL></p>
+                                <p> Register a GraphQL type to represent the provided class
+     <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class the type represents</DD><DD><code>type</code> -  The type</DD></DL></p>
                             </li>
                         </ul>
                     
