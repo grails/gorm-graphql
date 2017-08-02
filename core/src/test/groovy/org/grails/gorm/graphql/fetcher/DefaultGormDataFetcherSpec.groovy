@@ -14,6 +14,7 @@ import org.grails.gorm.graphql.domain.toone.EmbedOne
 import org.grails.gorm.graphql.domain.toone.HasOne
 import org.grails.gorm.graphql.domain.toone.ManyToOne
 import org.grails.gorm.graphql.domain.toone.ToOne
+import org.grails.gorm.graphql.testing.MockDataFetchingEnvironment
 
 class DefaultGormDataFetcherSpec extends HibernateSpec {
 
@@ -382,53 +383,7 @@ class DefaultGormDataFetcherSpec extends HibernateSpec {
     class TestingFetcher extends DefaultGormDataFetcher {
 
         Set<String> joinProperties(Closure c) {
-            Map args = getFetchArguments(new DataFetchingEnvironment() {
-
-                @Override
-                def <T> T getSource() {
-                    return null
-                }
-
-                @Override
-                Map<String, Object> getArguments() {
-                    return null
-                }
-
-                @Override
-                boolean containsArgument(String name) {
-                    return false
-                }
-
-                @Override
-                def <T> T getArgument(String name) {
-                    return null
-                }
-
-                @Override
-                def <T> T getContext() {
-                    return null
-                }
-
-                @Override
-                List<Field> getFields() {
-                    new MockFieldBuilder().build(c)
-                }
-
-                @Override
-                GraphQLOutputType getFieldType() {
-                    return null
-                }
-
-                @Override
-                GraphQLType getParentType() {
-                    return null
-                }
-
-                @Override
-                GraphQLSchema getGraphQLSchema() {
-                    return null
-                }
-            })
+            Map args = getFetchArguments(new MockDataFetchingEnvironment(fields: new MockFieldBuilder().build(c)))
 
             if (args.containsKey('fetch')) {
                 args.fetch.keySet()
