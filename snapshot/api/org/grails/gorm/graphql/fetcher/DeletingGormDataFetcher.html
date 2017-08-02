@@ -87,22 +87,31 @@ if (location.href.indexOf('is-external=true') == -1) {
 
     <div class="subTitle">Package: <strong>org.grails.gorm.graphql.fetcher</strong></div>
 
-    <h2 title="[Groovy] Interface DeletingGormDataFetcher" class="title">[Groovy] Interface DeletingGormDataFetcher</h2>
+    <h2 title="[Groovy] Trait DeletingGormDataFetcher" class="title">[Groovy] Trait DeletingGormDataFetcher</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>graphql.schema.DataFetcher
+<li><ul class="inheritance"></ul></li><li>org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
 </ul>
 <div class="description">
     <ul class="blockList">
         <li class="blockList">
 
             <dl>
-                <dt>All Superinterfaces:</dt>
-                <dd><a href='../../../../../org/grails/gorm/graphql/fetcher/GormDataFetcher.html'>GormDataFetcher</a>, <a href='../../../../../graphql.schema.DataFetcher.html'>DataFetcher</a></dd>
+                <dt>All Implemented Interfaces and Traits:</dt>
+                <dd><a href='../../../../../org/grails/gorm/graphql/fetcher/GormDataFetcher.html'>GormDataFetcher</a></dd>
             </dl>
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+<pre>@groovy.transform.CompileStatic
+trait DeletingGormDataFetcher
 
-    <p> An interface to describe data fetchers that delete
+</pre>
+
+
+
+    <p> A trait to describe data fetchers that delete
  <DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
 
           </li>
@@ -149,28 +158,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <td class="colLast"><code><strong><a href="#setResponseHandler(org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler)">setResponseHandler</a></strong>(<a href='../../../../../org/grails/gorm/graphql/response/delete/GraphQLDeleteResponseHandler.html'>GraphQLDeleteResponseHandler</a> responseHandler)</code><br></td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>boolean</code></td>
+                            <td class="colLast"><code><strong><a href="#supports(org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)">supports</a></strong>(<a href='../../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type)</code><br></td>
+                        </tr>
+                        
                     </table>
                    </ul>
               </li>
             
-            <li class="blockList"><a name="method_summary"><!--   --></a>
-                    <h3>Inherited Methods Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
-                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Methods inherited from class</th>
-                            <th class="colLast" scope="col">Name</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code>interface <a href='../../../../../org/grails/gorm/graphql/fetcher/GormDataFetcher.html'>GormDataFetcher</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../org/grails/gorm/graphql/fetcher/GormDataFetcher.html#supports(org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)'>supports</a></code></td>
-                        </tr>
-                    </table>
-                   </ul>
-              </li>
-                
         </ul>
         
     </li>
@@ -203,6 +200,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>void <strong>setResponseHandler</strong>(<a href='../../../../../org/grails/gorm/graphql/response/delete/GraphQLDeleteResponseHandler.html'>GraphQLDeleteResponseHandler</a> responseHandler)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="supports(org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@java.lang.Override
+boolean <strong>supports</strong>(<a href='../../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type)</h4>
                                 <p></p>
                             </li>
                         </ul>
