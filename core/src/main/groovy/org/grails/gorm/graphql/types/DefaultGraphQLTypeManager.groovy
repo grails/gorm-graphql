@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap
 @CompileStatic
 class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
-    protected static final Map<Class, GraphQLType> TYPE_MAP = new ConcurrentHashMap<>([
+    protected static final Map<Class, GraphQLType> TYPE_MAP = new ConcurrentHashMap<Class, GraphQLType>([
         (Integer): new GraphQLInteger(),
         (Long): new GraphQLLong(),
         (Short): new GraphQLShort(),

@@ -26,12 +26,20 @@ class UpdateEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements Bi
     @Override
     @Transactional
     T get(DataFetchingEnvironment environment) {
-        GormEntity instance = queryInstance(environment)
-        dataBinder.bind(instance, (Map)environment.getArgument(entity.decapitalizedName))
+        GormEntity instance = getInstance(environment)
+        dataBinder.bind(instance, getArgument(environment))
         if (!instance.hasErrors()) {
             instance.save()
         }
         (T)instance
+    }
+
+    protected GormEntity getInstance(DataFetchingEnvironment environment) {
+        queryInstance(environment)
+    }
+
+    protected Map getArgument(DataFetchingEnvironment environment) {
+        (Map)environment.getArgument(entity.decapitalizedName)
     }
 
     @Override

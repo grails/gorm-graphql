@@ -1,12 +1,12 @@
 package org.grails.gorm.graphql.response.delete
 
-import graphql.Scalars
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLFieldDefinition
-import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
+import graphql.schema.GraphQLOutputType
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.response.CachingGraphQLResponseHandler
+import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLObjectType.newObject
@@ -25,13 +25,19 @@ class DefaultGraphQLDeleteResponseHandler extends CachingGraphQLResponseHandler 
     protected String description = 'Whether or not the operation was successful'
     protected String name = 'DeleteResult'
 
+    protected GraphQLTypeManager typeManager
+
+    DefaultGraphQLDeleteResponseHandler(GraphQLTypeManager typeManager) {
+        this.typeManager = typeManager
+    }
+
     @Override
     GraphQLObjectType getObjectType() {
         definition
     }
 
     protected List<GraphQLFieldDefinition> buildFieldDefinitions() {
-        [newFieldDefinition().name('success').type(GraphQLNonNull.nonNull(Scalars.GraphQLBoolean)).build()]
+        [newFieldDefinition().name('success').type((GraphQLOutputType)typeManager.getType(Boolean, false)).build()]
     }
 
     @Override

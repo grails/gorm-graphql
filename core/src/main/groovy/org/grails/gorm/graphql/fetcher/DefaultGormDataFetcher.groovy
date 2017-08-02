@@ -1,8 +1,6 @@
 package org.grails.gorm.graphql.fetcher
 
 import grails.gorm.DetachedCriteria
-import graphql.language.Field
-import graphql.language.Selection
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
@@ -12,7 +10,7 @@ import org.grails.datastore.gorm.GormStaticApi
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.types.Association
-import org.grails.datastore.mapping.model.types.ToOne
+import org.grails.gorm.graphql.entity.EntityFetchOptions
 
 /**
  * A generic class to assist with querying entities with GraphQL
@@ -26,77 +24,33 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
 
     protected Map<String, Association> associations = [:]
     protected PersistentEntity entity
-    protected Set<String> associationNames
     protected String propertyName
+    protected EntityFetchOptions entityFetchOptions
 
     DefaultGormDataFetcher(PersistentEntity entity) {
-        this.entity = entity
-        initializeEntity(entity)
+        this(entity, null)
     }
 
     DefaultGormDataFetcher(PersistentEntity entity, String projectionName) {
-        this(entity)
+        this.entity = entity
         this.propertyName = projectionName
+        this.entityFetchOptions = new EntityFetchOptions(entity, projectionName)
+        initializeEntity(entity)
     }
 
     protected void initializeEntity(PersistentEntity entity) {
-        for (Association association: entity.associations) {
-            if (!association.embedded) {
-                associations.put(association.name, association)
-            }
-        }
-        associationNames = associations.keySet()
+        this.associations = entityFetchOptions.associations
     }
 
-    protected boolean isForeignKeyInChild(Association association) {
-        association instanceof ToOne && ((ToOne)association).foreignKeyInChild
-    }
-
-    protected boolean shouldJoinProperty(Field selectedField) {
-        boolean join = false
-        if (associationNames.contains(selectedField.name)) {
-            join = true
-            Association association = associations.get(selectedField.name)
-            if (!isForeignKeyInChild(association)) {
-                PersistentEntity entity = association.associatedEntity
-                List<Selection> selections = selectedField.selectionSet?.selections
-                if (selections?.size() == 1 && selections[0] instanceof Field) {
-                    Field field = (Field)selections[0]
-                    if (entity.isIdentityName(field.name)) {
-                        join = false
-                    }
-                }
-            }
-        }
-        join
-    }
-
-    @SuppressWarnings(['NestedForLoop', 'NestedBlockDepth'])
+    @SuppressWarnings(['NestedBlockDepth'])
     protected Map getFetchArguments(DataFetchingEnvironment environment) {
-        Set<String> joinProperties = []
+
+        Set<String> joinProperties = entityFetchOptions.getJoinProperties(environment)
 
         if (propertyName) {
             joinProperties.add(propertyName)
         }
 
-        for (Field field: environment.fields) {
-            if (field.selectionSet != null) {
-                for (Selection selection: field.selectionSet.selections) {
-                    if (selection instanceof Field) {
-                        Field selectedField = (Field)selection
-                        if (shouldJoinProperty(selectedField)) {
-                            if (propertyName) {
-                                joinProperties.add(propertyName + '.' + selectedField.name)
-                            }
-                            else {
-                                joinProperties.add(selectedField.name)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
         if (joinProperties) {
             [fetch: joinProperties.collectEntries { [(it): 'join'] } ]
         }
@@ -134,14 +88,17 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         idProperties
     }
 
-    protected GormEntity queryInstance(DataFetchingEnvironment environment) {
+    protected DetachedCriteria buildCriteria(DataFetchingEnvironment environment) {
         Map<String, Object> idProperties = getIdentifierValues(environment)
-
-        (GormEntity)new DetachedCriteria(entity.javaClass).build {
+        new DetachedCriteria(entity.javaClass).build {
             for (Map.Entry<String, Object> prop: idProperties) {
                 eq(prop.key, prop.value)
             }
-        }.get(getFetchArguments(environment))
+        }
+    }
+
+    protected GormEntity queryInstance(DataFetchingEnvironment environment) {
+        buildCriteria(environment).get(getFetchArguments(environment))
     }
 
     abstract T get(DataFetchingEnvironment environment)

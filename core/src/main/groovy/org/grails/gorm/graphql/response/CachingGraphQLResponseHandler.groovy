@@ -14,10 +14,9 @@ abstract class CachingGraphQLResponseHandler {
     private GraphQLObjectType cachedDefinition
 
     GraphQLObjectType getDefinition() {
-        if (cachedDefinition != null) {
-            return GraphQLObjectType.reference(cachedDefinition.name)
+        if (cachedDefinition == null) {
+            cachedDefinition = buildDefinition()
         }
-        cachedDefinition = buildDefinition()
         cachedDefinition
     }
 

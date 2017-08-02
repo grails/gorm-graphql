@@ -10,15 +10,21 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 @CompileStatic
-class HibernateSpec extends Specification {
+abstract class HibernateSpec extends Specification {
 
     @Shared @AutoCleanup HibernateDatastore hibernateDatastore
     @Shared HibernateMappingContext mappingContext
 
     void setupSpec() {
-        hibernateDatastore = new HibernateDatastore(
-                DatastoreUtils.createPropertyResolver(configuration),
-                domainClasses as Class[])
+        if (domainClasses) {
+            hibernateDatastore = new HibernateDatastore(
+                    DatastoreUtils.createPropertyResolver(configuration),
+                    domainClasses as Class[])
+        } else {
+            hibernateDatastore = new HibernateDatastore(
+                    DatastoreUtils.createPropertyResolver(configuration),
+                    getPackage())
+        }
         mappingContext = hibernateDatastore.mappingContext
     }
 
@@ -26,11 +32,15 @@ class HibernateSpec extends Specification {
      * @return The configuration
      */
     Map getConfiguration() {
-        Collections.singletonMap(Settings.SETTING_DB_CREATE, 'create-drop')
+        [(Settings.SETTING_DB_CREATE): 'create-drop', (Settings.SETTING_DATASOURCE + '.logSql'):  true]
     }
 
     /**
      * @return The domain classes
      */
     List<Class> getDomainClasses() { [] }
+
+    Package getPackage() {
+        getClass().getClassLoader().getPackage('org.grails.gorm.graphql.domain')
+    }
 }

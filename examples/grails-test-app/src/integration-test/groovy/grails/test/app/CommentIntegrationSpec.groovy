@@ -115,7 +115,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
         then: //The parent comment object is not queried
         obj.parentComment.id == 1
         outCount == 1
-        query == 'Hibernate: select this_.id as id1_3_0_, this_.version as version2_3_0_, this_.parent_comment_id as parent_c3_3_0_, this_.text as text4_3_0_ from comment this_ where this_.id=? limit ?\n'
+        query ==~ 'Hibernate: select this_.id as id[0-9]_[0-9]_[0-9]_, this_.version as version[0-9]_[0-9]_[0-9]_, this_.parent_comment_id as parent_c[0-9]_[0-9]_[0-9]_, this_.text as text[0-9]_[0-9]_[0-9]_ from comment this_ where this_.id=\\? limit \\?\n'
 
         when:
         outCount = 0
@@ -135,7 +135,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
         obj.parentComment.id == 1
         obj.parentComment.text == 'First comment'
         outCount == 1
-        query == 'Hibernate: select this_.id as id1_3_1_, this_.version as version2_3_1_, this_.parent_comment_id as parent_c3_3_1_, this_.text as text4_3_1_, comment2_.id as id1_3_0_, comment2_.version as version2_3_0_, comment2_.parent_comment_id as parent_c3_3_0_, comment2_.text as text4_3_0_ from comment this_ left outer join comment comment2_ on this_.parent_comment_id=comment2_.id where this_.id=?\n'
+        query ==~ 'Hibernate: select this_.id as id[0-9]_[0-9]_[0-9]_, this_.version as version[0-9]_[0-9]_[0-9]_, this_.parent_comment_id as parent_c[0-9]_[0-9]_[0-9]_, this_.text as text[0-9]_[0-9]_[0-9]_, comment2_.id as id[0-9]_[0-9]_[0-9]_, comment2_.version as version[0-9]_[0-9]_[0-9]_, comment2_.parent_comment_id as parent_c[0-9]_[0-9]_[0-9]_, comment2_.text as text[0-9]_[0-9]_[0-9]_ from comment this_ left outer join comment comment2_ on this_.parent_comment_id=comment2_.id where this_.id=\\?\n'
 
         cleanup:
         System.setOut(originalOut)

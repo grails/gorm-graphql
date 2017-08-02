@@ -38,6 +38,12 @@ class DefaultGraphQLInterceptorManager implements GraphQLInterceptorManager, Key
      */
     @Override
     void registerInterceptor(Class type, GraphQLFetcherInterceptor interceptor) {
+        if (type == null) {
+            throw new IllegalArgumentException('Cannot register an interceptor for a null type')
+        }
+        if (interceptor == null) {
+            throw new IllegalArgumentException('Registering a null interceptor is not allowed')
+        }
         interceptors.get(type).add(interceptor)
     }
 

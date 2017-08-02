@@ -105,7 +105,7 @@ ruleset {
     ImplementationAsType
     'Instanceof' enabled: false
     LocaleSetDefault
-    NestedForLoop
+    //NestedForLoop
     'PrivateFieldCouldBeFinal' enabled: false // buggy
     PublicInstanceField
     ReturnsNullInsteadOfEmptyArray

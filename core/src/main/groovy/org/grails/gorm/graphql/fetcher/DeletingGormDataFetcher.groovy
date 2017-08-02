@@ -1,14 +1,21 @@
 package org.grails.gorm.graphql.fetcher
 
+import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 
 /**
- * An interface to describe data fetchers that delete
+ * A trait to describe data fetchers that delete
  *
  * @author James Kleeh
  * @since 1.0.0
  */
-interface DeletingGormDataFetcher extends GormDataFetcher {
+@CompileStatic
+trait DeletingGormDataFetcher implements GormDataFetcher {
 
-    void setResponseHandler(GraphQLDeleteResponseHandler responseHandler)
+    @Override
+    boolean supports(GraphQLDataFetcherType type) {
+        type == GraphQLDataFetcherType.DELETE
+    }
+
+    abstract void setResponseHandler(GraphQLDeleteResponseHandler responseHandler)
 }

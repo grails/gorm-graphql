@@ -26,7 +26,7 @@ class UsersByRoleDataFetcher extends EntityDataFetcher<List<User>> {
      */
     @GrailsCompileStatic
     protected List executeQuery(DataFetchingEnvironment environment, Map queryArgs) {
-        Role role = Role.load((Serializable) queryArgs.remove('role'))
+        Role role = Role.load((Serializable) environment.getArgument('role'))
         def users = UserRole.where { role == role }.property('user')
         User.where {
             id in users

@@ -9,7 +9,6 @@ import spock.lang.Specification
 class TypeTestIntegrationSpec extends Specification implements GraphQLSpec {
 
     void "test create"() {
-
         when:
         def resp = graphQL.graphql("""
             mutation {
@@ -60,7 +59,6 @@ class TypeTestIntegrationSpec extends Specification implements GraphQLSpec {
 
         then:
         json.id
-
     }
 
 

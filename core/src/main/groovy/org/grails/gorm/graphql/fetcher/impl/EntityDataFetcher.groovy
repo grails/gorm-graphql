@@ -2,9 +2,7 @@ package org.grails.gorm.graphql.fetcher.impl
 
 import grails.gorm.DetachedCriteria
 import grails.gorm.transactions.Transactional
-import graphql.Scalars
 import graphql.schema.DataFetchingEnvironment
-import graphql.schema.GraphQLInputType
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import groovy.util.logging.Slf4j
@@ -56,14 +54,14 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
     }
 
     //The new LinkedHasMap is to work around a static compilation bug
-    static final Map<String, GraphQLInputType> ARGUMENTS = new LinkedHashMap<String, GraphQLInputType>([
-       max: Scalars.GraphQLInt,
-       offset: Scalars.GraphQLInt,
-       sort: Scalars.GraphQLString,
-       order: Scalars.GraphQLString,
-       cache: Scalars.GraphQLBoolean,
-       lock: Scalars.GraphQLBoolean,
-       ignoreCase: Scalars.GraphQLBoolean
+    static final Map<String, Class> ARGUMENTS = new LinkedHashMap<String, Class>([
+       max: Integer,
+       offset: Integer,
+       sort: String,
+       order: String,
+       cache: Boolean,
+       lock: Boolean,
+       ignoreCase: Boolean
     ])
 
     protected Map<String, Object> getArguments(DataFetchingEnvironment environment) {
@@ -76,7 +74,7 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
         Map queryArgs = getFetchArguments(environment)
 
         for (Map.Entry<String, Object> entry: getArguments(environment)) {
-            if (entry.value != null) {
+            if (ARGUMENTS.containsKey(entry.key) && entry.value != null) {
                 queryArgs.put(entry.key, entry.value)
             }
         }
@@ -98,8 +96,12 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
         (T)executeQuery(environment, queryArgs)
     }
 
+    protected DetachedCriteria buildCriteria(DataFetchingEnvironment environment) {
+        new DetachedCriteria(entity.javaClass)
+    }
+
     protected List executeQuery(DataFetchingEnvironment environment, Map queryArgs) {
-        new DetachedCriteria(entity.javaClass).list(queryArgs)
+        buildCriteria(environment).list(queryArgs)
     }
 
     @Override

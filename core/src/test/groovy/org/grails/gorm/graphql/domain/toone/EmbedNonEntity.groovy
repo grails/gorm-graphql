@@ -4,4 +4,5 @@ import grails.gorm.dirty.checking.DirtyCheck
 
 @DirtyCheck
 class EmbedNonEntity {
+    String name
 }

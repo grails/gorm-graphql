@@ -96,6 +96,9 @@ class DefaultGraphQLDataFetcherManager implements GraphQLDataFetcherManager {
 
     @Override
     DataFetcher getBindingFetcher(PersistentEntity entity, GraphQLDataBinder dataBinder, GraphQLDataFetcherType type) {
+        if (type?.requiredClass != BindingGormDataFetcher) {
+            throw new IllegalArgumentException("The type specified (${type}) is null or invalid")
+        }
         BindingGormDataFetcher customFetcher = (BindingGormDataFetcher)getCustomFetcher(entity, type)
         if (customFetcher == null) {
             switch (type) {
@@ -123,6 +126,9 @@ class DefaultGraphQLDataFetcherManager implements GraphQLDataFetcherManager {
 
     @Override
     DataFetcher getReadingFetcher(PersistentEntity entity, GraphQLDataFetcherType type) {
+        if (type?.requiredClass != ReadingGormDataFetcher) {
+            throw new IllegalArgumentException("The type specified (${type}) is null or invalid")
+        }
         DataFetcher customFetcher = getCustomFetcher(entity, type)
         if (customFetcher == null) {
             switch (type) {

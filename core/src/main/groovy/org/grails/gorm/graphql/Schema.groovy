@@ -99,7 +99,7 @@ class Schema {
             typeManager.registerType(Date, new GraphQLDate(new DateCoercion(dateFormats, dateFormatLenient)))
         }
         if (deleteResponseHandler == null) {
-            deleteResponseHandler = new DefaultGraphQLDeleteResponseHandler()
+            deleteResponseHandler = new DefaultGraphQLDeleteResponseHandler(typeManager)
         }
         if (dataBinderManager == null) {
             dataBinderManager = new DefaultGraphQLDataBinderManager()
@@ -108,7 +108,7 @@ class Schema {
             dataFetcherManager = new DefaultGraphQLDataFetcherManager()
         }
         if (listArguments == null) {
-            listArguments = EntityDataFetcher.ARGUMENTS
+            setListArguments(EntityDataFetcher.ARGUMENTS)
         }
         if (interceptorManager == null) {
             interceptorManager = new DefaultGraphQLInterceptorManager()
@@ -119,7 +119,6 @@ class Schema {
         initialized = true
     }
 
-    @SuppressWarnings('NestedForLoop')
     protected void populateIdentityArguments(PersistentEntity entity, GraphQLFieldDefinition.Builder... builders) {
         Map<String, Class> identities = [:]
 

@@ -31,5 +31,6 @@ class User {
         }
         //don't allow users to specify this property when creating or updating user instances
         property('addedNumbers', input: false)
+
     }
 }

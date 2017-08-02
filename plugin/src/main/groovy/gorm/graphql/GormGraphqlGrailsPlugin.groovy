@@ -60,11 +60,11 @@ Brief summary/description of the plugin.
 
         graphQLDataBinder(GrailsGraphQLDataBinder)
         graphQLErrorsResponseHandler(DefaultGraphQLErrorsResponseHandler, ref("messageSource"))
-        graphQLDeleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
         graphQLEntityNamingConvention(GraphQLEntityNamingConvention)
         graphQLDomainPropertyManager(DefaultGraphQLDomainPropertyManager)
         graphQLTypeManager(DefaultGraphQLTypeManager, ref("graphQLEntityNamingConvention"), ref("graphQLErrorsResponseHandler"), ref("graphQLDomainPropertyManager"))
         graphQLDataBinderManager(DefaultGraphQLDataBinderManager, ref("graphQLDataBinder"))
+        graphQLDeleteResponseHandler(DefaultGraphQLDeleteResponseHandler, ref("graphQLTypeManager"))
         graphQLDataFetcherManager(DefaultGraphQLDataFetcherManager)
         graphQLInterceptorManager(DefaultGraphQLInterceptorManager)
         graphQLSchemaInterceptor(EmptyGraphQLSchemaInterceptor)

@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.fetcher.invoker
 
 import graphql.schema.DataFetchingEnvironment
+import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
 
 /**
@@ -10,6 +11,7 @@ import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
  * @author James Kleeh
  * @since 1.0.0
  */
+@CompileStatic
 class MutationInterceptorInvoker implements InterceptorInvoker {
 
     @Override
