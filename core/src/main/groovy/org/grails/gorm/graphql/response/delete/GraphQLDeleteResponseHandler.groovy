@@ -2,6 +2,7 @@ package org.grails.gorm.graphql.response.delete
 
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLObjectType
+import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 /**
  * Responsible for determining the data available in a GraphQL delete mutation response
@@ -11,7 +12,7 @@ import graphql.schema.GraphQLObjectType
  */
 interface GraphQLDeleteResponseHandler {
 
-    GraphQLObjectType getObjectType()
+    GraphQLObjectType getObjectType(GraphQLTypeManager typeManager)
 
     Object createResponse(DataFetchingEnvironment environment, boolean success)
 }

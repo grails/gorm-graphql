@@ -74,7 +74,7 @@ abstract class ObjectTypeBuilder {
             }
 
             if (errorsResponseHandler != null) {
-                obj.field(errorsResponseHandler.fieldDefinition)
+                obj.field(errorsResponseHandler.getFieldDefinition(typeManager))
             }
 
             objectType = obj.build()

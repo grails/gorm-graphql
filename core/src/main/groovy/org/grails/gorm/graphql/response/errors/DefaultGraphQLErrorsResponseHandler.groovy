@@ -1,19 +1,18 @@
 package org.grails.gorm.graphql.response.errors
 
-import graphql.Scalars
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLObjectType
+import graphql.schema.GraphQLOutputType
 import groovy.transform.CompileStatic
 import org.grails.datastore.gorm.GormValidateable
-import org.grails.gorm.graphql.response.CachingGraphQLResponseHandler
+import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.springframework.context.MessageSource
 import org.springframework.validation.FieldError
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLList.list
-import static graphql.schema.GraphQLNonNull.nonNull
 import static graphql.schema.GraphQLObjectType.newObject
 
 /**
@@ -30,7 +29,7 @@ import static graphql.schema.GraphQLObjectType.newObject
  * @since 1.0.0
  */
 @CompileStatic
-class DefaultGraphQLErrorsResponseHandler extends CachingGraphQLResponseHandler implements GraphQLErrorsResponseHandler {
+class DefaultGraphQLErrorsResponseHandler implements GraphQLErrorsResponseHandler {
 
     protected MessageSource messageSource
     protected String name = 'Error'
@@ -76,35 +75,39 @@ class DefaultGraphQLErrorsResponseHandler extends CachingGraphQLResponseHandler 
         }
     }
 
-    protected List<GraphQLFieldDefinition> getFieldDefinitions() {
+    protected List<GraphQLFieldDefinition> getFieldDefinitions(GraphQLTypeManager typeManager) {
         [newFieldDefinition()
             .name('field')
-            .type(nonNull(Scalars.GraphQLString))
+            .type((GraphQLOutputType)typeManager.getType(String, false))
             .dataFetcher(fieldFetcher)
             .build(),
 
         newFieldDefinition()
             .name('message')
-            .type(Scalars.GraphQLString)
+            .type((GraphQLOutputType)typeManager.getType(String))
             .dataFetcher(messageFetcher)
             .build()]
     }
 
-    @Override
-    protected GraphQLObjectType buildDefinition() {
+    protected GraphQLObjectType buildDefinition(GraphQLTypeManager typeManager) {
         newObject()
             .name(name)
             .description(description)
-            .fields(fieldDefinitions)
+            .fields(getFieldDefinitions(typeManager))
             .build()
     }
 
+    private GraphQLFieldDefinition cachedDefinition
+
     @Override
-    GraphQLFieldDefinition getFieldDefinition() {
-        newFieldDefinition()
-            .name(fieldName)
-            .description(fieldDescription)
-            .type(list(definition))
-            .dataFetcher(errorsFetcher).build()
+    GraphQLFieldDefinition getFieldDefinition(GraphQLTypeManager typeManager) {
+        if (cachedDefinition == null) {
+            cachedDefinition = newFieldDefinition()
+                    .name(fieldName)
+                    .description(fieldDescription)
+                    .type(list(buildDefinition(typeManager)))
+                    .dataFetcher(errorsFetcher).build()
+        }
+        cachedDefinition
     }
 }

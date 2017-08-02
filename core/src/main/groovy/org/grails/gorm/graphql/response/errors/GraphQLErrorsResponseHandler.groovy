@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.response.errors
 
 import graphql.schema.GraphQLFieldDefinition
+import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 /**
  * Responsible for defining what data is available in a response
@@ -11,5 +12,5 @@ import graphql.schema.GraphQLFieldDefinition
  */
 interface GraphQLErrorsResponseHandler {
 
-    GraphQLFieldDefinition getFieldDefinition()
+    GraphQLFieldDefinition getFieldDefinition(GraphQLTypeManager typeManager)
 }

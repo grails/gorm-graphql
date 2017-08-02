@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.response
 
 import graphql.schema.GraphQLObjectType
+import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 /**
  * Generic class to cache the creation of {@link GraphQLObjectType} instances
@@ -13,12 +14,12 @@ abstract class CachingGraphQLResponseHandler {
 
     private GraphQLObjectType cachedDefinition
 
-    GraphQLObjectType getDefinition() {
+    GraphQLObjectType getDefinition(GraphQLTypeManager typeManager) {
         if (cachedDefinition == null) {
-            cachedDefinition = buildDefinition()
+            cachedDefinition = buildDefinition(typeManager)
         }
         cachedDefinition
     }
 
-    abstract protected GraphQLObjectType buildDefinition()
+    abstract protected GraphQLObjectType buildDefinition(GraphQLTypeManager typeManager)
 }

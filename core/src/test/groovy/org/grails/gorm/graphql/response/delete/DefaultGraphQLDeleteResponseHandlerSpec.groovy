@@ -1,26 +1,34 @@
 package org.grails.gorm.graphql.response.delete
 
+import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
-import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
-import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
-import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
+import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.grails.gorm.graphql.types.scalars.GraphQLBoolean
+import spock.lang.Shared
 import spock.lang.Specification
 
 class DefaultGraphQLDeleteResponseHandlerSpec extends Specification implements GraphQLSchemaSpec {
 
     GraphQLDeleteResponseHandler handler
 
+    @Shared GraphQLTypeManager typeManager
+
+    void setupSpec() {
+        typeManager = Stub(GraphQLTypeManager) {
+            getType(Boolean, false) >> {
+                GraphQLNonNull.nonNull(new GraphQLBoolean())
+            }
+        }
+    }
+
     void setup() {
-        handler = new DefaultGraphQLDeleteResponseHandler(
-                new DefaultGraphQLTypeManager(new GraphQLEntityNamingConvention(), null, new DefaultGraphQLDomainPropertyManager())
-        )
+        handler = new DefaultGraphQLDeleteResponseHandler()
     }
 
     void "test the result is cached"() {
         expect:
-        handler.objectType == handler.objectType
+        handler.getObjectType(typeManager) == handler.getObjectType(typeManager)
     }
 
     void "test the return data"() {
@@ -30,7 +38,7 @@ class DefaultGraphQLDeleteResponseHandlerSpec extends Specification implements G
     }
 
     void "test the object type definition"() {
-        GraphQLObjectType type = handler.objectType
+        GraphQLObjectType type = handler.getObjectType(typeManager)
 
         expect:
         type.name == 'DeleteResult'

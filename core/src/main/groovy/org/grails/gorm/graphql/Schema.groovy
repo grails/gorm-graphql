@@ -99,7 +99,7 @@ class Schema {
             typeManager.registerType(Date, new GraphQLDate(new DateCoercion(dateFormats, dateFormatLenient)))
         }
         if (deleteResponseHandler == null) {
-            deleteResponseHandler = new DefaultGraphQLDeleteResponseHandler(typeManager)
+            deleteResponseHandler = new DefaultGraphQLDeleteResponseHandler()
         }
         if (dataBinderManager == null) {
             dataBinderManager = new DefaultGraphQLDataBinderManager()
@@ -254,7 +254,7 @@ class Schema {
 
                 GraphQLFieldDefinition.Builder delete = newFieldDefinition()
                         .name(namingConvention.getDelete(entity))
-                        .type(deleteResponseHandler.objectType)
+                        .type(deleteResponseHandler.getObjectType(typeManager))
                         .description(deleteOperation.description)
                         .deprecate(deleteOperation.deprecationReason)
                         .dataFetcher(new DeletingRuntimeDataFetcher(entity, dataFetcherManager, interceptorManager, deleteResponseHandler))

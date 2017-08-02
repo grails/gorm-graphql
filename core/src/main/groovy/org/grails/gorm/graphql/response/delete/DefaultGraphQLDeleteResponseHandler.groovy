@@ -25,27 +25,21 @@ class DefaultGraphQLDeleteResponseHandler extends CachingGraphQLResponseHandler 
     protected String description = 'Whether or not the operation was successful'
     protected String name = 'DeleteResult'
 
-    protected GraphQLTypeManager typeManager
-
-    DefaultGraphQLDeleteResponseHandler(GraphQLTypeManager typeManager) {
-        this.typeManager = typeManager
-    }
-
     @Override
-    GraphQLObjectType getObjectType() {
-        definition
+    GraphQLObjectType getObjectType(GraphQLTypeManager typeManager) {
+        getDefinition(typeManager)
     }
 
-    protected List<GraphQLFieldDefinition> buildFieldDefinitions() {
+    protected List<GraphQLFieldDefinition> buildFieldDefinitions(GraphQLTypeManager typeManager) {
         [newFieldDefinition().name('success').type((GraphQLOutputType)typeManager.getType(Boolean, false)).build()]
     }
 
     @Override
-    protected GraphQLObjectType buildDefinition() {
+    protected GraphQLObjectType buildDefinition(GraphQLTypeManager typeManager) {
         newObject()
             .name(name)
             .description(description)
-            .fields(buildFieldDefinitions())
+            .fields(buildFieldDefinitions(typeManager))
             .build()
     }
 

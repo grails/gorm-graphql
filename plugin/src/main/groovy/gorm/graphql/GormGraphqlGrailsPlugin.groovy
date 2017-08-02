@@ -64,7 +64,7 @@ Brief summary/description of the plugin.
         graphQLDomainPropertyManager(DefaultGraphQLDomainPropertyManager)
         graphQLTypeManager(DefaultGraphQLTypeManager, ref("graphQLEntityNamingConvention"), ref("graphQLErrorsResponseHandler"), ref("graphQLDomainPropertyManager"))
         graphQLDataBinderManager(DefaultGraphQLDataBinderManager, ref("graphQLDataBinder"))
-        graphQLDeleteResponseHandler(DefaultGraphQLDeleteResponseHandler, ref("graphQLTypeManager"))
+        graphQLDeleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
         graphQLDataFetcherManager(DefaultGraphQLDataFetcherManager)
         graphQLInterceptorManager(DefaultGraphQLInterceptorManager)
         graphQLSchemaInterceptor(EmptyGraphQLSchemaInterceptor)
