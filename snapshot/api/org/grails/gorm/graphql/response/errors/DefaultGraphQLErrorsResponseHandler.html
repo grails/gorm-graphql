@@ -91,7 +91,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
+<li><ul class="inheritance"></ul></li><li>org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
 </ul>
 <div class="description">
     <ul class="blockList">
@@ -106,7 +106,6 @@ if (location.href.indexOf('is-external=true') == -1) {
             <br>
 <pre>@groovy.transform.CompileStatic
 class DefaultGraphQLErrorsResponseHandler
-extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraphQLResponseHandler.html'>CachingGraphQLResponseHandler</a>
 
 </pre>
 
@@ -251,19 +250,19 @@ extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraph
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildDefinition()">buildDefinition</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#buildDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager)">buildDefinition</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../GraphQLFieldDefinition.html'>GraphQLFieldDefinition</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getFieldDefinition()">getFieldDefinition</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getFieldDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager)">getFieldDefinition</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.util.List&lt;GraphQLFieldDefinition&gt;</code></td>
-                            <td class="colLast"><code><strong><a href="#getFieldDefinitions()">getFieldDefinitions</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getFieldDefinitions(org.grails.gorm.graphql.types.GraphQLTypeManager)">getFieldDefinitions</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -287,8 +286,8 @@ extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraph
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code>class <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraphQLResponseHandler.html'>CachingGraphQLResponseHandler</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/response/CachingGraphQLResponseHandler.html#buildDefinition()'>buildDefinition</a>, <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraphQLResponseHandler.html#getDefinition()'>getDefinition</a></code></td>
+                            <td class="colFirst"><code>class java.lang.Object</code></td>
+                            <td class="colLast"><code>java.lang.Object#wait(long, int), java.lang.Object#wait(long), java.lang.Object#wait(), java.lang.Object#equals(java.lang.Object), java.lang.Object#toString(), java.lang.Object#hashCode(), java.lang.Object#getClass(), java.lang.Object#notify(), java.lang.Object#notifyAll()</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -414,28 +413,27 @@ extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraph
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="buildDefinition()"><!-- --></a>
+                        <a name="buildDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.Override
-protected&nbsp;<a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>buildDefinition</strong>()</h4>
+                                <h4>protected&nbsp;<a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>buildDefinition</strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="getFieldDefinition()"><!-- --></a>
+                        <a name="getFieldDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@java.lang.Override
-<a href='../../../../../../GraphQLFieldDefinition.html'>GraphQLFieldDefinition</a> <strong>getFieldDefinition</strong>()</h4>
+<a href='../../../../../../GraphQLFieldDefinition.html'>GraphQLFieldDefinition</a> <strong>getFieldDefinition</strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="getFieldDefinitions()"><!-- --></a>
+                        <a name="getFieldDefinitions(org.grails.gorm.graphql.types.GraphQLTypeManager)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;java.util.List&lt;GraphQLFieldDefinition&gt; <strong>getFieldDefinitions</strong>()</h4>
+                                <h4>protected&nbsp;java.util.List&lt;GraphQLFieldDefinition&gt; <strong>getFieldDefinitions</strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</h4>
                                 <p></p>
                             </li>
                         </ul>

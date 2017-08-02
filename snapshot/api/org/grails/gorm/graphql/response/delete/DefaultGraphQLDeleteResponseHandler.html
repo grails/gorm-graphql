@@ -70,11 +70,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     <a name="skip-navbar_top">
@@ -155,12 +155,6 @@ extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraph
                             <td class="colLast"></td>
                         </tr>
                         
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a></strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#typeManager">typeManager</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
                     </table>
                    </ul>
                 </li>
@@ -174,28 +168,6 @@ extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraph
         <!-- =========== ELEMENT SUMMARY =========== -->
         
 
-        
-        <!-- ======== CONSTRUCTOR SUMMARY ======== -->
-        <ul class="blockList">
-                <li class="blockList"><a name="constructor_summary"><!--   --></a>
-                    <h3>Constructor Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructors Summary table">
-                        <caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Constructor and description</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst">
-                                <code><a href="#DefaultGraphQLDeleteResponseHandler(org.grails.gorm.graphql.types.GraphQLTypeManager)">DefaultGraphQLDeleteResponseHandler</a>
-                                (<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</code><br></td>
-                        </tr>
-                        
-                    </table>
-                   </ul>
-              </li>
-        </ul>
         
 
         
@@ -216,13 +188,13 @@ extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraph
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildDefinition()">buildDefinition</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#buildDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager)">buildDefinition</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.util.List&lt;GraphQLFieldDefinition&gt;</code></td>
-                            <td class="colLast"><code><strong><a href="#buildFieldDefinitions()">buildFieldDefinitions</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#buildFieldDefinitions(org.grails.gorm.graphql.types.GraphQLTypeManager)">buildFieldDefinitions</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -234,7 +206,7 @@ extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraph
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getObjectType()">getObjectType</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getObjectType(org.grails.gorm.graphql.types.GraphQLTypeManager)">getObjectType</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</code><br></td>
                         </tr>
                         
                     </table>
@@ -253,7 +225,7 @@ extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraph
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraphQLResponseHandler.html'>CachingGraphQLResponseHandler</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/response/CachingGraphQLResponseHandler.html#buildDefinition()'>buildDefinition</a>, <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraphQLResponseHandler.html#getDefinition()'>getDefinition</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/response/CachingGraphQLResponseHandler.html#buildDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager)'>buildDefinition</a>, <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraphQLResponseHandler.html#getDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager)'>getDefinition</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -294,14 +266,6 @@ extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraph
                             </li>
                         </ul>
                     
-                        <a name="typeManager"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> <strong>typeManager</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
                 </li>
             </ul>
             
@@ -310,24 +274,6 @@ extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraph
 
             
 
-            
-            <!-- =========== CONSTRUCTOR DETAIL =========== -->
-            <ul class="blockList">
-                <li class="blockList"><a name="constructor_detail">
-                    <!--   -->
-                </a>
-                    <h3>Constructor Detail</h3>
-                    
-                        <a name="DefaultGraphQLDeleteResponseHandler(org.grails.gorm.graphql.types.GraphQLTypeManager)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><strong>DefaultGraphQLDeleteResponseHandler</strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                </li>
-            </ul>
             
 
 
@@ -339,19 +285,19 @@ extends <a href='../../../../../../org/grails/gorm/graphql/response/CachingGraph
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="buildDefinition()"><!-- --></a>
+                        <a name="buildDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@java.lang.Override
-protected&nbsp;<a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>buildDefinition</strong>()</h4>
+protected&nbsp;<a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>buildDefinition</strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="buildFieldDefinitions()"><!-- --></a>
+                        <a name="buildFieldDefinitions(org.grails.gorm.graphql.types.GraphQLTypeManager)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;java.util.List&lt;GraphQLFieldDefinition&gt; <strong>buildFieldDefinitions</strong>()</h4>
+                                <h4>protected&nbsp;java.util.List&lt;GraphQLFieldDefinition&gt; <strong>buildFieldDefinitions</strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -365,11 +311,11 @@ java.lang.Object <strong>createResponse</strong>(<a href='../../../../../../Data
                             </li>
                         </ul>
                     
-                        <a name="getObjectType()"><!-- --></a>
+                        <a name="getObjectType(org.grails.gorm.graphql.types.GraphQLTypeManager)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@java.lang.Override
-<a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>getObjectType</strong>()</h4>
+<a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>getObjectType</strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -408,11 +354,11 @@ java.lang.Object <strong>createResponse</strong>(<a href='../../../../../../Data
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructor&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     
