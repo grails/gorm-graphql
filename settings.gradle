@@ -3,6 +3,7 @@ include 'plugin'
 include 'docs'
 
 include 'examples/grails-test-app'
+include 'examples/grails-docs-app'
 
 rootProject.name = 'gorm-graphql-root'
 

@@ -1,0 +1,3 @@
+publishGuide {
+    sourceRepo = "https://github.com/${githubSlug}/edit/${githubBranch}/docs/src/main/docs"
+}

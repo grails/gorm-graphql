@@ -1,3 +1,7 @@
+== Core
+
+== Plugin
+
 |===
 |code|Type|Default Value|Description
 |`grails.gorm.graphql.enabled`
@@ -15,12 +19,12 @@
 |Boolean
 |False
 |
-|`grails.gorm.graphql.runtimeDataFetching`
-|Boolean
-|True
+|`grails.gorm.graphql.listArguments`
+|Map<String, Class>
+|The default arguments in link:{api}/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html#ARGUMENTS[EntityDataFetcher.ARGUMENTS]
 |
 |`grails.gorm.graphql.browser`
 | Boolean
-| True
+| True (only in development)
 |Whether the `GraphqlController.browser` action which by default responds on the `graphql/browser` endpoint is enabled
 |===

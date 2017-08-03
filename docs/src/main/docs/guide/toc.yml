@@ -7,5 +7,15 @@ gettingStarted:
     list: List
     update: Update
     delete: Delete
-configuration: Configuration
+customizations:
+    title: Customizing The Schema
+    properties: Properties
+    operations: Operations
+    responseHandlers: Validation Error and Delete Responses
+    namingConvention: Naming Convention
+    configuration: Configuration
+types: Type Conversion
+dataFetchers: Data Fetchers
+dataBinders: Data Binding
+interceptors: Interceptors
 APIDocs: API Docs

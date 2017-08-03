@@ -50,44 +50,17 @@ A typical one-to-many relationship which in http://gorm.grails.org[GORM]
 could be expressed with:
 
 [source, groovy]
+.grails-app/domain/demo/Speaker.groovy
 ----
-package demo
-
-class Speaker {
-    String firstName
-    String lastName
-    String name
-    String email
-    String bio
-    static hasMany = [talks: Talk]
-
-    static graphql = true // <1>
-
-    static constraints = {
-        lastName nullable: true
-        email nullable: true, email: true
-        bio nullable: true
-    }
-
-    static mapping = {
-        bio type: 'text'
-        name formula: 'concat(FIRST_NAME,\' \',LAST_NAME)'
-    }
-}
+include::examples/grails-docs-app/grails-app/domain/demo/Speaker.groovy[tags=wholeFile]
 ----
 
 <1> it exposes this domain class to the GraphQL API
 
 [source, groovy]
+.grails-app/domain/demo/Talk.groovy
 ----
-package demo
-
-class Talk {
-    String title
-    int duration
-
-    static belongsTo = [speaker: Speaker]
-}
+include::examples/grails-docs-app/grails-app/domain/demo/Talk.groovy[tags=wholeFile]
 ----
 
 
