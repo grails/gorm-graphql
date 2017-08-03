@@ -1,4 +1,4 @@
-package gorm.graphql
+package org.grails.gorm.graphql.plugin
 
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager

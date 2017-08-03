@@ -1,4 +1,4 @@
-package gorm.graphql
+package org.grails.gorm.graphql.plugin
 
 import grails.io.IOUtils
 import grails.web.mapping.LinkGenerator

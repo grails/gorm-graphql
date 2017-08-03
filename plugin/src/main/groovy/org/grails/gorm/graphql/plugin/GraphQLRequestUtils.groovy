@@ -1,4 +1,4 @@
-package gorm.graphql
+package org.grails.gorm.graphql.plugin
 
 import grails.util.TypeConvertingMap
 import grails.web.mime.MimeType

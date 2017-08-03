@@ -1,0 +1,42 @@
+=== Create
+
+In this example the request is a mutation to create a speaker.
+
+[source, bash]
+----
+curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
+     -d $'
+mutation {
+  speakerCreate(speaker: {
+    firstName: "James"
+    lastName: "Kleeh"
+  }) {
+    id
+    firstName
+    lastName
+    errors {
+      field
+      message
+    }
+  }
+}'
+----
+
+The API answers with the properties we requested.
+
+[source, json]
+----
+{
+  "data": {
+    "speakerCreate": {
+      "id": 8,
+      "firstName": "James",
+      "lastName": "Kleeh",
+      "errors": []
+    }
+  }
+}
+----
+
+NOTE: If there was a validation error during the create process, the `errors` property would be populated with the validation errors.

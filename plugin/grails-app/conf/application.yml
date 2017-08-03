@@ -2,7 +2,7 @@
 grails:
     profile: web-plugin
     codegen:
-        defaultPackage: gorm.graphql
+        defaultPackage: org.grails.gorm.graphql.plugin
     spring:
         transactionManagement:
             proxies: false

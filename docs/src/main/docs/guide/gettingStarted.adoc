@@ -1,9 +1,48 @@
-You can expose a domain class within the GraphQL API by adding:
+== Standalone Projects
+
+For standalone projects, it is up to the developer how and when the schema gets created. A mapping context is required to create a schema. The mapping context is available on all link:{gormapi}/org/grails/datastore/mapping/core/Datastore.html#getMappingContext()[datastore implementations]. See the link:http://gorm.grails.org/latest/hibernate/manual/index.html#outsideGrails[GORM documentation] for information on creating a datastore.
+
+The example below is the simplest way possible to generate a schema.
+
+[source, groovy]
+----
+import org.grails.datastore.mapping.model.MappingContext
+import org.grails.gorm.graphql.Schema
+import graphql.schema.GraphQLSchema
+
+MappingContext mappingContext = ...
+GraphQLSchema schema = new Schema(mappingContext).generate()
+----
+
+Refer to the link:http://graphql-java.readthedocs.io/en/stable/[graphql-java] documentation on how to use the schema to execute queries and mutations against it.
+
+== Grails Projects
+
+For Grails projects, the schema is created automatically at startup. A spring bean is created for the schema called "graphQLSchema".
+
+== Using The Schema
+
+By default, no domain classes will be a part of the generated schema. It is an opt in functionality that requires you to explicitly state which domain classes will be a part of the schema.
+
+The simplest way to include a domain class in the schema is to add the following to your domain class.
 
 [source, groovy]
 ----
 static graphql = true
 ----
+
+Just by adding the `graphql = true` property on your domain, full CRUD capabilities will be available in the schema. For example, if the domain class is called "Book":
+
+- Queries
+** book(id: ..)
+** bookList(max: .., sort: .., etc)
+
+- Mutations
+** bookCreate(book: {})
+** bookUpdate(id: .., book: {})
+** bookDelete(id: ..)
+
+=== Practical Example
 
 Imagine you are building an API for a Conference. A talk can be presented
 by a single speaker. A speaker can have many talks within the conference.
@@ -51,60 +90,5 @@ class Talk {
 }
 ----
 
-Adding the `graphql` property allows us inmediately to query our domain class with
-a GraphQL query:
-
-[source, bash]
-----
-curl -X "POST" "http://localhost:8080/graphql" \
-     -H "Content-Type: application/graphql" \
-     -d $'{
-  speakerList {
-    id
-    name
-  }
-}'
-----
-
-which returns:
-
-[source, json]
-----
-{
-  "data": {
-    "speakerList": [
-      {
-        "id": 1,
-        "name": "Jeff Scott Brown"
-      },
-      {
-        "id": 2,
-        "name": "Graeme Rocher"
-      },
-      {
-        "id": 3,
-        "name": "Paul King"
-      },
-      {
-        "id": 4,
-        "name": "Iván López"
-      },
-      {
-        "id": 5,
-        "name": "Ryan Vanderwerf"
-      },
-      {
-        "id": 6,
-        "name": "Colin Harrington"
-      },
-      {
-        "id": 7,
-        "name": "Zachary Klein"
-      }
-    ]
-  }
-}
-----
 
 TIP: GORM GraphQL plugin supports http://gorm.grails.org/latest/hibernate/manual/index.html#derivedProperties[Derived Properties] as illustrated in the previous example; `name` is derived property which concatenates `firstName` and `lastName`
-

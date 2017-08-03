@@ -93,8 +93,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         }
     }
 
-    @Override
-    GraphQLType getType(Class clazz, boolean nullable = true) {
+    private Class unwrap(Class clazz) {
         if (clazz.array) {
             if (clazz.componentType.primitive) {
                 clazz = Array.newInstance(boxPrimitive(clazz.componentType), 0).getClass()
@@ -103,6 +102,12 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         else if (clazz.isPrimitive()) {
             clazz = boxPrimitive(clazz)
         }
+        clazz
+    }
+
+    @Override
+    GraphQLType getType(Class clazz, boolean nullable = true) {
+        clazz = unwrap(clazz)
 
         GraphQLType type = TYPE_MAP.get(clazz)
         if (type == null) {
@@ -118,10 +123,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
     @Override
     boolean hasType(Class clazz) {
-        if (clazz.isPrimitive()) {
-            clazz = boxPrimitive(clazz)
-        }
-        TYPE_MAP.containsKey(clazz)
+        TYPE_MAP.containsKey(unwrap(clazz))
     }
 
     protected Class boxPrimitive(Class clazz) {

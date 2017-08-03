@@ -3,6 +3,8 @@ package gorm.graphql
 import grails.testing.web.controllers.ControllerUnitTest
 import graphql.ExecutionResult
 import graphql.GraphQL
+import org.grails.gorm.graphql.plugin.GrailsGraphQLConfiguration
+import org.grails.gorm.graphql.plugin.GraphqlController
 import spock.lang.Specification
 
 class GraphqlControllerSpec extends Specification implements ControllerUnitTest<GraphqlController> {

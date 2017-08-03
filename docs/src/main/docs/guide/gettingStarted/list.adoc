@@ -1,0 +1,62 @@
+In this example the query is demonstrating retrieving a list of speakers. Since the talks of the speaker are requested to be returned, the association will be eagerly fetched to make the process as efficient as possible.
+
+[source, bash]
+----
+curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
+     -d $'
+{
+ speakerList {
+   id
+   name
+   talks {
+     title
+   }
+ }
+}'
+----
+
+which returns:
+
+[source, json]
+----
+{
+  "data": {
+    "speakerList": [
+      {
+        "id": 1,
+        "name": "Jeff Scott Brown",
+        "talks": [
+          {
+            "title": "REST With Grails 3"
+          },
+          {
+            "title": "Polyglot Web Development with Grails 3"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Graeme Rocher",
+        "talks": [
+          {
+            "title": "Graph Applications with GORM and Neo4j"
+          },
+          {
+            "title": "What's New in Grails?"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Paul King",
+        "talks": [
+          {
+            "title": "Groovy: The Awesome Parts"
+          }
+        ]
+      }
+    ]
+  }
+}
+----

@@ -1,6 +1,6 @@
 package grails.test.app
 
-import gorm.graphql.GraphQLPostProcessor
+import org.grails.gorm.graphql.plugin.GraphQLPostProcessor
 import grails.gorm.DetachedCriteria
 import graphql.language.StringValue
 import graphql.schema.Coercing

@@ -1,13 +1,11 @@
 introduction: Introduction
 installation: Installation
-graphqlendpoint: /graphql endpoint
-browserendpoint: /graphql/browser endpoint
 gettingStarted:
     title: Getting Started
-    queryAssociations: Query Associations
-    arguments: Arguments
-    mutations: Mutations
-    excludeProperty: Exclude Property
-
+    create: Create
+    read: Read
+    list: List
+    update: Update
+    delete: Delete
 configuration: Configuration
 APIDocs: API Docs

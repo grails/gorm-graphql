@@ -399,7 +399,6 @@ class DefaultGormDataFetcherSpec extends HibernateSpec {
         }
     }
 
-
 }
 
 class MockFieldBuilder {

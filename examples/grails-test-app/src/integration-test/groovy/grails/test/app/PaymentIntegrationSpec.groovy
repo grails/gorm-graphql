@@ -1,6 +1,6 @@
 package grails.test.app
 
-import gorm.graphql.testing.GraphQLSpec
+import org.grails.gorm.graphql.plugin.testing.GraphQLSpec
 import grails.testing.mixin.integration.Integration
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject

@@ -1,6 +1,6 @@
 package grails.test.app
 
-import gorm.graphql.GrailsGraphQLDataBinder
+import org.grails.gorm.graphql.plugin.GrailsGraphQLDataBinder
 import groovy.transform.CompileStatic
 
 /**

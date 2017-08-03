@@ -9,6 +9,4 @@ compile "org.grails.plugins:gorm-graphql:{version}"
 For standalone projects
 
 [source,groovy,subs="attributes"]
-testCompile "org.grails:gorm-graphql:{version}"
-
-NOTE: The dependencies are optional. If you are not unit testing domain activity, you may not need the GORM testing support library.
+compile "org.grails:gorm-graphql:{version}"

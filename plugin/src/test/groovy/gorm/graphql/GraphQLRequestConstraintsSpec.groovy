@@ -1,5 +1,6 @@
 package gorm.graphql
 
+import org.grails.gorm.graphql.plugin.GraphQLRequest
 import spock.lang.Specification
 import spock.lang.Subject
 

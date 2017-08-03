@@ -1,0 +1,29 @@
+In this example the query is attempting to retrieve the details of a single speaker with an id of `1`.
+
+[source, bash]
+----
+curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
+     -d $'
+{
+ speaker(id: 1) {
+   firstName
+   lastName
+   bio
+ }
+}'
+----
+
+and the api responds with:
+
+----
+{
+  "data": {
+    "speaker": {
+      "firstName": "Jeff Scott",
+      "lastName": "Brown",
+      "bio": "Jeff is a co-founder of the Grails framework, and a core member of the Grails development team."
+    }
+  }
+}
+----

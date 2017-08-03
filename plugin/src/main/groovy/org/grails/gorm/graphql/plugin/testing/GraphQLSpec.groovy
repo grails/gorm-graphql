@@ -1,4 +1,4 @@
-package gorm.graphql.testing
+package org.grails.gorm.graphql.plugin.testing
 
 import grails.plugins.rest.client.RestBuilder
 import grails.plugins.rest.client.RestResponse

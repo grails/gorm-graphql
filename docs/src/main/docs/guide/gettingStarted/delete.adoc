@@ -1,0 +1,26 @@
+In this example we are deleting a speaker. None of the normal properties of a speaker are available, however a `success` property is available to let you know whether or not the operation was successful.
+
+[source, bash]
+----
+curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
+     -d $'
+mutation {
+  speakerDelete(id: 8) {
+    success
+  }
+}'
+----
+
+and the server acknowledges the deletion:
+
+[source, json]
+----
+{
+  "data": {
+    "speakerDelete": {
+      "success": true
+    }
+  }
+}
+----
