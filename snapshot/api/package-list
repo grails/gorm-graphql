@@ -1,5 +1,3 @@
-gorm.graphql
-gorm.graphql.testing
 org.grails.gorm.graphql
 org.grails.gorm.graphql.binding
 org.grails.gorm.graphql.binding.manager
@@ -20,6 +18,8 @@ org.grails.gorm.graphql.fetcher.runtime
 org.grails.gorm.graphql.interceptor
 org.grails.gorm.graphql.interceptor.impl
 org.grails.gorm.graphql.interceptor.manager
+org.grails.gorm.graphql.plugin
+org.grails.gorm.graphql.plugin.testing
 org.grails.gorm.graphql.response
 org.grails.gorm.graphql.response.delete
 org.grails.gorm.graphql.response.errors

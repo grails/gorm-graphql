@@ -34,15 +34,11 @@
                         
                         <div class="toc-item" style="margin-left:0"><a href="#installation"><strong>2</strong><span>Installation</span></a></div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="#graphqlendpoint"><strong>3</strong><span>/graphql endpoint</span></a></div>
+                        <div class="toc-item" style="margin-left:0"><a href="#gettingStarted"><strong>3</strong><span>Getting Started</span></a></div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="#browserendpoint"><strong>4</strong><span>/graphql/browser endpoint</span></a></div>
+                        <div class="toc-item" style="margin-left:0"><a href="#configuration"><strong>4</strong><span>Configuration</span></a></div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="#gettingStarted"><strong>5</strong><span>Getting Started</span></a></div>
-                        
-                        <div class="toc-item" style="margin-left:0"><a href="#configuration"><strong>6</strong><span>Configuration</span></a></div>
-                        
-                        <div class="toc-item" style="margin-left:0"><a href="#APIDocs"><strong>7</strong><span>API Docs</span></a></div>
+                        <div class="toc-item" style="margin-left:0"><a href="#APIDocs"><strong>5</strong><span>API Docs</span></a></div>
                         
                     </div>
                 </div>
@@ -80,13 +76,54 @@
 </div>
 
 
-<div class="imageblock" style="float: right">
+<div class="imageblock" style="float: left">
 <div class="content">
 <img src="../img/logo.svg" alt="GraphQL" width="100" height="100">
 </div>
 </div>
 <div class="paragraph">
 <p>The GORM GraphQL library provides functionality to generate a GraphQL schema based on your GORM entities. If you aren&#8217;t sure what GraphQL is, please take a look at their <a href="http://graphql.org/">homepage</a>.</p>
+</div>
+<div class="paragraph">
+<p>The underlying implementation of the GraphQL specification used by this library is <a href="http://graphql-java.readthedocs.io/en/stable/">graphql-java</a>.</p>
+</div>
+<div class="paragraph">
+<p>There are two different binaries available for use. The first is the core library which contains all of the logic for building the schema. The second is a Grails plugin which, on top of core, provides several features.</p>
+</div>
+<div class="sect1">
+<h2 id="_core_library">Core Library</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to mapping domain classes to a GraphQL schema, the core library also provides default implementations of "data fetchers" to query, update, and delete data through executions of the schema.</p>
+</div>
+<div class="paragraph">
+<p>Because GraphQL is different in the way that the fields requested to be returned are included with the request, it allows the server to be smart about the query being executed. For example, when a property is requested, the server knows whether or not that property is an association. If it is an association, the query parameters can be set to eagerly fetch the association, resulting in a single query instead of many. The end result is that less queries will be executed against your database, greatly increasing the performance of your API.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_grails_plugin">Grails Plugin</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>A controller to receive and respond to GraphQL requests through HTTP, based on their <a href="http://graphql.org/learn/serving-over-http/">guidelines</a>.</p>
+</li>
+<li>
+<p>Generates the schema at startup with spring bean configuration to make it easy to extend.</p>
+</li>
+<li>
+<p>Includes a <a href="https://github.com/graphql/graphiql">GraphiQL</a> browser enabled by default in development. The browser is accessible at <code>/graphql/browser</code>.</p>
+</li>
+<li>
+<p>Overrides the default data binder to use the data binding provided by Grails</p>
+</li>
+<li>
+<p>Provides a <a href="../apiorg/grails/gorm/graphql/plugin/testing/GraphQLSpec.html">trait</a> to make integration testing of your GraphQL endpoints easier.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 
 
@@ -116,62 +153,12 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">testCompile "org.grails:gorm-graphql:1.0.0.BUILD-SNAPSHOT"</code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails:gorm-graphql:1.0.0.BUILD-SNAPSHOT"</code></pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The dependencies are optional. If you are not unit testing domain activity, you may not need the GORM testing support library.
-</td>
-</tr>
-</table>
-</div>
 
 
-<h1 id="graphqlendpoint">3 /graphql endpoint</h1>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/graphqlendpoint.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>The plugin includes a controller named <code>GraphqlController</code>. The <code>GraphqlController.index</code> action
-listens, by default, in <code>/graphql</code> and it is the entry point to your application GraphQL API.</p>
-</div>
-
-
-<h1 id="browserendpoint">4 /graphql/browser endpoint</h1>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/browserendpoint.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>The plugin includes a controller named <code>GraphqlController</code>. The <code>GraphqlController.browser</code> action
-listens, by default, in <code>/graphql/browser</code> and exposes a <a href="https://github.com/graphql/graphiql">GraphiQL browser</a>; An in-browser IDE for exploring GraphQL.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../img/graphiql.png" alt="graphiql">
-</div>
-</div>
-<div class="paragraph">
-<p>You can disable this endpoint by setting the configuration property <code>grails.gorm.graphql.browser</code> to false.</p>
-</div>
-
-
-<h1 id="gettingStarted">5 Getting Started</h1>
+<h1 id="gettingStarted">3 Getting Started</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/gettingStarted.adoc"'>
@@ -180,14 +167,90 @@ listens, by default, in <code>/graphql/browser</code> and exposes a <a href="htt
 </div>
 
 
+<div class="sect1">
+<h2 id="_standalone_projects">Standalone Projects</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>You can expose a domain class within the GraphQL API by adding:</p>
+<p>For standalone projects, it is up to the developer how and when the schema gets created. A mapping context is required to create a schema. The mapping context is available on all <a href="http://gorm.grails.org/latest/api//org/grails/datastore/mapping/core/Datastore.html#getMappingContext()">datastore implementations</a>. See the <a href="http://gorm.grails.org/latest/hibernate/manual/index.html#outsideGrails">GORM documentation</a> for information on creating a datastore.</p>
+</div>
+<div class="paragraph">
+<p>The example below is the simplest way possible to generate a schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.datastore.mapping.model.MappingContext</span>
+<span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+<span class="keyword">import</span> <span class="include">graphql.schema.GraphQLSchema</span>
+
+MappingContext mappingContext = ...
+GraphQLSchema schema = <span class="keyword">new</span> <span class="predefined-type">Schema</span>(mappingContext).generate()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Refer to the <a href="http://graphql-java.readthedocs.io/en/stable/">graphql-java</a> documentation on how to use the schema to execute queries and mutations against it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_grails_projects">Grails Projects</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For Grails projects, the schema is created automatically at startup. A spring bean is created for the schema called "graphQLSchema".</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_the_schema">Using The Schema</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, no domain classes will be a part of the generated schema. It is an opt in functionality that requires you to explicitly state which domain classes will be a part of the schema.</p>
+</div>
+<div class="paragraph">
+<p>The simplest way to include a domain class in the schema is to add the following to your domain class.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = <span class="predefined-constant">true</span></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Just by adding the <code>graphql = true</code> property on your domain, full CRUD capabilities will be available in the schema. For example, if the domain class is called "Book":</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Queries</p>
+<div class="ulist">
+<ul>
+<li>
+<p>book(id: ..)</p>
+</li>
+<li>
+<p>bookList(max: .., sort: .., etc)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Mutations</p>
+<div class="ulist">
+<ul>
+<li>
+<p>bookCreate(book: {})</p>
+</li>
+<li>
+<p>bookUpdate(id: .., book: {})</p>
+</li>
+<li>
+<p>bookDelete(id: ..)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_practical_example">Practical Example</h3>
 <div class="paragraph">
 <p>Imagine you are building an API for a Conference. A talk can be presented
 by a single speaker. A speaker can have many talks within the conference.
@@ -241,63 +304,6 @@ could be expressed with:</p>
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Adding the <code>graphql</code> property allows us inmediately to query our domain class with
-a GraphQL query:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
-     -H &quot;Content-Type: application/graphql&quot; \
-     -d $'{
-  speakerList {
-    id
-    name
-  }
-}'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>which returns:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="json">{
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
-    <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerList</span><span class="delimiter">&quot;</span></span>: [
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">1</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jeff Scott Brown</span><span class="delimiter">&quot;</span></span>
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">2</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Graeme Rocher</span><span class="delimiter">&quot;</span></span>
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">3</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Paul King</span><span class="delimiter">&quot;</span></span>
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">4</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Iván López</span><span class="delimiter">&quot;</span></span>
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">5</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Ryan Vanderwerf</span><span class="delimiter">&quot;</span></span>
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">6</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Colin Harrington</span><span class="delimiter">&quot;</span></span>
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">7</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Zachary Klein</span><span class="delimiter">&quot;</span></span>
-      }
-    ]
-  }
-}</code></pre>
-</div>
-</div>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -310,32 +316,147 @@ GORM GraphQL plugin supports <a href="http://gorm.grails.org/latest/hibernate/ma
 </tr>
 </table>
 </div>
+</div>
+</div>
+</div>
 
 
-<h2 id="queryAssociations">5.1 Query Associations</h2>
+<h2 id="create">3.1 Create</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/queryAssociations.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/gettingStarted/create.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect2">
+<h3 id="_create">Create</h3>
+<div class="paragraph">
+<p>In this example the request is a mutation to create a speaker.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
+     -H &quot;Content-Type: application/graphql&quot; \
+     -d $'
+mutation {
+  speakerCreate(speaker: {
+    firstName: &quot;James&quot;
+    lastName: &quot;Kleeh&quot;
+  }) {
+    id
+    firstName
+    lastName
+    errors {
+      field
+      message
+    }
+  }
+}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The API answers with the properties we requested.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerCreate</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">8</span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">James</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">lastName</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Kleeh</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">errors</span><span class="delimiter">&quot;</span></span>: []
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If there was a validation error during the create process, the <code>errors</code> property would be populated with the validation errors.
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+
+<h2 id="read">3.2 Read</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/gettingStarted/read.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>we can query associations too:</p>
+<p>In this example the query is attempting to retrieve the details of a single speaker with an id of <code>1</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
      -H &quot;Content-Type: application/graphql&quot; \
-     -d $'{
-  speakerList {
-    id
-    name
-    talks {
-        title
+     -d $'
+{
+ speaker(id: 1) {
+   firstName
+   lastName
+   bio
+ }
+}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and the api responds with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>{
+  "data": {
+    "speaker": {
+      "firstName": "Jeff Scott",
+      "lastName": "Brown",
+      "bio": "Jeff is a co-founder of the Grails framework, and a core member of the Grails development team."
     }
   }
+}</pre>
+</div>
+</div>
+
+
+<h2 id="list">3.3 List</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/gettingStarted/list.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>In this example the query is demonstrating retrieving a list of speakers. Since the talks of the speaker are requested to be returned, the association will be eagerly fetched to make the process as efficient as possible.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
+     -H &quot;Content-Type: application/graphql&quot; \
+     -d $'
+{
+ speakerList {
+   id
+   name
+   talks {
+     title
+   }
+ }
 }'</code></pre>
 </div>
 </div>
@@ -356,9 +477,6 @@ GORM GraphQL plugin supports <a href="http://gorm.grails.org/latest/hibernate/ma
           },
           {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Polyglot Web Development with Grails 3</span><span class="delimiter">&quot;</span></span>
-          },
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Testing in Grails 3</span><span class="delimiter">&quot;</span></span>
           }
         ]
       },
@@ -371,9 +489,6 @@ GORM GraphQL plugin supports <a href="http://gorm.grails.org/latest/hibernate/ma
           },
           {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">What's New in Grails?</span><span class="delimiter">&quot;</span></span>
-          },
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">The Latest and Greatest in GORM</span><span class="delimiter">&quot;</span></span>
           }
         ]
       },
@@ -382,64 +497,7 @@ GORM GraphQL plugin supports <a href="http://gorm.grails.org/latest/hibernate/ma
         <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Paul King</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
           {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Make your testing Groovy</span><span class="delimiter">&quot;</span></span>
-          },
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Groovy update: What's new in Groovy 2.5+</span><span class="delimiter">&quot;</span></span>
-          },
-          {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Groovy: The Awesome Parts</span><span class="delimiter">&quot;</span></span>
-          }
-        ]
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">4</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Iván López</span><span class="delimiter">&quot;</span></span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">From Java to Groovy: Adventure time!</span><span class="delimiter">&quot;</span></span>
-          },
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Dockerize your Grails!</span><span class="delimiter">&quot;</span></span>
-          }
-        ]
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">5</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Ryan Vanderwerf</span><span class="delimiter">&quot;</span></span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Amazon Alexa Workshop</span><span class="delimiter">&quot;</span></span>
-          },
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Getting Groovy with Google Home</span><span class="delimiter">&quot;</span></span>
-          },
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Alexa, Tell Me I'm Groovy!</span><span class="delimiter">&quot;</span></span>
-          }
-        ]
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">6</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Colin Harrington</span><span class="delimiter">&quot;</span></span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Performance tuning your Grails apps</span><span class="delimiter">&quot;</span></span>
-          },
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Grails and Docker</span><span class="delimiter">&quot;</span></span>
-          }
-        ]
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">7</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Zachary Klein</span><span class="delimiter">&quot;</span></span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Using React with Grails 3</span><span class="delimiter">&quot;</span></span>
-          },
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Grails and the Wonderful World of Javascript Frameworks</span><span class="delimiter">&quot;</span></span>
           }
         ]
       }
@@ -450,123 +508,39 @@ GORM GraphQL plugin supports <a href="http://gorm.grails.org/latest/hibernate/ma
 </div>
 
 
-<h2 id="arguments">5.2 Arguments</h2>
+<h2 id="update">3.4 Update</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/arguments.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/gettingStarted/update.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>If the only thing we could do was traverse objects and their fields, GraphQL would already be a very useful language for data fetching. But when you add the ability to pass arguments to fields, things get much more interesting.</p>
-</div>
-<div class="paragraph">
-<p>We can retrieve the details of the speaker with <code>id: 1</code></p>
+<p>In this example we are updating properties of a speaker.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
      -H &quot;Content-Type: application/graphql&quot; \
-     -d $'{
-    speaker(id: 1) {
-        id
-        firstName
-        lastName
-        bio
-    }
-}'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>and the api responds with:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>{
-  "data": {
-    "speaker": {
-      "id": 1,
-      "firstName": "Jeff Scott",
-      "lastName": "Brown",
-      "bio": "Jeff is a co-founder of the Grails framework, and a core member of the Grails development team."
-    }
-  }
-}</pre>
-</div>
-</div>
-
-
-<h2 id="mutations">5.3 Mutations</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/mutations.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>Mutations provide a way to modify server-side data.</p>
-</div>
-<div class="sect2">
-<h3 id="_create">Create</h3>
-<div class="paragraph">
-<p>We can create an speaker:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
-     -H &quot;Content-Type: application/graphql&quot; \
-     -d $'mutation {
-  speakerCreate(speaker: {
-    firstName: &quot;James&quot;
-    lastName: &quot;Kleeh&quot;
+     -d $'
+mutation {
+  speakerUpdate(id: 8, speaker: {
+    bio: &quot;James is a member of the Grails team at OCI&quot;
   }) {
     id
-    firstName
-    lastName
-  }
-}
-'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The API answers with the unique identifier assigned to the new speaker.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="json">{
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
-    <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerCreate</span><span class="delimiter">&quot;</span></span>: {
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">8</span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">James</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">lastName</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Kleeh</span><span class="delimiter">&quot;</span></span>
+    bio
+    talks {
+      id
+      duration
+    }
+    errors {
+      field
+      message
     }
   }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_update">Update</h3>
-<div class="paragraph">
-<p>We can update the <code>bio</code> property of a particular speaker:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
-     -H &quot;Content-Type: application/graphql&quot; \
-     -d $'mutation {
-    speakerUpdate(id: 8, speaker: {
-        bio: &quot;James is a member of the Grails team at OCI&quot;
-    }) {
-        id
-        bio
-    }
-}
-'</code></pre>
+}'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -579,24 +553,51 @@ GORM GraphQL plugin supports <a href="http://gorm.grails.org/latest/hibernate/ma
     <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerUpdate</span><span class="delimiter">&quot;</span></span>: {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">8</span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">bio</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">James is a member of the Grails team at OCI</span><span class="delimiter">&quot;</span></span>
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
+        {<span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">87</span>, <span class="key"><span class="delimiter">&quot;</span><span class="content">duration</span><span class="delimiter">&quot;</span></span>: <span class="integer">60</span>}
+      ],
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">errors</span><span class="delimiter">&quot;</span></span>: []
     }
   }
 }</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If there was a validation error during the update process, the <code>errors</code> property would be populated with the validation errors.
+</td>
+</tr>
+</table>
 </div>
-<div class="sect2">
-<h3 id="_delete">Delete</h3>
+
+
+<h2 id="delete">3.5 Delete</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/gettingStarted/delete.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
 <div class="paragraph">
-<p>We can delete an entry:</p>
+<p>In this example we are deleting a speaker. None of the normal properties of a speaker are available, however a <code>success</code> property is available to let you know whether or not the operation was successful.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">mutation {
-    speakerDelete(id: 8) {
-        success
-    }
-}</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
+     -H &quot;Content-Type: application/graphql&quot; \
+     -d $'
+mutation {
+  speakerDelete(id: 8) {
+    success
+  }
+}'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -613,78 +614,9 @@ GORM GraphQL plugin supports <a href="http://gorm.grails.org/latest/hibernate/ma
 }</code></pre>
 </div>
 </div>
-</div>
 
 
-<h2 id="excludeProperty">5.4 Exclude Property</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/excludeProperty.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>In the previous example, Speakers' email is an internal detail for conference
-organizers. We do not want to expose that property in the GraphQL API.
-In <code>Speaker</code> Domain Class, replace:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = <span class="predefined-constant">true</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>with:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
-    property(<span class="string"><span class="delimiter">'</span><span class="content">email</span><span class="delimiter">'</span></span>, <span class="key">output</span>: <span class="predefined-constant">false</span>, <span class="key">input</span>: <span class="predefined-constant">false</span>)
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If we try to fetch the speakers' email addresses:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
-     -H &quot;Content-Type: application/graphql&quot; \
-     -d $'{
-  speakerList {
-    id
-    email
-  }
-}'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>we get an error:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="json">{
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: <span class="value">null</span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">errors</span><span class="delimiter">&quot;</span></span>: [
-    {
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">message</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Validation error of type FieldUndefined: Field email is undefined</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">errorType</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ValidationError</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">locations</span><span class="delimiter">&quot;</span></span>: [
-        {
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">line</span><span class="delimiter">&quot;</span></span>: <span class="integer">4</span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">column</span><span class="delimiter">&quot;</span></span>: <span class="integer">5</span>
-        }
-      ]
-    }
-  ]
-}</code></pre>
-</div>
-</div>
-
-
-<h1 id="configuration">6 Configuration</h1>
+<h1 id="configuration">4 Configuration</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/configuration.adoc"'>
@@ -744,7 +676,7 @@ In <code>Speaker</code> Domain Class, replace:</p>
 </table>
 
 
-<h1 id="APIDocs">7 API Docs</h1>
+<h1 id="APIDocs">5 API Docs</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/APIDocs.adoc"'>
@@ -754,7 +686,7 @@ In <code>Speaker</code> Domain Class, replace:</p>
 
 
 <div class="paragraph">
-<p>Click <a href="../api/index.html">here</a> to view the API Documentation.</p>
+<p>Click <a href="../api">here</a> to view the API Documentation.</p>
 </div>
 
             </div>
@@ -769,23 +701,21 @@ In <code>Speaker</code> Domain Class, replace:</p>
                     
                     <div class="toc-item" style="margin-left:0px"><a href="#installation"><strong>2</strong><span>Installation</span></a></div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#graphqlendpoint"><strong>3</strong><span>/graphql endpoint</span></a></div>
+                    <div class="toc-item" style="margin-left:0px"><a href="#gettingStarted"><strong>3</strong><span>Getting Started</span></a></div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#browserendpoint"><strong>4</strong><span>/graphql/browser endpoint</span></a></div>
+                    <div class="toc-item" style="margin-left:10px"><a href="#create"><strong>3.1</strong><span>Create</span></a></div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#gettingStarted"><strong>5</strong><span>Getting Started</span></a></div>
+                    <div class="toc-item" style="margin-left:10px"><a href="#read"><strong>3.2</strong><span>Read</span></a></div>
                     
-                    <div class="toc-item" style="margin-left:10px"><a href="#queryAssociations"><strong>5.1</strong><span>Query Associations</span></a></div>
+                    <div class="toc-item" style="margin-left:10px"><a href="#list"><strong>3.3</strong><span>List</span></a></div>
                     
-                    <div class="toc-item" style="margin-left:10px"><a href="#arguments"><strong>5.2</strong><span>Arguments</span></a></div>
+                    <div class="toc-item" style="margin-left:10px"><a href="#update"><strong>3.4</strong><span>Update</span></a></div>
                     
-                    <div class="toc-item" style="margin-left:10px"><a href="#mutations"><strong>5.3</strong><span>Mutations</span></a></div>
+                    <div class="toc-item" style="margin-left:10px"><a href="#delete"><strong>3.5</strong><span>Delete</span></a></div>
                     
-                    <div class="toc-item" style="margin-left:10px"><a href="#excludeProperty"><strong>5.4</strong><span>Exclude Property</span></a></div>
+                    <div class="toc-item" style="margin-left:0px"><a href="#configuration"><strong>4</strong><span>Configuration</span></a></div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#configuration"><strong>6</strong><span>Configuration</span></a></div>
-                    
-                    <div class="toc-item" style="margin-left:0px"><a href="#APIDocs"><strong>7</strong><span>API Docs</span></a></div>
+                    <div class="toc-item" style="margin-left:0px"><a href="#APIDocs"><strong>5</strong><span>API Docs</span></a></div>
                     
                     <div style="clear:both" ></div>
                 </div>

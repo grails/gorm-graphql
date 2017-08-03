@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>2 Installation 1.0.0.BUILD-SNAPSHOT</title>
+    <title>3.5 Delete 1.0.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -25,23 +25,23 @@ function addJsClass() {
         <ul>
             <li>
                 <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
-                    <a href="../guide/index.html" class="button">Table of contents</a>
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
 
                     <div id="nav-summary-childs" style="display:none;">
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/installation.html"><strong>2</strong><span>Installation</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/installation.html"><strong>2</strong><span>Installation</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/APIDocs.html"><strong>5</strong><span>API Docs</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/APIDocs.html"><strong>5</strong><span>API Docs</span></a>
                         </div>
                         
                     </div>
@@ -62,18 +62,18 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                    <div class="toc-item prev-left"><a href="../../guide/installation.html">&lt;&lt; <strong>2</strong><span>Installation</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span> >></a></div>
                 
 
 
                 <div class="project">
-                    <h1>2 Installation</h1>
+                    <h1>3.5 Delete</h1>
 
                     <p><strong>Version:</strong> 1.0.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -82,42 +82,51 @@ function addJsClass() {
 
                 
 
-<h1 id="installation">2 Installation</h1>
+<h2 id="delete">3.5 Delete</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/installation.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/src/main/docs/guide/gettingStarted/delete.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>To use this library in your project, add the following dependency to the
-<code>dependencies</code> block of your <code>build.gradle</code>:</p>
-</div>
-<div class="paragraph">
-<p>For Grails applications</p>
+<p>In this example we are deleting a speaker. None of the normal properties of a speaker are available, however a <code>success</code> property is available to let you know whether or not the operation was successful.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails.plugins:gorm-graphql:1.0.0.BUILD-SNAPSHOT"</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
+     -H &quot;Content-Type: application/graphql&quot; \
+     -d $'
+mutation {
+  speakerDelete(id: 8) {
+    success
+  }
+}'</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>For standalone projects</p>
+<p>and the server acknowledges the deletion:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails:gorm-graphql:1.0.0.BUILD-SNAPSHOT"</code></pre>
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerDelete</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">success</span><span class="delimiter">&quot;</span></span>: <span class="value">true</span>
+    }
+  }
+}</code></pre>
 </div>
 </div>
 
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                    <div class="toc-item prev-left"><a href="../../guide/installation.html">&lt;&lt; <strong>2</strong><span>Installation</span></a></div>
                 
-                    <div class="toc-item next-right"><a href="../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>
@@ -125,7 +134,7 @@ function addJsClass() {
         <td id="col2">
             <div class="local clearfix">
                 <div class="local-title">
-                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
                     <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
                 </div>
                 <div class="menu">
