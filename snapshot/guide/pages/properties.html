@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>3.2 Read 1.0.0.BUILD-SNAPSHOT</title>
+    <title>4.1 Properties 1.0.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -74,18 +74,18 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../../guide/installation.html">&lt;&lt; <strong>2</strong><span>Installation</span></a></div>
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion</span> >></a></div>
                 
 
 
                 <div class="project">
-                    <h1>3.2 Read</h1>
+                    <h1>4.1 Properties</h1>
 
                     <p><strong>Version:</strong> 1.0.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -94,55 +94,37 @@ function addJsClass() {
 
                 
 
-<h2 id="read">3.2 Read</h2>
+<h2 id="properties">4.1 Properties</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/gettingStarted/read.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/properties.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
-<div class="paragraph">
-<p>In this example the query is attempting to retrieve the details of a single speaker with an id of <code>1</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
-     -H &quot;Content-Type: application/graphql&quot; \
-     -d $'
-{
- speaker(id: 1) {
-   firstName
-   lastName
-   bio
- }
-}'</code></pre>
+<div class="sect1">
+<h2 id="_existing_properties">Existing Properties</h2>
+<div class="sectionbody">
+
 </div>
 </div>
-<div class="paragraph">
-<p>and the api responds with:</p>
+<div class="sect1">
+<h2 id="_custom_properties">Custom Properties</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_custom_type">Custom Type</h3>
+
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>{
-  "data": {
-    "speaker": {
-      "firstName": "Jeff Scott",
-      "lastName": "Brown",
-      "bio": "Jeff is a co-founder of the Grails framework, and a core member of the Grails development team."
-    }
-  }
-}</pre>
 </div>
 </div>
 
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../../guide/installation.html">&lt;&lt; <strong>2</strong><span>Installation</span></a></div>
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
                 
-                    <div class="toc-item next-right"><a href="../../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>
