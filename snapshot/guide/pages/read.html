@@ -108,15 +108,15 @@ function addJsClass() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
-     -H &quot;Content-Type: application/graphql&quot; \
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
      -d $'
 {
- speaker(id: 1) {
-   firstName
-   lastName
-   bio
- }
+  speaker(id: 1) {
+    firstName
+    lastName
+    bio
+  }
 }'</code></pre>
 </div>
 </div>
@@ -125,15 +125,15 @@ function addJsClass() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>{
-  "data": {
-    "speaker": {
-      "firstName": "Jeff Scott",
-      "lastName": "Brown",
-      "bio": "Jeff is a co-founder of the Grails framework, and a core member of the Grails development team."
+<pre class="CodeRay highlight"><code data-lang="json">{
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">speaker</span><span class="delimiter">&quot;</span></span>: {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jeff Scott</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">lastName</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Brown</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">bio</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jeff is a co-founder of the Grails framework, and a core member of the Grails development team.</span><span class="delimiter">&quot;</span></span>
+        }
     }
-  }
-}</pre>
+}</code></pre>
 </div>
 </div>
 

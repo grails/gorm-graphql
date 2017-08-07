@@ -211,7 +211,7 @@ GraphQLSchema schema = <span class="keyword">new</span> <span class="predefined-
 <h2 id="_using_the_schema">Using The Schema</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>By default, no domain classes will be a part of the generated schema. It is an opt in functionality that requires you to explicitly state which domain classes will be a part of the schema.</p>
+<p>By default, no domain classes will be a part of the generated schema. It is an <strong>opt in</strong> functionality that requires you to explicitly state which domain classes will be a part of the schema.</p>
 </div>
 <div class="paragraph">
 <p>The simplest way to include a domain class in the schema is to add the following to your domain class.</p>
@@ -222,7 +222,7 @@ GraphQLSchema schema = <span class="keyword">new</span> <span class="predefined-
 </div>
 </div>
 <div class="paragraph">
-<p>Just by adding the <code>graphql = true</code> property on your domain, full CRUD capabilities will be available in the schema. For example, if the domain class is called "Book":</p>
+<p>Just by adding the <code>graphql = true</code> property on your domain, full CRUD capabilities will be available in the schema. For example, if the domain class is called <code>Book</code>:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -231,10 +231,10 @@ GraphQLSchema schema = <span class="keyword">new</span> <span class="predefined-
 <div class="ulist">
 <ul>
 <li>
-<p>book(id: ..)</p>
+<p><code>book(id: ..)</code></p>
 </li>
 <li>
-<p>bookList(max: .., sort: .., etc)</p>
+<p><code>bookList(max: .., sort: .., etc)</code></p>
 </li>
 </ul>
 </div>
@@ -244,13 +244,13 @@ GraphQLSchema schema = <span class="keyword">new</span> <span class="predefined-
 <div class="ulist">
 <ul>
 <li>
-<p>bookCreate(book: {})</p>
+<p><code>bookCreate(book: {})</code></p>
 </li>
 <li>
-<p>bookUpdate(id: .., book: {})</p>
+<p><code>bookUpdate(id: .., book: {})</code></p>
 </li>
 <li>
-<p>bookDelete(id: ..)</p>
+<p><code>bookDelete(id: ..)</code></p>
 </li>
 </ul>
 </div>
@@ -288,6 +288,7 @@ could be expressed with:</p>
     }
 
     <span class="directive">static</span> mapping = {
+        bio <span class="key">type</span>: <span class="string"><span class="delimiter">'</span><span class="content">text</span><span class="delimiter">'</span></span>
         name <span class="key">formula</span>: <span class="string"><span class="delimiter">'</span><span class="content">concat(FIRST_NAME,</span><span class="char">\'</span><span class="content"> </span><span class="char">\'</span><span class="content">,LAST_NAME)</span><span class="delimiter">'</span></span>
     }
 }</code></pre>
@@ -375,7 +376,7 @@ mutation {
 <pre class="CodeRay highlight"><code data-lang="json">{
     <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
         <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerCreate</span><span class="delimiter">&quot;</span></span>: {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">1</span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">8</span>,
             <span class="key"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">James</span><span class="delimiter">&quot;</span></span>,
             <span class="key"><span class="delimiter">&quot;</span><span class="content">lastName</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Kleeh</span><span class="delimiter">&quot;</span></span>,
             <span class="key"><span class="delimiter">&quot;</span><span class="content">errors</span><span class="delimiter">&quot;</span></span>: [
@@ -415,15 +416,15 @@ If there was a validation error during the create process, the <code>errors</cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
-     -H &quot;Content-Type: application/graphql&quot; \
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
      -d $'
 {
- speaker(id: 1) {
-   firstName
-   lastName
-   bio
- }
+  speaker(id: 1) {
+    firstName
+    lastName
+    bio
+  }
 }'</code></pre>
 </div>
 </div>
@@ -432,15 +433,15 @@ If there was a validation error during the create process, the <code>errors</cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>{
-  "data": {
-    "speaker": {
-      "firstName": "Jeff Scott",
-      "lastName": "Brown",
-      "bio": "Jeff is a co-founder of the Grails framework, and a core member of the Grails development team."
+<pre class="CodeRay highlight"><code data-lang="json">{
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">speaker</span><span class="delimiter">&quot;</span></span>: {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jeff Scott</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">lastName</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Brown</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">bio</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jeff is a co-founder of the Grails framework, and a core member of the Grails development team.</span><span class="delimiter">&quot;</span></span>
+        }
     }
-  }
-}</pre>
+}</code></pre>
 </div>
 </div>
 
@@ -459,17 +460,17 @@ If there was a validation error during the create process, the <code>errors</cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
-     -H &quot;Content-Type: application/graphql&quot; \
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
      -d $'
 {
- speakerList {
-   id
-   name
-   talks {
-     title
-   }
- }
+  speakerList(max: 3) {
+    id
+    name
+    talks {
+        title
+    }
+  }
 }'</code></pre>
 </div>
 </div>
@@ -479,43 +480,55 @@ If there was a validation error during the create process, the <code>errors</cod
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json">{
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
-    <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerList</span><span class="delimiter">&quot;</span></span>: [
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">1</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jeff Scott Brown</span><span class="delimiter">&quot;</span></span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REST With Grails 3</span><span class="delimiter">&quot;</span></span>
-          },
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Polyglot Web Development with Grails 3</span><span class="delimiter">&quot;</span></span>
-          }
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerList</span><span class="delimiter">&quot;</span></span>: [
+            {
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">1</span>,
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jeff Scott Brown</span><span class="delimiter">&quot;</span></span>,
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
+                    {
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REST With Grails 3</span><span class="delimiter">&quot;</span></span>
+                    },
+                    {
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Polyglot Web Development with Grails 3</span><span class="delimiter">&quot;</span></span>
+                    },
+                    {
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Testing in Grails 3</span><span class="delimiter">&quot;</span></span>
+                    }
+                 ]
+            },
+            {
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">2</span>,
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Graeme Rocher</span><span class="delimiter">&quot;</span></span>,
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
+                    {
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">The Latest and Greatest in GORM</span><span class="delimiter">&quot;</span></span>
+                    },
+                    {
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">What's New in Grails?</span><span class="delimiter">&quot;</span></span>
+                    },
+                    {
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Graph Applications with GORM and Neo4j</span><span class="delimiter">&quot;</span></span>
+                    }
+                 ]
+            },
+            {
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">3</span>,
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Paul King</span><span class="delimiter">&quot;</span></span>,
+                 <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
+                    {
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Make your testing Groovy</span><span class="delimiter">&quot;</span></span>
+                    },
+                    {
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Groovy update: What's new in Groovy 2.5+</span><span class="delimiter">&quot;</span></span>
+                    },
+                    {
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Groovy: The Awesome Parts</span><span class="delimiter">&quot;</span></span>
+                    }
+                 ]
+            }
         ]
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">2</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Graeme Rocher</span><span class="delimiter">&quot;</span></span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Graph Applications with GORM and Neo4j</span><span class="delimiter">&quot;</span></span>
-          },
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">What's New in Grails?</span><span class="delimiter">&quot;</span></span>
-          }
-        ]
-      },
-      {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">3</span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Paul King</span><span class="delimiter">&quot;</span></span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
-          {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Groovy: The Awesome Parts</span><span class="delimiter">&quot;</span></span>
-          }
-        ]
-      }
-    ]
-  }
+    }
 }</code></pre>
 </div>
 </div>
@@ -535,12 +548,12 @@ If there was a validation error during the create process, the <code>errors</cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
-     -H &quot;Content-Type: application/graphql&quot; \
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
      -d $'
 mutation {
-  speakerUpdate(id: 8, speaker: {
-    bio: &quot;James is a member of the Grails team at OCI&quot;
+  speakerUpdate(id: 7, speaker: {
+    bio: "Zachary is a member of the Grails team at OCI"
   }) {
     id
     bio
@@ -562,16 +575,25 @@ mutation {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json">{
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
-    <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerUpdate</span><span class="delimiter">&quot;</span></span>: {
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">8</span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">bio</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">James is a member of the Grails team at OCI</span><span class="delimiter">&quot;</span></span>
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
-        {<span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">87</span>, <span class="key"><span class="delimiter">&quot;</span><span class="content">duration</span><span class="delimiter">&quot;</span></span>: <span class="integer">60</span>}
-      ],
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">errors</span><span class="delimiter">&quot;</span></span>: []
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerUpdate</span><span class="delimiter">&quot;</span></span>: {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">7</span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">bio</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Zachary is a member of the Grails team at OCI</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
+                {
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">18</span>,
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">duration</span><span class="delimiter">&quot;</span></span>: <span class="integer">50</span>
+                },
+                {
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">17</span>,
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">duration</span><span class="delimiter">&quot;</span></span>: <span class="integer">50</span>
+                }
+            ],
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">errors</span><span class="delimiter">&quot;</span></span>: [
+
+            ]
+        }
     }
-  }
 }</code></pre>
 </div>
 </div>
@@ -603,8 +625,8 @@ If there was a validation error during the update process, the <code>errors</cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -X &quot;POST&quot; &quot;http://localhost:8080/graphql&quot; \
-     -H &quot;Content-Type: application/graphql&quot; \
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
      -d $'
 mutation {
   speakerDelete(id: 8) {
@@ -619,11 +641,11 @@ mutation {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json">{
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
-    <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerDelete</span><span class="delimiter">&quot;</span></span>: {
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">success</span><span class="delimiter">&quot;</span></span>: <span class="value">true</span>
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerDelete</span><span class="delimiter">&quot;</span></span>: {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">success</span><span class="delimiter">&quot;</span></span>: <span class="value">true</span>
+        }
     }
-  }
 }</code></pre>
 </div>
 </div>
