@@ -22,7 +22,7 @@ For Grails projects, the schema is created automatically at startup. A spring be
 
 == Using The Schema
 
-By default, no domain classes will be a part of the generated schema. It is an opt in functionality that requires you to explicitly state which domain classes will be a part of the schema.
+By default, no domain classes will be a part of the generated schema. It is an **opt in** functionality that requires you to explicitly state which domain classes will be a part of the schema.
 
 The simplest way to include a domain class in the schema is to add the following to your domain class.
 
@@ -31,16 +31,16 @@ The simplest way to include a domain class in the schema is to add the following
 static graphql = true
 ----
 
-Just by adding the `graphql = true` property on your domain, full CRUD capabilities will be available in the schema. For example, if the domain class is called "Book":
+Just by adding the `graphql = true` property on your domain, full CRUD capabilities will be available in the schema. For example, if the domain class is called `Book`:
 
 - Queries
-** book(id: ..)
-** bookList(max: .., sort: .., etc)
+** `book(id: ..)`
+** `bookList(max: .., sort: .., etc)`
 
 - Mutations
-** bookCreate(book: {})
-** bookUpdate(id: .., book: {})
-** bookDelete(id: ..)
+** `bookCreate(book: {})`
+** `bookUpdate(id: .., book: {})`
+** `bookDelete(id: ..)`
 
 === Practical Example
 
