@@ -1,44 +1,17 @@
 In this example we are updating properties of a speaker.
 
-[source, bash]
+:url: http://localhost:8080/graphql
+[source, bash, subs="attributes"]
 ----
-curl -X "POST" "http://localhost:8080/graphql" \
-     -H "Content-Type: application/graphql" \
-     -d $'
-mutation {
-  speakerUpdate(id: 8, speaker: {
-    bio: "James is a member of the Grails team at OCI"
-  }) {
-    id
-    bio
-    talks {
-      id
-      duration
-    }
-    errors {
-      field
-      message
-    }
-  }
-}'
+include::examples/grails-docs-app/src/integration-test/groovy/demo/SpeakerIntegrationSpec.groovy[tags=updateCurlCommand]
 ----
 
 and the server acknowledges the update:
 
 [source, json]
 ----
-{
-  "data": {
-    "speakerUpdate": {
-      "id": 8,
-      "bio": "James is a member of the Grails team at OCI"
-      "talks": [
-        {"id": 87, "duration": 60}
-      ],
-      "errors": []
-    }
-  }
-}
+include::examples/grails-docs-app/src/integration-test/groovy/demo/SpeakerIntegrationSpec.groovy[tags=updateResponse]
 ----
+
 
 NOTE: If there was a validation error during the update process, the `errors` property would be populated with the validation errors.

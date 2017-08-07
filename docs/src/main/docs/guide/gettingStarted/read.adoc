@@ -1,29 +1,15 @@
 In this example the query is attempting to retrieve the details of a single speaker with an id of `1`.
 
-[source, bash]
+
+:url: http://localhost:8080/graphql
+[source, bash, subs="attributes"]
 ----
-curl -X "POST" "http://localhost:8080/graphql" \
-     -H "Content-Type: application/graphql" \
-     -d $'
-{
- speaker(id: 1) {
-   firstName
-   lastName
-   bio
- }
-}'
+include::examples/grails-docs-app/src/integration-test/groovy/demo/SpeakerIntegrationSpec.groovy[tags=readCurlCommand]
 ----
 
 and the api responds with:
 
+[source, json]
 ----
-{
-  "data": {
-    "speaker": {
-      "firstName": "Jeff Scott",
-      "lastName": "Brown",
-      "bio": "Jeff is a co-founder of the Grails framework, and a core member of the Grails development team."
-    }
-  }
-}
+include::examples/grails-docs-app/src/integration-test/groovy/demo/SpeakerIntegrationSpec.groovy[tags=readResponse]
 ----
