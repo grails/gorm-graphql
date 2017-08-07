@@ -1,26 +1,14 @@
 In this example we are deleting a speaker. None of the normal properties of a speaker are available, however a `success` property is available to let you know whether or not the operation was successful.
 
-[source, bash]
+:url: http://localhost:8080/graphql
+[source, bash, subs="attributes"]
 ----
-curl -X "POST" "http://localhost:8080/graphql" \
-     -H "Content-Type: application/graphql" \
-     -d $'
-mutation {
-  speakerDelete(id: 8) {
-    success
-  }
-}'
+include::examples/grails-docs-app/src/integration-test/groovy/demo/SpeakerIntegrationSpec.groovy[tags=deleteCurlCommand]
 ----
 
 and the server acknowledges the deletion:
 
 [source, json]
 ----
-{
-  "data": {
-    "speakerDelete": {
-      "success": true
-    }
-  }
-}
+include::examples/grails-docs-app/src/integration-test/groovy/demo/SpeakerIntegrationSpec.groovy[tags=deleteResponse]
 ----
