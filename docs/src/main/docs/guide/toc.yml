@@ -9,7 +9,10 @@ gettingStarted:
     delete: Delete
 customizations:
     title: Customizing The Schema
-    properties: Properties
+    properties:
+        title: Properties
+        existing: GORM Properties
+        custom: Custom Properties
     operations: Operations
     responseHandlers: Validation Error and Delete Responses
     namingConvention: Naming Convention

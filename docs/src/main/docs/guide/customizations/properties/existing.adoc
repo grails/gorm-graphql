@@ -1,0 +1,99 @@
+== Existing Properties
+
+It is possible to control several aspects of how existing persistent properties on GORM entities are represented in the generated schema.
+
+=== Exclusion
+
+To exclude a property from being included from the schema entirely:
+
+[source,groovy]
+----
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
+
+class Author {
+
+    String name
+
+    static graphql = GraphQLMapping.build {
+        exclude('name')
+    }
+}
+----
+
+To make a property read only:
+
+[source,groovy]
+----
+static graphql = GraphQLMapping.build {
+    property('name', input: false)
+    //or
+    property('name') {
+        input false
+    }
+}
+----
+
+To make a property write only:
+
+[source,groovy]
+----
+static graphql = GraphQLMapping.build {
+    property('name', output: false)
+    //or
+    property('name') {
+        output false
+    }
+}
+----
+
+=== Nullable
+
+By default, a property will be nullable based on the constraints provided in the domain class. You can override that specifically for GraphQL, however.
+
+[source,groovy]
+----
+static graphql = GraphQLMapping.build {
+    property('name', nullable: false) //or true
+}
+----
+
+=== Fetching
+
+To customize the way a property is retrieved, you can supply a data fetcher with a closure. The domain instance is passed as an argument to the closure.
+
+[source,groovy]
+----
+static graphql = GraphQLMapping.build {
+    property('name') {
+        dataFetcher { Author author ->
+            author.name ?: "Default Name"
+        }
+    }
+}
+----
+
+WARNING: The data type returned must be the same as the property type.
+
+=== Description
+
+A description of a property can be specified in the mapping to be registered in the schema.
+
+[source,groovy]
+----
+static graphql = GraphQLMapping.build {
+    property('name', description: 'The name of the author')
+}
+----
+
+=== Deprecation
+
+A property can be marked as deprecated in the schema to inform users the property may be removed in the future.
+
+[source,groovy]
+----
+static graphql = GraphQLMapping.build {
+    property('name', deprecationReason: 'To be removed August 1st, 2018')
+    //or
+    property('name', deprecated: true) //"Deprecated" will be the reason
+}
+----

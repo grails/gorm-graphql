@@ -21,5 +21,6 @@ class Speaker {
     static mapping = {
         name formula: 'concat(FIRST_NAME,\' \',LAST_NAME)'
     }
+
 }
 // end::wholeFile[]

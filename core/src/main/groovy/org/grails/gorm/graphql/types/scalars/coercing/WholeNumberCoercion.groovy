@@ -26,7 +26,21 @@ class WholeNumberCoercion<T> implements Coercing<BigInteger, T> {
 
     @Override
     BigInteger parseValue(Object input) {
-        parseLiteral(input)
+        if (input instanceof Short) {
+            new BigInteger((Short) input)
+        }
+        else if (input instanceof Integer) {
+            new BigInteger((Integer) input)
+        }
+        else if (input instanceof Long) {
+            BigInteger.valueOf((Long) input)
+        }
+        else if (input instanceof BigInteger) {
+            (BigInteger) input
+        }
+        else {
+            null
+        }
     }
 
     @Override

@@ -1,5 +1,0 @@
-== Existing Properties
-
-== Custom Properties
-
-=== Custom Type

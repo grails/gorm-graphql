@@ -28,7 +28,7 @@ class WholeNumberArrayCoercion<T> implements Coercing<BigInteger[], T> {
 
     @Override
     BigInteger[] parseValue(Object input) {
-        parseLiteral(input)
+        (BigInteger[])serialize(input)
     }
 
     @Override

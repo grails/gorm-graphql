@@ -6,6 +6,8 @@ import graphql.language.Value
 import graphql.schema.Coercing
 import groovy.transform.CompileStatic
 
+import java.lang.reflect.Array
+
 /**
  * Conversion class for string arrays
  *
@@ -27,7 +29,29 @@ class StringArrayCoercion<T> implements Coercing<String[], T> {
 
     @Override
     String[] parseValue(Object input) {
-        parseLiteral(input)
+        if (input instanceof Collection) {
+            Collection collection = (Collection) input
+            String[] strings = new String[collection.size()]
+            for (int i = 0; i < strings.length; i++) {
+                strings[i] = collection[i].toString()
+            }
+            strings
+        }
+        else if (input.class.array) {
+            if (input instanceof String[]) {
+                (String[]) input
+            }
+            else {
+                String[] strings = new String[Array.getLength(input)]
+                for (int i = 0; i < strings.length; i++) {
+                    strings[i] = Array.get(input, i).toString()
+                }
+                strings
+            }
+        }
+        else {
+            null
+        }
     }
 
     @Override

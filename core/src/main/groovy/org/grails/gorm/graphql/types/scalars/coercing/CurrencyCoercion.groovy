@@ -25,7 +25,7 @@ class CurrencyCoercion implements Coercing<Currency, Currency> {
 
     @Override
     Currency parseValue(Object input) {
-        parseLiteral(input)
+        serialize(input)
     }
 
     @Override

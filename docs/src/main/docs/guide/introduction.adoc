@@ -22,4 +22,4 @@ Because GraphQL is different in the way that the fields requested to be returned
 
 - Overrides the default data binder to use the data binding provided by Grails
 
-- Provides a link:{api}org/grails/gorm/graphql/plugin/testing/GraphQLSpec.html[trait] to make integration testing of your GraphQL endpoints easier.
+- Provides a link:{api}/org/grails/gorm/graphql/plugin/testing/GraphQLSpec.html[trait] to make integration testing of your GraphQL endpoints easier.

@@ -28,7 +28,7 @@ class TimestampCoercion implements Coercing<Timestamp, Timestamp> {
 
     @Override
     Timestamp parseValue(Object input) {
-        parseLiteral(input)
+        serialize(input)
     }
 
     @Override

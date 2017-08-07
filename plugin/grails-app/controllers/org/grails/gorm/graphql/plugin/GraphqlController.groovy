@@ -64,20 +64,24 @@ class GraphqlController {
         result
     }
 
+    private String resolvedBrowserHtml
+
     def browser() {
         if (grailsGraphQLConfiguration.enabled && grailsGraphQLConfiguration.browser) {
-            String endpoint = grailsLinkGenerator.link(controller: 'graphql', action: 'index')
-            String staticBase = grailsLinkGenerator.resource([:])
+            if (resolvedBrowserHtml == null) {
+                String endpoint = grailsLinkGenerator.link(controller: 'graphql', action: 'index')
+                String staticBase = grailsLinkGenerator.resource([:])
 
-            if (!staticBase.endsWith('/')) {
-                staticBase = staticBase + '/'
+                if (!staticBase.endsWith('/')) {
+                    staticBase = staticBase + '/'
+                }
+
+                resolvedBrowserHtml = IOUtils.toString(this.class.classLoader.getResourceAsStream('graphiql.html'), "UTF8")
+                        .replaceAll(/\{endpoint}/, endpoint)
+                        .replaceAll(/\{staticBase}/, staticBase)
             }
 
-            String html = IOUtils.toString(this.class.classLoader.getResourceAsStream('graphiql.html'), "UTF8")
-                    .replaceAll(/\{endpoint}/, endpoint)
-                    .replaceAll(/\{staticBase}/, staticBase)
-
-            render(text: html, contentType: 'text/html')
+            render(text: resolvedBrowserHtml, contentType: 'text/html')
         } else {
             render(status: 404)
         }

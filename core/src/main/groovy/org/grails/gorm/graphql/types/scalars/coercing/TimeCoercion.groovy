@@ -28,7 +28,7 @@ class TimeCoercion implements Coercing<Time, Time> {
 
     @Override
     Time parseValue(Object input) {
-        parseLiteral(input)
+        serialize(input)
     }
 
     @Override

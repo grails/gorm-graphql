@@ -28,7 +28,7 @@ class SqlDateCoercion implements Coercing<Date, Date> {
 
     @Override
     Date parseValue(Object input) {
-        parseLiteral(input)
+        serialize(input)
     }
 
     @Override

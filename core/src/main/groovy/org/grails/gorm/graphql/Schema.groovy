@@ -58,6 +58,7 @@ class Schema {
     GraphQLDataFetcherManager dataFetcherManager
     GraphQLInterceptorManager interceptorManager
     GraphQLSchemaInterceptor schemaInterceptor
+    GraphQLErrorsResponseHandler errorsResponseHandler
 
     List<String> dateFormats
     boolean dateFormatLenient = false
@@ -88,7 +89,9 @@ class Schema {
             if (namingConvention == null) {
                 namingConvention = new GraphQLEntityNamingConvention()
             }
-            GraphQLErrorsResponseHandler errorsResponseHandler = new DefaultGraphQLErrorsResponseHandler(new StaticMessageSource())
+            if (errorsResponseHandler == null) {
+                errorsResponseHandler = new DefaultGraphQLErrorsResponseHandler(new StaticMessageSource())
+            }
             typeManager = new DefaultGraphQLTypeManager(namingConvention, errorsResponseHandler, new DefaultGraphQLDomainPropertyManager())
         } else {
             if (namingConvention == null) {

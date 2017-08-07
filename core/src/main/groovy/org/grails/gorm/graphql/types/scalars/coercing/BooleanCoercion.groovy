@@ -25,7 +25,7 @@ class BooleanCoercion implements Coercing<Boolean, Boolean> {
 
     @Override
     Boolean parseValue(Object input) {
-        parseLiteral(input)
+        serialize(input)
     }
 
     @Override

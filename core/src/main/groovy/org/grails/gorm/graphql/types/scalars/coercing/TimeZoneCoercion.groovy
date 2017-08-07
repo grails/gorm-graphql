@@ -25,7 +25,7 @@ class TimeZoneCoercion implements Coercing<TimeZone, TimeZone> {
 
     @Override
     TimeZone parseValue(Object input) {
-        parseLiteral(input)
+        serialize(input)
     }
 
     @Override

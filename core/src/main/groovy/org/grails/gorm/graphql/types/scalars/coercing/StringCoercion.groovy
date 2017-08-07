@@ -25,7 +25,12 @@ class StringCoercion<T> implements Coercing<String, T> {
 
     @Override
     String parseValue(Object input) {
-        parseLiteral(input)
+        if (input instanceof String) {
+            (String) input
+        }
+        else {
+            input.toString()
+        }
     }
 
     @Override

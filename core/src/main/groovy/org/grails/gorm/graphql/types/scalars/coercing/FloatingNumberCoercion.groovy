@@ -27,7 +27,15 @@ class FloatingNumberCoercion<T> implements Coercing<BigDecimal, T> {
 
     @Override
     BigDecimal parseValue(Object input) {
-        parseLiteral(input)
+        if (input instanceof Float) {
+            new BigDecimal((Float) input)
+        }
+        else if (input instanceof Double) {
+            new BigDecimal((Double) input)
+        }
+        else if (input instanceof BigDecimal) {
+            (BigDecimal) input
+        }
     }
 
     @Override

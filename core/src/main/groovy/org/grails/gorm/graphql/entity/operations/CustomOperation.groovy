@@ -26,12 +26,16 @@ import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
  * @author James Kleeh
  * @since 1.0.0
  */
-@Builder(builderStrategy = SimpleStrategy, prefix = '', includes = ['dataFetcher'])
 @CompileStatic
 abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecatable<T>, ExecutesClosures {
 
     private List<CustomArgument> arguments = []
     DataFetcher dataFetcher
+
+    T dataFetcher(DataFetcher dataFetcher) {
+        this.dataFetcher = dataFetcher
+        (T)this
+    }
 
     OperationType operationType
 
