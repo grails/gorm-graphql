@@ -34,6 +34,8 @@ Validation error responses are handled by a link:{api}/org/grails/gorm/graphql/r
 
 For reference, see the link:https://github.com/grails/gorm-graphql/blob/master/core/src/main/groovy/org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.groovy[default handler].
 
+If you plan to extend the default handler, a message source is required.
+
 === Standalone
 
 The errors response handler is a property of the type manager. If you are supplying a custom type manager to the schema, set the property on it directly. If you are relying on the default type manager, do the following after creating the schema, but before calling generate:
@@ -53,5 +55,5 @@ To override the errors response handler in a Grails application, register a bean
 [source,groovy]
 .resources.groovy
 ----
-graphQLErrorsResponseHandler(MyErrorsResponseHandler)
+graphQLErrorsResponseHandler(MyErrorsResponseHandler, ref("messageSource"))
 ----

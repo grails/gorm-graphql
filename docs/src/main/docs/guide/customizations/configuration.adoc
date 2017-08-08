@@ -1,6 +1,35 @@
-== Core
+== Standalone
+
+The schema has several properties that can be modified.
+
+=== List Arguments
+
+A map where the key is a string (one of link:{api}/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html#ARGUMENTS[EntityDataFetcher.ARGUMENTS]) and the value is the class the argument should be coerced into.
+
+[source,groovy]
+----
+import org.grails.gorm.graphql.Schema
+
+Schema schema = ...
+schema.listArguments = (Map<String, Class>)..
+----
+
+=== Date Type
+
+If a date type is not already registered with the type manager, a default one will be provided. The default type can be customized with the date formats that should be attempted to convert user input, and whether or not the parsing should be lenient.
+
+[source,groovy]
+----
+import org.grails.gorm.graphql.Schema
+
+Schema schema = ...
+schema.dateFormats = (List<String>)...
+schema.dateFormatLenient = (boolean)...
+----
 
 == Plugin
+
+The following options are available to configure for Grails applications using the plugin.
 
 |===
 |code|Type|Default Value|Description

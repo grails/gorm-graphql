@@ -1,0 +1,3 @@
+It is the responsibility of the type manager to convert Java classes to GraphQL types used in the creation of the schema. All of the basic GORM types have corresponding converters registered in the default type manager. It may be necessary to register GraphQL types for classes used in your domain model.
+
+//TODO show how to get ahold of the manager to register converters

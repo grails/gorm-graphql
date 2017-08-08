@@ -14,6 +14,7 @@ import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.operations.CustomOperation
 import org.grails.gorm.graphql.entity.operations.ProvidedOperation
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
+import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
 import org.grails.gorm.graphql.fetcher.manager.DefaultGraphQLDataFetcherManager
 import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
@@ -59,6 +60,7 @@ class Schema {
     GraphQLInterceptorManager interceptorManager
     GraphQLSchemaInterceptor schemaInterceptor
     GraphQLErrorsResponseHandler errorsResponseHandler
+    GraphQLDomainPropertyManager domainPropertyManager
 
     List<String> dateFormats
     boolean dateFormatLenient = false
@@ -92,7 +94,10 @@ class Schema {
             if (errorsResponseHandler == null) {
                 errorsResponseHandler = new DefaultGraphQLErrorsResponseHandler(new StaticMessageSource())
             }
-            typeManager = new DefaultGraphQLTypeManager(namingConvention, errorsResponseHandler, new DefaultGraphQLDomainPropertyManager())
+            if (domainPropertyManager == null) {
+                domainPropertyManager = new DefaultGraphQLDomainPropertyManager()
+            }
+            typeManager = new DefaultGraphQLTypeManager(namingConvention, errorsResponseHandler, domainPropertyManager)
         } else {
             if (namingConvention == null) {
                 namingConvention = typeManager.namingConvention

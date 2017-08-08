@@ -19,7 +19,6 @@ class BootStrap {
         Speaker graemeRocher = new Speaker(firstName: 'Graeme', lastName: 'Rocher')
         graemeRocher.email = 'graemeRocher@email.com'
         graemeRocher.bio = 'Graeme is a co-founder of the Grails framework and co-authored “The Definitive Guide to Grails” - Apress.'
-        graemeRocher.addToTalks(new Talk(title: 'Graph Applications with GORM and Neo4j', duration: 50))
         graemeRocher.addToTalks(new Talk(title: 'What\'s New in Grails?', duration: 50))
         graemeRocher.addToTalks(new Talk(title: 'The Latest and Greatest in GORM', duration: 50))
         graemeRocher.save()
@@ -27,8 +26,6 @@ class BootStrap {
         Speaker paulKing = new Speaker(firstName: 'Paul', lastName: 'King')
         paulKing.email = 'paulKing@email.com'
         paulKing.bio = 'Paul King has been contributing to Open Source projects for nearly 30 years and is an active committer on numerous projects, including Groovy, GPars, and Gradle. Paul speaks at international conferences, publishes in software magazines and journals, and is a co-author of Manning’s best-seller, Groovy in Action, 2nd Edition.'
-        paulKing.addToTalks(new Talk(title: 'Make your testing Groovy', duration: 50))
-        paulKing.addToTalks(new Talk(title: 'Groovy update: What\'s new in Groovy 2.5+', duration: 50))
         paulKing.addToTalks(new Talk(title: 'Groovy: The Awesome Parts', duration: 50))
         paulKing.save()
 

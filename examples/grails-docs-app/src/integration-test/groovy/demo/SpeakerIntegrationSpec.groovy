@@ -62,7 +62,6 @@ mutation {
 
     }
 
-    @Ignore
     void "test updating a speaker"() {
         when:
         String curlCommand = '''
@@ -103,16 +102,16 @@ mutation {
             "bio": "Zachary is a member of the Grails team at OCI",
             "talks": [
                 {
-                    "id": 18,
+                    "id": 14,
                     "duration": 50
                 },
                 {
-                    "id": 17,
+                    "id": 15,
                     "duration": 50
                 }
             ],
             "errors": [
-            
+                
             ]
         }
     }
@@ -123,7 +122,7 @@ mutation {
 
     }
 
-    void "test delting a speaker"() {
+    void "test deleting a speaker"() {
         when:
         String curlCommand = '''
             // tag::deleteCurlCommand[]
@@ -197,7 +196,6 @@ curl -X "POST" "{url}" \
 
     }
 
-    @Ignore
     void "test fetch speaker's list"() {
         when:
         String curlCommand = '''
@@ -210,7 +208,7 @@ curl -X "POST" "{url}" \
     id
     name
     talks {
-        title
+      title
     }  
   }
 }'
@@ -230,45 +228,36 @@ curl -X "POST" "{url}" \
                 "name": "Jeff Scott Brown",
                 "talks": [
                     {
-                         "title": "REST With Grails 3"
+                        "title": "Polyglot Web Development with Grails 3"
                     },
                     {
-                         "title": "Polyglot Web Development with Grails 3"
+                        "title": "REST With Grails 3"
                     },
                     {
-                         "title": "Testing in Grails 3"
+                        "title": "Testing in Grails 3"
                     }
-                 ]
+                ]
             },
             {
                 "id": 2,
                 "name": "Graeme Rocher",
                 "talks": [
                     {
-                         "title": "The Latest and Greatest in GORM"
+                        "title": "What's New in Grails?"
                     },
                     {
-                         "title": "What's New in Grails?"
-                    },
-                    {
-                         "title": "Graph Applications with GORM and Neo4j"
+                        "title": "The Latest and Greatest in GORM"
                     }
-                 ]
+                ]
             },
             {
                 "id": 3,
                 "name": "Paul King",
-                 "talks": [
+                "talks": [
                     {
-                         "title": "Make your testing Groovy"
-                    },
-                    {
-                         "title": "Groovy update: What's new in Groovy 2.5+"
-                    },
-                    {
-                         "title": "Groovy: The Awesome Parts"
+                        "title": "Groovy: The Awesome Parts"
                     }
-                 ]
+                ]
             }
         ]
     }

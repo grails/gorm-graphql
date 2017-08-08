@@ -17,7 +17,7 @@ customizations:
     responseHandlers: Validation Error and Delete Responses
     namingConvention: Naming Convention
     configuration: Configuration
-types: Type Conversion
+types: Type Conversion And Creation
 dataFetchers: Data Fetchers
 dataBinders: Data Binding
 interceptors: Interceptors

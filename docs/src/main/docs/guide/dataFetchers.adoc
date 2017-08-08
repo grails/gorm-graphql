@@ -1,3 +1,7 @@
+This library provides a means for overriding the data fetchers used for the default provided operations. That is done through the use of a link:{api}/org/grails/gorm/graphql/fetcher/manager/GraphQLDataFetcherManager.html[GraphQLDataFetcherManager].
+
+//TODO show how to get ahold of the manager to register instances
+
 == Binding
 
 == Deleting
