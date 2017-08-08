@@ -238,6 +238,7 @@ could be expressed with:</p>
     <span class="directive">static</span> mapping = {
         bio <span class="key">type</span>: <span class="string"><span class="delimiter">'</span><span class="content">text</span><span class="delimiter">'</span></span>
         name <span class="key">formula</span>: <span class="string"><span class="delimiter">'</span><span class="content">concat(FIRST_NAME,</span><span class="char">\'</span><span class="content"> </span><span class="char">\'</span><span class="content">,LAST_NAME)</span><span class="delimiter">'</span></span>
+        talks <span class="key">sort</span>: <span class="string"><span class="delimiter">'</span><span class="content">id</span><span class="delimiter">'</span></span>
     }
 }</code></pre>
 </div>
@@ -435,10 +436,10 @@ If there was a validation error during the create process, the <code>errors</cod
                 <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jeff Scott Brown</span><span class="delimiter">&quot;</span></span>,
                 <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
                     {
-                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REST With Grails 3</span><span class="delimiter">&quot;</span></span>
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Polyglot Web Development with Grails 3</span><span class="delimiter">&quot;</span></span>
                     },
                     {
-                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Polyglot Web Development with Grails 3</span><span class="delimiter">&quot;</span></span>
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REST With Grails 3</span><span class="delimiter">&quot;</span></span>
                     },
                     {
                          <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Testing in Grails 3</span><span class="delimiter">&quot;</span></span>
@@ -450,13 +451,13 @@ If there was a validation error during the create process, the <code>errors</cod
                 <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Graeme Rocher</span><span class="delimiter">&quot;</span></span>,
                 <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
                     {
-                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">The Latest and Greatest in GORM</span><span class="delimiter">&quot;</span></span>
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Graph Applications with GORM and Neo4j</span><span class="delimiter">&quot;</span></span>
                     },
                     {
                          <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">What's New in Grails?</span><span class="delimiter">&quot;</span></span>
                     },
                     {
-                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Graph Applications with GORM and Neo4j</span><span class="delimiter">&quot;</span></span>
+                         <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">The Latest and Greatest in GORM</span><span class="delimiter">&quot;</span></span>
                     }
                  ]
             },
@@ -506,8 +507,7 @@ mutation {
     id
     bio
     talks {
-      id
-      duration
+      title
     }
     errors {
       field
@@ -529,12 +529,10 @@ mutation {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">bio</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Zachary is a member of the Grails team at OCI</span><span class="delimiter">&quot;</span></span>,
             <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
                 {
-                    <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">18</span>,
-                    <span class="key"><span class="delimiter">&quot;</span><span class="content">duration</span><span class="delimiter">&quot;</span></span>: <span class="integer">50</span>
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Grails and the Wonderful World of Javascript Frameworks</span><span class="delimiter">&quot;</span></span>
                 },
                 {
-                    <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">17</span>,
-                    <span class="key"><span class="delimiter">&quot;</span><span class="content">duration</span><span class="delimiter">&quot;</span></span>: <span class="integer">50</span>
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Using React with Grails 3</span><span class="delimiter">&quot;</span></span>
                 }
             ],
             <span class="key"><span class="delimiter">&quot;</span><span class="content">errors</span><span class="delimiter">&quot;</span></span>: [
