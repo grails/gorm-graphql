@@ -1,7 +1,10 @@
 package org.grails.gorm.graphql.testing
 
+import graphql.execution.ExecutionId
 import graphql.language.Field
+import graphql.language.FragmentDefinition
 import graphql.schema.DataFetchingEnvironment
+import graphql.schema.DataFetchingFieldSelectionSet
 import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLSchema
 import graphql.schema.GraphQLType
@@ -24,6 +27,9 @@ class MockDataFetchingEnvironment implements DataFetchingEnvironment {
     GraphQLOutputType fieldType
     GraphQLType parentType
     GraphQLSchema graphQLSchema
+    Map<String, FragmentDefinition> fragmentsByName
+    ExecutionId executionId
+    DataFetchingFieldSelectionSet selectionSet
 
     @Override
     boolean containsArgument(String name) {

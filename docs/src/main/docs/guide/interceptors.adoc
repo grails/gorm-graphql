@@ -1,6 +1,21 @@
+This library provides 2 types of interceptors, data fetcher and schema. Data fetcher interceptors are designed with the ability to prevent execution of a data fetcher. A common application of a data fetcher interceptor might be to implement security for the different operations available to be executed through GraphQL.
+
+ Schema interceptors allow users to hook directly into the schema creation process to modify the schema directly before it is created. This option is for users who are comfortable with the link:https://github.com/graphql-java/graphql-java[graphql-java] library and would like to manipulate the schema as they see fit.
+
 == Data Fetcher Interceptors
 
+All data fetcher interceptors must implement the link:{api}/org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html[GraphQLFetcherInterceptor] interface. A link:{api}/org/grails/gorm/graphql/interceptor/impl/BaseGraphQLFetcherInterceptor[base class] is also available to extend from that allows all fetchers to proceed.
+
+For all interceptor methods, if the return value is `false`, further interceptors will not be executed and the resulting data will be `null`.
+
+//TODO: How to register
+
 === Provided
+
+There are 2 methods that will be invoked for provided data fetchers. Which one gets invoked depends on whether the operation is a query or a mutation. For query operations (GET, LIST), the `onQuery` method will be executed. For mutation operations (CREATE, UPDATE, DELETE), the `onMutation` method will be executed.
+
+The data fetching environment and the data fetcher type are available to help make decisions about whether or not to interrupt the execution.
+
 
 === Custom
 

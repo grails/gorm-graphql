@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.types.scalars.coercing
 
+import graphql.Scalars
 import graphql.language.ArrayValue
 import graphql.language.IntValue
 import graphql.language.Value
@@ -14,12 +15,14 @@ import groovy.transform.CompileStatic
  * @since 1.0.0
  */
 @CompileStatic
-class WholeNumberArrayCoercion<T> implements Coercing<BigInteger[], T> {
+class ByteArrayCoercion implements Coercing<Byte[], Byte[]> {
+
+    Coercing<Byte, Byte> byteCoercion = Scalars.GraphQLByte.coercing
 
     @Override
-    T serialize(Object input) {
-        if (input instanceof T) {
-            (T) input
+    Byte[] serialize(Object input) {
+        if (input instanceof Byte[]) {
+            (Byte[]) input
         }
         else {
             null
@@ -27,26 +30,19 @@ class WholeNumberArrayCoercion<T> implements Coercing<BigInteger[], T> {
     }
 
     @Override
-    BigInteger[] parseValue(Object input) {
-        (BigInteger[])serialize(input)
+    Byte[] parseValue(Object input) {
+        (Byte[])serialize(input)
     }
 
     @Override
-    BigInteger[] parseLiteral(Object input) {
+    Byte[] parseLiteral(Object input) {
         if (input instanceof ArrayValue) {
-            List<BigInteger> returnList = []
+            List<Byte> returnList = []
             List<Value> values = ((ArrayValue) input).values
             for (Value value: values) {
-                BigInteger result
-                if (value instanceof IntValue) {
-                    result = ((IntValue) value).value
-                }
-                else {
-                    result = null
-                }
-                returnList.add(result)
+                returnList.add(byteCoercion.parseLiteral(value))
             }
-            (BigInteger[])returnList.toArray()
+            (Byte[])returnList.toArray()
         }
         else {
             null

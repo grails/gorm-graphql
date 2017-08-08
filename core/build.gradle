@@ -2,7 +2,7 @@ apply plugin: 'codenarc'
 
 dependencies {
     compile "org.grails:grails-datastore-gorm:$gormVersion"
-    compile "com.graphql-java:graphql-java:2.4.0"
+    compile "com.graphql-java:graphql-java:3.0.0"
 
     codenarc 'org.codenarc:CodeNarc:0.25.2'
 
@@ -12,6 +12,9 @@ dependencies {
     testRuntime "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"
     testRuntime "org.slf4j:slf4j-api:1.7.10"
 }
+
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
 
 codenarc {
     toolVersion = '0.25.2'

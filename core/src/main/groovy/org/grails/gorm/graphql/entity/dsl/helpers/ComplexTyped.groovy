@@ -90,6 +90,8 @@ trait ComplexTyped<T> {
         }
     }
 
+    private GraphQLInputType customInputType
+
     /**
      * Builds a custom object returnType if the supplied return returnType is a Map
      *
@@ -98,30 +100,32 @@ trait ComplexTyped<T> {
      * @return The custom returnType
      */
     GraphQLInputType buildCustomInputType(String name, GraphQLTypeManager typeManager, MappingContext mappingContext, boolean nullable) {
-        GraphQLInputObjectType.Builder builder = GraphQLInputObjectType.newInputObject()
-                .name(name)
+        if (customInputType == null) {
+            GraphQLInputObjectType.Builder builder = GraphQLInputObjectType.newInputObject()
+                    .name(name)
 
-        for (Field field: fields) {
-            if (field.input) {
-                builder.field(newInputObjectField()
-                        .name(field.name)
-                        .description(field.description)
-                        .defaultValue(field.defaultValue)
-                        .type(field.getInputType(typeManager, mappingContext)))
+            for (Field field: fields) {
+                if (field.input) {
+                    builder.field(newInputObjectField()
+                            .name(field.name)
+                            .description(field.description)
+                            .defaultValue(field.defaultValue)
+                            .type(field.getInputType(typeManager, mappingContext)))
+                }
             }
-        }
-        GraphQLInputType type = builder.build()
+            GraphQLInputType type = builder.build()
 
-        if (!nullable) {
-            type = GraphQLNonNull.nonNull(type)
+            if (!nullable) {
+                type = GraphQLNonNull.nonNull(type)
+            }
+
+            if (collection) {
+                type = GraphQLList.list(type)
+            }
+            customInputType = type
         }
 
-        if (collection) {
-            GraphQLList.list(type)
-        }
-        else {
-            type
-        }
+        customInputType
     }
 
     private void handleField(Closure closure, Field field) {

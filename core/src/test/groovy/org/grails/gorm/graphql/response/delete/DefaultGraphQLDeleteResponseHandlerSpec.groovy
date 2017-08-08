@@ -1,10 +1,10 @@
 package org.grails.gorm.graphql.response.delete
 
+import graphql.Scalars
 import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.types.GraphQLTypeManager
-import org.grails.gorm.graphql.types.scalars.GraphQLBoolean
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -17,7 +17,7 @@ class DefaultGraphQLDeleteResponseHandlerSpec extends Specification implements G
     void setupSpec() {
         typeManager = Stub(GraphQLTypeManager) {
             getType(Boolean, false) >> {
-                GraphQLNonNull.nonNull(new GraphQLBoolean())
+                GraphQLNonNull.nonNull(Scalars.GraphQLBoolean)
             }
         }
     }
@@ -46,6 +46,6 @@ class DefaultGraphQLDeleteResponseHandlerSpec extends Specification implements G
         type.interfaces.empty
         type.fieldDefinitions.size() == 1
         type.fieldDefinitions[0].name == 'success'
-        unwrap(null, type.fieldDefinitions[0].type) instanceof GraphQLBoolean
+        unwrap(null, type.fieldDefinitions[0].type) == Scalars.GraphQLBoolean
     }
 }

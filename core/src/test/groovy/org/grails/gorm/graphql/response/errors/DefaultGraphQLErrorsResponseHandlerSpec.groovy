@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.response.errors
 
+import graphql.Scalars
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLNonNull
@@ -8,7 +9,6 @@ import org.grails.datastore.gorm.GormValidateable
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.testing.MockDataFetchingEnvironment
 import org.grails.gorm.graphql.types.GraphQLTypeManager
-import org.grails.gorm.graphql.types.scalars.GraphQLString
 import org.springframework.context.MessageSource
 import org.springframework.validation.FieldError
 import spock.lang.Shared
@@ -23,8 +23,8 @@ class DefaultGraphQLErrorsResponseHandlerSpec extends Specification implements G
 
     void setupSpec() {
         typeManager = Stub(GraphQLTypeManager) {
-            getType(String, false) >> GraphQLNonNull.nonNull(new GraphQLString())
-            getType(String) >> new GraphQLString()
+            getType(String, false) >> GraphQLNonNull.nonNull(Scalars.GraphQLString)
+            getType(String) >> Scalars.GraphQLString
         }
     }
 
@@ -63,12 +63,12 @@ class DefaultGraphQLErrorsResponseHandlerSpec extends Specification implements G
         type.description == 'Validation Errors'
         type.fieldDefinitions.size() == 2
         type.fieldDefinitions[0].name == 'field'
-        unwrap(null, type.fieldDefinitions[0].type) instanceof GraphQLString
+        unwrap(null, type.fieldDefinitions[0].type) == Scalars.GraphQLString
         type.fieldDefinitions[0].dataFetcher.get(mockFieldEnv) == 'book'
 
 
         type.fieldDefinitions[1].name == 'message'
-        type.fieldDefinitions[1].type instanceof GraphQLString
+        type.fieldDefinitions[1].type == Scalars.GraphQLString
         type.fieldDefinitions[1].dataFetcher.get(mockFieldEnv) == 'hello'
     }
 

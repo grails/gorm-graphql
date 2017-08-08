@@ -39,7 +39,7 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
     }
 
     protected void initializeEntity(PersistentEntity entity) {
-        this.associations = entityFetchOptions.associations
+        this.associations = this.entityFetchOptions.associations
     }
 
     @SuppressWarnings(['NestedBlockDepth'])

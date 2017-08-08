@@ -10,8 +10,6 @@ import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
-import org.grails.gorm.graphql.entity.operations.CustomOperation
-import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
 import org.grails.gorm.graphql.entity.property.impl.SimpleGraphQLProperty
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.fetcher.impl.CustomOperationInterceptorDataFetcher
@@ -20,9 +18,6 @@ import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.gorm.graphql.types.GraphQLTypeManager
-import org.grails.gorm.graphql.types.scalars.GraphQLBigDecimal
-import org.grails.gorm.graphql.types.scalars.GraphQLInteger
-import org.grails.gorm.graphql.types.scalars.GraphQLString
 import spock.lang.Specification
 
 class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
@@ -171,10 +166,10 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         foo.description == 'Foo Query'
         foo.deprecated
         foo.deprecationReason == 'Foo Query is deprecated'
-        foo.type instanceof GraphQLBigDecimal
+        foo.type == Scalars.GraphQLBigDecimal
         foo.dataFetcher instanceof CustomOperationInterceptorDataFetcher
         foo.arguments.size() == 1
-        unwrap(null, foo.getArgument('bar').type) instanceof GraphQLString
+        unwrap(null, foo.getArgument('bar').type) == Scalars.GraphQLString
         foo.getArgument('bar').description == 'Bar argument'
         foo.getArgument('bar').defaultValue == 'b'
 
@@ -182,19 +177,19 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         bar.deprecated
         bar.deprecationReason == 'Deprecated'
         bar.type instanceof GraphQLList
-        unwrap([], bar.type) instanceof GraphQLBigDecimal
+        unwrap([], bar.type) == Scalars.GraphQLBigDecimal
         bar.dataFetcher instanceof CustomOperationInterceptorDataFetcher
         bar.arguments.size() == 1
         bar.getArgument('foo').type instanceof GraphQLList
         bar.getArgument('foo').description == null
         bar.getArgument('foo').defaultValue == null
-        unwrap([null], bar.getArgument('foo').type) instanceof GraphQLString
+        unwrap([null], bar.getArgument('foo').type) == Scalars.GraphQLString
 
         xyz.description == 'ZYX mutation'
         !xyz.deprecated
         xyz.type instanceof GraphQLObjectType
         ((GraphQLObjectType)xyz.type).fieldDefinitions[0].name == 'bar'
-        ((GraphQLObjectType)xyz.type).fieldDefinitions[0].type instanceof GraphQLString
+        ((GraphQLObjectType)xyz.type).fieldDefinitions[0].type == Scalars.GraphQLString
         ((GraphQLObjectType)xyz.type).fieldDefinitions.size() == 1
         xyz.dataFetcher instanceof CustomOperationInterceptorDataFetcher
         xyz.arguments.size() == 1
@@ -203,7 +198,7 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         xyz.arguments[0].name == 'fooBar'
 
         ((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType).getField('foo').type instanceof GraphQLNonNull
-        ((GraphQLNonNull)(((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType)).getField('foo').type).wrappedType instanceof GraphQLInteger
+        ((GraphQLNonNull)(((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType)).getField('foo').type).wrappedType == Scalars.GraphQLInt
         (((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType)).fieldDefinitions.size() == 1
     }
 }
