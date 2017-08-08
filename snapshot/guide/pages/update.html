@@ -41,7 +41,7 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
                         </div>
                         
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
@@ -118,7 +118,8 @@ mutation {
     id
     bio
     talks {
-      title
+      id
+      duration
     }
     errors {
       field
@@ -140,10 +141,12 @@ mutation {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">bio</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Zachary is a member of the Grails team at OCI</span><span class="delimiter">&quot;</span></span>,
             <span class="key"><span class="delimiter">&quot;</span><span class="content">talks</span><span class="delimiter">&quot;</span></span>: [
                 {
-                    <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Grails and the Wonderful World of Javascript Frameworks</span><span class="delimiter">&quot;</span></span>
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">14</span>,
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">duration</span><span class="delimiter">&quot;</span></span>: <span class="integer">50</span>
                 },
                 {
-                    <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Using React with Grails 3</span><span class="delimiter">&quot;</span></span>
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">15</span>,
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">duration</span><span class="delimiter">&quot;</span></span>: <span class="integer">50</span>
                 }
             ],
             <span class="key"><span class="delimiter">&quot;</span><span class="content">errors</span><span class="delimiter">&quot;</span></span>: [

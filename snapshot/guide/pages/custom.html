@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>4.1 Properties 1.0.0.BUILD-SNAPSHOT</title>
+    <title>4.1.2 Custom Properties 1.0.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -85,174 +85,14 @@ function addJsClass() {
 
 
                 <div class="project">
-                    <h1>4.1 Properties</h1>
+                    <h1>4.1.2 Custom Properties</h1>
 
                     <p><strong>Version:</strong> 1.0.0.BUILD-SNAPSHOT</p>
                 </div>
 
                 
-                <div id="table-of-content">
-                    <h2>Table of Contents</h2>
-                    
-                    <div class="toc-item" style="margin-left:0px"><a href="#existing"><strong>4.1</strong><span>GORM Properties</span></a>
-                    </div>
-                    
-                    <div class="toc-item" style="margin-left:0px"><a href="#custom"><strong>4.2</strong><span>Custom Properties</span></a>
-                    </div>
-                    
-                </div>
-                
 
                 
-
-<h2 id="properties">4.1 Properties</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/properties.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-
-
-
-<h2 id="existing">4.1.1 GORM Properties</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/properties/existing.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="sect1">
-<h2 id="_existing_properties">Existing Properties</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>It is possible to control several aspects of how existing persistent properties on GORM entities are represented in the generated schema.</p>
-</div>
-<div class="sect2">
-<h3 id="_exclusion">Exclusion</h3>
-<div class="paragraph">
-<p>To exclude a property from being included from the schema entirely:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
-
-<span class="type">class</span> <span class="class">Author</span> {
-
-    <span class="predefined-type">String</span> name
-
-    <span class="directive">static</span> graphql = GraphQLMapping.build {
-        exclude(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>)
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To make a property read only:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
-    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">input</span>: <span class="predefined-constant">false</span>)
-    <span class="comment">//or</span>
-    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>) {
-        input <span class="predefined-constant">false</span>
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To make a property write only:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
-    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">output</span>: <span class="predefined-constant">false</span>)
-    <span class="comment">//or</span>
-    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>) {
-        output <span class="predefined-constant">false</span>
-    }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_nullable">Nullable</h3>
-<div class="paragraph">
-<p>By default, a property will be nullable based on the constraints provided in the domain class. You can override that specifically for GraphQL, however.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
-    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">nullable</span>: <span class="predefined-constant">false</span>) <span class="comment">//or true</span>
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_fetching">Fetching</h3>
-<div class="paragraph">
-<p>To customize the way a property is retrieved, you can supply a data fetcher with a closure. The domain instance is passed as an argument to the closure.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
-    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>) {
-        dataFetcher { Author author -&gt;
-            author.name ?: <span class="string"><span class="delimiter">&quot;</span><span class="content">Default Name</span><span class="delimiter">&quot;</span></span>
-        }
-    }
-}</code></pre>
-</div>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-The data type returned must be the same as the property type.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_description">Description</h3>
-<div class="paragraph">
-<p>A description of a property can be specified in the mapping to be registered in the schema.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
-    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">description</span>: <span class="string"><span class="delimiter">'</span><span class="content">The name of the author</span><span class="delimiter">'</span></span>)
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_deprecation">Deprecation</h3>
-<div class="paragraph">
-<p>A property can be marked as deprecated in the schema to inform users the property may be removed in the future.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
-    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">deprecationReason</span>: <span class="string"><span class="delimiter">'</span><span class="content">To be removed August 1st, 2018</span><span class="delimiter">'</span></span>)
-    <span class="comment">//or</span>
-    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">deprecated</span>: <span class="predefined-constant">true</span>) <span class="comment">//&quot;Deprecated&quot; will be the reason</span>
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-
 
 <h2 id="custom">4.1.2 Custom Properties</h2>
 

@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>5 Type Conversion 1.0.0.BUILD-SNAPSHOT</title>
+    <title>5 Type Conversion And Creation 1.0.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -41,7 +41,7 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/types.html"><strong>5</strong><span>Type Conversion</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
                         </div>
                         
                         <div class="toc-item" style="margin-left:0"><a href="../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
@@ -85,7 +85,7 @@ function addJsClass() {
 
 
                 <div class="project">
-                    <h1>5 Type Conversion</h1>
+                    <h1>5 Type Conversion And Creation</h1>
 
                     <p><strong>Version:</strong> 1.0.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -94,7 +94,7 @@ function addJsClass() {
 
                 
 
-<h1 id="types">5 Type Conversion</h1>
+<h1 id="types">5 Type Conversion And Creation</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/types.adoc"'>
@@ -103,7 +103,9 @@ function addJsClass() {
 </div>
 
 
-
+<div class="paragraph">
+<p>It is the responsibility of the type manager to convert Java classes to GraphQL types used in the creation of the schema. All of the basic GORM types have corresponding converters registered in the default type manager. It may be necessary to register GraphQL types for classes used in your domain model.</p>
+</div>
 
 
                 <div style="clear:both;margin-top:15px;"></div>

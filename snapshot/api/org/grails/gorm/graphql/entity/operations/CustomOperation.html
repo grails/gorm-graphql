@@ -104,8 +104,7 @@ if (location.href.indexOf('is-external=true') == -1) {
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.builder.Builder(builderStrategy = SimpleStrategy, prefix = '', includes = ['dataFetcher'])
-@groovy.transform.CompileStatic
+<pre>@groovy.transform.CompileStatic
 abstract&nbsp;class CustomOperation
 
 </pre>
@@ -207,11 +206,17 @@ abstract&nbsp;class CustomOperation
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>T</code></td>
+                            <td class="colLast"><code><strong><a href="#dataFetcher(DataFetcher)">dataFetcher</a></strong>(<a href='../../../../../../DataFetcher.html'>DataFetcher</a> dataFetcher)</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../../GraphQLOutputType.html'>GraphQLOutputType</a></code></td>
                             <td class="colLast"><code><strong><a href="#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)">getType</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br></td>
@@ -328,6 +333,14 @@ abstract&nbsp;class CustomOperation
                                 <p> Creates the field to be added to the query or mutation returnType in the schema.
      <DL><DT><B>Returns:</B></DT><DD>The custom field</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity the returnType was created for</DD><DD><code>typeManager</code> -  The returnType manager</DD><DD><code>interceptorManager</code> -  The interceptor manager to be used for executing
  interceptors with the custom data fetcher</DD><DD><code>mappingContext</code> -  The mapping context</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="dataFetcher(DataFetcher)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>T <strong>dataFetcher</strong>(<a href='../../../../../../DataFetcher.html'>DataFetcher</a> dataFetcher)</h4>
+                                <p></p>
                             </li>
                         </ul>
                     

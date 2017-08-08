@@ -41,7 +41,7 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
                         </div>
                         
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
@@ -80,7 +80,7 @@ function addJsClass() {
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
                 
 
 
@@ -104,14 +104,48 @@ function addJsClass() {
 
 
 <div class="sect1">
-<h2 id="_core">Core</h2>
+<h2 id="_standalone">Standalone</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>The schema has several properties that can be modified.</p>
+</div>
+<div class="sect2">
+<h3 id="_list_arguments">List Arguments</h3>
+<div class="paragraph">
+<p>A map where the key is a string (one of <a href="../api/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html#ARGUMENTS">EntityDataFetcher.ARGUMENTS</a>) and the value is the class the argument should be coerced into.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
 
+<span class="predefined-type">Schema</span> schema = ...
+schema.listArguments = (<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Class</span>&gt;)..</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_date_type">Date Type</h3>
+<div class="paragraph">
+<p>If a date type is not already registered with the type manager, a default one will be provided. The default type can be customized with the date formats that should be attempted to convert user input, and whether or not the parsing should be lenient.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.dateFormats = (<span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt;)...
+schema.dateFormatLenient = (<span class="type">boolean</span>)...</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_plugin">Plugin</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>The following options are available to configure for Grails applications using the plugin.</p>
+</div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 25%;">
@@ -169,7 +203,7 @@ function addJsClass() {
                 
                     <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
                 
-                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>
