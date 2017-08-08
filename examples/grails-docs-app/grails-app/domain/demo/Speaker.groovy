@@ -21,6 +21,7 @@ class Speaker {
     static mapping = {
         bio type: 'text'
         name formula: 'concat(FIRST_NAME,\' \',LAST_NAME)'
+        talks sort: 'id'
     }
 }
 // end::wholeFile[]

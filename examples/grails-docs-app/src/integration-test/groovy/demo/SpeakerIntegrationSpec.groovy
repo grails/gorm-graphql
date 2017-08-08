@@ -62,7 +62,6 @@ mutation {
 
     }
 
-    @Ignore
     void "test updating a speaker"() {
         when:
         String curlCommand = '''
@@ -77,8 +76,7 @@ mutation {
     id
     bio
     talks {
-      id
-      duration
+      title
     }
     errors {
       field
@@ -94,33 +92,29 @@ mutation {
 
         then:
         JsonOutput.prettyPrint(process.text) ==
-                """
+                JsonOutput.prettyPrint("""
 // tag::updateResponse[]
 {
     "data": {
         "speakerUpdate": {
             "id": 7,
             "bio": "Zachary is a member of the Grails team at OCI",
-            "talks": [
+            "talks": [              
                 {
-                    "id": 18,
-                    "duration": 50
+                    "title": "Grails and the Wonderful World of Javascript Frameworks"
                 },
                 {
-                    "id": 17,
-                    "duration": 50
-                }
+                    "title": "Using React with Grails 3"                
+                }                           
             ],
             "errors": [
-            
+                
             ]
         }
     }
 }
 // end::updateResponse[]
-""".replace('\n// tag::updateResponse[]\n', '')
-                        .replace('\n// end::updateResponse[]\n', '')
-
+""".replace('\n// tag::updateResponse[]\n', '').replace('\n// end::updateResponse[]\n', ''))
     }
 
     void "test delting a speaker"() {
@@ -194,10 +188,8 @@ curl -X "POST" "{url}" \
 // end::readResponse[]
 """.replace('\n// tag::readResponse[]\n', '')
                         .replace('\n// end::readResponse[]\n', '')
-
     }
 
-    @Ignore
     void "test fetch speaker's list"() {
         when:
         String curlCommand = '''
@@ -220,7 +212,7 @@ curl -X "POST" "{url}" \
         process.waitFor()
         then:
         JsonOutput.prettyPrint(process.text) ==
-                """
+                JsonOutput.prettyPrint("""
 // tag::listResponse[]
 {
     "data": {
@@ -228,16 +220,16 @@ curl -X "POST" "{url}" \
             {
                 "id": 1,
                 "name": "Jeff Scott Brown",
-                "talks": [
-                    {
-                         "title": "REST With Grails 3"
-                    },
+                "talks": [                
                     {
                          "title": "Polyglot Web Development with Grails 3"
                     },
                     {
+                         "title": "REST With Grails 3"
+                    },
+                    {
                          "title": "Testing in Grails 3"
-                    }
+                    }                             
                  ]
             },
             {
@@ -245,14 +237,14 @@ curl -X "POST" "{url}" \
                 "name": "Graeme Rocher",
                 "talks": [
                     {
-                         "title": "The Latest and Greatest in GORM"
-                    },
+                         "title": "Graph Applications with GORM and Neo4j"
+                    },                    
                     {
                          "title": "What's New in Grails?"
                     },
                     {
-                         "title": "Graph Applications with GORM and Neo4j"
-                    }
+                         "title": "The Latest and Greatest in GORM"
+                    }                    
                  ]
             },
             {
@@ -274,8 +266,7 @@ curl -X "POST" "{url}" \
     }
 }
 // end::listResponse[]
-""".replace('\n// tag::listResponse[]\n', '')
-                        .replace('\n// end::listResponse[]\n', '')
+""".replace('\n// tag::listResponse[]\n', '').replace('\n// end::listResponse[]\n', ''))
 
     }
 }
