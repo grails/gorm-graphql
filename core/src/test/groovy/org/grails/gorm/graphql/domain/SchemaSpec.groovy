@@ -72,4 +72,12 @@ class SchemaSpec extends Specification implements GraphQLSchemaSpec {
         type.getFieldDefinition('parentCircular').type == schema.getType('DebugCircular')
     }
 
+    void "test circular association"(){
+        given:
+            GraphQLObjectType type = schema.getType('CircularAssociationFoo')
+
+        expect:
+            ((GraphQLObjectType)type.getFieldDefinition('bar').type).getFieldDefinition('foo').type == type
+    }
+    
 }
