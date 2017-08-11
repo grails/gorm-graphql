@@ -103,12 +103,31 @@ function addJsClass() {
 </div>
 
 
+<div class="paragraph">
+<p>This library provides 2 types of interceptors, data fetcher and schema. Data fetcher interceptors are designed with the ability to prevent execution of a data fetcher. A common application of a data fetcher interceptor might be to implement security for the different operations available to be executed through GraphQL.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Schema interceptors allow users to hook directly into the schema creation process to modify the schema directly before it is created. This option is for users who are comfortable with the link:https://github.com/graphql-java/graphql-java[graphql-java] library and would like to manipulate the schema as they see fit.</pre>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_data_fetcher_interceptors">Data Fetcher Interceptors</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>All data fetcher interceptors must implement the <a href="../api/org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html">GraphQLFetcherInterceptor</a> interface. A <a href="../api/org/grails/gorm/graphql/interceptor/impl/BaseGraphQLFetcherInterceptor">base class</a> is also available to extend from that allows all fetchers to proceed.</p>
+</div>
+<div class="paragraph">
+<p>For all interceptor methods, if the return value is <code>false</code>, further interceptors will not be executed and the resulting data will be <code>null</code>.</p>
+</div>
 <div class="sect2">
 <h3 id="_provided">Provided</h3>
-
+<div class="paragraph">
+<p>There are 2 methods that will be invoked for provided data fetchers. Which one gets invoked depends on whether the operation is a query or a mutation. For query operations (GET, LIST), the <code>onQuery</code> method will be executed. For mutation operations (CREATE, UPDATE, DELETE), the <code>onMutation</code> method will be executed.</p>
+</div>
+<div class="paragraph">
+<p>The data fetching environment and the data fetcher type are available to help make decisions about whether or not to interrupt the execution.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_custom">Custom</h3>
