@@ -4,6 +4,7 @@ import graphql.schema.*
 import org.grails.datastore.mapping.config.Settings
 import org.grails.datastore.mapping.core.DatastoreUtils
 import org.grails.gorm.graphql.Schema
+import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.orm.hibernate.HibernateDatastore
 import spock.lang.AutoCleanup
 import spock.lang.Ignore
@@ -11,7 +12,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 //@Ignore('Until the rest of the basic graphql types are created')
-class SchemaSpec extends Specification {
+class SchemaSpec extends Specification implements GraphQLSchemaSpec {
 
     @Shared @AutoCleanup HibernateDatastore hibernateDatastore
     @Shared GraphQLSchema schema
@@ -36,9 +37,39 @@ class SchemaSpec extends Specification {
         type instanceof GraphQLList && ((GraphQLList)type).wrappedType == expectedType
     }
 
-    void "test it"() {
+    void "test DebugBar"() {
+        given:
+        GraphQLObjectType type = schema.getType('DebugBar')
+
         expect:
-        1 == 1
+        type.getFieldDefinition('foo').type == schema.getType('DebugFoo')
+        type.getFieldDefinition('circular').type == schema.getType('DebugCircular')
+    }
+
+    void "test DebugFoo"() {
+        given:
+        GraphQLObjectType type = schema.getType('DebugFoo')
+
+        expect:
+        unwrap([], type.getFieldDefinition('items').type) == schema.getType('DebugFooItem')
+    }
+
+    void "test DebugFooItem"() {
+        given:
+        GraphQLObjectType type = schema.getType('DebugFooItem')
+
+        expect:
+        type.getFieldDefinition('foo').type == schema.getType('DebugFoo')
+    }
+
+    void "test DebugCircular"() {
+        given:
+        GraphQLObjectType type = schema.getType('DebugCircular')
+
+        expect:
+        type.getFieldDefinition('otherCircular').type == schema.getType('DebugCircular')
+        unwrap([], type.getFieldDefinition('circulars').type) == schema.getType('DebugCircular')
+        type.getFieldDefinition('parentCircular').type == schema.getType('DebugCircular')
     }
 
 }

@@ -2,7 +2,6 @@ package org.grails.gorm.graphql.types.scalars.coercing
 
 import graphql.Scalars
 import graphql.language.ArrayValue
-import graphql.language.IntValue
 import graphql.language.Value
 import graphql.schema.Coercing
 import groovy.transform.CompileStatic

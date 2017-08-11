@@ -21,9 +21,7 @@ class GraphqlController {
 
     MessageSource messageSource
 
-    protected Object buildContext() {
-        [locale: request.locale]
-    }
+    GraphQLContextBuilder graphQLContextBuilder
 
     def index() {
         if (!grailsGraphQLConfiguration.enabled) {
@@ -48,7 +46,7 @@ class GraphqlController {
             return
         }
 
-        Object context = buildContext()
+        Object context = graphQLContextBuilder.buildContext(currentRequestAttributes())
 
         Map<String, Object> result = new LinkedHashMap<>()
 

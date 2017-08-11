@@ -58,6 +58,8 @@ Brief summary/description of the plugin.
             return
         }
 
+        graphQLContextBuilder(DefaultGraphQLContextBuilder)
+
         graphQLDataBinder(GrailsGraphQLDataBinder)
         graphQLErrorsResponseHandler(DefaultGraphQLErrorsResponseHandler, ref("messageSource"))
         graphQLEntityNamingConvention(GraphQLEntityNamingConvention)

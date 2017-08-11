@@ -18,6 +18,7 @@ import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.gorm.graphql.types.GraphQLTypeManager
+import org.grails.gorm.graphql.types.scalars.GormScalars
 import spock.lang.Specification
 
 class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
@@ -194,11 +195,11 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         xyz.dataFetcher instanceof CustomOperationInterceptorDataFetcher
         xyz.arguments.size() == 1
         xyz.arguments[0].type instanceof GraphQLNonNull
-        ((GraphQLNonNull)xyz.arguments[0].type).wrappedType instanceof GraphQLInputObjectType
+        unwrap(null, xyz.arguments[0].type) instanceof GraphQLInputObjectType
         xyz.arguments[0].name == 'fooBar'
 
         ((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType).getField('foo').type instanceof GraphQLNonNull
-        ((GraphQLNonNull)(((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType)).getField('foo').type).wrappedType == Scalars.GraphQLInt
+        ((GraphQLNonNull)(((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType)).getField('foo').type).wrappedType == GormScalars.GraphQLInt
         (((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType)).fieldDefinitions.size() == 1
     }
 }

@@ -117,10 +117,13 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         }
         else {
             boolean embedded = false
+            boolean referencesParent = false
             PersistentEntity entity
             if (property instanceof Association) {
-                entity = ((Association)property).associatedEntity
-                embedded = ((Association)property).embedded
+                Association association = ((Association)property)
+                entity = association.associatedEntity
+                embedded = association.embedded
+                referencesParent = (association.bidirectional && !association.owningSide) || association.circular
             }
             if (entity == null) {
                 entity = mappingContext.getPersistentEntity(type.name)
@@ -133,7 +136,7 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
                     else {
                         propertyType = GraphQLPropertyType.OUTPUT
                         GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity)
-                        if (mapping != null) {
+                        if (mapping != null || referencesParent) {
                             //This is necessary to avoid StackOverflow exceptions
                             graphQLType = typeManager.createReference(entity, propertyType)
                         }

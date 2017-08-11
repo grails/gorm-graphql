@@ -2,8 +2,6 @@ package org.grails.gorm.graphql.entity.operations
 
 import graphql.schema.*
 import groovy.transform.CompileStatic
-import groovy.transform.builder.Builder
-import groovy.transform.builder.SimpleStrategy
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable

@@ -34,9 +34,12 @@ import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.grails.gorm.graphql.types.scalars.GraphQLDate
 import org.grails.gorm.graphql.types.scalars.coercing.DateCoercion
+import org.grails.gorm.graphql.types.scalars.coercing.jsr310.*
+import org.grails.gorm.graphql.types.scalars.jsr310.*
 import org.springframework.context.support.StaticMessageSource
 
 import javax.annotation.PostConstruct
+import java.time.*
 
 import static graphql.schema.GraphQLArgument.newArgument
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
@@ -85,6 +88,33 @@ class Schema {
         }
     }
 
+    void populateDefaultDateTypes() {
+        if (!typeManager.hasType(Date)) {
+            typeManager.registerType(Date, new GraphQLDate(new DateCoercion(dateFormats, dateFormatLenient)))
+        }
+        if (!typeManager.hasType(Instant)) {
+            typeManager.registerType(Instant, new GraphQLInstant(new InstantCoercion()))
+        }
+        if (!typeManager.hasType(LocalDate)) {
+            typeManager.registerType(LocalDate, new GraphQLLocalDate(new LocalDateCoercion(dateFormats)))
+        }
+        if (!typeManager.hasType(LocalDateTime)) {
+            typeManager.registerType(LocalDateTime, new GraphQLLocalDateTime(new LocalDateTimeCoercion(dateFormats)))
+        }
+        if (!typeManager.hasType(LocalTime)) {
+            typeManager.registerType(LocalTime, new GraphQLLocalTime(new LocalTimeCoercion(dateFormats)))
+        }
+        if (!typeManager.hasType(OffsetDateTime)) {
+            typeManager.registerType(OffsetDateTime, new GraphQLOffsetDateTime(new OffsetDateTimeCoercion(dateFormats)))
+        }
+        if (!typeManager.hasType(OffsetTime)) {
+            typeManager.registerType(OffsetTime, new GraphQLOffsetTime(new OffsetTimeCoercion(dateFormats)))
+        }
+        if (!typeManager.hasType(ZonedDateTime)) {
+            typeManager.registerType(ZonedDateTime, new GraphQLZonedDateTime(new ZonedDateTimeCoercion(dateFormats)))
+        }
+    }
+
     @PostConstruct
     void initialize() {
         if (typeManager == null) {
@@ -103,9 +133,9 @@ class Schema {
                 namingConvention = typeManager.namingConvention
             }
         }
-        if (!typeManager.hasType(Date)) {
-            typeManager.registerType(Date, new GraphQLDate(new DateCoercion(dateFormats, dateFormatLenient)))
-        }
+
+        populateDefaultDateTypes()
+
         if (deleteResponseHandler == null) {
             deleteResponseHandler = new DefaultGraphQLDeleteResponseHandler()
         }

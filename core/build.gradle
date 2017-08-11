@@ -24,6 +24,10 @@ codenarc {
     maxPriority3Violations = 8
 }
 
+codenarcMain {
+    exclude '**/GormScalars.groovy'
+}
+
 codenarcTest {
     ignoreFailures = true
 }

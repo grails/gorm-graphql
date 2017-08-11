@@ -30,10 +30,10 @@ import java.util.concurrent.ConcurrentHashMap
 class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
     protected static final Map<Class, GraphQLType> TYPE_MAP = new ConcurrentHashMap<Class, GraphQLType>([
-        (Integer): Scalars.GraphQLInt,
-        (Long): Scalars.GraphQLLong,
-        (Short): Scalars.GraphQLShort,
-        (Byte): Scalars.GraphQLByte,
+        (Integer): GormScalars.GraphQLInt,
+        (Long): GormScalars.GraphQLLong,
+        (Short): GormScalars.GraphQLShort,
+        (Byte): GormScalars.GraphQLByte,
         (Byte[]): new GraphQLByteArray(),
         (Double): Scalars.GraphQLFloat,
         (Float): Scalars.GraphQLFloat,

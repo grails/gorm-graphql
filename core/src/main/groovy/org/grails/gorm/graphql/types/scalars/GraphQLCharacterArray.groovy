@@ -2,7 +2,7 @@ package org.grails.gorm.graphql.types.scalars
 
 import graphql.schema.GraphQLScalarType
 import groovy.transform.CompileStatic
-import org.grails.gorm.graphql.types.scalars.coercing.StringArrayCoercion
+import org.grails.gorm.graphql.types.scalars.coercing.CharacterArrayCoercion
 
 /**
  * Default {@link Character[]} scalar type
@@ -14,6 +14,6 @@ import org.grails.gorm.graphql.types.scalars.coercing.StringArrayCoercion
 class GraphQLCharacterArray extends GraphQLScalarType {
 
     GraphQLCharacterArray() {
-        super('CharacterArray', 'Built-in Character Array', new StringArrayCoercion<Character[]>())
+        super('CharacterArray', 'Built-in Character Array', new CharacterArrayCoercion<Character[]>())
     }
 }
