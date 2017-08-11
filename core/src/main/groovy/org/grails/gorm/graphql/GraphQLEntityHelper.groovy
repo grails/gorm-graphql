@@ -19,6 +19,7 @@ class GraphQLEntityHelper {
 
     private static Map<PersistentEntity, GraphQLMapping> mappings = [:]
     private static Map<PersistentEntity, String> descriptions = [:]
+    private static List<PersistentEntity> seen = []
 
     static String getDescription(final PersistentEntity entity) {
         if (descriptions.containsKey(entity)) {
@@ -44,6 +45,10 @@ class GraphQLEntityHelper {
         }
         descriptions.put(entity, description)
         description
+    }
+    
+    static boolean hasSeen(final PersistentEntity entity){
+        seen.contains(entity)? true: !seen.add(entity)
     }
 
     static GraphQLMapping getMapping(final PersistentEntity entity) {
