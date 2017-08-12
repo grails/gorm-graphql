@@ -7,7 +7,7 @@ EXIT_STATUS=0
 
 ./gradlew clean check --refresh-dependencies || EXIT_STATUS=$?
 
-if [[$EXIT_STATUS -eq 0 ]] ]]; then
+if [[ $EXIT_STATUS -eq 0 ]]; then
 	./travis-publish.sh || EXIT_STATUS=$?
 fi
 
