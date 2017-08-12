@@ -21,36 +21,6 @@ import java.time.OffsetDateTime
 class GraphQLCustomizer extends GraphQLPostProcessor {
 
     @Override
-    void doWith(GraphQLTypeManager typeManager) {
-        typeManager.registerType(OffsetDateTime, new GraphQLScalarType("OffsetDateTime", "Built in offset date time", new Coercing<OffsetDateTime, OffsetDateTime>() {
-            @Override
-            OffsetDateTime serialize(Object input) {
-                if (input instanceof OffsetDateTime) {
-                    (OffsetDateTime)input
-                }
-                else {
-                    null
-                }
-            }
-
-            @Override
-            OffsetDateTime parseValue(Object input) {
-                parseLiteral(input)
-            }
-
-            @Override
-            OffsetDateTime parseLiteral(Object input) {
-                if (input instanceof StringValue) {
-                    OffsetDateTime.parse(input.value)
-                }
-                else {
-                    null
-                }
-            }
-        }))
-    }
-
-    @Override
     void doWith(GraphQLDataFetcherManager fetcherManager) {
         PersistentEntity entity = SoftDelete.gormPersistentEntity
         DeletingGormDataFetcher softDelete = new SoftDeleteEntityDataFetcher(entity, 'active', false)
