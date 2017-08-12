@@ -293,6 +293,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
             }
         """)
         JSONArray obj = resp.json.data.userList
+        println resp.text
 
         then:
         obj.size() == 2
