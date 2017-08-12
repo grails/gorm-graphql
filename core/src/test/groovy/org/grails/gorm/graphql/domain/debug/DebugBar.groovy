@@ -8,5 +8,6 @@ class DebugBar {
     DebugFoo foo
     DebugCircular circular
 
-    static graphql = true
+    //assert any static property that matches "graphql" ignoring case works
+    static GrApHQl = true
 }

@@ -22,7 +22,6 @@ import org.grails.gorm.graphql.fetcher.runtime.BindingRuntimeDataFetcher
 import org.grails.gorm.graphql.fetcher.runtime.DeletingRuntimeDataFetcher
 import org.grails.gorm.graphql.fetcher.runtime.ReadingRuntimeDataFetcher
 import org.grails.gorm.graphql.interceptor.GraphQLSchemaInterceptor
-import org.grails.gorm.graphql.interceptor.impl.EmptyGraphQLSchemaInterceptor
 import org.grails.gorm.graphql.interceptor.manager.DefaultGraphQLInterceptorManager
 import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
 import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
@@ -61,7 +60,6 @@ class Schema {
     GraphQLDataBinderManager dataBinderManager
     GraphQLDataFetcherManager dataFetcherManager
     GraphQLInterceptorManager interceptorManager
-    GraphQLSchemaInterceptor schemaInterceptor
     GraphQLErrorsResponseHandler errorsResponseHandler
     GraphQLDomainPropertyManager domainPropertyManager
 
@@ -150,9 +148,6 @@ class Schema {
         }
         if (interceptorManager == null) {
             interceptorManager = new DefaultGraphQLInterceptorManager()
-        }
-        if (schemaInterceptor == null) {
-            schemaInterceptor = new EmptyGraphQLSchemaInterceptor()
         }
         initialized = true
     }
@@ -315,14 +310,18 @@ class Schema {
                 mutationFields.add(operation.createField(entity, typeManager, interceptorManager, mappingContext))
             }
 
-            schemaInterceptor.interceptEntity(entity, queryFields, mutationFields)
+            for (GraphQLSchemaInterceptor schemaInterceptor: interceptorManager.interceptors) {
+                schemaInterceptor.interceptEntity(entity, queryFields, mutationFields)
+            }
 
             queryType.fields(queryFields*.build())
 
             mutationType.fields(mutationFields*.build())
         }
 
-        schemaInterceptor.interceptSchema(queryType, mutationType)
+        for (GraphQLSchemaInterceptor schemaInterceptor: interceptorManager.interceptors) {
+            schemaInterceptor.interceptSchema(queryType, mutationType)
+        }
 
         GraphQLSchema.newSchema()
             .query(queryType)

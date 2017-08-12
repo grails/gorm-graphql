@@ -3,6 +3,7 @@ package org.grails.gorm.graphql.interceptor.manager
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.core.order.OrderedComparator
 import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
+import org.grails.gorm.graphql.interceptor.GraphQLSchemaInterceptor
 import org.grails.gorm.graphql.types.KeyClassQuery
 
 /**
@@ -31,6 +32,8 @@ class DefaultGraphQLInterceptorManager implements GraphQLInterceptorManager, Key
 
     protected Map<Class, List<GraphQLFetcherInterceptor>> interceptors = Collections.synchronizedMap([:]).withDefault { [] }
 
+    protected List<GraphQLSchemaInterceptor> schemaInterceptors = []
+
     protected Comparator interceptorComparator = new OrderedComparator<GraphQLFetcherInterceptor>()
 
     /**
@@ -47,7 +50,11 @@ class DefaultGraphQLInterceptorManager implements GraphQLInterceptorManager, Key
         interceptors.get(type).add(interceptor)
     }
 
-    /**
+    @Override
+    void registerInterceptor(GraphQLSchemaInterceptor interceptor) {
+        schemaInterceptors.add(interceptor)
+    }
+/**
      * @see GraphQLInterceptorManager#getInterceptors
      *
      * @return NULL if no interceptors found
@@ -55,5 +62,10 @@ class DefaultGraphQLInterceptorManager implements GraphQLInterceptorManager, Key
     @Override
     List<GraphQLFetcherInterceptor> getInterceptors(Class clazz) {
         searchMapAll(interceptors, clazz).sort(true, interceptorComparator)
+    }
+
+    @Override
+    List<GraphQLSchemaInterceptor> getInterceptors() {
+        schemaInterceptors
     }
 }

@@ -5,8 +5,18 @@ import graphql.language.IntValue
 import graphql.language.StringValue
 import graphql.schema.Coercing
 import graphql.schema.GraphQLScalarType
+import groovy.transform.CompileStatic
 
+/**
+ * Class to store overrides for provided scalars. This class can be removed
+ * when graphql-java 4.0.0 is released and used in this library. Its usages
+ * should be replaced with the standard {@link graphql.Scalars} class.
+ *
+ * @author James Kleeh
+ * @since 1.0.0
+ */
 @SuppressWarnings(['unchecked'])
+@CompileStatic
 class GormScalars {
 
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
@@ -36,7 +46,7 @@ class GormScalars {
             //
             // See http://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.1.3
             //
-            return Double.parseDouble((String) input);
+            return Double.valueOf((String) input);
         }
         // we never expect this and if we do, the code is wired wrong
         throw new AssertException("Unexpected case - this call should be protected by a previous call to isNumberIsh()");

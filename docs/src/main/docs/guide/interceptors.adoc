@@ -1,6 +1,51 @@
 This library provides 2 types of interceptors, data fetcher and schema. Data fetcher interceptors are designed with the ability to prevent execution of a data fetcher. A common application of a data fetcher interceptor might be to implement security for the different operations available to be executed through GraphQL.
 
- Schema interceptors allow users to hook directly into the schema creation process to modify the schema directly before it is created. This option is for users who are comfortable with the link:https://github.com/graphql-java/graphql-java[graphql-java] library and would like to manipulate the schema as they see fit.
+Schema interceptors allow users to hook directly into the schema creation process to modify the schema directly before it is created. This option is for users who are comfortable with the link:https://github.com/graphql-java/graphql-java[graphql-java] library and would like to manipulate the schema as they see fit.
+
+== Get The Manager
+
+To register a data fetcher interceptor, you need to get a reference to the link:{api}/org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html[GraphQLInterceptorManager]. If you are using the manager provided by default, how you access it will depend on whether you are using the plugin or standalone.
+
+=== Standalone
+
+When creating the schema, initialize it first. The default interceptor manager will then be set.
+
+[source,groovy]
+----
+import org.grails.gorm.graphql.Schema
+
+Schema schema = ...
+schema.initialize()
+GraphQLInterceptorManager interceptorManager = schema.interceptorManager
+...
+schema.generate()
+----
+
+=== Plugin
+
+For Grails applications it is recommended to reference the bean created by the plugin. The easiest way to do so is to register a bean post processor. The plugin has a class available to extend to make that easier.
+
+[source,groovy]
+.resources.groovy
+----
+myGraphQLCustomizer(MyGraphQLCustomizer)
+----
+
+[source,groovy]
+.src/main/groovy/demo/MyGraphQLCustomizer.groovy
+----
+import org.grails.gorm.graphql.plugin.GraphQLPostProcessor
+
+class MyGraphQLCustomizer extends GraphQLPostProcessor {
+
+    @Override
+    void doWith(GraphQLInterceptorManager interceptorManager) {
+        ...
+    }
+}
+----
+
+TIP: If you need to customize more than 1 manager, only a single bean needs to be registered. There are `doWith` methods for all of the managers you may need to register things with.
 
 == Data Fetcher Interceptors
 
@@ -8,7 +53,16 @@ All data fetcher interceptors must implement the link:{api}/org/grails/gorm/grap
 
 For all interceptor methods, if the return value is `false`, further interceptors will not be executed and the resulting data will be `null`.
 
-//TODO: How to register
+=== Registering
+
+Once you have access to the manager, registration of your own interceptor is easy. In this example a data fetcher interceptor is being executed for the Author domain class. The interceptor will get invoked for all operations executed for that domain.
+
+[source,groovy]
+----
+GraphQLInterceptorManager interceptorManager
+
+interceptorManager.registerInterceptor(Author, new AuthorFetcherInterceptor())
+----
 
 === Provided
 
@@ -18,6 +72,8 @@ The data fetching environment and the data fetcher type are available to help ma
 
 
 === Custom
+
+There
 
 
 == Schema Interceptors

@@ -29,6 +29,8 @@ import java.util.concurrent.ConcurrentHashMap
 @CompileStatic
 class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
+    private List<PersistentEntity> entitiesInProgress = []
+
     protected static final Map<Class, GraphQLType> TYPE_MAP = new ConcurrentHashMap<Class, GraphQLType>([
         (Integer): GormScalars.GraphQLInt,
         (Long): GormScalars.GraphQLLong,
@@ -177,7 +179,15 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     @Override
     GraphQLOutputType getQueryType(PersistentEntity entity, GraphQLPropertyType type) {
         if (objectTypeBuilders.containsKey(type)) {
-            objectTypeBuilders.get(type).build(entity)
+            if (entitiesInProgress.contains(entity)) {
+                (GraphQLOutputType)createReference(entity, type)
+            }
+            else {
+                entitiesInProgress.add(entity)
+                GraphQLOutputType outputType = objectTypeBuilders.get(type).build(entity)
+                entitiesInProgress.removeElement(entity)
+                outputType
+            }
         }
         else {
             throw new IllegalArgumentException("Invalid type specified. ${type.name()} is not a valid query type")

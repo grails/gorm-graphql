@@ -8,6 +8,8 @@ import org.grails.datastore.mapping.reflect.ClassPropertyFetcher
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.dsl.LazyGraphQLMapping
 
+import java.lang.reflect.Modifier
+
 /**
  * A helper class to get GraphQL mappings and descriptions for GORM entities
  *
@@ -50,7 +52,14 @@ class GraphQLEntityHelper {
         if (mappings.containsKey(entity)) {
             return mappings.get(entity)
         }
-        Object graphql = ClassPropertyFetcher.getStaticPropertyValue(entity.javaClass, 'graphql', Object)
+        MetaClass metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(entity.javaClass)
+        Object graphql
+        for (MetaProperty property: metaClass.properties) {
+            if (Modifier.isStatic(property.getModifiers()) && property.name.equalsIgnoreCase('graphql')) {
+                graphql = property.getProperty(entity.javaClass)
+                break
+            }
+        }
         GraphQLMapping mapping = null
         if (graphql != null) {
             if (graphql == Boolean.TRUE) {

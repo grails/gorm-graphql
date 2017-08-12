@@ -4,7 +4,7 @@ import grails.gorm.annotation.Entity
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 
 @Entity
-class SimpleOperation {
+class ComplexOperation {
 
     static graphql = GraphQLMapping.build {
 

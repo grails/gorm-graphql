@@ -52,6 +52,7 @@ class SchemaSpec extends Specification implements GraphQLSchemaSpec {
 
         expect:
         unwrap([], type.getFieldDefinition('items').type) == schema.getType('DebugFooItem')
+        type.getFieldDefinition('bar').type == schema.getType('DebugBar')
     }
 
     void "test DebugFooItem"() {

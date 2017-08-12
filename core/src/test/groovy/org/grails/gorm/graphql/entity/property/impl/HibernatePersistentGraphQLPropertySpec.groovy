@@ -176,7 +176,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.createReference(mappingContext.getPersistentEntity(Author.name), OUTPUT) >> dummyObjectType()
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(Author.name), OUTPUT) >> dummyObjectType()
     }
 
     void "test graphQL type with a toMany that is mapped with graphql CREATE"() {
@@ -236,7 +236,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         property.getGraphQLType(typeManager, OUTPUT)
 
         then:
-        1 * typeManager.createReference(mappingContext.getPersistentEntity(OtherMetadata.name), OUTPUT)
+        1 * typeManager.getQueryType(mappingContext.getPersistentEntity(OtherMetadata.name), OUTPUT)
     }
 
     void "test graphQL mutation type with a toOne that is mapped with graphql"() {

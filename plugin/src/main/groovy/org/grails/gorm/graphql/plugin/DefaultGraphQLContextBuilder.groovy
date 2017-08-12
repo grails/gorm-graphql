@@ -5,7 +5,7 @@ import org.grails.web.servlet.mvc.GrailsWebRequest
 class DefaultGraphQLContextBuilder implements GraphQLContextBuilder {
 
     @Override
-    Object buildContext(GrailsWebRequest request) {
+    Map buildContext(GrailsWebRequest request) {
         [locale: request.locale]
     }
 }
