@@ -52,6 +52,8 @@ import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.*
 @CompileStatic
 class Schema {
 
+    public static final String DEFAULT_DEPRECATION_REASON = 'Deprecated'
+
     protected MappingContext mappingContext
 
     GraphQLTypeManager typeManager

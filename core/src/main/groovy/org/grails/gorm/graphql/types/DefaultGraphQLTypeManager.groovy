@@ -6,6 +6,7 @@ import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.reflect.ClassUtils
 import org.grails.gorm.graphql.GraphQL
+import org.grails.gorm.graphql.Schema
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
@@ -14,6 +15,7 @@ import org.grails.gorm.graphql.types.output.EmbeddedObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ShowObjectTypeBuilder
 import org.grails.gorm.graphql.types.scalars.*
+import org.springframework.util.StringUtils
 
 import java.lang.reflect.Array
 import java.sql.Time
@@ -151,12 +153,30 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
             GraphQL annotation = clazz.getAnnotation(GraphQL)
 
-            if (annotation?.value()) {
+            if (annotation != null && !annotation.value().empty) {
                 builder.description(annotation.value())
             }
 
             for (Enum anEnum: clazz.enumConstants) {
-                builder.value(anEnum.name(), anEnum)
+                final String NAME = anEnum.name()
+
+                String description = null
+                String deprecationReason = null
+
+                GraphQL valueAnnotation = clazz.getField(NAME).getAnnotation(GraphQL)
+                if (valueAnnotation != null) {
+                    if (!valueAnnotation.deprecationReason().empty) {
+                        deprecationReason = valueAnnotation.deprecationReason()
+                    }
+                    else if (valueAnnotation.deprecated()) {
+                        deprecationReason = Schema.DEFAULT_DEPRECATION_REASON
+                    }
+                    if (!valueAnnotation.value().empty) {
+                        description = valueAnnotation.value()
+                    }
+                }
+
+                builder.value(NAME, anEnum, description, deprecationReason)
             }
 
             enumType = builder.build()

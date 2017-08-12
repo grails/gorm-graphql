@@ -31,7 +31,7 @@ class GraphQLEntityHelper {
 
         if (description == null) {
             GraphQL graphQL = entity.javaClass.getAnnotation(GraphQL)
-            if (graphQL != null) {
+            if (graphQL != null && !graphQL.value().empty) {
                 description = graphQL.value()
             }
             else {

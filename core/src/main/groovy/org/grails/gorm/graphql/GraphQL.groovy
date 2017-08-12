@@ -20,7 +20,7 @@ import java.lang.annotation.Target
 @Retention(RetentionPolicy.RUNTIME)
 @interface GraphQL {
 
-    String value()
+    String value() default ''
 
     boolean deprecated() default false
 

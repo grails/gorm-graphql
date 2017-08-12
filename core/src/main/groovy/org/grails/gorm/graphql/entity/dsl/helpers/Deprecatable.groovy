@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.entity.dsl.helpers
 
 import groovy.transform.CompileStatic
+import org.grails.gorm.graphql.Schema
 
 /**
  * Decorates a class with a builder syntax to provide
@@ -16,8 +17,6 @@ trait Deprecatable<T> {
     boolean deprecated = false
     String deprecationReason
 
-    private static final String DEFAULT_REASON = 'Deprecated'
-
     T deprecated(boolean deprecated) {
         this.deprecated = deprecated
         (T)this
@@ -29,7 +28,7 @@ trait Deprecatable<T> {
     }
 
     String getDeprecationReason() {
-        deprecationReason ?: (deprecated ? DEFAULT_REASON : null)
+        deprecationReason ?: (deprecated ? Schema.DEFAULT_DEPRECATION_REASON : null)
     }
 
 }

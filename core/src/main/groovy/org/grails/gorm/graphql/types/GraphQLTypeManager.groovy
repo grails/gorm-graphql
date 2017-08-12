@@ -7,7 +7,8 @@ import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 
 /**
- * An interface for handling type conversion and creation with GraphQL
+ * An interface for handling type conversion and creation with GraphQL.
+ * Implementations must handle circular query type creations.
  *
  * @author James Kleeh
  * @since 1.0.0
@@ -17,6 +18,9 @@ interface GraphQLTypeManager {
     /**
      * Retrieves the corresponding GraphQL type for the specified class.
      * This method should typically return a {@link graphql.schema.GraphQLScalarType}
+     *
+     * Implementations must include support for converting primitive types to their
+     * respective class types (long -> Long, byte[] -> Byte[]).
      *
      * @param clazz The class to retrieve a type for
      * @return The GraphQLType

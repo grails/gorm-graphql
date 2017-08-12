@@ -10,6 +10,7 @@ import org.grails.datastore.mapping.model.types.Basic
 import org.grails.datastore.mapping.model.types.ToMany
 import org.grails.gorm.graphql.GraphQL
 import org.grails.gorm.graphql.GraphQLEntityHelper
+import org.grails.gorm.graphql.Schema
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
@@ -61,30 +62,29 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         this.description = mapping.description
         this.deprecationReason = mapping.deprecationReason
         this.dataFetcher = mapping.dataFetcher
-        final String DEFAULT_DEPRECATION_REASON = 'Deprecated'
         try {
             Field field = property.owner.javaClass.getDeclaredField(property.name)
             if (field != null) {
                 GraphQL graphQL = field.getAnnotation(GraphQL)
                 if (graphQL != null) {
-                    if (description == null) {
+                    if (description == null && !graphQL.value().empty) {
                         description = graphQL.value()
                     }
                     if (deprecationReason == null && !graphQL.deprecationReason().empty) {
                         deprecationReason = graphQL.deprecationReason()
                     }
                     if (graphQL.deprecated() && deprecationReason == null) {
-                        deprecationReason = DEFAULT_DEPRECATION_REASON
+                        deprecationReason = Schema.DEFAULT_DEPRECATION_REASON
                     }
                 }
                 if (field.getAnnotation(Deprecated) != null && deprecationReason == null) {
-                    deprecationReason = DEFAULT_DEPRECATION_REASON
+                    deprecationReason = Schema.DEFAULT_DEPRECATION_REASON
                 }
             }
         } catch (NoSuchFieldException e) { }
 
         if (mapping.deprecated && deprecationReason == null) {
-            deprecationReason = DEFAULT_DEPRECATION_REASON
+            deprecationReason = Schema.DEFAULT_DEPRECATION_REASON
         }
     }
 
@@ -132,16 +132,7 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
                         graphQLType = typeManager.getQueryType(entity, propertyType.embeddedType)
                     }
                     else {
-                        //propertyType = GraphQLPropertyType.OUTPUT
                         graphQLType = typeManager.getQueryType(entity,  GraphQLPropertyType.OUTPUT)
-                        /*GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity)
-                        if (mapping != null) {
-                            //This is necessary to avoid StackOverflow exceptions
-                            graphQLType = typeManager.createReference(entity, propertyType)
-                        }
-                        else {
-
-                        }*/
                     }
                 }
                 else {
