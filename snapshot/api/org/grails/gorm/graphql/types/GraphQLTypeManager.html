@@ -98,7 +98,8 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
-    <p> An interface for handling type conversion and creation with GraphQL
+    <p> An interface for handling type conversion and creation with GraphQL.
+ Implementations must handle circular query type creations.
  <DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
 
           </li>
@@ -279,6 +280,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                                 <h4><a href='../../../../../GraphQLType.html'>GraphQLType</a> <strong>getType</strong>(java.lang.Class clazz)</h4>
                                 <p> Retrieves the corresponding GraphQL type for the specified class.
  This method should typically return a graphql.schema.GraphQLScalarType
+
+ Implementations must include support for converting primitive types to their
+ respective class types (long -> Long, byte[] -> Byte[]).
      <DL><DT><B>Returns:</B></DT><DD>The GraphQLType</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class to retrieve a type for</DD></DL></p>
                             </li>
                         </ul>
