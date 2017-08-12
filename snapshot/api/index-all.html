@@ -394,9 +394,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/EmbeddedObjectTypeBuilder.html" title="Class in org.grails.gorm.graphql.types.output">EmbeddedObjectTypeBuilder</a></span> - Class in <a href="./org/grails/gorm/graphql/types/output/package-summary.html">org.grails.gorm.graphql.types.output</a>
 </dt><dd><div class="block">The class used to define which properties are available
  when responding with an embedded entity</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/impl/EmptyGraphQLSchemaInterceptor.html" title="Class in org.grails.gorm.graphql.interceptor.impl">EmptyGraphQLSchemaInterceptor</a></span> - Class in <a href="./org/grails/gorm/graphql/interceptor/impl/package-summary.html">org.grails.gorm.graphql.interceptor.impl</a>
-</dt><dd><div class="block">Default implementation of GraphQLSchemaInterceptor that
- has no operations.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/ProvidedOperation.html#enabled(boolean)" title="Method in ProvidedOperation">enabled(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/ProvidedOperation.html">ProvidedOperation</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#entity" title="Field in DefaultGormDataFetcher">entity</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
@@ -560,9 +557,9 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/UpdateEntityDataFetcher.html#getInstance(DataFetchingEnvironment)" title="Method in UpdateEntityDataFetcher">getInstance(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/UpdateEntityDataFetcher.html">UpdateEntityDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html#getInterceptors(java.lang.Class)" title="Method in DefaultGraphQLInterceptorManager">getInterceptors(Class)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html">DefaultGraphQLInterceptorManager</a>
-</dt><dd> <div class="block">@see GraphQLInterceptorManager#getInterceptors</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html#getInterceptors(java.lang.Class)" title="Method in GraphQLInterceptorManager">getInterceptors(Class)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html">GraphQLInterceptorManager</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html#getInterceptors()" title="Method in DefaultGraphQLInterceptorManager">getInterceptors()</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html">DefaultGraphQLInterceptorManager</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html#getInterceptors()" title="Method in GraphQLInterceptorManager">getInterceptors()</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html">GraphQLInterceptorManager</a>
 </dt><dd> <div class="block">@param clazz The class to search for</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html#getList(PersistentEntity)" title="Method in GraphQLEntityNamingConvention">getList(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>
 </dt><dd> <div class="block">@param entity The persistent entity</div></dd>
@@ -637,7 +634,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/plugin/GormGraphqlGrailsPlugin.html" title="Class in org.grails.gorm.graphql.plugin">GormGraphqlGrailsPlugin</a></span> - Class in <a href="./org/grails/gorm/graphql/plugin/package-summary.html">org.grails.gorm.graphql.plugin</a>
 </dt><dd><div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/GormScalars.html" title="Class in org.grails.gorm.graphql.types.scalars">GormScalars</a></span> - Class in <a href="./org/grails/gorm/graphql/types/scalars/package-summary.html">org.grails.gorm.graphql.types.scalars</a>
-</dt><dd><div class="block"></div></dd>
+</dt><dd><div class="block">Class to store overrides for provided scalars. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/plugin/GrailsGraphQLConfiguration.html" title="Class in org.grails.gorm.graphql.plugin">GrailsGraphQLConfiguration</a></span> - Class in <a href="./org/grails/gorm/graphql/plugin/package-summary.html">org.grails.gorm.graphql.plugin</a>
 </dt><dd><div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/plugin/GrailsGraphQLDataBinder.html" title="Class in org.grails.gorm.graphql.plugin">GrailsGraphQLDataBinder</a></span> - Class in <a href="./org/grails/gorm/graphql/plugin/package-summary.html">org.grails.gorm.graphql.plugin</a>
@@ -853,8 +850,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/runtime/ReadingRuntimeDataFetcher.html#intercept(DataFetchingEnvironment)" title="Method in ReadingRuntimeDataFetcher">intercept(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/runtime/ReadingRuntimeDataFetcher.html">ReadingRuntimeDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/impl/EmptyGraphQLSchemaInterceptor.html#interceptEntity(PersistentEntity, List<GraphQLFieldDefinition.Builder>, List<GraphQLFieldDefinition.Builder>)" title="Method in EmptyGraphQLSchemaInterceptor">interceptEntity(PersistentEntity, Builder&gt;, Builder&gt;)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/impl/EmptyGraphQLSchemaInterceptor.html">EmptyGraphQLSchemaInterceptor</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html#interceptEntity(PersistentEntity, List<GraphQLFieldDefinition.Builder>, List<GraphQLFieldDefinition.Builder>)" title="Method in GraphQLSchemaInterceptor">interceptEntity(PersistentEntity, Builder&gt;, Builder&gt;)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html">GraphQLSchemaInterceptor</a>
 </dt><dd> <div class="block">Executed for each entity mapped with GraphQL. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html#interceptorComparator" title="Field in DefaultGraphQLInterceptorManager">interceptorComparator</a></span> - Field in <a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html">DefaultGraphQLInterceptorManager</a>
@@ -869,8 +864,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/runtime/AbstractRuntimeDataFetcher.html#interceptors" title="Field in AbstractRuntimeDataFetcher">interceptors</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/runtime/AbstractRuntimeDataFetcher.html">AbstractRuntimeDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html#interceptors" title="Field in DefaultGraphQLInterceptorManager">interceptors</a></span> - Field in <a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html">DefaultGraphQLInterceptorManager</a>
-</dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/impl/EmptyGraphQLSchemaInterceptor.html#interceptSchema(GraphQLObjectType.Builder, GraphQLObjectType.Builder)" title="Method in EmptyGraphQLSchemaInterceptor">interceptSchema(Builder, Builder)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/impl/EmptyGraphQLSchemaInterceptor.html">EmptyGraphQLSchemaInterceptor</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html#interceptSchema(GraphQLObjectType.Builder, GraphQLObjectType.Builder)" title="Method in GraphQLSchemaInterceptor">interceptSchema(Builder, Builder)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html">GraphQLSchemaInterceptor</a>
 </dt><dd> <div class="block">Executed a single time before the schema is created. </div></dd>
@@ -1170,9 +1163,9 @@ if (location.href.indexOf('is-external=true') == -1) {
  provided class.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html#registerFetcher(java.lang.Class, DataFetcher, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Method in DefaultGraphQLDataFetcherManager">registerFetcher(Class, DataFetcher, GraphQLDataFetcherType)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html">DefaultGraphQLDataFetcherManager</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html#registerInterceptor(java.lang.Class, org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor)" title="Method in DefaultGraphQLInterceptorManager">registerInterceptor(Class, GraphQLFetcherInterceptor)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html">DefaultGraphQLInterceptorManager</a>
-</dt><dd> <div class="block">@see GraphQLInterceptorManager#registerInterceptor</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html#registerInterceptor(java.lang.Class, org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor)" title="Method in GraphQLInterceptorManager">registerInterceptor(Class, GraphQLFetcherInterceptor)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html">GraphQLInterceptorManager</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html#registerInterceptor(org.grails.gorm.graphql.interceptor.GraphQLSchemaInterceptor)" title="Method in DefaultGraphQLInterceptorManager">registerInterceptor(GraphQLSchemaInterceptor)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html">DefaultGraphQLInterceptorManager</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html#registerInterceptor(org.grails.gorm.graphql.interceptor.GraphQLSchemaInterceptor)" title="Method in GraphQLInterceptorManager">registerInterceptor(GraphQLSchemaInterceptor)</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html">GraphQLInterceptorManager</a>
 </dt><dd> <div class="block">Registers the interceptor</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html#registerReadingDataFetcher(java.lang.Class, org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher)" title="Method in DefaultGraphQLDataFetcherManager">registerReadingDataFetcher(Class, ReadingGormDataFetcher)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html">DefaultGraphQLDataFetcherManager</a>
 </dt><dd> <div class="block"></div></dd>
@@ -1211,6 +1204,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/Schema.html" title="Class in org.grails.gorm.graphql">Schema</a></span> - Class in <a href="./org/grails/gorm/graphql/package-summary.html">org.grails.gorm.graphql</a>
 </dt><dd><div class="block">Created by jameskleeh on 5/19/17.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/Schema.html#Schema(MappingContext)" title="Constructor in Schema">Schema(MappingContext)</a></span> - Constructor in <a href="org/grails/gorm/graphql/Schema.html">Schema</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html#schemaInterceptors" title="Field in DefaultGraphQLInterceptorManager">schemaInterceptors</a></span> - Field in <a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html">DefaultGraphQLInterceptorManager</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/KeyClassQuery.html#searchMap(Map<Class, V>, java.lang.Class, boolean)" title="Method in KeyClassQuery">searchMap(Map&lt;Class, V&gt;, Class, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/types/KeyClassQuery.html">KeyClassQuery</a>
 </dt><dd> <div class="block">Searches for exact matches first. </div></dd>

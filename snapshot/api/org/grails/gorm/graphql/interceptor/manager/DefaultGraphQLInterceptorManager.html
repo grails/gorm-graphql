@@ -167,6 +167,12 @@ class DefaultGraphQLInterceptorManager
                             <td class="colLast"></td>
                         </tr>
                         
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.List&lt;GraphQLSchemaInterceptor&gt;</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#schemaInterceptors">schemaInterceptors</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
                     </table>
                    </ul>
                 </li>
@@ -205,8 +211,20 @@ class DefaultGraphQLInterceptorManager
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.util.List&lt;GraphQLSchemaInterceptor&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getInterceptors()">getInterceptors</a></strong>()</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#registerInterceptor(java.lang.Class, org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor)">registerInterceptor</a></strong>(java.lang.Class type, <a href='../../../../../../org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html'>GraphQLFetcherInterceptor</a> interceptor)</code><br>@see GraphQLInterceptorManager#registerInterceptor</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#registerInterceptor(org.grails.gorm.graphql.interceptor.GraphQLSchemaInterceptor)">registerInterceptor</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html'>GraphQLSchemaInterceptor</a> interceptor)</code><br></td>
                         </tr>
                         
                     </table>
@@ -266,6 +284,14 @@ class DefaultGraphQLInterceptorManager
                             </li>
                         </ul>
                     
+                        <a name="schemaInterceptors"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.List&lt;GraphQLSchemaInterceptor&gt; <strong>schemaInterceptors</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                 </li>
             </ul>
             
@@ -295,6 +321,15 @@ java.util.List&lt;GraphQLFetcherInterceptor&gt; <strong>getInterceptors</strong>
                             </li>
                         </ul>
                     
+                        <a name="getInterceptors()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@java.lang.Override
+java.util.List&lt;GraphQLSchemaInterceptor&gt; <strong>getInterceptors</strong>()</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="registerInterceptor(java.lang.Class, org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -302,6 +337,15 @@ java.util.List&lt;GraphQLFetcherInterceptor&gt; <strong>getInterceptors</strong>
 void <strong>registerInterceptor</strong>(java.lang.Class type, <a href='../../../../../../org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html'>GraphQLFetcherInterceptor</a> interceptor)</h4>
                                 <p>
      <DL><DT><B>See Also:</B></DT><DD><a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html#registerInterceptor' title='GraphQLInterceptorManager.registerInterceptor'>GraphQLInterceptorManager.registerInterceptor</a></DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="registerInterceptor(org.grails.gorm.graphql.interceptor.GraphQLSchemaInterceptor)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@java.lang.Override
+void <strong>registerInterceptor</strong>(<a href='../../../../../../org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html'>GraphQLSchemaInterceptor</a> interceptor)</h4>
+                                <p></p>
                             </li>
                         </ul>
                     

@@ -126,9 +126,6 @@ function addJsClass() {
 </div>
 
 
-<div class="sect1">
-<h2 id="_existing_properties">Existing Properties</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>It is possible to control several aspects of how existing persistent properties on GORM entities are represented in the generated schema.</p>
 </div>
@@ -250,8 +247,6 @@ The data type returned must be the same as the property type.
 </div>
 </div>
 </div>
-</div>
-</div>
 
 
 <h2 id="custom">4.1.2 Custom Properties</h2>
@@ -263,14 +258,23 @@ The data type returned must be the same as the property type.
 </div>
 
 
-<div class="sect1">
-<h2 id="_custom_properties">Custom Properties</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>It is possible to add custom properties to your domain class solely for the use in the GraphQL schema. You must supply either a custom data binder or a setter method for properties that will be used for input. For output, a data fetcher or getter method must be made available.</p>
 </div>
 <div class="paragraph">
 <p>In this example we are adding a property to the GraphQL schema that will allow users to retrieve the age of authors. In this case the property doesn&#8217;t make sense to allow users to provide the property when creating or updating because they should be modifying the <code>birthDay</code> instead. For that reason, <code>input false</code> is specified to prevent that behavior.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Supplying other domain classes as the return type is supported
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -300,18 +304,6 @@ The data type returned must be the same as the property type.
 </td>
 <td class="content">
 Instead of providing a data fetcher, it is possible to create a getter method to do the same thing.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-Specifying other domain classes as the type for custom properties is supported!
 </td>
 </tr>
 </table>
@@ -462,8 +454,6 @@ When creating custom types, it is important that the name you choose does not al
 </td>
 </tr>
 </table>
-</div>
-</div>
 </div>
 </div>
 

@@ -106,9 +106,70 @@ function addJsClass() {
 <div class="paragraph">
 <p>This library provides 2 types of interceptors, data fetcher and schema. Data fetcher interceptors are designed with the ability to prevent execution of a data fetcher. A common application of a data fetcher interceptor might be to implement security for the different operations available to be executed through GraphQL.</p>
 </div>
-<div class="literalblock">
+<div class="paragraph">
+<p>Schema interceptors allow users to hook directly into the schema creation process to modify the schema directly before it is created. This option is for users who are comfortable with the <a href="https://github.com/graphql-java/graphql-java">graphql-java</a> library and would like to manipulate the schema as they see fit.</p>
+</div>
+<div class="sect1">
+<h2 id="_get_the_manager">Get The Manager</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To register a data fetcher interceptor, you need to get a reference to the <a href="../api/org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html">GraphQLInterceptorManager</a>. If you are using the manager provided by default, how you access it will depend on whether you are using the plugin or standalone.</p>
+</div>
+<div class="sect2">
+<h3 id="_standalone">Standalone</h3>
+<div class="paragraph">
+<p>When creating the schema, initialize it first. The default interceptor manager will then be set.</p>
+</div>
+<div class="listingblock">
 <div class="content">
-<pre>Schema interceptors allow users to hook directly into the schema creation process to modify the schema directly before it is created. This option is for users who are comfortable with the link:https://github.com/graphql-java/graphql-java[graphql-java] library and would like to manipulate the schema as they see fit.</pre>
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.initialize()
+GraphQLInterceptorManager interceptorManager = schema.interceptorManager
+...
+schema.generate()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_plugin">Plugin</h3>
+<div class="paragraph">
+<p>For Grails applications it is recommended to reference the bean created by the plugin. The easiest way to do so is to register a bean post processor. The plugin has a class available to extend to make that easier.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">myGraphQLCustomizer(MyGraphQLCustomizer)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">src/main/groovy/demo/MyGraphQLCustomizer.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.GraphQLPostProcessor</span>
+
+<span class="type">class</span> <span class="class">MyGraphQLCustomizer</span> <span class="directive">extends</span> GraphQLPostProcessor {
+
+    <span class="annotation">@Override</span>
+    <span class="type">void</span> doWith(GraphQLInterceptorManager interceptorManager) {
+        ...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you need to customize more than 1 manager, only a single bean needs to be registered. There are <code>doWith</code> methods for all of the managers you may need to register things with.
+</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -121,6 +182,19 @@ function addJsClass() {
 <p>For all interceptor methods, if the return value is <code>false</code>, further interceptors will not be executed and the resulting data will be <code>null</code>.</p>
 </div>
 <div class="sect2">
+<h3 id="_registering">Registering</h3>
+<div class="paragraph">
+<p>Once you have access to the manager, registration of your own interceptor is easy. In this example a data fetcher interceptor is being executed for the Author domain class. The interceptor will get invoked for all operations executed for that domain.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">GraphQLInterceptorManager interceptorManager
+
+interceptorManager.registerInterceptor(Author, <span class="keyword">new</span> AuthorFetcherInterceptor())</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_provided">Provided</h3>
 <div class="paragraph">
 <p>There are 2 methods that will be invoked for provided data fetchers. Which one gets invoked depends on whether the operation is a query or a mutation. For query operations (GET, LIST), the <code>onQuery</code> method will be executed. For mutation operations (CREATE, UPDATE, DELETE), the <code>onMutation</code> method will be executed.</p>
@@ -131,7 +205,9 @@ function addJsClass() {
 </div>
 <div class="sect2">
 <h3 id="_custom">Custom</h3>
-
+<div class="paragraph">
+<p>There</p>
+</div>
 </div>
 </div>
 </div>

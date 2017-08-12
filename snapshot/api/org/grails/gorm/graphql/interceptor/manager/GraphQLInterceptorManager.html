@@ -148,8 +148,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.util.List&lt;GraphQLSchemaInterceptor&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getInterceptors()">getInterceptors</a></strong>()</code><br>@param clazz The class to search for</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#registerInterceptor(java.lang.Class, org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor)">registerInterceptor</a></strong>(java.lang.Class clazz, <a href='../../../../../../org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html'>GraphQLFetcherInterceptor</a> interceptor)</code><br>Registers the interceptor</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#registerInterceptor(org.grails.gorm.graphql.interceptor.GraphQLSchemaInterceptor)">registerInterceptor</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html'>GraphQLSchemaInterceptor</a> interceptor)</code><br>Registers the interceptor</td>
                         </tr>
                         
                     </table>
@@ -193,12 +205,30 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
+                        <a name="getInterceptors()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.List&lt;GraphQLSchemaInterceptor&gt; <strong>getInterceptors</strong>()</h4>
+                                <p>
+     <DL><DT><B>Returns:</B></DT><DD>Interceptors of the schema</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class to search for</DD></DL></p>
+                            </li>
+                        </ul>
+                    
                         <a name="registerInterceptor(java.lang.Class, org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>void <strong>registerInterceptor</strong>(java.lang.Class clazz, <a href='../../../../../../org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html'>GraphQLFetcherInterceptor</a> interceptor)</h4>
                                 <p> Registers the interceptor
      <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class operations should be intercepted for</DD><DD><code>interceptor</code> -  The interceptor to register</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="registerInterceptor(org.grails.gorm.graphql.interceptor.GraphQLSchemaInterceptor)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>registerInterceptor</strong>(<a href='../../../../../../org/grails/gorm/graphql/interceptor/GraphQLSchemaInterceptor.html'>GraphQLSchemaInterceptor</a> interceptor)</h4>
+                                <p> Registers the interceptor
+     <DL><DT><B>Parameters:</B></DT><DD><code>interceptor</code> -  The interceptor to register</DD></DL></p>
                             </li>
                         </ul>
                     

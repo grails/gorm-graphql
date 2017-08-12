@@ -155,9 +155,6 @@ function addJsClass() {
 </div>
 
 
-<div class="sect1">
-<h2 id="_existing_properties">Existing Properties</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>It is possible to control several aspects of how existing persistent properties on GORM entities are represented in the generated schema.</p>
 </div>
@@ -279,8 +276,6 @@ The data type returned must be the same as the property type.
 </div>
 </div>
 </div>
-</div>
-</div>
 
 
 <h2 id="custom">4.1.2 Custom Properties</h2>
@@ -292,14 +287,23 @@ The data type returned must be the same as the property type.
 </div>
 
 
-<div class="sect1">
-<h2 id="_custom_properties">Custom Properties</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>It is possible to add custom properties to your domain class solely for the use in the GraphQL schema. You must supply either a custom data binder or a setter method for properties that will be used for input. For output, a data fetcher or getter method must be made available.</p>
 </div>
 <div class="paragraph">
 <p>In this example we are adding a property to the GraphQL schema that will allow users to retrieve the age of authors. In this case the property doesn&#8217;t make sense to allow users to provide the property when creating or updating because they should be modifying the <code>birthDay</code> instead. For that reason, <code>input false</code> is specified to prevent that behavior.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Supplying other domain classes as the return type is supported
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -329,18 +333,6 @@ The data type returned must be the same as the property type.
 </td>
 <td class="content">
 Instead of providing a data fetcher, it is possible to create a getter method to do the same thing.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-Specifying other domain classes as the type for custom properties is supported!
 </td>
 </tr>
 </table>
@@ -491,8 +483,6 @@ When creating custom types, it is important that the name you choose does not al
 </td>
 </tr>
 </table>
-</div>
-</div>
 </div>
 </div>
 
@@ -944,6 +934,18 @@ schema.dateFormats = (<span class="predefined-type">List</span>&lt;<span class="
 schema.dateFormatLenient = (<span class="type">boolean</span>)...</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The date formats will also be used for the Java 8 date types.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -1002,6 +1004,55 @@ schema.dateFormatLenient = (<span class="type">boolean</span>)...</code></pre>
 </tr>
 </tbody>
 </table>
+<div class="sect2">
+<h3 id="_fetching_context">Fetching Context</h3>
+<div class="paragraph">
+<p>Data fetchers in GraphQL have a "context". The context is really just an Object field that can contain anything you like with the purpose of exposing it to the data fetching environment. For example, the default context created by the plugin is a Map that contains the request locale. The locale is used to render validation error messages.</p>
+</div>
+<div class="paragraph">
+<p>It is common to need to manipulate the context to include data that some or all of your data fetchers might need. If a fetcher needs to be aware of the current user and you are using the spring security plugin, you may want to add the <code>springSecurityService</code> to the context.</p>
+</div>
+<div class="paragraph">
+<p>To customize the context, register a bean named "graphQLContextBuilder" of type <a href="../api/org/grails/gorm/graphql/plugin/GraphQLContextBuilder.html">GraphQLContextBuilder</a>. If the default errors handler is being used, extend from <a href="../api/org/grails/gorm/graphql/plugin/DefaultGraphQLContextBuilder.html">DefaultGraphQLContextBuilder</a> and add to the result of the super method call.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/groovy/demo/MyGraphQLContextBuilder.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.DefaultGraphQLContextBuilder</span>
+<span class="keyword">import</span> <span class="include">org.springframework.beans.factory.annotation.Autowired</span>
+<span class="keyword">import</span> <span class="include">grails.plugin.springsecurity.SpringSecurityService</span>
+
+<span class="type">class</span> <span class="class">MyGraphQLContextBuilder</span> <span class="directive">extends</span> DefaultGraphQLContextBuilder {
+
+    <span class="annotation">@Autowired</span>
+    SpringSecurityService springSecurityService
+
+    <span class="annotation">@Override</span>
+    <span class="predefined-type">Map</span> buildContext(GrailsWebRequest request) {
+        <span class="predefined-type">Map</span> context = <span class="local-variable">super</span>.buildContext(request)
+        context.springSecurityService = springSecurityService
+        context
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">graphQLContextBuilder(MyGraphQLContextBuilder)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then in a data fetcher:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">T get(DataFetchingEnvironment environment) {
+    ((<span class="predefined-type">Map</span>) environment.context).springSecurityService
+}</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 
