@@ -7,13 +7,17 @@ import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLOutputType
 import groovy.transform.CompileStatic
 import org.grails.datastore.gorm.GormValidateable
+import org.grails.gorm.graphql.response.GraphQLLocalResolver
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.springframework.context.MessageSource
+import org.springframework.validation.Errors
 import org.springframework.validation.FieldError
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLList.list
 import static graphql.schema.GraphQLObjectType.newObject
+
+import org.springframework.validation.ObjectError
 
 /**
  * The default way to respond with validation errors in GraphQL.
@@ -32,10 +36,10 @@ import static graphql.schema.GraphQLObjectType.newObject
 class DefaultGraphQLErrorsResponseHandler implements GraphQLErrorsResponseHandler {
 
     protected MessageSource messageSource
-    protected String name = 'Error'
+    protected String name = 'Errors'
     protected String description = 'Validation Errors'
     protected String fieldName = 'errors'
-    protected String fieldDescription = 'A list of validation errors on the entity'
+    protected String fieldDescription = 'Validation errors on the entity'
 
     DefaultGraphQLErrorsResponseHandler(MessageSource messageSource) {
         this.messageSource = messageSource
@@ -51,6 +55,9 @@ class DefaultGraphQLErrorsResponseHandler implements GraphQLErrorsResponseHandle
                 }
             }
         }
+        else if(environment.context instanceof GraphQLLocalResolver){
+            return ((GraphQLLocalResolver)environment.context).resolveLocale()
+        }
         Locale.default
     }
 
@@ -64,31 +71,73 @@ class DefaultGraphQLErrorsResponseHandler implements GraphQLErrorsResponseHandle
     protected DataFetcher messageFetcher = new DataFetcher<String>() {
         @Override
         String get(DataFetchingEnvironment environment) {
-            messageSource.getMessage((FieldError) environment.source, getLocale(environment))
+            messageSource.getMessage((ObjectError) environment.source, getLocale(environment))
+        }
+    }
+    protected DataFetcher globalErrorsFetcher = new DataFetcher<List<String>>() {
+        @Override
+        List<String> get(DataFetchingEnvironment environment) {
+            Iterator<ObjectError> globalObjectErrors = ((Errors)environment.source).globalErrors.iterator()
+            List<String> objectErrors = []
+            while(globalObjectErrors.hasNext()){
+                objectErrors.add(messageSource.getMessage(globalObjectErrors.next(), getLocale(environment)))
+            }
+            return objectErrors
         }
     }
 
-    protected DataFetcher errorsFetcher = new DataFetcher<List<FieldError>>() {
+    protected DataFetcher fieldErrorsFetcher = new DataFetcher<List<FieldError>>() {
         @Override
         List<FieldError> get(DataFetchingEnvironment environment) {
-            ((GormValidateable)environment.source).errors.fieldErrors
+            ((Errors)environment.source).fieldErrors
+        }
+    }
+    
+
+    protected DataFetcher errorsFetcher = new DataFetcher<Errors>() {
+        @Override
+        Errors get(DataFetchingEnvironment environment) {
+            ((GormValidateable)environment.source).errors
         }
     }
 
     protected List<GraphQLFieldDefinition> getFieldDefinitions(GraphQLTypeManager typeManager) {
         [newFieldDefinition()
-            .name('field')
-            .type((GraphQLOutputType)typeManager.getType(String, false))
-            .dataFetcher(fieldFetcher)
-            .build(),
+             .name('globalErrors')
+             .type(list((GraphQLOutputType)typeManager.getType(String, false)))
+             .dataFetcher(globalErrorsFetcher)
+             .build(),
 
-        newFieldDefinition()
-            .name('message')
-            .type((GraphQLOutputType)typeManager.getType(String))
-            .dataFetcher(messageFetcher)
-            .build()]
+         newFieldDefinition()
+             .name('fieldErrors')
+             .type(buildFieldErrorsDefinition(typeManager))
+             .dataFetcher(fieldErrorsFetcher)
+             .build()]        
+        
     }
-
+    
+    protected List<GraphQLFieldDefinition> getFieldErrorDefinitions(GraphQLTypeManager typeManager) {
+        [newFieldDefinition()
+             .name('field')
+             .type((GraphQLOutputType)typeManager.getType(String, false))
+             .dataFetcher(fieldFetcher)
+             .build(),
+         newFieldDefinition()
+             .name('message')
+             .type((GraphQLOutputType)typeManager.getType(String))
+             .dataFetcher(messageFetcher)
+             .build()
+        ]
+    }
+    
+    protected GraphQLObjectType buildFieldErrorsDefinition(GraphQLTypeManager typeManager) {
+        newObject()
+            .name('FieldErrors')
+            .description(description)
+            .fields(getFieldErrorDefinitions(typeManager))
+            .build()
+    }
+    
     protected GraphQLObjectType buildDefinition(GraphQLTypeManager typeManager) {
         newObject()
             .name(name)
@@ -105,7 +154,7 @@ class DefaultGraphQLErrorsResponseHandler implements GraphQLErrorsResponseHandle
             cachedDefinition = newFieldDefinition()
                     .name(fieldName)
                     .description(fieldDescription)
-                    .type(list(buildDefinition(typeManager)))
+                    .type(buildDefinition(typeManager))
                     .dataFetcher(errorsFetcher).build()
         }
         cachedDefinition

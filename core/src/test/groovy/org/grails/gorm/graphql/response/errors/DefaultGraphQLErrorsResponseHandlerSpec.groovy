@@ -10,6 +10,7 @@ import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.testing.MockDataFetchingEnvironment
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.springframework.context.MessageSource
+import org.springframework.validation.Errors
 import org.springframework.validation.FieldError
 import spock.lang.Shared
 import spock.lang.Specification
@@ -52,16 +53,26 @@ class DefaultGraphQLErrorsResponseHandlerSpec extends Specification implements G
 
         when:
         GraphQLFieldDefinition field = handler.getFieldDefinition(typeManager)
-        GraphQLObjectType type = unwrap([], field.type)
+        GraphQLObjectType type = field.type
 
         then:
-        field.description == 'A list of validation errors on the entity'
+        field.description == 'Validation errors on the entity'
         field.name == 'errors'
-        ((List<FieldError>)field.dataFetcher.get(mockObjectEnv)).size() == 1
+        (field.dataFetcher.get(mockObjectEnv)) instanceof Errors
 
-        type.name == 'Error'
+        type.name == 'Errors'
         type.description == 'Validation Errors'
         type.fieldDefinitions.size() == 2
+        type.fieldDefinitions[0].name == 'globalErrors'
+        unwrap([null], type.fieldDefinitions[0].type) == Scalars.GraphQLString
+
+        type.fieldDefinitions[1].name == 'fieldErrors'
+        type.fieldDefinitions[1].type instanceof GraphQLObjectType
+        
+        when:
+        type = (GraphQLObjectType) type.fieldDefinitions[1].type
+        
+        then:
         type.fieldDefinitions[0].name == 'field'
         unwrap(null, type.fieldDefinitions[0].type) == Scalars.GraphQLString
         type.fieldDefinitions[0].dataFetcher.get(mockFieldEnv) == 'book'
