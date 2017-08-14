@@ -67,6 +67,9 @@ grails:
         defaultScope: singleton
     converters:
         encoding: UTF-8
+    gorm:
+        graphql:
+            dateFormats: ["yyyy-MM-dd'T'HH:mm:ssZ", "HH:mm:ssZ", "HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd"]
 
 ---
 hibernate:

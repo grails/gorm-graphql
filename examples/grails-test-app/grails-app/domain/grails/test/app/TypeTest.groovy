@@ -1,9 +1,8 @@
 package grails.test.app
 
-import java.sql.Blob
-import java.sql.Clob
 import java.sql.Time
 import java.sql.Timestamp
+import java.time.*
 
 class TypeTest {
 
@@ -21,7 +20,7 @@ class TypeTest {
     UUID uuid
     URL url
     URI uri
-    java.util.Date date
+    Date date
     Byte[] bytes
     Character[] characters
     Time time
@@ -29,6 +28,14 @@ class TypeTest {
     Timestamp timestamp
     Currency currency
     TimeZone timeZone
+
+    LocalDate localDate
+    LocalDateTime localDateTime
+    LocalTime localTime
+    OffsetDateTime offsetDateTime
+    OffsetTime offsetTime
+    ZonedDateTime zonedDateTime
+    Instant instant
 
     char[] charsPrimitive
     byte[] bytesPrimitive

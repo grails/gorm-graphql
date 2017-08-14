@@ -9,9 +9,7 @@ import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.model.types.Basic
 import org.grails.datastore.mapping.model.types.ToMany
 import org.grails.gorm.graphql.GraphQL
-import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.Schema
-import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.types.GraphQLOperationType

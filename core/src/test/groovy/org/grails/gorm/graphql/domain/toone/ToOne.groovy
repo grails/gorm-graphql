@@ -6,6 +6,7 @@ import java.sql.Blob
 import java.sql.Clob
 import java.sql.Time
 import java.sql.Timestamp
+import java.time.*
 
 @Entity
 class ToOne {
@@ -35,6 +36,14 @@ class ToOne {
     Timestamp timestamp
     Currency currency
     TimeZone timeZone
+
+    LocalDate localDate
+    LocalDateTime localDateTime
+    LocalTime localTime
+    OffsetDateTime offsetDateTime
+    OffsetTime offsetTime
+    ZonedDateTime zonedDateTime
+    Instant instant
 
     char[] charsPrimitive
     byte[] bytesPrimitive

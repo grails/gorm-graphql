@@ -40,12 +40,28 @@ import org.springframework.validation.DataBinder
 @CompileStatic
 class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQLMapping>, ExecutesClosures {
 
-    List<CustomGraphQLProperty> additional = []
-    Map<String, GraphQLPropertyMapping> propertyMappings = [:]
+    private List<CustomGraphQLProperty> additional = []
+    private Map<String, GraphQLPropertyMapping> propertyMappings = [:]
     Set<String> excluded = [] as Set
     Operations operations = new Operations()
-    List<CustomOperation> customQueryOperations = []
-    List<CustomOperation> customMutationOperations = []
+    private List<CustomOperation> customQueryOperations = []
+    private List<CustomOperation> customMutationOperations = []
+
+    List<CustomGraphQLProperty> getAdditional() {
+        new ArrayList<CustomGraphQLProperty>(additional)
+    }
+
+    Map<String, GraphQLPropertyMapping> getPropertyMappings() {
+        new HashMap<String, GraphQLPropertyMapping>(propertyMappings)
+    }
+
+    List<CustomOperation> getCustomQueryOperations() {
+        new ArrayList<CustomOperation>(customQueryOperations)
+    }
+
+    List<CustomOperation> getCustomMutationOperations() {
+        new ArrayList<CustomOperation>(customMutationOperations)
+    }
 
     /**
      * Exclude one or more properties from being included in the schema

@@ -6,8 +6,6 @@ import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.gorm.graphql.GraphQLEntityHelper
-import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.types.GraphQLOperationType
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
@@ -62,17 +60,10 @@ trait Typed<T> {
             if (entity != null) {
                 if (propertyType.operationType == GraphQLOperationType.OUTPUT) {
                     propertyType = GraphQLPropertyType.OUTPUT
-                    GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity)
-                    if (mapping != null) {
-                        graphQLType = typeManager.createReference(entity, propertyType)
-                    }
-                    else {
-                        graphQLType = typeManager.getQueryType(entity, propertyType.nestedType)
-                    }
+                    graphQLType = typeManager.getQueryType(entity, propertyType.nestedType)
                 }
                 else {
-                    GraphQLPropertyType mutationType = propertyType.nestedType
-                    graphQLType = typeManager.getMutationType(entity, mutationType, nullable)
+                    graphQLType = typeManager.getMutationType(entity, propertyType.nestedType, nullable)
                 }
             }
             else {
