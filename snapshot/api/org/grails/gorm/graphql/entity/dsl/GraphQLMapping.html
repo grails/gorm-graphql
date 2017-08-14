@@ -181,33 +181,13 @@ class GraphQLMapping
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.util.List&lt;CustomGraphQLProperty&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#additional">additional</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code><strong>java.util.List&lt;CustomOperation&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#customMutationOperations">customMutationOperations</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.util.List&lt;CustomOperation&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#customQueryOperations">customQueryOperations</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>java.util.Set&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#excluded">excluded</a></code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLMapping.Operations.html'>GraphQLMapping.Operations</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#operations">operations</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code><strong>java.util.Map&lt;java.lang.String, <a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html' title='GraphQLPropertyMapping'>GraphQLPropertyMapping</a>&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#propertyMappings">propertyMappings</a></code><br></td>
                         </tr>
                         
                     </table>
@@ -270,6 +250,30 @@ class GraphQLMapping
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#exclude(java.lang.String)">exclude</a></strong>(java.lang.String... properties)</code><br>Exclude one or more properties from being included in the schema</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.util.List&lt;CustomGraphQLProperty&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getAdditional()">getAdditional</a></strong>()</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.util.List&lt;CustomOperation&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getCustomMutationOperations()">getCustomMutationOperations</a></strong>()</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.util.List&lt;CustomOperation&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getCustomQueryOperations()">getCustomQueryOperations</a></strong>()</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.util.Map&lt;java.lang.String, <a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html' title='GraphQLPropertyMapping'>GraphQLPropertyMapping</a>&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getPropertyMappings()">getPropertyMappings</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -389,30 +393,6 @@ class GraphQLMapping
                 </a>
                     <h3>Property Detail</h3>
                     
-                        <a name="additional"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>java.util.List&lt;CustomGraphQLProperty&gt; <strong>additional</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="customMutationOperations"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>java.util.List&lt;CustomOperation&gt; <strong>customMutationOperations</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="customQueryOperations"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>java.util.List&lt;CustomOperation&gt; <strong>customQueryOperations</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
                         <a name="excluded"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -425,14 +405,6 @@ class GraphQLMapping
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLMapping.Operations.html'>GraphQLMapping.Operations</a> <strong>operations</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="propertyMappings"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>java.util.Map&lt;java.lang.String, <a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html' title='GraphQLPropertyMapping'>GraphQLPropertyMapping</a>&gt; <strong>propertyMappings</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -515,6 +487,38 @@ class GraphQLMapping
                                 <h4>void <strong>exclude</strong>(java.lang.String... properties)</h4>
                                 <p> Exclude one or more properties from being included in the schema
      <DL><DT><B>Parameters:</B></DT><DD><code>properties</code> -  One or more property names</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getAdditional()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.List&lt;CustomGraphQLProperty&gt; <strong>getAdditional</strong>()</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getCustomMutationOperations()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.List&lt;CustomOperation&gt; <strong>getCustomMutationOperations</strong>()</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getCustomQueryOperations()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.List&lt;CustomOperation&gt; <strong>getCustomQueryOperations</strong>()</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getPropertyMappings()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.Map&lt;java.lang.String, <a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html' title='GraphQLPropertyMapping'>GraphQLPropertyMapping</a>&gt; <strong>getPropertyMappings</strong>()</h4>
+                                <p></p>
                             </li>
                         </ul>
                     
