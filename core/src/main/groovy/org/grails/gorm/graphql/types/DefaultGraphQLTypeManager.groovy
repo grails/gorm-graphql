@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap
 @CompileStatic
 class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
-    private List<PersistentEntity> entitiesInProgress = []
+    private Map<GraphQLPropertyType, List<PersistentEntity>> entitiesInProgress = [:].withDefault { [] }
 
     protected static final Map<Class, GraphQLType> TYPE_MAP = new ConcurrentHashMap<Class, GraphQLType>([
         (Integer): GormScalars.GraphQLInt,
@@ -199,6 +199,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     @Override
     GraphQLOutputType getQueryType(PersistentEntity entity, GraphQLPropertyType type) {
         if (objectTypeBuilders.containsKey(type)) {
+            List<PersistentEntity> entitiesInProgress = entitiesInProgress.get(type)
             if (entitiesInProgress.contains(entity)) {
                 (GraphQLOutputType)createReference(entity, type)
             }
@@ -217,7 +218,17 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     @Override
     GraphQLInputType getMutationType(PersistentEntity entity, GraphQLPropertyType type, boolean nullable) {
         if (inputObjectTypeBuilders.containsKey(type)) {
-            GraphQLInputType inputType = inputObjectTypeBuilders.get(type).build(entity)
+            GraphQLInputType inputType
+            List<PersistentEntity> entitiesInProgress = entitiesInProgress.get(type)
+            if (entitiesInProgress.contains(entity)) {
+                inputType = (GraphQLInputType)createReference(entity, type)
+            }
+            else {
+                entitiesInProgress.add(entity)
+                inputType = inputObjectTypeBuilders.get(type).build(entity)
+                entitiesInProgress.removeElement(entity)
+            }
+
             if (nullable) {
                 inputType
             }

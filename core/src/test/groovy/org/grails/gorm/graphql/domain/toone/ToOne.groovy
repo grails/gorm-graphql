@@ -2,8 +2,6 @@ package org.grails.gorm.graphql.domain.toone
 
 import grails.gorm.annotation.Entity
 
-import java.sql.Blob
-import java.sql.Clob
 import java.sql.Time
 import java.sql.Timestamp
 import java.time.*
@@ -12,6 +10,7 @@ import java.time.*
 class ToOne {
 
     One one
+    CircularOne circularOne
     Enum anEnum
 
     Integer integer

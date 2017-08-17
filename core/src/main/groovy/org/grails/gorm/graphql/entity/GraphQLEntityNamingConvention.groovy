@@ -62,7 +62,7 @@ class GraphQLEntityNamingConvention {
     /**
      * @param entity The persistent entity
      * @param type The property returnType
-     * @return The name to use. Ex: "Person", "PersonCreate", "PersonUpdate", "PersonInputNested"
+     * @return The name to use. Ex: "Person", "PersonCreate", "PersonUpdate", "PersonCreateNested"
      */
     String getType(PersistentEntity entity, GraphQLPropertyType type) {
         getType(entity.javaClass.simpleName, type)
@@ -71,7 +71,7 @@ class GraphQLEntityNamingConvention {
     /**
      * @param typeName The custom type name
      * @param type The property returnType
-     * @return The name to use. Ex: "Person", "PersonCreate", "PersonUpdate", "PersonInputNested"
+     * @return The name to use. Ex: "Person", "PersonCreate", "PersonUpdate", "PersonCreateNested"
      */
     String getType(String typeName, GraphQLPropertyType type) {
         typeName + normalizeType(type)

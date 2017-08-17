@@ -3,6 +3,7 @@ package org.grails.gorm.graphql.types.input
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.types.Association
+import org.grails.datastore.mapping.model.types.ManyToOne
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.types.GraphQLTypeManager
@@ -33,7 +34,13 @@ class NestedInputObjectTypeBuilder extends InputObjectTypeBuilder {
                 .condition { PersistentProperty prop ->
                     if (prop instanceof Association) {
                         Association association = (Association)prop
-                        (association.owningSide || !association.bidirectional) && !association.circular
+                        boolean owningSide
+                        if (association instanceof ManyToOne) {
+                            owningSide = false
+                        } else {
+                            owningSide = association.owningSide
+                        }
+                        (owningSide || !association.bidirectional)
                     } else {
                         true
                     }
