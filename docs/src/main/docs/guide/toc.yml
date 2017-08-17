@@ -21,4 +21,5 @@ types: Type Conversion And Creation
 dataFetchers: Data Fetchers
 dataBinders: Data Binding
 interceptors: Interceptors
+otherNotes: Other Notes
 APIDocs: API Docs

@@ -1,4 +1,4 @@
-package org.grails.gorm.graphql.plugin
+package org.grails.gorm.graphql.plugin.binding
 
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 
