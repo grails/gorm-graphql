@@ -15,7 +15,6 @@ import org.grails.gorm.graphql.types.output.EmbeddedObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ShowObjectTypeBuilder
 import org.grails.gorm.graphql.types.scalars.*
-import org.springframework.util.StringUtils
 
 import java.lang.reflect.Array
 import java.sql.Time
@@ -192,7 +191,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     }
 
     @Override
-    GraphQLType createReference(PersistentEntity entity, GraphQLPropertyType type) {
+    GraphQLTypeReference createReference(PersistentEntity entity, GraphQLPropertyType type) {
         new GraphQLTypeReference(namingConvention.getType(entity, type))
     }
 

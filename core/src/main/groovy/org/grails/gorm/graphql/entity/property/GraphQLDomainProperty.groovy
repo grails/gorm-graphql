@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.entity.property
 
+import graphql.schema.DataFetcher
 import graphql.schema.GraphQLType
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
@@ -60,5 +61,5 @@ interface GraphQLDomainProperty {
      * will be used to create a {@link org.grails.gorm.graphql.fetcher.impl.ClosureDataFetcher},
      * otherwise the default fetcher will be used.
      */
-    Closure getDataFetcher()
+    DataFetcher getDataFetcher()
 }

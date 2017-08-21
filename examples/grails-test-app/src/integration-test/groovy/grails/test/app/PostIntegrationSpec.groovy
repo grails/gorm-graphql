@@ -237,13 +237,14 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
     }
 
     void cleanupSpec() {
-        graphQL.graphql("""
+        def result = graphQL.graphql("""
             mutation {
               postDelete(id: 2) {
                 success
               }
             }
-        """)
+        """).json.data.postDelete
+        assert result.success
         def resp = graphQL.graphql("""
             { 
               tagList {
@@ -252,14 +253,17 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
             }
         """)
         def tags = resp.json.data.tagList
+        assert tags.size() == 3
         tags.each {
             resp = graphQL.graphql("""
               mutation {
                 tagDelete(id: ${it.id}) {
                   success
+                  error
                 }
               }
             """)
+            assert resp.json.data.tagDelete.success
         }
     }
 }

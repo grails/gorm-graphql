@@ -42,21 +42,14 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         this.associations = this.entityFetchOptions.associations
     }
 
-    @SuppressWarnings(['NestedBlockDepth'])
     protected Map getFetchArguments(DataFetchingEnvironment environment) {
-
         Set<String> joinProperties = entityFetchOptions.getJoinProperties(environment)
 
         if (propertyName) {
             joinProperties.add(propertyName)
         }
 
-        if (joinProperties) {
-            [fetch: joinProperties.collectEntries { [(it): 'join'] } ]
-        }
-        else {
-            [:]
-        }
+        entityFetchOptions.getFetchArgument(joinProperties)
     }
 
     protected Object loadEntity(PersistentEntity entity, Object argument) {

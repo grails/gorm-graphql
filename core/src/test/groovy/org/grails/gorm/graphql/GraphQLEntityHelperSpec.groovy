@@ -1,9 +1,9 @@
 package org.grails.gorm.graphql
 
 import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.gorm.graphql.domain.description.Annotation
-import org.grails.gorm.graphql.domain.description.MappingComment
-import org.grails.gorm.graphql.domain.description.MappingDescription
+import org.grails.gorm.graphql.domain.general.description.Annotation
+import org.grails.gorm.graphql.domain.hibernate.description.MappingComment
+import org.grails.gorm.graphql.domain.general.description.MappingDescription
 
 /**
  * Created by jameskleeh on 7/25/17.

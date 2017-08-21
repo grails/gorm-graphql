@@ -14,47 +14,51 @@ enum GraphQLPropertyType {
     /**
      * For returning data
      */
-    OUTPUT(GraphQLOperationType.OUTPUT),
+    OUTPUT(GraphQLOperationType.OUTPUT, false, false),
 
     /**
      * For creating data
      */
-    CREATE(GraphQLOperationType.CREATE),
+    CREATE(GraphQLOperationType.CREATE, false, false),
 
     /**
      * For updating data (typically the same as create except nulls allowed)
      */
-    UPDATE(GraphQLOperationType.UPDATE),
+    UPDATE(GraphQLOperationType.UPDATE, false, false),
 
     /**
      * For supplying association data during a create
      */
-    CREATE_NESTED(GraphQLOperationType.CREATE),
+    CREATE_NESTED(GraphQLOperationType.CREATE, false, true),
 
     /**
      * For supplying association data during an update
      */
-    UPDATE_NESTED(GraphQLOperationType.UPDATE),
+    UPDATE_NESTED(GraphQLOperationType.UPDATE, false, true),
 
     /**
      * For creating embedded properties
      */
-    CREATE_EMBEDDED(GraphQLOperationType.CREATE),
+    CREATE_EMBEDDED(GraphQLOperationType.CREATE, true, false),
 
     /**
      * For updating embedded properties
      */
-    UPDATE_EMBEDDED(GraphQLOperationType.UPDATE),
+    UPDATE_EMBEDDED(GraphQLOperationType.UPDATE, true, false),
 
     /**
      * For displaying embedded properties
      */
-    OUTPUT_EMBEDDED(GraphQLOperationType.OUTPUT)
+    OUTPUT_EMBEDDED(GraphQLOperationType.OUTPUT, true, false)
 
     final GraphQLOperationType operationType
+    final boolean embedded
+    final boolean nested
 
-    GraphQLPropertyType(GraphQLOperationType operationType) {
+    GraphQLPropertyType(GraphQLOperationType operationType, boolean embedded, boolean nested) {
         this.operationType = operationType
+        this.embedded = embedded
+        this.nested = nested
     }
 
     GraphQLPropertyType getEmbeddedType() {

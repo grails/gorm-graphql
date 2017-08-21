@@ -12,7 +12,21 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  */
 interface GraphQLDeleteResponseHandler {
 
+    /**
+     * Creates the schema object for a delete response
+     *
+     * @param typeManager The type manager
+     * @return The GraphQL type
+     */
     GraphQLObjectType getObjectType(GraphQLTypeManager typeManager)
 
-    Object createResponse(DataFetchingEnvironment environment, boolean success)
+    /**
+     * Create the response data to be sent to the client
+     *
+     * @param environment The data fetching environment
+     * @param success Whether or not the operation was successful
+     * @param exception If not successful, the exception that occurred
+     * @return Response data
+     */
+    Object createResponse(DataFetchingEnvironment environment, boolean success, Exception exception)
 }

@@ -7,6 +7,8 @@ dependencies {
     codenarc 'org.codenarc:CodeNarc:0.25.2'
 
     testCompile "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
+    testCompile "org.grails:grails-datastore-gorm-mongodb:6.1.2.RELEASE"
+    testCompile 'com.github.fakemongo:fongo:2.1.0'
     testRuntime "com.h2database:h2:1.4.192"
     testRuntime "org.apache.tomcat:tomcat-jdbc:8.5.0"
     testRuntime "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"

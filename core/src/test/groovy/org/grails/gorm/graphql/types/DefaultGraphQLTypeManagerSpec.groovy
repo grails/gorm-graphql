@@ -13,7 +13,7 @@ import graphql.schema.GraphQLTypeReference
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQL
 import org.grails.gorm.graphql.HibernateSpec
-import org.grails.gorm.graphql.domain.toone.One
+import org.grails.gorm.graphql.domain.general.toone.One
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler

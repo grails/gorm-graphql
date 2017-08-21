@@ -19,6 +19,9 @@ class DefaultGraphQLDeleteResponseHandlerSpec extends Specification implements G
             getType(Boolean, false) >> {
                 GraphQLNonNull.nonNull(Scalars.GraphQLBoolean)
             }
+            getType(String) >> {
+                Scalars.GraphQLString
+            }
         }
     }
 
@@ -33,8 +36,9 @@ class DefaultGraphQLDeleteResponseHandlerSpec extends Specification implements G
 
     void "test the return data"() {
         expect:
-        handler.createResponse(null, false) == [success: false]
-        handler.createResponse(null, true) == [success: true]
+        handler.createResponse(null, false, null) == [success: false, error: null]
+        handler.createResponse(null, true, null) == [success: true, error: null]
+        handler.createResponse(null, true, new RuntimeException('exception')) == [success: true, error: 'exception']
     }
 
     void "test the object type definition"() {
@@ -44,8 +48,10 @@ class DefaultGraphQLDeleteResponseHandlerSpec extends Specification implements G
         type.name == 'DeleteResult'
         type.description == 'Whether or not the operation was successful'
         type.interfaces.empty
-        type.fieldDefinitions.size() == 1
+        type.fieldDefinitions.size() == 2
         type.fieldDefinitions[0].name == 'success'
+        type.fieldDefinitions[1].name == 'error'
         unwrap(null, type.fieldDefinitions[0].type) == Scalars.GraphQLBoolean
+        type.fieldDefinitions[1].type == Scalars.GraphQLString
     }
 }

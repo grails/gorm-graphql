@@ -4,10 +4,11 @@ import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.config.Entity
 import org.grails.datastore.mapping.model.IllegalMappingException
 import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.datastore.mapping.reflect.ClassPropertyFetcher
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.dsl.LazyGraphQLMapping
 
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 
 /**
@@ -52,11 +53,10 @@ class GraphQLEntityHelper {
         if (mappings.containsKey(entity)) {
             return mappings.get(entity)
         }
-        MetaClass metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(entity.javaClass)
         Object graphql
-        for (MetaProperty property: metaClass.properties) {
-            if (Modifier.isStatic(property.getModifiers()) && property.name.equalsIgnoreCase('graphql')) {
-                graphql = property.getProperty(entity.javaClass)
+        for(Method method: entity.javaClass.declaredMethods) {
+            if (Modifier.isStatic(method.modifiers) && method.name.equalsIgnoreCase('getgraphql')) {
+                graphql = method.invoke(null)
                 break
             }
         }

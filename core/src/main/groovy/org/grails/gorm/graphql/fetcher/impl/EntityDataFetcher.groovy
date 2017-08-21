@@ -100,7 +100,7 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
         new DetachedCriteria(entity.javaClass)
     }
 
-    protected List executeQuery(DataFetchingEnvironment environment, Map queryArgs) {
+    protected T executeQuery(DataFetchingEnvironment environment, Map queryArgs) {
         buildCriteria(environment).list(queryArgs)
     }
 

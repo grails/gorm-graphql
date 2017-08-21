@@ -1,20 +1,24 @@
 package org.grails.gorm.graphql.types.output
 
+import graphql.TypeResolutionEnvironment
 import graphql.schema.GraphQLFieldDefinition
+import graphql.schema.GraphQLInterfaceType
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLOutputType
+import graphql.schema.GraphQLType
+import graphql.schema.TypeResolver
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
-import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetcher
 import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
-import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
-import static graphql.schema.GraphQLObjectType.newObject
+import static GraphQLFieldDefinition.newFieldDefinition
+import static GraphQLObjectType.newObject
+import static GraphQLInterfaceType.newInterface
 
 /**
  * A base class used to create object types that represent an entity
@@ -25,7 +29,7 @@ import static graphql.schema.GraphQLObjectType.newObject
 @CompileStatic
 abstract class ObjectTypeBuilder {
 
-    protected Map<PersistentEntity, GraphQLObjectType> objectTypeCache = [:]
+    protected Map<PersistentEntity, GraphQLOutputType> objectTypeCache = [:]
     protected GraphQLDomainPropertyManager propertyManager
     protected GraphQLTypeManager typeManager
     protected GraphQLErrorsResponseHandler errorsResponseHandler
@@ -47,40 +51,78 @@ abstract class ObjectTypeBuilder {
                 .name(prop.name)
                 .deprecate(prop.deprecationReason)
                 .description(prop.description)
-                .dataFetcher(prop.dataFetcher ? new ClosureDataFetcher(prop.dataFetcher) : null)
+                .dataFetcher(prop.dataFetcher)
                 .type((GraphQLOutputType)prop.getGraphQLType(typeManager, type))
     }
 
-    GraphQLObjectType build(PersistentEntity entity) {
+    GraphQLOutputType build(PersistentEntity entity) {
 
-        GraphQLObjectType objectType
+        GraphQLOutputType objectType
 
         if (objectTypeCache.containsKey(entity)) {
             objectTypeCache.get(entity)
         }
         else {
             final String DESCRIPTION = GraphQLEntityHelper.getDescription(entity)
+            final String NAME = typeManager.namingConvention.getType(entity, type)
+
+
+            List<GraphQLFieldDefinition> fields = new ArrayList<>(properties.size()+1)
 
             List<GraphQLDomainProperty> properties = builder.getProperties(entity)
-
-            GraphQLObjectType.Builder obj = newObject()
-                    .name(typeManager.namingConvention.getType(entity, type))
-                    .description(DESCRIPTION)
-
             for (GraphQLDomainProperty prop: properties) {
                 if (prop.output) {
-                    obj.field(buildField(prop))
+                    fields.add(buildField(prop).build())
                 }
             }
 
             if (errorsResponseHandler != null) {
-                obj.field(errorsResponseHandler.getFieldDefinition(typeManager))
+                fields.add(errorsResponseHandler.getFieldDefinition(typeManager))
             }
 
-            objectType = obj.build()
+            boolean hasChildEntities = entity.root && !entity.mappingContext.getDirectChildEntities(entity).empty
+
+            if (hasChildEntities && !type.embedded) {
+                objectType = buildInterfaceType(entity, NAME, DESCRIPTION, fields)
+            }
+            else {
+                objectType = buildObjectType(entity, NAME, DESCRIPTION, fields)
+            }
+
             objectTypeCache.put(entity, objectType)
             objectType
         }
+    }
+
+    GraphQLObjectType buildObjectType(final PersistentEntity entity, final String name, final String description, final List<GraphQLFieldDefinition> fields) {
+
+        GraphQLObjectType.Builder obj = newObject()
+                .name(name)
+                .description(description)
+                .fields(fields)
+
+        if (!entity.isRoot()) {
+            obj.withInterface(typeManager.createReference(entity.rootEntity, GraphQLPropertyType.OUTPUT))
+        }
+
+        obj.build()
+    }
+
+    GraphQLInterfaceType buildInterfaceType(final PersistentEntity entity, final String name, final String description, final List<GraphQLFieldDefinition> fields) {
+
+        GraphQLInterfaceType.Builder obj = newInterface()
+                .name(name)
+                .description(description)
+                .fields(fields)
+                .typeResolver(new TypeResolver() {
+                    @Override
+                    GraphQLObjectType getType(TypeResolutionEnvironment env) {
+                        final String TYPE_NAME = typeManager.namingConvention.getType(env.object.class.simpleName, GraphQLPropertyType.OUTPUT)
+                        (GraphQLObjectType)env.schema.getType(TYPE_NAME)
+                    }
+                })
+
+        obj.build()
     }
 
 }

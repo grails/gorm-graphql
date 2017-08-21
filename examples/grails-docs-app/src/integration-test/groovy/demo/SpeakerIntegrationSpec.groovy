@@ -132,6 +132,7 @@ curl -X "POST" "{url}" \
 mutation {
   speakerDelete(id: 8) {
     success
+    error
   }
 }'
             // end::deleteCurlCommand[]
@@ -147,13 +148,15 @@ mutation {
 {
     "data": {
         "speakerDelete": {
-            "success": true
+            "success": true,
+            "error": null  //<1>
         }
     }
 }
 // end::deleteResponse[]
 """.replace('\n// tag::deleteResponse[]\n', '')
-                        .replace('\n// end::deleteResponse[]\n', '')
+   .replace('\n// end::deleteResponse[]\n', '')
+   .replace('  //<1>', '')
 
     }
 

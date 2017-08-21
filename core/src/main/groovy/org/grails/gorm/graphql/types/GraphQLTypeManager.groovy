@@ -3,12 +3,16 @@ package org.grails.gorm.graphql.types
 import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLType
+import graphql.schema.GraphQLTypeReference
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 
 /**
  * An interface for handling type conversion and creation with GraphQL.
- * Implementations must handle circular query type creations.
+ * Implementations must handle circular query type creations. It is expected
+ * subsequent calls to {@link #getType}, {@link #getEnumType},
+ * {@link #getMutationType}, and {@link #getQueryType} will return the same
+ * instance (cached).
  *
  * @author James Kleeh
  * @since 1.0.0
@@ -75,7 +79,7 @@ interface GraphQLTypeManager {
      * @param type The type of reference
      * @return The domain reference
      */
-    GraphQLType createReference(PersistentEntity entity, GraphQLPropertyType type)
+    GraphQLTypeReference createReference(PersistentEntity entity, GraphQLPropertyType type)
 
     /**
      * Retrieves a GraphQL type used for mutations that represents the provided entity

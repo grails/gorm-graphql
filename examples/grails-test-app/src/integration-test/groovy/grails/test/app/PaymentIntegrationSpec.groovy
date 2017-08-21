@@ -79,16 +79,20 @@ class PaymentIntegrationSpec extends Specification implements GraphQLSpec {
               payment(id: 1) {
                 id
                 amount
-                className
+                ... on CreditCardPayment {
+                    cardNumber
+                }
               }
             }
         """)
-        obj = resp.json.data.payment
+        JSONObject json = resp.json
+        println json.toString()
+        obj = json.data.payment
 
         then:
         obj.id
         obj.amount == new BigDecimal('56.73')
-        obj.className == 'CreditCardPayment' //The className property is added automatically for entities with children
+        obj.cardNumber == '1234 5678 9012 3456'
 
         when: 'You attempt to query something not available in the parent class, but available in the subclass'
         resp = graphQL.graphql("""
@@ -97,7 +101,6 @@ class PaymentIntegrationSpec extends Specification implements GraphQLSpec {
                 id
                 amount
                 cardNumber
-                className
               }
             }
         """)
@@ -145,7 +148,6 @@ class PaymentIntegrationSpec extends Specification implements GraphQLSpec {
               paymentList {
                 id
                 amount
-                className
               }
             }
         """)
@@ -154,9 +156,7 @@ class PaymentIntegrationSpec extends Specification implements GraphQLSpec {
         then:
         obj.size() == 2
         obj.find { it.id == 1 }.amount == new BigDecimal('56.73')
-        obj.find { it.id == 1 }.className == 'CreditCardPayment'
         obj.find { it.id == 2 }.amount == new BigDecimal('34.43')
-        obj.find { it.id == 2 }.className == 'CreditCardPayment'
     }
 
     void "test updating a credit card payment"() {

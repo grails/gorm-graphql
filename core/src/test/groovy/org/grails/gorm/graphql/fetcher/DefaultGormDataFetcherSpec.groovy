@@ -3,23 +3,21 @@ package org.grails.gorm.graphql.fetcher
 import graphql.language.Field
 import graphql.language.SelectionSet
 import graphql.schema.DataFetchingEnvironment
-import graphql.schema.GraphQLOutputType
-import graphql.schema.GraphQLSchema
-import graphql.schema.GraphQLType
 import groovy.transform.InheritConstructors
 import org.grails.gorm.graphql.HibernateSpec
-import org.grails.gorm.graphql.domain.SchemaSpec
-import org.grails.gorm.graphql.domain.tomany.ToMany
-import org.grails.gorm.graphql.domain.toone.EmbedOne
-import org.grails.gorm.graphql.domain.toone.HasOne
-import org.grails.gorm.graphql.domain.toone.ManyToOne
-import org.grails.gorm.graphql.domain.toone.ToOne
+import org.grails.gorm.graphql.SchemaSpec
+import org.grails.gorm.graphql.domain.general.GeneralPackage
+import org.grails.gorm.graphql.domain.general.tomany.ToMany
+import org.grails.gorm.graphql.domain.general.toone.EmbedOne
+import org.grails.gorm.graphql.domain.general.toone.HasOne
+import org.grails.gorm.graphql.domain.general.toone.ManyToOne
+import org.grails.gorm.graphql.domain.general.toone.ToOne
 import org.grails.gorm.graphql.testing.MockDataFetchingEnvironment
 
 class DefaultGormDataFetcherSpec extends HibernateSpec {
 
     Package getPackage() {
-        SchemaSpec.getClassLoader().getPackage('org.grails.gorm.graphql.domain')
+        GeneralPackage.getPackage()
     }
 
     void "test should not join a toOne when the only field requested is ID"() {

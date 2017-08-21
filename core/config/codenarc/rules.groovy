@@ -121,14 +121,14 @@ ruleset {
     'DuplicateStringLiteral' enabled: false
 
     // rulesets/enhanced.xml
-    CloneWithoutCloneable
-    JUnitAssertEqualsConstantActualValue
-    UnsafeImplementationAsMap
+    //CloneWithoutCloneable
+    //JUnitAssertEqualsConstantActualValue
+    //UnsafeImplementationAsMap
 
     // rulesets/exceptions.xml
     CatchArrayIndexOutOfBoundsException
     CatchError
-    CatchException
+    //CatchException
     CatchIllegalMonitorStateException
     CatchIndexOutOfBoundsException
     CatchNullPointerException

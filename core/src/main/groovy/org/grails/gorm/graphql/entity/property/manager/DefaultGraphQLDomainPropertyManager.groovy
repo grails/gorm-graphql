@@ -171,14 +171,14 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
                 properties.add(prop)
             }
 
-            if (!mappingContext.getDirectChildEntities(entity).empty) {
+/*            if (!mappingContext.getDirectChildEntities(entity).empty) {
                 properties.add(new SimpleGraphQLProperty()
                     .input(false)
                     .name('className')
                     .returns(String)
                     .dataFetcher(classSimpleName)
                 )
-            }
+            }*/
 
             properties
         }

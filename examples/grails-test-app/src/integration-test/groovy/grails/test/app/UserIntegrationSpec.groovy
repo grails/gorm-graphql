@@ -344,7 +344,9 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.user
+        JSONObject json = resp.json
+        println json.toString()
+        JSONObject obj = json.data.user
 
         then:
         obj.id == 2

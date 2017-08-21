@@ -2,6 +2,16 @@
 
 This section of the documentation is designed to inform you about special circumstances that may impact some use cases.
 
+=== Nullability
+
+The nullable constraint on persistent properties is only respected during the create operation. For all other cases, null is always allowed. The reasoning for allowing nulls for output operations (get or list) is due to the possibility of the properties being null as a result of validation errors during a create or update. Nulls are allowed for update operations to allow users to send a partial object instead of the entire object.
+
+=== Inheritance
+
+Because GraphQL doesn't support the ability to have interfaces extend other interfaces, interface types will only be created for root entities that have children. All child entities, regardless of any intermediate parent classes, will set their interface type to their root entity interface.
+
+When querying the root entity, all children will be available to select properties via the `... on` directive.
+
 === Map Properties
 
 Since `Map`s by definition are dynamic, they don't fit well into the pre defined world that is the GraphQL schema. It is impossible to render them as they are with dynamic keys because the schema must be statically defined. There are a couple ways to work around this depending on how you are using the properties.

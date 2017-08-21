@@ -1,3 +1,5 @@
+== Persistent Property Options
+
 It is possible to control several aspects of how existing persistent properties on GORM entities are represented in the generated schema.
 
 === Exclusion

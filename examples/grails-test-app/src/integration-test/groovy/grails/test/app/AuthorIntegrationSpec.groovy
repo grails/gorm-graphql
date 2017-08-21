@@ -111,8 +111,9 @@ class AuthorIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-
-        def authors = resp.json.data.authorList
+        def json = resp.json
+        println json.toString()
+        def authors = json.data.authorList
         def author1 = authors[0]
         def author2 = authors[1]
 

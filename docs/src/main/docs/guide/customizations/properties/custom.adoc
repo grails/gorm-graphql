@@ -1,3 +1,5 @@
+== Adding Custom Properties
+
 It is possible to add custom properties to your domain class solely for the use in the GraphQL schema. You must supply either a custom data binder or a setter method for properties that will be used for input. For output, a data fetcher or getter method must be made available.
 
 In this example we are adding a property to the GraphQL schema that will allow users to retrieve the age of authors. In this case the property doesn't make sense to allow users to provide the property when creating or updating because they should be modifying the `birthDay` instead. For that reason, `input false` is specified to prevent that behavior.

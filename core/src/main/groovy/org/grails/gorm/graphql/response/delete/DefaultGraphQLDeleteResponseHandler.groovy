@@ -31,7 +31,8 @@ class DefaultGraphQLDeleteResponseHandler extends CachingGraphQLResponseHandler 
     }
 
     protected List<GraphQLFieldDefinition> buildFieldDefinitions(GraphQLTypeManager typeManager) {
-        [newFieldDefinition().name('success').type((GraphQLOutputType)typeManager.getType(Boolean, false)).build()]
+        [newFieldDefinition().name('success').type((GraphQLOutputType)typeManager.getType(Boolean, false)).build(),
+         newFieldDefinition().name('error').type((GraphQLOutputType)typeManager.getType(String)).build()]
     }
 
     @Override
@@ -44,7 +45,7 @@ class DefaultGraphQLDeleteResponseHandler extends CachingGraphQLResponseHandler 
     }
 
     @Override
-    Object createResponse(DataFetchingEnvironment environment, boolean success) {
-        [success: success]
+    Object createResponse(DataFetchingEnvironment environment, boolean success, Exception exception) {
+        [success: success, error: exception?.message]
     }
 }

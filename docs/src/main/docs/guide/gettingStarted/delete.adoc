@@ -12,3 +12,5 @@ and the server acknowledges the deletion:
 ----
 include::examples/grails-docs-app/src/integration-test/groovy/demo/SpeakerIntegrationSpec.groovy[tags=deleteResponse]
 ----
+
+<1> The message of any exception that occurred will be returned if the action wasn't successful.

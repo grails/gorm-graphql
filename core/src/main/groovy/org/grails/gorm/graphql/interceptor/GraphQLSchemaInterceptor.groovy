@@ -2,6 +2,7 @@ package org.grails.gorm.graphql.interceptor
 
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLObjectType
+import graphql.schema.GraphQLType
 import org.grails.datastore.mapping.model.PersistentEntity
 
 /**
@@ -33,5 +34,6 @@ interface GraphQLSchemaInterceptor {
      * @param mutationType The root mutation returnType
      */
     void interceptSchema(GraphQLObjectType.Builder queryType,
-                         GraphQLObjectType.Builder mutationType)
+                         GraphQLObjectType.Builder mutationType,
+                         Set<GraphQLType> additionalTypes)
 }

@@ -31,7 +31,6 @@ import org.springframework.validation.DataBinder
  * static graphql = GraphQLMapping.build {
  *     ...
  * }
- * }
  * </pre>
  *
  * @author James Kleeh

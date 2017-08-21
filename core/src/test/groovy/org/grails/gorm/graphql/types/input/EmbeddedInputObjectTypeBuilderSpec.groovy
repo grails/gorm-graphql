@@ -1,8 +1,8 @@
 package org.grails.gorm.graphql.types.input
 
 import org.grails.gorm.graphql.HibernateSpec
-import org.grails.gorm.graphql.domain.toone.BelongsToHasOne
-import org.grails.gorm.graphql.domain.toone.Embed
+import org.grails.gorm.graphql.domain.general.toone.BelongsToHasOne
+import org.grails.gorm.graphql.domain.general.toone.Embed
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.entity.property.manager.CompositeId
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager

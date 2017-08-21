@@ -1,3 +1,4 @@
+== Custom Naming Conventions
 
 The names used to describe entities is configurable through the use of an link:{api}/org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html[GraphQLEntityNamingConvention].
 

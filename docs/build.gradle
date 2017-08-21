@@ -1,3 +1,7 @@
 publishGuide {
     sourceRepo = "https://github.com/${githubSlug}/edit/${githubBranch}/docs/src/main/docs"
 }
+
+dependencies {
+    documentation "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
+}

@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.entity.property.impl
 
+import graphql.schema.DataFetcher
 import graphql.schema.GraphQLType
 import groovy.transform.AutoClone
 import groovy.transform.CompileStatic
@@ -9,6 +10,7 @@ import org.grails.gorm.graphql.entity.dsl.helpers.Describable
 import org.grails.gorm.graphql.entity.dsl.helpers.Named
 import org.grails.gorm.graphql.entity.dsl.helpers.Nullable
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
+import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetcher
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
@@ -25,10 +27,10 @@ abstract class CustomGraphQLProperty<T> implements GraphQLDomainProperty, Named<
 
     boolean input = true
     boolean output = true
-    Closure dataFetcher = null
+    Closure closureDataFetcher = null
 
     T dataFetcher(Closure dataFetcher) {
-        this.dataFetcher = dataFetcher
+        this.closureDataFetcher = dataFetcher
         (T)this
     }
 
@@ -51,6 +53,10 @@ abstract class CustomGraphQLProperty<T> implements GraphQLDomainProperty, Named<
 
     @Override
     abstract GraphQLType getGraphQLType(GraphQLTypeManager typeManager, GraphQLPropertyType propertyType)
+
+    DataFetcher getDataFetcher() {
+        closureDataFetcher ? new ClosureDataFetcher(closureDataFetcher) : null
+    }
 
     void validate() {
         if (name == null) {

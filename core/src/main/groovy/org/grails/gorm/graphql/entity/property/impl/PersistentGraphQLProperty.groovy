@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.entity.property.impl
 
+import graphql.schema.DataFetcher
 import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
@@ -12,6 +13,7 @@ import org.grails.gorm.graphql.GraphQL
 import org.grails.gorm.graphql.Schema
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
+import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetcher
 import org.grails.gorm.graphql.types.GraphQLOperationType
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
@@ -38,7 +40,7 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
     String deprecationReason
     final boolean input
     final boolean output
-    final Closure dataFetcher
+    final DataFetcher dataFetcher
 
     PersistentProperty property
     private MappingContext mappingContext
@@ -59,7 +61,7 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         this.input = mapping.input
         this.description = mapping.description
         this.deprecationReason = mapping.deprecationReason
-        this.dataFetcher = mapping.dataFetcher
+        this.dataFetcher = mapping.dataFetcher ? new ClosureDataFetcher(mapping.dataFetcher) : null
         try {
             Field field = property.owner.javaClass.getDeclaredField(property.name)
             if (field != null) {

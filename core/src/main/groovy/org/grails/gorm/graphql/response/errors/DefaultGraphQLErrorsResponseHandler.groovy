@@ -7,6 +7,7 @@ import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLOutputType
 import groovy.transform.CompileStatic
 import org.grails.datastore.gorm.GormValidateable
+import org.grails.gorm.graphql.fetcher.context.LocaleAwareContext
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.springframework.context.MessageSource
 import org.springframework.validation.FieldError
@@ -50,6 +51,9 @@ class DefaultGraphQLErrorsResponseHandler implements GraphQLErrorsResponseHandle
                     return (Locale)localContext
                 }
             }
+        }
+        if (environment.context instanceof LocaleAwareContext) {
+            return ((LocaleAwareContext) environment.context).locale
         }
         Locale.default
     }

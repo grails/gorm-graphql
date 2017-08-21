@@ -5,8 +5,7 @@ import graphql.schema.DataFetchingEnvironment
 import org.grails.gorm.graphql.HibernateSpec
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.binding.manager.DefaultGraphQLDataBinderManager
-import org.grails.gorm.graphql.domain.custom.OtherDomain
-import org.grails.gorm.graphql.domain.toone.One
+import org.grails.gorm.graphql.domain.general.custom.OtherDomain
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 
 class UpdateEntityDataFetcherSpec extends HibernateSpec {

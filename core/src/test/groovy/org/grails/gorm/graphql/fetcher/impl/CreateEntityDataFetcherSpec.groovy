@@ -3,7 +3,7 @@ package org.grails.gorm.graphql.fetcher.impl
 import graphql.schema.DataFetchingEnvironment
 import org.grails.gorm.graphql.HibernateSpec
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
-import org.grails.gorm.graphql.domain.toone.One
+import org.grails.gorm.graphql.domain.general.toone.One
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import spock.lang.Subject
 

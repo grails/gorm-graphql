@@ -4,10 +4,15 @@ import org.grails.gorm.graphql.plugin.testing.GraphQLSpec
 import grails.testing.mixin.integration.Integration
 import grails.testing.spock.OnceBefore
 import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONObject
+import org.spockframework.util.StringMessagePrintStream
+import spock.lang.Shared
 import spock.lang.Specification
 
 @Integration
 class TagIntegrationSpec extends Specification implements GraphQLSpec {
+
+    @Shared Long grailsId
 
     @OnceBefore
     void createPosts() {
@@ -31,6 +36,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
         """)
         JSONArray obj = resp.json.data.postCreate.tags
         def grails = obj.find { it.name == 'Grails' }.id
+        grailsId = grails
         def groovy = obj.find { it.name == 'Groovy' }.id
 
         resp = graphQL.graphql("""
@@ -75,5 +81,83 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
         obj.find { it.name == 'Groovy' }.posts.size() == 2
         obj.find { it.name == 'Java' }.posts.size() == 1
         obj.find { it.name == 'Kotlin Ken' }.posts.size() == 1
+    }
+
+    void "test a custom property can reference a domain with using joins"() {
+        given:
+        PrintStream originalOut = System.out
+        List<String> queries = []
+        System.setOut(new StringMessagePrintStream() {
+            @Override
+            protected void printed(String message) {
+                queries.add(message)
+            }
+        })
+
+        when:
+        def resp = graphQL.graphql("""
+            {
+              tag(id: ${grailsId}) {
+                id
+                name
+                posts {
+                  id  
+                  tags {
+                    name
+                  }
+                }
+              }
+            }
+        """)
+        JSONObject obj = resp.json.data.tag
+
+        then:
+        //queries.size() == 2 ignored due to GORM issue https://github.com/grails/grails-data-mapping/issues/989
+        queries[0] ==~ 'Hibernate: select this_.id as id[0-9]+_[0-9]+_[0-9]+_, this_.version as version[0-9]+_[0-9]+_[0-9]+_, this_.name as name[0-9]+_[0-9]+_[0-9]+_ from tag this_ where this_.id=\\? limit \\?\n'
+        queries[1] ==~ 'Hibernate: select this_.id as id[0-9]+_[0-9]+_[0-9]+_, this_.version as version[0-9]+_[0-9]+_[0-9]+_, this_.title as title[0-9]+_[0-9]+_[0-9]+_, this_.date_created as date_cre[0-9]+_[0-9]+_[0-9]+_, this_.last_updated as last_upd[0-9]+_[0-9]+_[0-9]+_, tags3_.post_tags_id as post_tag[0-9]+_[0-9]+_, tags_alias1_.id as tag_id[0-9]+_[0-9]+_, tags_alias1_.id as id[0-9]+_[0-9]+_[0-9]+_, tags_alias1_.version as version[0-9]+_[0-9]+_[0-9]+_, tags_alias1_.name as name[0-9]+_[0-9]+_[0-9]+_ from post this_ inner join post_tag tags3_ on this_.id=tags3_.post_tags_id inner join tag tags_alias1_ on tags3_.tag_id=tags_alias1_.id where tags_alias1_.id=\\?\n'
+
+        cleanup:
+        System.setOut(originalOut)
+    }
+
+    void cleanupSpec() {
+        def resp = graphQL.graphql("""
+            { 
+              postList {
+                id
+              }
+            }
+        """)
+        def posts = resp.json.data.postList
+        assert posts.size() == 2
+        posts.each {
+            resp = graphQL.graphql("""
+              mutation {
+                postDelete(id: ${it.id}) {
+                  success
+                }
+              }
+            """)
+            assert resp.json.data.postDelete.success
+        }
+        resp = graphQL.graphql("""
+            { 
+              tagList {
+                id
+              }
+            }
+        """)
+        def tags = resp.json.data.tagList
+        assert tags.size() == 4
+        tags.each {
+            resp = graphQL.graphql("""
+              mutation {
+                tagDelete(id: ${it.id}) {
+                  success
+                }
+              }
+            """)
+            assert resp.json.data.tagDelete.success
+        }
     }
 }

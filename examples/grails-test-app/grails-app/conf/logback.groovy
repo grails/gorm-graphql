@@ -33,4 +33,7 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
     }
     logger('StackTrace', ERROR, ['FULL_STACKTRACE'], false)
 }
+
+logger('graphql.execution', WARN, ['STDOUT'], false)
+
 root(ERROR, ['STDOUT'])

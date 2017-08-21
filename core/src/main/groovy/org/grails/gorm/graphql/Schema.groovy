@@ -198,9 +198,15 @@ class Schema {
         GraphQLObjectType.Builder queryType = newObject().name('Query')
         GraphQLObjectType.Builder mutationType = newObject().name('Mutation')
 
+        Set<PersistentEntity> childrenNotMapped = []
+
         for (PersistentEntity entity: mappingContext.persistentEntities) {
+
             GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity)
             if (mapping == null) {
+                if (!entity.root) {
+                    childrenNotMapped.add(entity)
+                }
                 continue
             }
 
@@ -321,14 +327,25 @@ class Schema {
             mutationType.fields(mutationFields*.build())
         }
 
+        Set<GraphQLType> additionalTypes = []
+
+        for (PersistentEntity entity: childrenNotMapped) {
+            GraphQLMapping mapping = GraphQLEntityHelper.getMapping(entity.rootEntity)
+            if (mapping == null) {
+                continue
+            }
+
+            additionalTypes.add(typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT))
+        }
+
         for (GraphQLSchemaInterceptor schemaInterceptor: interceptorManager.interceptors) {
-            schemaInterceptor.interceptSchema(queryType, mutationType)
+            schemaInterceptor.interceptSchema(queryType, mutationType, additionalTypes)
         }
 
         GraphQLSchema.newSchema()
             .query(queryType)
             .mutation(mutationType)
-            .build()
+            .build(additionalTypes)
     }
 
 }

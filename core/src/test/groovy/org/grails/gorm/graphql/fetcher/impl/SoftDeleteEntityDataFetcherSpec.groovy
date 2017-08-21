@@ -2,8 +2,7 @@ package org.grails.gorm.graphql.fetcher.impl
 
 import graphql.schema.DataFetchingEnvironment
 import org.grails.gorm.graphql.HibernateSpec
-import org.grails.gorm.graphql.domain.custom.OtherDomain
-import org.grails.gorm.graphql.domain.toone.One
+import org.grails.gorm.graphql.domain.general.custom.OtherDomain
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
 import spock.lang.Shared

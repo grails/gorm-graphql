@@ -3,9 +3,10 @@ package org.grails.gorm.graphql.fetcher.impl
 import grails.gorm.transactions.Transactional
 import graphql.schema.DataFetchingEnvironment
 import org.grails.gorm.graphql.HibernateSpec
-import org.grails.gorm.graphql.domain.toone.One
+import org.grails.gorm.graphql.domain.general.toone.One
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
+import spock.lang.Stepwise
 
 class DeleteEntityDataFetcherSpec extends HibernateSpec {
 
@@ -35,8 +36,26 @@ class DeleteEntityDataFetcherSpec extends HibernateSpec {
         }
 
         then:
-        1 * responseHandler.createResponse(env, true)
+        1 * responseHandler.createResponse(env, true, null)
         count == 0
+    }
+
+    void "test get invalid"() {
+        given:
+        One one = createInstance()
+        GraphQLDeleteResponseHandler responseHandler = Mock(GraphQLDeleteResponseHandler)
+        DataFetchingEnvironment env = Mock(DataFetchingEnvironment) {
+            1 * getArgument('id') >> 95
+            1 * getFields() >> []
+        }
+        DeleteEntityDataFetcher fetcher = new DeleteEntityDataFetcher<>(mappingContext.getPersistentEntity(One.name))
+        fetcher.responseHandler = responseHandler
+
+        when:
+        fetcher.get(env)
+
+        then:
+        1 * responseHandler.createResponse(env, false, _ as NullPointerException)
     }
 
     void "test supports"() {
