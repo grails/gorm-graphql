@@ -5,7 +5,6 @@ import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLInterfaceType
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLOutputType
-import graphql.schema.GraphQLType
 import graphql.schema.TypeResolver
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
@@ -66,8 +65,7 @@ abstract class ObjectTypeBuilder {
             final String DESCRIPTION = GraphQLEntityHelper.getDescription(entity)
             final String NAME = typeManager.namingConvention.getType(entity, type)
 
-
-            List<GraphQLFieldDefinition> fields = new ArrayList<>(properties.size()+1)
+            List<GraphQLFieldDefinition> fields = new ArrayList<>(properties.size() + 1)
 
             List<GraphQLDomainProperty> properties = builder.getProperties(entity)
             for (GraphQLDomainProperty prop: properties) {

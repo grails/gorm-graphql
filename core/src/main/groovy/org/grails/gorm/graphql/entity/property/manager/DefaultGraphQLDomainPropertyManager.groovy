@@ -34,10 +34,6 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
         } catch (NoSuchMethodException | SecurityException e) { }
     }
 
-    private static Closure classSimpleName = { Object obj ->
-        obj.class.simpleName
-    }
-
     @Override
     Builder builder() {
         new Builder()
@@ -170,15 +166,6 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
                 prop.mappingContext = mappingContext
                 properties.add(prop)
             }
-
-/*            if (!mappingContext.getDirectChildEntities(entity).empty) {
-                properties.add(new SimpleGraphQLProperty()
-                    .input(false)
-                    .name('className')
-                    .returns(String)
-                    .dataFetcher(classSimpleName)
-                )
-            }*/
 
             properties
         }

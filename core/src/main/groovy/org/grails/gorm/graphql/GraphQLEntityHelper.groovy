@@ -7,7 +7,6 @@ import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.dsl.LazyGraphQLMapping
 
-import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 
@@ -54,7 +53,7 @@ class GraphQLEntityHelper {
             return mappings.get(entity)
         }
         Object graphql
-        for(Method method: entity.javaClass.declaredMethods) {
+        for (Method method: entity.javaClass.declaredMethods) {
             if (Modifier.isStatic(method.modifiers) && method.name.equalsIgnoreCase('getgraphql')) {
                 graphql = method.invoke(null)
                 break
