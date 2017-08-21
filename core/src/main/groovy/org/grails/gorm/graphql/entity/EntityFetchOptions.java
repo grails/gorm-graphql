@@ -145,7 +145,7 @@ public class EntityFetchOptions {
         Set<String> joinProperties = new HashSet<>();
 
         if (fields != null) {
-            fields.parallelStream()
+            fields.stream()
                     .filter(field -> associationNames.contains(field.getName()))
                     .forEach(field -> handleField(propertyName, field, joinProperties));
         }
