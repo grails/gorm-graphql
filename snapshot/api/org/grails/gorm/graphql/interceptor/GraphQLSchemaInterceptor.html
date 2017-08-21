@@ -149,7 +149,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#interceptSchema(GraphQLObjectType.Builder, GraphQLObjectType.Builder)">interceptSchema</a></strong>(<a href='../../../../../GraphQLObjectType.Builder.html'>Builder</a> queryType, <a href='../../../../../GraphQLObjectType.Builder.html'>Builder</a> mutationType)</code><br>Executed a single time before the schema is created. </td>
+                            <td class="colLast"><code><strong><a href="#interceptSchema(GraphQLObjectType.Builder, GraphQLObjectType.Builder, Set<GraphQLType>)">interceptSchema</a></strong>(<a href='../../../../../GraphQLObjectType.Builder.html'>Builder</a> queryType, <a href='../../../../../GraphQLObjectType.Builder.html'>Builder</a> mutationType, java.util.Set&lt;GraphQLType&gt; additionalTypes)</code><br>Executed a single time before the schema is created. </td>
                         </tr>
                         
                     </table>
@@ -194,10 +194,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="interceptSchema(GraphQLObjectType.Builder, GraphQLObjectType.Builder)"><!-- --></a>
+                        <a name="interceptSchema(GraphQLObjectType.Builder, GraphQLObjectType.Builder, Set<GraphQLType>)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>interceptSchema</strong>(<a href='../../../../../GraphQLObjectType.Builder.html'>Builder</a> queryType, <a href='../../../../../GraphQLObjectType.Builder.html'>Builder</a> mutationType)</h4>
+                                <h4>void <strong>interceptSchema</strong>(<a href='../../../../../GraphQLObjectType.Builder.html'>Builder</a> queryType, <a href='../../../../../GraphQLObjectType.Builder.html'>Builder</a> mutationType, java.util.Set&lt;GraphQLType&gt; additionalTypes)</h4>
                                 <p> Executed a single time before the schema is created. The types are
  mutable and their changes will be applied in the schema.
      <DL><DT><B>Parameters:</B></DT><DD><code>queryType</code> -  The root query returnType</DD><DD><code>mutationType</code> -  The root mutation returnType</DD></DL></p>

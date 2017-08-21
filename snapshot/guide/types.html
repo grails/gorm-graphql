@@ -109,6 +109,139 @@ function addJsClass() {
 <div class="paragraph">
 <p>It is the responsibility of the type manager to convert Java classes to GraphQL types used in the creation of the schema. All of the basic GORM types have corresponding converters registered in the default type manager. It may be necessary to register GraphQL types for classes used in your domain model.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The type manager is designed to store GraphQL types for non GORM entities (simple types). If you encounter a <a href="../api/org/grails/gorm/graphql/types/TypeNotFoundException.html">TypeNotFoundException</a>, it is likely you will need to register a type for the missing class.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect1">
+<h2 id="_get_the_manager">Get The Manager</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To register type converters, you need to get a reference to the <a href="../api/org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>. If you are using the manager provided by default, how you access it will depend on whether you are using the plugin or standalone.</p>
+</div>
+<div class="sect2">
+<h3 id="_standalone">Standalone</h3>
+<div class="paragraph">
+<p>When creating the schema, initialize it first. The default type manager will then be set.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.initialize()
+GraphQLTypeManager typeManager = schema.typeManager
+...
+schema.generate()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_plugin">Plugin</h3>
+<div class="paragraph">
+<p>For Grails applications it is recommended to reference the bean created by the plugin. The easiest way to do so is to register a bean post processor. The plugin has a class available to extend to make that easier.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">myGraphQLCustomizer(MyGraphQLCustomizer)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">src/main/groovy/demo/MyGraphQLCustomizer.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.GraphQLPostProcessor</span>
+
+<span class="type">class</span> <span class="class">MyGraphQLCustomizer</span> <span class="directive">extends</span> GraphQLPostProcessor {
+
+    <span class="annotation">@Override</span>
+    <span class="type">void</span> doWith(GraphQLTypeManager typeManager) {
+        ...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you need to customize more than 1 manager, only a single bean needs to be registered. There are <code>doWith</code> methods for all of the managers you may need to register object instances with.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_register_a_converter">Register A Converter</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once you have access to the manager, registration of your own type is easy. In this example a type is being registered to handle a Mongo <code>ObjectId</code>. The type will be used to do conversion of arguments in GraphQL.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This process only handles how an ObjectId will be created from either Java arguments, or arguments passed inline in the GraphQL query or mutation. For Grails applications, the process of rendering the ObjectID as json is handled by <a href="http://views.grails.org">JSON views</a>. To supply behavior for how an ObjectId is rendered, see the documentation for json views. For standalone projects, you are responsible for any conversions that may need to happen.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">graphql.schema.GraphQLScalarType</span>
+<span class="keyword">import</span> <span class="include">org.bson.types.ObjectId</span>
+<span class="keyword">import</span> <span class="include">graphql.schema.Coercing</span>
+
+GraphQLTypeManager typeManager
+
+typeManager.registerType(ObjectId, <span class="keyword">new</span> GraphQLScalarType(<span class="string"><span class="delimiter">&quot;</span><span class="content">ObjectId</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Hex representation of a Mongo object id</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> Coercing&lt;ObjectId, ObjectId&gt;() {
+
+    <span class="annotation">@Override</span>
+    ObjectId serialize(<span class="predefined-type">Object</span> input) {
+        <span class="keyword">if</span> (input <span class="keyword">instanceof</span> ObjectId) {
+            (ObjectId) input
+        }
+        <span class="keyword">else</span> {
+            <span class="predefined-constant">null</span>
+        }
+    }
+
+    <span class="annotation">@Override</span>
+    ObjectId parseValue(<span class="predefined-type">Object</span> input) {
+        serialize(input)
+    }
+
+    <span class="annotation">@Override</span>
+    ObjectId parseLiteral(<span class="predefined-type">Object</span> input) {
+        <span class="keyword">if</span> (input <span class="keyword">instanceof</span> StringValue) {
+            <span class="keyword">new</span> ObjectId(((StringValue) input).value)
+        }
+        <span class="keyword">else</span> {
+            <span class="predefined-constant">null</span>
+        }
+    }
+
+}))</code></pre>
+</div>
+</div>
+</div>
+</div>
 
 
                 <div style="clear:both;margin-top:15px;"></div>

@@ -135,7 +135,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLObjectType&gt;</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLOutputType&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#objectTypeCache">objectTypeCache</a></code></td>
                             <td class="colLast"></td>
                         </tr>
@@ -206,7 +206,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../../GraphQLOutputType.html'>GraphQLOutputType</a></code></td>
                             <td class="colLast"><code><strong><a href="#build(PersistentEntity)">build</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
                         </tr>
                         
@@ -214,6 +214,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a></code></td>
                             <td class="colLast"><code><strong><a href="#buildField(org.grails.gorm.graphql.entity.property.GraphQLDomainProperty)">buildField</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html'>GraphQLDomainProperty</a> prop)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../../../GraphQLInterfaceType.html'>GraphQLInterfaceType</a></code></td>
+                            <td class="colLast"><code><strong><a href="#buildInterfaceType(PersistentEntity, java.lang.String, java.lang.String, List<GraphQLFieldDefinition>)">buildInterfaceType</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.String name, java.lang.String description, java.util.List&lt;GraphQLFieldDefinition&gt; fields)</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a></code></td>
+                            <td class="colLast"><code><strong><a href="#buildObjectType(PersistentEntity, java.lang.String, java.lang.String, List<GraphQLFieldDefinition>)">buildObjectType</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.String name, java.lang.String description, java.util.List&lt;GraphQLFieldDefinition&gt; fields)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -280,7 +292,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="objectTypeCache"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLObjectType&gt; <strong>objectTypeCache</strong></h4>
+                                <h4>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLOutputType&gt; <strong>objectTypeCache</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -341,7 +353,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="build(PersistentEntity)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>build</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
+                                <h4><a href='../../../../../../GraphQLOutputType.html'>GraphQLOutputType</a> <strong>build</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -350,6 +362,22 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>protected&nbsp;<a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a> <strong>buildField</strong>(<a href='../../../../../../org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html'>GraphQLDomainProperty</a> prop)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="buildInterfaceType(PersistentEntity, java.lang.String, java.lang.String, List<GraphQLFieldDefinition>)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../../../GraphQLInterfaceType.html'>GraphQLInterfaceType</a> <strong>buildInterfaceType</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.String name, java.lang.String description, java.util.List&lt;GraphQLFieldDefinition&gt; fields)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="buildObjectType(PersistentEntity, java.lang.String, java.lang.String, List<GraphQLFieldDefinition>)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>buildObjectType</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.String name, java.lang.String description, java.util.List&lt;GraphQLFieldDefinition&gt; fields)</h4>
                                 <p></p>
                             </li>
                         </ul>

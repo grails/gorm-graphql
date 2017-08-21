@@ -124,7 +124,6 @@ class GraphQLMapping
  static graphql = GraphQLMapping.build {
      ...
  }
- }
  </pre>
  <DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
 
@@ -477,7 +476,7 @@ class GraphQLMapping
                             <li class="blockList">
                                 <h4>static&nbsp;<a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html'>GraphQLMapping</a> <strong>build</strong>(@groovy.lang.DelegatesTo(value = GraphQLMapping, strategy = Closure.DELEGATE_ONLY) groovy.lang.Closure closure)</h4>
                                 <p> Builder to provide code completion
-     <DL><DT><B>Returns:</B></DT><DD>The mapping instance</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>closure</code> -  The closure to execute in the context of a mapping</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>closure</code> -  The closure to execute in the context of a mapping</DD></DL><DL><DT><B>Returns:</B></DT><DD>The mapping instance</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -528,7 +527,7 @@ class GraphQLMapping
                                 <h4>static&nbsp;<a href='../../../../../../org/grails/gorm/graphql/entity/dsl/LazyGraphQLMapping.html'>LazyGraphQLMapping</a> <strong>lazy</strong>(@groovy.lang.DelegatesTo(value = GraphQLMapping, strategy = Closure.DELEGATE_ONLY) groovy.lang.Closure closure)</h4>
                                 <p> Builder to provide code completion. The mapping instance will not be evaluated
  until the schema is being generated
-     <DL><DT><B>Returns:</B></DT><DD>The mapping instance</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>closure</code> -  The closure to execute in the context of a mapping</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>closure</code> -  The closure to execute in the context of a mapping</DD></DL><DL><DT><B>Returns:</B></DT><DD>The mapping instance</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -590,7 +589,7 @@ java.lang.Object <strong>methodMissing</strong>(java.lang.String name, java.lang
                             <li class="blockList">
                                 <h4><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a> <strong>property</strong>(java.lang.String name, @groovy.lang.DelegatesTo(value = GraphQLPropertyMapping, strategy = Closure.DELEGATE_ONLY) groovy.lang.Closure closure)</h4>
                                 <p> Supply metadata about an existing property
-     <DL><DT><B>Returns:</B></DT><DD>The property mapping instance</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The property name</DD><DD><code>closure</code> -  The closure to build the metadata</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The property name</DD><DD><code>closure</code> -  The closure to build the metadata</DD></DL><DL><DT><B>Returns:</B></DT><DD>The property mapping instance</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -601,7 +600,7 @@ java.lang.Object <strong>methodMissing</strong>(java.lang.String name, java.lang
                                 <p> Supply metadata about an existing property
 
  Example: property('foo', [input: false])
-     <DL><DT><B>Returns:</B></DT><DD>The property mapping instance</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The property name</DD><DD><code>namedArgs</code> -  The arguments to build the mapping</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The property name</DD><DD><code>namedArgs</code> -  The arguments to build the mapping</DD></DL><DL><DT><B>Returns:</B></DT><DD>The property mapping instance</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -612,7 +611,7 @@ java.lang.Object <strong>methodMissing</strong>(java.lang.String name, java.lang
                                 <p> Supply metadata about an existing property
 
  Example: property('foo', input: false)
-     <DL><DT><B>Returns:</B></DT><DD>The property mapping instance</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The property name</DD><DD><code>namedArgs</code> -  The arguments to build the mapping</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The property name</DD><DD><code>namedArgs</code> -  The arguments to build the mapping</DD></DL><DL><DT><B>Returns:</B></DT><DD>The property mapping instance</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -621,7 +620,7 @@ java.lang.Object <strong>methodMissing</strong>(java.lang.String name, java.lang
                             <li class="blockList">
                                 <h4><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a> <strong>property</strong>(java.lang.String name, <a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a> mapping)</h4>
                                 <p> Supply metadata about an existing property
-     <DL><DT><B>Returns:</B></DT><DD>The property mapping instance provided</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The property name</DD><DD><code>mapping</code> -  The property mapping instance</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The property name</DD><DD><code>mapping</code> -  The property mapping instance</DD></DL><DL><DT><B>Returns:</B></DT><DD>The property mapping instance provided</DD></DL></p>
                             </li>
                         </ul>
                     

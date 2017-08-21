@@ -304,7 +304,7 @@ abstract&nbsp;class CustomOperation
                                 <h4><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a> <strong>argument</strong>(java.lang.String name, java.util.List&lt;java.lang.Class&gt; type, @groovy.lang.DelegatesTo(value = SimpleArgument, strategy = Closure.DELEGATE_ONLY) groovy.lang.Closure closure = null)</h4>
                                 <p> Creates an argument to the operation that is a list of a simple type.
  The list can not have more than 1 element and that element must be a class.
-     <DL><DT><B>Returns:</B></DT><DD>The operation in order to chain method calls</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The name of the argument</DD><DD><code>type</code> -  The returnType of the argument</DD><DD><code>closure</code> -  To provide additional data about the argument</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The name of the argument</DD><DD><code>type</code> -  The returnType of the argument</DD><DD><code>closure</code> -  To provide additional data about the argument</DD></DL><DL><DT><B>Returns:</B></DT><DD>The operation in order to chain method calls</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -313,7 +313,7 @@ abstract&nbsp;class CustomOperation
                             <li class="blockList">
                                 <h4><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a> <strong>argument</strong>(java.lang.String name, java.lang.Class type, @groovy.lang.DelegatesTo(value = SimpleArgument, strategy = Closure.DELEGATE_ONLY) groovy.lang.Closure closure = null)</h4>
                                 <p> Creates an argument to the operation that is of the returnType provided.
-     <DL><DT><B>Returns:</B></DT><DD>The operation in order to chain method calls</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The name of the argument</DD><DD><code>type</code> -  The returnType of the argument</DD><DD><code>closure</code> -  To provide additional data about the argument</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The name of the argument</DD><DD><code>type</code> -  The returnType of the argument</DD><DD><code>closure</code> -  To provide additional data about the argument</DD></DL><DL><DT><B>Returns:</B></DT><DD>The operation in order to chain method calls</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -322,7 +322,7 @@ abstract&nbsp;class CustomOperation
                             <li class="blockList">
                                 <h4><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a> <strong>argument</strong>(java.lang.String name, java.lang.String typeName, @groovy.lang.DelegatesTo(value = ComplexArgument, strategy = Closure.DELEGATE_ONLY) groovy.lang.Closure closure)</h4>
                                 <p> Creates an argument to the operation that is a custom type.
-     <DL><DT><B>Returns:</B></DT><DD>The operation in order to chain method calls</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The name of the argument</DD><DD><code>closure</code> -  To provide additional data about the argument</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The name of the argument</DD><DD><code>closure</code> -  To provide additional data about the argument</DD></DL><DL><DT><B>Returns:</B></DT><DD>The operation in order to chain method calls</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -331,8 +331,8 @@ abstract&nbsp;class CustomOperation
                             <li class="blockList">
                                 <h4><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a> <strong>createField</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html'>GraphQLInterceptorManager</a> interceptorManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</h4>
                                 <p> Creates the field to be added to the query or mutation returnType in the schema.
-     <DL><DT><B>Returns:</B></DT><DD>The custom field</DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity the returnType was created for</DD><DD><code>typeManager</code> -  The returnType manager</DD><DD><code>interceptorManager</code> -  The interceptor manager to be used for executing
- interceptors with the custom data fetcher</DD><DD><code>mappingContext</code> -  The mapping context</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity the returnType was created for</DD><DD><code>typeManager</code> -  The returnType manager</DD><DD><code>interceptorManager</code> -  The interceptor manager to be used for executing
+ interceptors with the custom data fetcher</DD><DD><code>mappingContext</code> -  The mapping context</DD></DL><DL><DT><B>Returns:</B></DT><DD>The custom field</DD></DL></p>
                             </li>
                         </ul>
                     

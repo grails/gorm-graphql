@@ -167,7 +167,7 @@ schema.generate()</code></pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If you need to customize more than 1 manager, only a single bean needs to be registered. There are <code>doWith</code> methods for all of the managers you may need to register things with.
+If you need to customize more than 1 manager, only a single bean needs to be registered. There are <code>doWith</code> methods for all of the managers you may need to register object instances with.
 </td>
 </tr>
 </table>
@@ -200,7 +200,7 @@ interceptorManager.registerInterceptor(Author, <span class="keyword">new</span> 
 <div class="sect2">
 <h3 id="_provided">Provided</h3>
 <div class="paragraph">
-<p>There are 2 methods that will be invoked for provided data fetchers. Which one gets invoked depends on whether the operation is a query or a mutation. For query operations (GET, LIST), the <code>onQuery</code> method will be executed. For mutation operations (CREATE, UPDATE, DELETE), the <code>onMutation</code> method will be executed.</p>
+<p>There are two methods that will be invoked for provided data fetchers. Which one gets invoked depends on whether the operation is a query or a mutation. For query operations (GET, LIST), the <code>onQuery</code> method will be executed. For mutation operations (CREATE, UPDATE, DELETE), the <code>onMutation</code> method will be executed.</p>
 </div>
 <div class="paragraph">
 <p>The data fetching environment and the data fetcher type are available to help make decisions about whether or not to interrupt the execution.</p>
@@ -209,7 +209,10 @@ interceptorManager.registerInterceptor(Author, <span class="keyword">new</span> 
 <div class="sect2">
 <h3 id="_custom">Custom</h3>
 <div class="paragraph">
-<p>There</p>
+<p>There are two methods that will be invoked for custom data fetchers. For operations registered with the <code>query</code> method in the mapping, the <code>onCustomQuery</code> method will be invoked. For operations registered with the <code>mutation</code> method in the mapping, the <code>onCustomMutation</code> method will be invoked.</p>
+</div>
+<div class="paragraph">
+<p>For custom operations, the name of the operation is available to be able to distinguish one custom operation from another.</p>
 </div>
 </div>
 </div>
@@ -217,13 +220,33 @@ interceptorManager.registerInterceptor(Author, <span class="keyword">new</span> 
 <div class="sect1">
 <h2 id="_schema_interceptors">Schema Interceptors</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>In addition to data fetcher interceptors, it is also possible to register an interceptor for the GraphQL schema before it is built. These interceptors have the ability to intercept each persistent entity after its types are created, but before building, as well as one final interception before the schema as a whole is built.</p>
+</div>
+<div class="sect2">
+<h3 id="_registration">Registration</h3>
+<div class="paragraph">
+<p>Once you have access to the manager, registration of your own interceptor is easy. In this example a schema interceptor is being registered. The interceptor will get invoked for all entities as they are being created as well as once before the schema is finalized.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">GraphQLInterceptorManager interceptorManager
+
+interceptorManager.registerInterceptor(<span class="keyword">new</span> MySchemaInterceptor())</code></pre>
+</div>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_entity">Entity</h3>
-
+<div class="paragraph">
+<p>As each entity is being processed, a list of query fields and a list of mutation fields are being built. Before those fields are passed to the root query or mutation object, any schema interceptors are invoked with the intention that they may mutate the lists of fields. The persistent entity is also available to the interceptor.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_final_schema">Final Schema</h3>
-
+<div class="paragraph">
+<p>After all of the entities have been processed, schema interceptors are invoked with the query type and mutation type. Once again, this provides the opportunity to make changes before the types are built and passed to the root schema object.</p>
+</div>
 </div>
 </div>
 </div>

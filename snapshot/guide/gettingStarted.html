@@ -575,6 +575,7 @@ If there was a validation error during the update process, the <code>errors</cod
 mutation {
   speakerDelete(id: 8) {
     success
+    error
   }
 }'</code></pre>
 </div>
@@ -587,11 +588,20 @@ mutation {
 <pre class="CodeRay highlight"><code data-lang="json">{
     <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
         <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerDelete</span><span class="delimiter">&quot;</span></span>: {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">success</span><span class="delimiter">&quot;</span></span>: <span class="value">true</span>
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">success</span><span class="delimiter">&quot;</span></span>: <span class="value">true</span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">error</span><span class="delimiter">&quot;</span></span>: <span class="value">null</span>  <i class="conum" data-value="1"></i><b>(1)</b>
         }
     }
 }</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The message of any exception that occurred will be returned if the action wasn&#8217;t successful.</td>
+</tr>
+</table>
 </div>
 
 

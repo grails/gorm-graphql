@@ -158,6 +158,9 @@ function addJsClass() {
 </div>
 
 
+<div class="sect1">
+<h2 id="_persistent_property_options">Persistent Property Options</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>It is possible to control several aspects of how existing persistent properties on GORM entities are represented in the generated schema.</p>
 </div>
@@ -279,6 +282,8 @@ The data type returned must be the same as the property type.
 </div>
 </div>
 </div>
+</div>
+</div>
 
 
 <h2 id="custom">4.1.2 Custom Properties</h2>
@@ -290,6 +295,9 @@ The data type returned must be the same as the property type.
 </div>
 
 
+<div class="sect1">
+<h2 id="_adding_custom_properties">Adding Custom Properties</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>It is possible to add custom properties to your domain class solely for the use in the GraphQL schema. You must supply either a custom data binder or a setter method for properties that will be used for input. For output, a data fetcher or getter method must be made available.</p>
 </div>
@@ -486,6 +494,8 @@ When creating custom types, it is important that the name you choose does not al
 </td>
 </tr>
 </table>
+</div>
+</div>
 </div>
 </div>
 
@@ -860,6 +870,9 @@ schema.errorsResponseHandler = <span class="keyword">new</span> MyErrorsResponse
 </div>
 
 
+<div class="sect1">
+<h2 id="_custom_naming_conventions">Custom Naming Conventions</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The names used to describe entities is configurable through the use of an <a href="../api/org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>.</p>
 </div>
@@ -889,6 +902,8 @@ schema.namingConvention = <span class="keyword">new</span> MyNamingConvention()<
 <div class="title">resources.groovy</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">graphQLEntityNamingConvention(MyNamingConvention)</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -985,13 +1000,13 @@ The date formats will also be used for the Java 8 date types.
   - yyyy-MM-dd&#8217;T&#8217;HH:mm:ss&#8217;Z'
   - yyyy-MM-dd HH:mm:ss.S z
   - yyyy-MM-dd&#8217;T&#8217;HH:mm:ss.SSSX</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the setting is not provided, the <code>grails.databinding.dateFormats</code> will be used.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.dateFormatLenient</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">False</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the setting is not provided, the <code>grails.databinding.dateParsingLenient</code> will be used.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.listArguments</code></p></td>
@@ -1011,6 +1026,18 @@ The date formats will also be used for the Java 8 date types.
 <h3 id="_fetching_context">Fetching Context</h3>
 <div class="paragraph">
 <p>Data fetchers in GraphQL have a "context". The context is really just an Object field that can contain anything you like with the purpose of exposing it to the data fetching environment. For example, the default context created by the plugin is a Map that contains the request locale. The locale is used to render validation error messages.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you prefer to set the context to a custom class, implement <a href="../api/org/grails/gorm/graphql/fetcher/context/LocaleAwareContext.html">LocaleAwareContext</a> and the default validation errors response handler will retrieve the locale from the object.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>It is common to need to manipulate the context to include data that some or all of your data fetchers might need. If a fetcher needs to be aware of the current user and you are using the spring security plugin, you may want to add the <code>springSecurityService</code> to the context.</p>

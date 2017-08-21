@@ -638,6 +638,7 @@ If there was a validation error during the update process, the <code>errors</cod
 mutation {
   speakerDelete(id: 8) {
     success
+    error
   }
 }'</code></pre>
 </div>
@@ -650,11 +651,20 @@ mutation {
 <pre class="CodeRay highlight"><code data-lang="json">{
     <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
         <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerDelete</span><span class="delimiter">&quot;</span></span>: {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">success</span><span class="delimiter">&quot;</span></span>: <span class="value">true</span>
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">success</span><span class="delimiter">&quot;</span></span>: <span class="value">true</span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">error</span><span class="delimiter">&quot;</span></span>: <span class="value">null</span>  <i class="conum" data-value="1"></i><b>(1)</b>
         }
     }
 }</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The message of any exception that occurred will be returned if the action wasn&#8217;t successful.</td>
+</tr>
+</table>
 </div>
 
 
@@ -693,6 +703,9 @@ mutation {
 </div>
 
 
+<div class="sect1">
+<h2 id="_persistent_property_options">Persistent Property Options</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>It is possible to control several aspects of how existing persistent properties on GORM entities are represented in the generated schema.</p>
 </div>
@@ -814,6 +827,8 @@ The data type returned must be the same as the property type.
 </div>
 </div>
 </div>
+</div>
+</div>
 
 
 <h2 id="custom">4.1.2 Custom Properties</h2>
@@ -825,6 +840,9 @@ The data type returned must be the same as the property type.
 </div>
 
 
+<div class="sect1">
+<h2 id="_adding_custom_properties">Adding Custom Properties</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>It is possible to add custom properties to your domain class solely for the use in the GraphQL schema. You must supply either a custom data binder or a setter method for properties that will be used for input. For output, a data fetcher or getter method must be made available.</p>
 </div>
@@ -1021,6 +1039,8 @@ When creating custom types, it is important that the name you choose does not al
 </td>
 </tr>
 </table>
+</div>
+</div>
 </div>
 </div>
 
@@ -1395,6 +1415,9 @@ schema.errorsResponseHandler = <span class="keyword">new</span> MyErrorsResponse
 </div>
 
 
+<div class="sect1">
+<h2 id="_custom_naming_conventions">Custom Naming Conventions</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The names used to describe entities is configurable through the use of an <a href="../api/org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>.</p>
 </div>
@@ -1424,6 +1447,8 @@ schema.namingConvention = <span class="keyword">new</span> MyNamingConvention()<
 <div class="title">resources.groovy</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">graphQLEntityNamingConvention(MyNamingConvention)</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1520,13 +1545,13 @@ The date formats will also be used for the Java 8 date types.
   - yyyy-MM-dd&#8217;T&#8217;HH:mm:ss&#8217;Z'
   - yyyy-MM-dd HH:mm:ss.S z
   - yyyy-MM-dd&#8217;T&#8217;HH:mm:ss.SSSX</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the setting is not provided, the <code>grails.databinding.dateFormats</code> will be used.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.dateFormatLenient</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">False</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the setting is not provided, the <code>grails.databinding.dateParsingLenient</code> will be used.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.listArguments</code></p></td>
@@ -1546,6 +1571,18 @@ The date formats will also be used for the Java 8 date types.
 <h3 id="_fetching_context">Fetching Context</h3>
 <div class="paragraph">
 <p>Data fetchers in GraphQL have a "context". The context is really just an Object field that can contain anything you like with the purpose of exposing it to the data fetching environment. For example, the default context created by the plugin is a Map that contains the request locale. The locale is used to render validation error messages.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you prefer to set the context to a custom class, implement <a href="../api/org/grails/gorm/graphql/fetcher/context/LocaleAwareContext.html">LocaleAwareContext</a> and the default validation errors response handler will retrieve the locale from the object.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>It is common to need to manipulate the context to include data that some or all of your data fetchers might need. If a fetcher needs to be aware of the current user and you are using the spring security plugin, you may want to add the <code>springSecurityService</code> to the context.</p>
@@ -1606,6 +1643,139 @@ The date formats will also be used for the Java 8 date types.
 
 <div class="paragraph">
 <p>It is the responsibility of the type manager to convert Java classes to GraphQL types used in the creation of the schema. All of the basic GORM types have corresponding converters registered in the default type manager. It may be necessary to register GraphQL types for classes used in your domain model.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The type manager is designed to store GraphQL types for non GORM entities (simple types). If you encounter a <a href="../api/org/grails/gorm/graphql/types/TypeNotFoundException.html">TypeNotFoundException</a>, it is likely you will need to register a type for the missing class.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect1">
+<h2 id="_get_the_manager">Get The Manager</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To register type converters, you need to get a reference to the <a href="../api/org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>. If you are using the manager provided by default, how you access it will depend on whether you are using the plugin or standalone.</p>
+</div>
+<div class="sect2">
+<h3 id="_standalone">Standalone</h3>
+<div class="paragraph">
+<p>When creating the schema, initialize it first. The default type manager will then be set.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.initialize()
+GraphQLTypeManager typeManager = schema.typeManager
+...
+schema.generate()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_plugin">Plugin</h3>
+<div class="paragraph">
+<p>For Grails applications it is recommended to reference the bean created by the plugin. The easiest way to do so is to register a bean post processor. The plugin has a class available to extend to make that easier.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">myGraphQLCustomizer(MyGraphQLCustomizer)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">src/main/groovy/demo/MyGraphQLCustomizer.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.GraphQLPostProcessor</span>
+
+<span class="type">class</span> <span class="class">MyGraphQLCustomizer</span> <span class="directive">extends</span> GraphQLPostProcessor {
+
+    <span class="annotation">@Override</span>
+    <span class="type">void</span> doWith(GraphQLTypeManager typeManager) {
+        ...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you need to customize more than 1 manager, only a single bean needs to be registered. There are <code>doWith</code> methods for all of the managers you may need to register object instances with.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_register_a_converter">Register A Converter</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once you have access to the manager, registration of your own type is easy. In this example a type is being registered to handle a Mongo <code>ObjectId</code>. The type will be used to do conversion of arguments in GraphQL.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This process only handles how an ObjectId will be created from either Java arguments, or arguments passed inline in the GraphQL query or mutation. For Grails applications, the process of rendering the ObjectID as json is handled by <a href="http://views.grails.org">JSON views</a>. To supply behavior for how an ObjectId is rendered, see the documentation for json views. For standalone projects, you are responsible for any conversions that may need to happen.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">graphql.schema.GraphQLScalarType</span>
+<span class="keyword">import</span> <span class="include">org.bson.types.ObjectId</span>
+<span class="keyword">import</span> <span class="include">graphql.schema.Coercing</span>
+
+GraphQLTypeManager typeManager
+
+typeManager.registerType(ObjectId, <span class="keyword">new</span> GraphQLScalarType(<span class="string"><span class="delimiter">&quot;</span><span class="content">ObjectId</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Hex representation of a Mongo object id</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> Coercing&lt;ObjectId, ObjectId&gt;() {
+
+    <span class="annotation">@Override</span>
+    ObjectId serialize(<span class="predefined-type">Object</span> input) {
+        <span class="keyword">if</span> (input <span class="keyword">instanceof</span> ObjectId) {
+            (ObjectId) input
+        }
+        <span class="keyword">else</span> {
+            <span class="predefined-constant">null</span>
+        }
+    }
+
+    <span class="annotation">@Override</span>
+    ObjectId parseValue(<span class="predefined-type">Object</span> input) {
+        serialize(input)
+    }
+
+    <span class="annotation">@Override</span>
+    ObjectId parseLiteral(<span class="predefined-type">Object</span> input) {
+        <span class="keyword">if</span> (input <span class="keyword">instanceof</span> StringValue) {
+            <span class="keyword">new</span> ObjectId(((StringValue) input).value)
+        }
+        <span class="keyword">else</span> {
+            <span class="predefined-constant">null</span>
+        }
+    }
+
+}))</code></pre>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -1725,7 +1895,7 @@ schema.generate()</code></pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If you need to customize more than 1 manager, only a single bean needs to be registered. There are <code>doWith</code> methods for all of the managers you may need to register things with.
+If you need to customize more than 1 manager, only a single bean needs to be registered. There are <code>doWith</code> methods for all of the managers you may need to register object instances with.
 </td>
 </tr>
 </table>
@@ -1758,7 +1928,7 @@ interceptorManager.registerInterceptor(Author, <span class="keyword">new</span> 
 <div class="sect2">
 <h3 id="_provided">Provided</h3>
 <div class="paragraph">
-<p>There are 2 methods that will be invoked for provided data fetchers. Which one gets invoked depends on whether the operation is a query or a mutation. For query operations (GET, LIST), the <code>onQuery</code> method will be executed. For mutation operations (CREATE, UPDATE, DELETE), the <code>onMutation</code> method will be executed.</p>
+<p>There are two methods that will be invoked for provided data fetchers. Which one gets invoked depends on whether the operation is a query or a mutation. For query operations (GET, LIST), the <code>onQuery</code> method will be executed. For mutation operations (CREATE, UPDATE, DELETE), the <code>onMutation</code> method will be executed.</p>
 </div>
 <div class="paragraph">
 <p>The data fetching environment and the data fetcher type are available to help make decisions about whether or not to interrupt the execution.</p>
@@ -1767,7 +1937,10 @@ interceptorManager.registerInterceptor(Author, <span class="keyword">new</span> 
 <div class="sect2">
 <h3 id="_custom">Custom</h3>
 <div class="paragraph">
-<p>There</p>
+<p>There are two methods that will be invoked for custom data fetchers. For operations registered with the <code>query</code> method in the mapping, the <code>onCustomQuery</code> method will be invoked. For operations registered with the <code>mutation</code> method in the mapping, the <code>onCustomMutation</code> method will be invoked.</p>
+</div>
+<div class="paragraph">
+<p>For custom operations, the name of the operation is available to be able to distinguish one custom operation from another.</p>
 </div>
 </div>
 </div>
@@ -1775,13 +1948,33 @@ interceptorManager.registerInterceptor(Author, <span class="keyword">new</span> 
 <div class="sect1">
 <h2 id="_schema_interceptors">Schema Interceptors</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>In addition to data fetcher interceptors, it is also possible to register an interceptor for the GraphQL schema before it is built. These interceptors have the ability to intercept each persistent entity after its types are created, but before building, as well as one final interception before the schema as a whole is built.</p>
+</div>
+<div class="sect2">
+<h3 id="_registration">Registration</h3>
+<div class="paragraph">
+<p>Once you have access to the manager, registration of your own interceptor is easy. In this example a schema interceptor is being registered. The interceptor will get invoked for all entities as they are being created as well as once before the schema is finalized.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">GraphQLInterceptorManager interceptorManager
+
+interceptorManager.registerInterceptor(<span class="keyword">new</span> MySchemaInterceptor())</code></pre>
+</div>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_entity">Entity</h3>
-
+<div class="paragraph">
+<p>As each entity is being processed, a list of query fields and a list of mutation fields are being built. Before those fields are passed to the root query or mutation object, any schema interceptors are invoked with the intention that they may mutate the lists of fields. The persistent entity is also available to the interceptor.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_final_schema">Final Schema</h3>
-
+<div class="paragraph">
+<p>After all of the entities have been processed, schema interceptors are invoked with the query type and mutation type. Once again, this provides the opportunity to make changes before the types are built and passed to the root schema object.</p>
+</div>
 </div>
 </div>
 </div>
@@ -1801,6 +1994,21 @@ interceptorManager.registerInterceptor(Author, <span class="keyword">new</span> 
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section of the documentation is designed to inform you about special circumstances that may impact some use cases.</p>
+</div>
+<div class="sect2">
+<h3 id="_nullability">Nullability</h3>
+<div class="paragraph">
+<p>The nullable constraint on persistent properties is only respected during the create operation. For all other cases, null is always allowed. The reasoning for allowing nulls for output operations (get or list) is due to the possibility of the properties being null as a result of validation errors during a create or update. Nulls are allowed for update operations to allow users to send a partial object instead of the entire object.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inheritance">Inheritance</h3>
+<div class="paragraph">
+<p>Because GraphQL doesn&#8217;t support the ability to have interfaces extend other interfaces, interface types will only be created for root entities that have children. All child entities, regardless of any intermediate parent classes, will set their interface type to their root entity interface.</p>
+</div>
+<div class="paragraph">
+<p>When querying the root entity, all children will be available to select properties via the <code>&#8230;&#8203; on</code> directive.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_map_properties">Map Properties</h3>

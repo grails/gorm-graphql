@@ -11,6 +11,7 @@ org.grails.gorm.graphql.entity.property
 org.grails.gorm.graphql.entity.property.impl
 org.grails.gorm.graphql.entity.property.manager
 org.grails.gorm.graphql.fetcher
+org.grails.gorm.graphql.fetcher.context
 org.grails.gorm.graphql.fetcher.impl
 org.grails.gorm.graphql.fetcher.invoker
 org.grails.gorm.graphql.fetcher.manager

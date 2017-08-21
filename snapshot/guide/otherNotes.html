@@ -113,6 +113,21 @@ function addJsClass() {
 <p>This section of the documentation is designed to inform you about special circumstances that may impact some use cases.</p>
 </div>
 <div class="sect2">
+<h3 id="_nullability">Nullability</h3>
+<div class="paragraph">
+<p>The nullable constraint on persistent properties is only respected during the create operation. For all other cases, null is always allowed. The reasoning for allowing nulls for output operations (get or list) is due to the possibility of the properties being null as a result of validation errors during a create or update. Nulls are allowed for update operations to allow users to send a partial object instead of the entire object.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inheritance">Inheritance</h3>
+<div class="paragraph">
+<p>Because GraphQL doesn&#8217;t support the ability to have interfaces extend other interfaces, interface types will only be created for root entities that have children. All child entities, regardless of any intermediate parent classes, will set their interface type to their root entity interface.</p>
+</div>
+<div class="paragraph">
+<p>When querying the root entity, all children will be available to select properties via the <code>&#8230;&#8203; on</code> directive.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_map_properties">Map Properties</h3>
 <div class="paragraph">
 <p>Since `Map`s by definition are dynamic, they don&#8217;t fit well into the pre defined world that is the GraphQL schema. It is impossible to render them as they are with dynamic keys because the schema must be statically defined. There are a couple ways to work around this depending on how you are using the properties.</p>
