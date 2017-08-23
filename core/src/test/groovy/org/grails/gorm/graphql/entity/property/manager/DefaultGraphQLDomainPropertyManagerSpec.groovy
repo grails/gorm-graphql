@@ -4,6 +4,7 @@ import grails.gorm.annotation.Entity
 import org.codehaus.groovy.util.HashCodeHelper
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.gorm.graphql.HibernateSpec
+import org.grails.gorm.graphql.domain.general.ordering.Ordering
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import spock.lang.Shared
@@ -12,7 +13,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
 
     @Shared GraphQLDomainPropertyManager manager
 
-    List<Class> getDomainClasses() { [NormalId, CompositeId, EmbeddedEntity] }
+    List<Class> getDomainClasses() { [NormalId, CompositeId, EmbeddedEntity, Ordering] }
 
     void setupSpec() {
         manager = new DefaultGraphQLDomainPropertyManager()
@@ -106,6 +107,18 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
 
         then: //bar is excluded via the mapping, foo is added
         properties*.name.toSet() == ['title', 'description', 'foo'] as Set
+    }
+    
+    void "test retrieving domain properties obey ordering"(){
+        when:
+            List<GraphQLDomainProperty> properties = manager
+                .builder()
+                .excludeVersion()
+                .getProperties(mappingContext.getPersistentEntity(Ordering.name))
+
+        then: //bar is excluded via the mapping, foo is added
+            properties*.name == ['id','a','aa','b','c','d']
+            
     }
 
 }

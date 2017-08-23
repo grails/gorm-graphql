@@ -12,7 +12,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * @author James Kleeh
  * @since 1.0.0
  */
-interface GraphQLDomainProperty {
+interface GraphQLDomainProperty extends Comparable<GraphQLDomainProperty>{
 
     /**
      * @return The name of the property

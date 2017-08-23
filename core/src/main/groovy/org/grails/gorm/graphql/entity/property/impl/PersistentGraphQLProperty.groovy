@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.entity.property.impl
 
+import grails.gorm.validation.Constrained
 import graphql.schema.DataFetcher
 import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
@@ -156,5 +157,35 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         }
 
         graphQLType
+    }
+
+    @Override
+    int compareTo(GraphQLDomainProperty o) {
+        int result = 0
+        
+        boolean partOfIdentity = isPartOfIdentity(property)
+        
+        if(o instanceof PersistentGraphQLProperty){
+            result = (partOfIdentity <=> isPartOfIdentity(((PersistentGraphQLProperty)o).property)) * -1 /* inverted order */
+            
+            if(!result && property instanceof Constrained){
+                if(((PersistentGraphQLProperty)o).property instanceof Constrained){
+                    result = ((Constrained)property).order <=> ((Constrained)((PersistentGraphQLProperty)o).property).order
+                }
+            }
+        }
+        else if(partOfIdentity){
+            result = 1
+        }
+        else if(property instanceof Constrained && o instanceof CustomGraphQLProperty){
+            result = ((Constrained)property).order <=> ((CustomGraphQLProperty)o).order
+        }
+        return result?: name <=> o.name
+        
+    }
+    
+    private static boolean isPartOfIdentity(PersistentProperty property){
+        property.owner.identity?.name == property.name ||
+            property.owner.compositeIdentity?.find{it.name == property.name}
     }
 }
