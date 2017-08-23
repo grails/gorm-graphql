@@ -138,7 +138,10 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
                 }
             }
 
-            for (PersistentProperty prop: entity.persistentProperties) {
+            
+            List<PersistentProperty> persistentProperties = entity.persistentProperties.sort{it.name}
+            
+            for (PersistentProperty prop: persistentProperties) {
                 if (mapping.excluded.contains(prop.name)) {
                     continue
                 }
