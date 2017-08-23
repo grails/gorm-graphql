@@ -5,11 +5,13 @@ import grails.web.mime.MimeType
 import grails.web.servlet.mvc.GrailsParameterMap
 import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
+import org.grails.gorm.graphql.plugin.requests.BatchGraphQLRequests
+import org.grails.gorm.graphql.plugin.requests.SingleGraphQLRequest
 
 @CompileStatic
 class GraphQLRequestUtils {
 
-    static GraphQLRequest graphQLRequestWithParams(GrailsParameterMap params) {
+    static GraphQLRequests graphQLRequestWithParams(GrailsParameterMap params) {
         GraphQLRequest graphQLRequest = new GraphQLRequest()
         graphQLRequest.query = params.query
         graphQLRequest.operationName = params.containsKey('operationName') ? params.operationName : null
@@ -18,10 +20,10 @@ class GraphQLRequestUtils {
         } else {
             graphQLRequest.variables = Collections.emptyMap()
         }
-        graphQLRequest
+        new SingleGraphQLRequest(graphQLRequest)
     }
 
-    static GraphQLRequest graphQLRequestWithBodyAndMimeTypes(String body, MimeType[] mimeTypes) {
+    static GraphQLRequests graphQLRequestWithBodyAndMimeTypes(String body, MimeType[] mimeTypes) {
         if (mimeTypes == null) {
             return null
         }
@@ -37,8 +39,18 @@ class GraphQLRequestUtils {
         return null
     }
 
-    static GraphQLRequest graphQLRequestWithJSONBody(String body) {
-        TypeConvertingMap json = new TypeConvertingMap(new JsonSlurper().parseText(body) as Map)
+    static GraphQLRequests graphQLRequestWithJSONBody(String body) {
+        Object json = new JsonSlurper().parseText(body)
+        
+        if(json instanceof Map){
+            new SingleGraphQLRequest(graphQLRequestWithMap((Map)json))            
+        }
+        else{
+            new BatchGraphQLRequests(((Collection)json).collect{graphQLRequestWithMap((Map)it)} as GraphQLRequest[])            
+        }
+    }
+    static GraphQLRequest graphQLRequestWithMap(Map data) {
+        TypeConvertingMap json = new TypeConvertingMap(data)
         GraphQLRequest graphQLRequest = new GraphQLRequest()
         graphQLRequest.with {
             query = json.query.toString()
@@ -47,14 +59,13 @@ class GraphQLRequestUtils {
         }
         graphQLRequest
     }
-
-    static GraphQLRequest graphQLRequestWithGraphqlBody(String body) {
+    static GraphQLRequests graphQLRequestWithGraphqlBody(String body) {
         GraphQLRequest graphQLRequest = new GraphQLRequest()
         graphQLRequest.with {
             query = body
             operationName = null
             variables = Collections.emptyMap()
         }
-        graphQLRequest
+        new SingleGraphQLRequest(graphQLRequest)
     }
 }

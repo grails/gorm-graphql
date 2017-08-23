@@ -1,0 +1,6 @@
+model{
+    List<Map> data    
+}
+json {
+    tmpl.msg('single',data)
+}
