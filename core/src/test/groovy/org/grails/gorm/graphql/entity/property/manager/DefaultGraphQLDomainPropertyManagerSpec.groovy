@@ -117,7 +117,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(Ordering.name))
 
         then: //bar is excluded via the mapping, foo is added
-            properties*.name == ['id','a','aa','b','c','d']
+            properties*.name == ['id','aa','b','a','c','d']
             
     }
 

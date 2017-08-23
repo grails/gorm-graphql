@@ -12,8 +12,8 @@ class Ordering {
     
     
     static constraints = {
-        a order: 1
-        b order: 2
+        a order: 2
+        b order: 1
     }
     
     static graphql = GraphQLMapping.build {

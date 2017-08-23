@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.entity.property.impl
 
-import grails.gorm.validation.Constrained
+import grails.gorm.validation.ConstrainedProperty
+import grails.gorm.validation.PersistentEntityValidator
 import graphql.schema.DataFetcher
 import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
@@ -18,6 +19,7 @@ import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetcher
 import org.grails.gorm.graphql.types.GraphQLOperationType
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
+import org.springframework.validation.Validator
 
 import java.lang.reflect.Field
 
@@ -32,7 +34,8 @@ import static graphql.schema.GraphQLList.list
  */
 @CompileStatic
 class PersistentGraphQLProperty implements GraphQLDomainProperty {
-
+    final boolean identity
+    final int order
     final String name
     final Class type
     final boolean collection
@@ -47,6 +50,8 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
     private MappingContext mappingContext
 
     PersistentGraphQLProperty(MappingContext mappingContext, PersistentProperty property, GraphQLPropertyMapping mapping) {
+        this.identity = isPartOfIdentity(property)
+        this.order = getConstrainedOrder(property,mappingContext)
         this.property = property
         this.mappingContext = mappingContext
         this.name = property.name
@@ -162,30 +167,36 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
     @Override
     int compareTo(GraphQLDomainProperty o) {
         int result = 0
-        
-        boolean partOfIdentity = isPartOfIdentity(property)
-        
         if(o instanceof PersistentGraphQLProperty){
-            result = (partOfIdentity <=> isPartOfIdentity(((PersistentGraphQLProperty)o).property)) * -1 /* inverted order */
+            PersistentGraphQLProperty other = (PersistentGraphQLProperty) o
             
-            if(!result && property instanceof Constrained){
-                if(((PersistentGraphQLProperty)o).property instanceof Constrained){
-                    result = ((Constrained)property).order <=> ((Constrained)((PersistentGraphQLProperty)o).property).order
-                }
+            result = (identity <=> other.identity) * -1 
+            
+            if(result == 0){
+                result = order <=> other.order
             }
         }
-        else if(partOfIdentity){
-            result = 1
+        else if(identity){
+            result = -1
         }
-        else if(property instanceof Constrained && o instanceof CustomGraphQLProperty){
-            result = ((Constrained)property).order <=> ((CustomGraphQLProperty)o).order
+        else if(o instanceof CustomGraphQLProperty){
+            result = order <=> ((CustomGraphQLProperty)o).order
         }
-        return result?: name <=> o.name
-        
+        return result?: name <=> o.name        
     }
     
     private static boolean isPartOfIdentity(PersistentProperty property){
         property.owner.identity?.name == property.name ||
             property.owner.compositeIdentity?.find{it.name == property.name}
+    }
+    private static int getConstrainedOrder(PersistentProperty property, MappingContext context){
+        ConstrainedProperty constrainedProperty = getConstrainedProperty(property,context)
+        constrainedProperty == null? Integer.MAX_VALUE : constrainedProperty.order
+    }
+    private static ConstrainedProperty getConstrainedProperty(PersistentProperty property, MappingContext context){
+        Validator validator = context?.getEntityValidator(property.owner)
+        if(validator instanceof PersistentEntityValidator){
+            ((PersistentEntityValidator)validator).constrainedProperties?.get(property.name)
+        }
     }
 }
