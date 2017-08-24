@@ -48,7 +48,7 @@ class NestedInputObjectTypeBuilderSpec extends HibernateSpec {
         List<GraphQLDomainProperty> props = builder.builder.getProperties(Circular.gormPersistentEntity)
 
         then: 'circular properties are excluded'
-        props*.name== ['id', 'circulars', 'otherCircular']
+        props*.name== ['id', 'otherCircular', 'circulars']
     }
 
 }

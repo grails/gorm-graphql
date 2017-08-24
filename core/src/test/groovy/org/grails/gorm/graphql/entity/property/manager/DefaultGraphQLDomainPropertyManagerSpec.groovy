@@ -113,11 +113,21 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
         when:
             List<GraphQLDomainProperty> properties = manager
                 .builder()
-                .excludeVersion()
                 .getProperties(mappingContext.getPersistentEntity(Ordering.name))
 
         then: //bar is excluded via the mapping, foo is added
-            properties*.name == ['id','aa','b','a','c','d']
+            properties*.name == [
+                'id',
+                'version',
+                'aa',
+                'b',
+                'a',
+                'g',
+                'f',
+                'q',
+                'c', 
+                'd'
+            ]
             
     }
 

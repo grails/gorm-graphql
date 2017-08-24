@@ -97,3 +97,37 @@ static graphql = GraphQLMapping.build {
     property('name', deprecated: true) //"Deprecated" will be the reason
 }
 ----
+
+=== Order 
+
+The order in which the fields appear in the schema can be customized. 
+By default, if available, the identity and version property appear on top of the schema type.
+
+Changing order using mapping (leading):     
+[source,groovy]
+----
+   static graphql = GraphQLMapping.build {
+       property('name', [order:1])
+   }
+----
+
+If a constrained order is available, it will be used: 
+[source,groovy]
+----
+   static constrained = {
+        name order: 1
+   }
+----
+
+If no specific order is defined, the order in which the property appears in the persistent entity will be used. 
+If you don't want this behaviour simply set all order values to zero by default, using the configuration setting: 
+[source,groovy]
+----
+   grails.gorm.default.constraints = {
+       '*'(order: 0)
+   }
+----
+
+Finally when order equality is found, the properties will be compared by name. 
+
+WARNING: Order should be a positive integer, 0 or negative will be ignored  
