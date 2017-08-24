@@ -62,6 +62,11 @@ class GraphQLPropertyMapping implements Describable<GraphQLPropertyMapping>, Dep
      */
     Closure dataFetcher
 
+    /**
+     * The order the property will be in the schema
+     */
+    Integer order
+
     static GraphQLPropertyMapping build(@DelegatesTo(value = GraphQLPropertyMapping, strategy = Closure.DELEGATE_ONLY) Closure closure) {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()
         withDelegate(closure, mapping)

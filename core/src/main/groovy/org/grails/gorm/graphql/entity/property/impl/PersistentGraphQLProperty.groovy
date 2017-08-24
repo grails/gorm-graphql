@@ -33,9 +33,9 @@ import static graphql.schema.GraphQLList.list
  * @since 1.0.0
  */
 @CompileStatic
-class PersistentGraphQLProperty implements GraphQLDomainProperty {
-    final boolean identity
-    final int order
+class PersistentGraphQLProperty extends OrderedGraphQLProperty {
+
+    final Integer order
     final String name
     final Class type
     final boolean collection
@@ -50,8 +50,6 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
     private MappingContext mappingContext
 
     PersistentGraphQLProperty(MappingContext mappingContext, PersistentProperty property, GraphQLPropertyMapping mapping) {
-        this.identity = isPartOfIdentity(property)
-        this.order = getConstrainedOrder(property,mappingContext)
         this.property = property
         this.mappingContext = mappingContext
         this.name = property.name
@@ -65,9 +63,34 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         }
         this.output = mapping.output
         this.input = mapping.input
+        this.dataFetcher = mapping.dataFetcher ? new ClosureDataFetcher(mapping.dataFetcher) : null
+        if (mapping.order != null) {
+            this.order = mapping.order
+        }
+        else {
+            Validator validator = mappingContext.getEntityValidator(property.owner)
+            if (validator instanceof PersistentEntityValidator) {
+                ConstrainedProperty constrainedProperty = ((PersistentEntityValidator) validator).constrainedProperties.get(name)
+                if (constrainedProperty != null && constrainedProperty.order > 0) {
+                    this.order = constrainedProperty.order
+                }
+            }
+        }
+        if (this.order == null) {
+            if (isIdentifier(property.owner, name)) {
+                this.order = -2
+            }
+            else if (name == 'version') {
+                this.order = -1
+            }
+        }
+
+        initializeMetadata(mapping)
+    }
+
+    private initializeMetadata(GraphQLPropertyMapping mapping) {
         this.description = mapping.description
         this.deprecationReason = mapping.deprecationReason
-        this.dataFetcher = mapping.dataFetcher ? new ClosureDataFetcher(mapping.dataFetcher) : null
         try {
             Field field = property.owner.javaClass.getDeclaredField(property.name)
             if (field != null) {
@@ -164,39 +187,17 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         graphQLType
     }
 
-    @Override
-    int compareTo(GraphQLDomainProperty o) {
-        int result = 0
-        if(o instanceof PersistentGraphQLProperty){
-            PersistentGraphQLProperty other = (PersistentGraphQLProperty) o
-            
-            result = (identity <=> other.identity) * -1 
-            
-            if(result == 0){
-                result = order <=> other.order
+    private boolean isIdentifier(PersistentEntity entity, String name) {
+        if (entity.identity != null) {
+            return entity.identity.name == name
+        }
+        else if (entity.compositeIdentity != null) {
+            for (PersistentProperty property: entity.compositeIdentity) {
+                if (property.name == name) {
+                    return true
+                }
             }
         }
-        else if(identity){
-            result = -1
-        }
-        else if(o instanceof CustomGraphQLProperty){
-            result = order <=> ((CustomGraphQLProperty)o).order
-        }
-        return result?: name <=> o.name        
-    }
-    
-    private static boolean isPartOfIdentity(PersistentProperty property){
-        property.owner.identity?.name == property.name ||
-            property.owner.compositeIdentity?.find{it.name == property.name}
-    }
-    private static int getConstrainedOrder(PersistentProperty property, MappingContext context){
-        ConstrainedProperty constrainedProperty = getConstrainedProperty(property,context)
-        constrainedProperty == null? Integer.MAX_VALUE : constrainedProperty.order
-    }
-    private static ConstrainedProperty getConstrainedProperty(PersistentProperty property, MappingContext context){
-        Validator validator = context?.getEntityValidator(property.owner)
-        if(validator instanceof PersistentEntityValidator){
-            ((PersistentEntityValidator)validator).constrainedProperties?.get(property.name)
-        }
+        false
     }
 }

@@ -32,7 +32,7 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
             derivedMethod = Property.getMethod('isDerived', (Class<?>[]) null)
         } catch (NoSuchMethodException | SecurityException e) { }
     }
-    
+
     @Override
     Builder builder() {
         new Builder()
@@ -136,10 +136,7 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
                 }
             }
 
-            
-            List<PersistentProperty> persistentProperties = entity.persistentProperties
-            
-            for (PersistentProperty prop: persistentProperties) {
+            for (PersistentProperty prop: entity.persistentProperties) {
                 if (mapping.excluded.contains(prop.name)) {
                     continue
                 }
@@ -168,7 +165,7 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
                 properties.add(prop)
             }
 
-            properties.sort()
+            properties.sort(true)
             properties
         }
     }

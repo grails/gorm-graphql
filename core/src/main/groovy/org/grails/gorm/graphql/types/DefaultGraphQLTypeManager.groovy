@@ -54,7 +54,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         (Timestamp): new GraphQLTimestamp(),
         (Currency): new GraphQLCurrency(),
         (TimeZone): new GraphQLTimeZone()
-    ] as Map)
+    ])
 
     protected static final Map<Class, GraphQLEnumType> ENUM_TYPES = new ConcurrentHashMap<>()
 

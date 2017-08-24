@@ -23,9 +23,9 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  */
 @AutoClone
 @CompileStatic
-abstract class CustomGraphQLProperty<T> implements GraphQLDomainProperty, Named<T>, Describable<T>, Deprecatable<T>, Nullable<T>,Comparable<GraphQLDomainProperty> {
+abstract class CustomGraphQLProperty<T> extends OrderedGraphQLProperty implements Named<T>, Describable<T>, Deprecatable<T>, Nullable<T> {
 
-    int order
+    Integer order = null
     boolean input = true
     boolean output = true
     Closure closureDataFetcher = null
@@ -45,7 +45,7 @@ abstract class CustomGraphQLProperty<T> implements GraphQLDomainProperty, Named<
         (T)this
     }
     
-    T order(int order) {
+    T order(Integer order) {
         this.order = order
         (T)this
     }
@@ -70,15 +70,4 @@ abstract class CustomGraphQLProperty<T> implements GraphQLDomainProperty, Named<
         }
     }
 
-    @Override
-    int compareTo(GraphQLDomainProperty o) {
-        int result = 0
-        if(o instanceof CustomGraphQLProperty){
-            result = ((CustomGraphQLProperty)o).order <=> order
-        }
-        else if(o instanceof PersistentGraphQLProperty){
-            result = (o <=> this) * -1
-        }
-        return result?: name <=> o.name
-    }
 }

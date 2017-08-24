@@ -12,7 +12,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * @author James Kleeh
  * @since 1.0.0
  */
-interface GraphQLDomainProperty extends Comparable<GraphQLDomainProperty>{
+interface GraphQLDomainProperty {
 
     /**
      * @return The name of the property
@@ -62,4 +62,5 @@ interface GraphQLDomainProperty extends Comparable<GraphQLDomainProperty>{
      * otherwise the default fetcher will be used.
      */
     DataFetcher getDataFetcher()
+
 }
