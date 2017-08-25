@@ -91,23 +91,11 @@ if (location.href.indexOf('is-external=true') == -1) {
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li>org.grails.gorm.graphql.entity.property.impl.PersistentGraphQLProperty
+<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.grails.gorm.graphql.entity.property.impl.PersistentGraphQLProperty
 </ul>
 <div class="description">
     <ul class="blockList">
         <li class="blockList">
-
-            <dl>
-                <dt>All Implemented Interfaces and Traits:</dt>
-                <dd><a href='../../../../../../../org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html'>GraphQLDomainProperty</a></dd>
-            </dl>
-            <!-- todo: direct known subclasses -->
-            <hr>
-            <br>
-<pre>@groovy.transform.CompileStatic
-class PersistentGraphQLProperty
-
-</pre>
 
 
 
@@ -179,16 +167,21 @@ class PersistentGraphQLProperty
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code><strong>java.lang.Integer</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#order">order</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>boolean</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#output">output</a></code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong><a href='../../../../../../../PersistentProperty.html'>PersistentProperty</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#property">property</a></code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>java.lang.Class</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#type">type</a></code><br></td>
                         </tr>
@@ -274,8 +267,8 @@ class PersistentGraphQLProperty
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code>class java.lang.Object</code></td>
-                            <td class="colLast"><code>java.lang.Object#wait(long, int), java.lang.Object#wait(long), java.lang.Object#wait(), java.lang.Object#equals(java.lang.Object), java.lang.Object#toString(), java.lang.Object#hashCode(), java.lang.Object#getClass(), java.lang.Object#notify(), java.lang.Object#notifyAll()</code></td>
+                            <td class="colFirst"><code>class <a href='../../../../../../../org/grails/gorm/graphql/entity/property/impl/OrderedGraphQLProperty.html'>OrderedGraphQLProperty</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../../../org/grails/gorm/graphql/entity/property/impl/OrderedGraphQLProperty.html#compareTo(org.grails.gorm.graphql.entity.property.impl.OrderedGraphQLProperty)'>compareTo</a>, <a href='../../../../../../../org/grails/gorm/graphql/entity/property/impl/OrderedGraphQLProperty.html#getOrder()'>getOrder</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -354,6 +347,14 @@ class PersistentGraphQLProperty
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>final&nbsp;boolean <strong>nullable</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="order"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>final&nbsp;java.lang.Integer <strong>order</strong></h4>
                                 <p></p>
                             </li>
                         </ul>

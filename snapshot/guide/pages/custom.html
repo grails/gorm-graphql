@@ -307,6 +307,40 @@ When creating custom types, it is important that the name you choose does not al
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_order">Order</h3>
+<div class="paragraph">
+<p>The order in which the fields appear in the schema can be customized.
+By default any identity properties and the version property appear first in order.</p>
+</div>
+<div class="paragraph">
+<p>To customize the order of a custom property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">   <span class="directive">static</span> graphql = GraphQLMapping.build {
+       add(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>) {
+            order <span class="integer">1</span>
+       }
+   }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If no order is specified, added properties will be put at the end of the list of properties in the schema. Properties with the same or no order will be ordered by name.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To customize properties to come before the identifier or version, set the value as negative. The default order for id properties is -20 and the default order for version properties is -10.
+</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 </div>
 

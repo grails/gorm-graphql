@@ -709,6 +709,38 @@ mutation {
 <div class="paragraph">
 <p>It is possible to control several aspects of how existing persistent properties on GORM entities are represented in the generated schema.</p>
 </div>
+<div class="paragraph">
+<p>There are several ways to modify the fields available. Consider a property <code>foo</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
+<span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping</span>
+
+<span class="directive">static</span> graphql = GraphQLMapping.build {
+
+    foo <span class="key">description</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    <span class="comment">//or</span>
+    foo {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    }
+    <span class="comment">//or (code completion)</span>
+    foo GraphQLPropertyMapping.build {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    }
+    <span class="comment">//or</span>
+    property(<span class="string"><span class="delimiter">'</span><span class="content">foo</span><span class="delimiter">'</span></span>, <span class="key">description</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>)
+    <span class="comment">//or (code completion)</span>
+    property(<span class="string"><span class="delimiter">'</span><span class="content">foo</span><span class="delimiter">'</span></span>) {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    }
+    <span class="comment">//or (code completion)</span>
+    property(<span class="string"><span class="delimiter">'</span><span class="content">foo</span><span class="delimiter">'</span></span>, GraphQLPropertyMapping.build {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    })
+}</code></pre>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_exclusion">Exclusion</h3>
 <div class="paragraph">
@@ -735,10 +767,6 @@ mutation {
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
     property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">input</span>: <span class="predefined-constant">false</span>)
-    <span class="comment">//or</span>
-    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>) {
-        input <span class="predefined-constant">false</span>
-    }
 }</code></pre>
 </div>
 </div>
@@ -749,10 +777,6 @@ mutation {
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
     property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">output</span>: <span class="predefined-constant">false</span>)
-    <span class="comment">//or</span>
-    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>) {
-        output <span class="predefined-constant">false</span>
-    }
 }</code></pre>
 </div>
 </div>
@@ -825,6 +849,71 @@ The data type returned must be the same as the property type.
     property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">deprecated</span>: <span class="predefined-constant">true</span>) <span class="comment">//&quot;Deprecated&quot; will be the reason</span>
 }</code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_order">Order</h3>
+<div class="paragraph">
+<p>The order in which the fields appear in the schema can be customized.
+By default any identity properties and the version property appear first in order.</p>
+</div>
+<div class="paragraph">
+<p>To customize the order of an existing property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">   <span class="directive">static</span> graphql = GraphQLMapping.build {
+       property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">order</span>: <span class="integer">1</span>)
+   }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the order is supplied via the constraints block, then that value will be used.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">   <span class="directive">static</span> constraints = {
+        name <span class="key">order</span>: <span class="integer">1</span>
+   }</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the order is specified in both the constraints and the property mapping, the property mapping wins. If the order of two or more properties is the same, they are then sorted by name.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If no order is specified, the default order provided by GORM is used. To enable name based sorting by default, configure the default constraints to set the order property to 0 for all domains.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="title">grails-app/conf/application.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">grails.gorm.default.constraints = {
+   <span class="string"><span class="delimiter">'</span><span class="content">*</span><span class="delimiter">'</span></span>(<span class="key">order</span>: <span class="integer">0</span>)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To customize properties to come before the identifier or version, set the value as negative. The default order for id properties is -20 and the default order for version properties is -10.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1036,6 +1125,40 @@ Instead of providing a data fetcher, it is possible to create a getter method to
 </td>
 <td class="content">
 When creating custom types, it is important that the name you choose does not already exist. For example if this application also had a Publisher domain class, the types will conflict because in GraphQL the type names must be unique.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_order">Order</h3>
+<div class="paragraph">
+<p>The order in which the fields appear in the schema can be customized.
+By default any identity properties and the version property appear first in order.</p>
+</div>
+<div class="paragraph">
+<p>To customize the order of a custom property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">   <span class="directive">static</span> graphql = GraphQLMapping.build {
+       add(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>) {
+            order <span class="integer">1</span>
+       }
+   }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If no order is specified, added properties will be put at the end of the list of properties in the schema. Properties with the same or no order will be ordered by name.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To customize properties to come before the identifier or version, set the value as negative. The default order for id properties is -20 and the default order for version properties is -10.
 </td>
 </tr>
 </table>
