@@ -23,8 +23,9 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  */
 @AutoClone
 @CompileStatic
-abstract class CustomGraphQLProperty<T> implements GraphQLDomainProperty, Named<T>, Describable<T>, Deprecatable<T>, Nullable<T> {
+abstract class CustomGraphQLProperty<T> extends OrderedGraphQLProperty implements Named<T>, Describable<T>, Deprecatable<T>, Nullable<T> {
 
+    Integer order = null
     boolean input = true
     boolean output = true
     Closure closureDataFetcher = null
@@ -41,6 +42,11 @@ abstract class CustomGraphQLProperty<T> implements GraphQLDomainProperty, Named<
 
     T output(boolean output) {
         this.output = output
+        (T)this
+    }
+    
+    T order(Integer order) {
+        this.order = order
         (T)this
     }
     
@@ -63,4 +69,5 @@ abstract class CustomGraphQLProperty<T> implements GraphQLDomainProperty, Named<
             throw new IllegalArgumentException('A name is required for creating custom properties')
         }
     }
+
 }

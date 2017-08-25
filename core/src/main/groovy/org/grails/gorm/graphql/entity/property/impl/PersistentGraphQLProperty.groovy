@@ -1,5 +1,7 @@
 package org.grails.gorm.graphql.entity.property.impl
 
+import grails.gorm.validation.ConstrainedProperty
+import grails.gorm.validation.PersistentEntityValidator
 import graphql.schema.DataFetcher
 import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
@@ -17,6 +19,7 @@ import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetcher
 import org.grails.gorm.graphql.types.GraphQLOperationType
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
+import org.springframework.validation.Validator
 
 import java.lang.reflect.Field
 
@@ -30,8 +33,9 @@ import static graphql.schema.GraphQLList.list
  * @since 1.0.0
  */
 @CompileStatic
-class PersistentGraphQLProperty implements GraphQLDomainProperty {
+class PersistentGraphQLProperty extends OrderedGraphQLProperty {
 
+    final Integer order
     final String name
     final Class type
     final boolean collection
@@ -44,6 +48,9 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
 
     PersistentProperty property
     private MappingContext mappingContext
+
+    private static final int DEFAULT_ID_ORDER = -20
+    private static final int DEFAULT_VERSION_ORDER = -10
 
     PersistentGraphQLProperty(MappingContext mappingContext, PersistentProperty property, GraphQLPropertyMapping mapping) {
         this.property = property
@@ -59,9 +66,34 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         }
         this.output = mapping.output
         this.input = mapping.input
+        this.dataFetcher = mapping.dataFetcher ? new ClosureDataFetcher(mapping.dataFetcher) : null
+        if (mapping.order != null) {
+            this.order = mapping.order
+        }
+        else {
+            Validator validator = mappingContext.getEntityValidator(property.owner)
+            if (validator instanceof PersistentEntityValidator) {
+                ConstrainedProperty constrainedProperty = ((PersistentEntityValidator) validator).constrainedProperties.get(name)
+                if (constrainedProperty != null) {
+                    this.order = constrainedProperty.order
+                }
+            }
+        }
+        if (this.order == null) {
+            if (isIdentifier(property.owner, name)) {
+                this.order = DEFAULT_ID_ORDER
+            }
+            else if (name == 'version') {
+                this.order = DEFAULT_VERSION_ORDER
+            }
+        }
+
+        initializeMetadata(mapping)
+    }
+
+    private initializeMetadata(GraphQLPropertyMapping mapping) {
         this.description = mapping.description
         this.deprecationReason = mapping.deprecationReason
-        this.dataFetcher = mapping.dataFetcher ? new ClosureDataFetcher(mapping.dataFetcher) : null
         try {
             Field field = property.owner.javaClass.getDeclaredField(property.name)
             if (field != null) {
@@ -156,5 +188,19 @@ class PersistentGraphQLProperty implements GraphQLDomainProperty {
         }
 
         graphQLType
+    }
+
+    private boolean isIdentifier(PersistentEntity entity, String name) {
+        if (entity.identity != null) {
+            return entity.identity.name == name
+        }
+        else if (entity.compositeIdentity != null) {
+            for (PersistentProperty property: entity.compositeIdentity) {
+                if (property.name == name) {
+                    return true
+                }
+            }
+        }
+        false
     }
 }

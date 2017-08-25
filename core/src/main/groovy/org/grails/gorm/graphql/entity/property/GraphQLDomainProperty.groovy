@@ -62,4 +62,5 @@ interface GraphQLDomainProperty {
      * otherwise the default fetcher will be used.
      */
     DataFetcher getDataFetcher()
+
 }

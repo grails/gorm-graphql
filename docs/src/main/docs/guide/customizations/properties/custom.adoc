@@ -151,3 +151,23 @@ class Author {
 ----
 
 WARNING: When creating custom types, it is important that the name you choose does not already exist. For example if this application also had a Publisher domain class, the types will conflict because in GraphQL the type names must be unique.
+
+=== Order
+
+The order in which the fields appear in the schema can be customized.
+By default any identity properties and the version property appear first in order.
+
+To customize the order of a custom property:
+
+[source,groovy]
+----
+   static graphql = GraphQLMapping.build {
+       add('name', String) {
+            order 1
+       }
+   }
+----
+
+If no order is specified, added properties will be put at the end of the list of properties in the schema. Properties with the same or no order will be ordered by name.
+
+TIP: To customize properties to come before the identifier or version, set the value as negative. The default order for id properties is -20 and the default order for version properties is -10.

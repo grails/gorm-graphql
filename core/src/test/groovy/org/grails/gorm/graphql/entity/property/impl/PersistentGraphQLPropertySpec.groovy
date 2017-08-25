@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.entity.property.impl
 
 import org.grails.datastore.mapping.config.Property
+import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.PropertyMapping
@@ -37,13 +38,19 @@ class PersistentGraphQLPropertySpec extends Specification {
         }
     }
 
+    MappingContext mockContext() {
+        Stub(MappingContext) {
+            getEntityValidator(_) >> null
+        }
+    }
+
     void "test deprecation with foo property"() {
         given:
         PersistentProperty property = buildProperty('foo')
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()
 
         when:
-        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
+        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(mockContext(), property, mapping)
 
         then:
         prop.description == 'Foo'
@@ -57,7 +64,7 @@ class PersistentGraphQLPropertySpec extends Specification {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()
 
         when:
-        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
+        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(mockContext(), property, mapping)
 
         then:
         prop.description == 'Bar'
@@ -71,7 +78,7 @@ class PersistentGraphQLPropertySpec extends Specification {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping(description: 'Foo Bar')
 
         when:
-        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
+        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(mockContext(), property, mapping)
 
         then:
         prop.description == 'Foo Bar'
@@ -85,7 +92,7 @@ class PersistentGraphQLPropertySpec extends Specification {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping(deprecated: true)
 
         when:
-        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
+        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(mockContext(), property, mapping)
 
         then:
         prop.description == 'Bar Foo'
@@ -99,7 +106,7 @@ class PersistentGraphQLPropertySpec extends Specification {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping(nullable: false)
 
         when:
-        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
+        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(mockContext(), property, mapping)
 
         then:
         !prop.nullable
@@ -111,7 +118,7 @@ class PersistentGraphQLPropertySpec extends Specification {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()
 
         when:
-        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
+        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(mockContext(), property, mapping)
 
         then:
         !prop.nullable
@@ -123,7 +130,7 @@ class PersistentGraphQLPropertySpec extends Specification {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping(nullable: true)
 
         when:
-        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
+        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(mockContext(), property, mapping)
 
         then:
         prop.nullable
@@ -135,7 +142,7 @@ class PersistentGraphQLPropertySpec extends Specification {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping()
 
         when:
-        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
+        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(mockContext(), property, mapping)
 
         then:
         prop.collection
@@ -147,7 +154,7 @@ class PersistentGraphQLPropertySpec extends Specification {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping(description: 'Foo from mapping')
 
         when:
-        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
+        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(mockContext(), property, mapping)
 
         then:
         prop.description == 'Foo from mapping'
@@ -159,7 +166,7 @@ class PersistentGraphQLPropertySpec extends Specification {
         GraphQLPropertyMapping mapping = new GraphQLPropertyMapping(deprecationReason: 'Bar deprecated from mapping')
 
         when:
-        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(null, property, mapping)
+        PersistentGraphQLProperty prop = new PersistentGraphQLProperty(mockContext(), property, mapping)
 
         then:
         prop.deprecationReason == 'Bar deprecated from mapping'

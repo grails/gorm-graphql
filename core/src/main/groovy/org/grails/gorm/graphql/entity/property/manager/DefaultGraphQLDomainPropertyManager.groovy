@@ -11,7 +11,6 @@ import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
 import org.grails.gorm.graphql.entity.property.impl.PersistentGraphQLProperty
-import org.grails.gorm.graphql.entity.property.impl.SimpleGraphQLProperty
 
 import java.lang.reflect.Method
 
@@ -40,7 +39,6 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
     }
 
     private static class Builder implements GraphQLDomainPropertyManager.Builder {
-
         Set<String> excludedProperties = [] as Set
         boolean identifiers = true
         boolean compositeIdentifiers = true
@@ -167,6 +165,7 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
                 properties.add(prop)
             }
 
+            properties.sort(true)
             properties
         }
     }
