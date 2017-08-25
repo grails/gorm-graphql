@@ -15,8 +15,6 @@ abstract class OrderedGraphQLProperty implements GraphQLDomainProperty, Comparab
 
     abstract Integer getOrder()
 
-    abstract String getName()
-
     @Override
     int compareTo(OrderedGraphQLProperty o) {
         if (order != null) {
