@@ -25,7 +25,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
 
         then:
         //The timestamp, version, identifiers of the embedded properties are ignored
-        properties*.name.toSet() == ['id', 'version', 'age', 'embeddedPogo', 'embeddedEntity', 'price', 'taxRate', 'tax'] as Set
+        properties*.name == ['id', 'version', 'embeddedEntity', 'age', 'taxRate', 'price', 'embeddedPogo', 'tax']
         !properties.find { it.name == 'tax' }.input // Derived properties are input false by default
         !properties.find { it.name == 'id' }.nullable
     }
@@ -38,7 +38,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(NormalId.name))
 
         then:
-        properties*.name.toSet() == ['id', 'embeddedPogo', 'embeddedEntity', 'price', 'taxRate', 'tax'] as Set
+        properties*.name == ['id', 'embeddedEntity', 'taxRate', 'price', 'embeddedPogo', 'tax']
     }
 
     void "test retrieving domain properties exclude identifers"() {
@@ -49,7 +49,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(NormalId.name))
 
         then:
-        properties*.name.toSet() == ['version', 'age', 'embeddedPogo', 'embeddedEntity', 'price', 'taxRate', 'tax'] as Set
+        properties*.name == ['version', 'embeddedEntity', 'age', 'taxRate', 'price', 'embeddedPogo', 'tax']
     }
 
     void "test retrieving domain properties exclude version"() {
@@ -60,7 +60,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(NormalId.name))
 
         then:
-        properties*.name.toSet() == ['id', 'age', 'embeddedPogo', 'embeddedEntity', 'price', 'taxRate', 'tax'] as Set
+        properties*.name == ['id', 'embeddedEntity', 'age', 'taxRate', 'price', 'embeddedPogo', 'tax']
     }
 
     void "test retrieving domain properties always nullable"() {
@@ -71,7 +71,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(NormalId.name))
 
         then:
-        properties*.name.toSet() == ['id', 'version', 'age', 'embeddedPogo', 'embeddedEntity', 'price', 'taxRate', 'tax'] as Set
+        properties*.name == ['id', 'version', 'embeddedEntity', 'age', 'taxRate', 'price', 'embeddedPogo', 'tax']
         properties.findAll { !it.nullable }.empty
     }
 
@@ -85,7 +85,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(NormalId.name))
 
         then:
-        properties*.name.toSet() == ['id', 'version', 'embeddedEntity', 'price'] as Set
+        properties*.name == ['id', 'version', 'embeddedEntity', 'price']
     }
 
     void "test retrieving domain properties with composite id"() {
@@ -95,7 +95,7 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(CompositeId.name))
 
         then: //bar is excluded via the mapping, foo is added
-        properties*.name.toSet() == ['title', 'description', 'dateCreated', 'lastUpdated', 'foo'] as Set
+        properties*.name == ['description', 'title', 'dateCreated', 'lastUpdated', 'foo']
     }
 
     void "test retrieving domain properties excluding timestamps"() {
@@ -106,28 +106,28 @@ class DefaultGraphQLDomainPropertyManagerSpec extends HibernateSpec {
                 .getProperties(mappingContext.getPersistentEntity(CompositeId.name))
 
         then: //bar is excluded via the mapping, foo is added
-        properties*.name.toSet() == ['title', 'description', 'foo'] as Set
+        properties*.name == ['description', 'title', 'foo']
     }
     
     void "test retrieving domain properties obey ordering"(){
         when:
-            List<GraphQLDomainProperty> properties = manager
-                .builder()
-                .getProperties(mappingContext.getPersistentEntity(Ordering.name))
+        List<GraphQLDomainProperty> properties = manager
+            .builder()
+            .getProperties(mappingContext.getPersistentEntity(Ordering.name))
 
-        then: //bar is excluded via the mapping, foo is added
-            properties*.name == [
-                'id',
-                'version',
-                'aa',
-                'b',
-                'a',
-                'g',
-                'f',
-                'q',
-                'c', 
-                'd'
-            ]
+        then:
+        properties*.name == [
+            'orderNeg',
+            'id',
+            'version',
+            'order0',
+            'order1',
+            'order1a',
+            'order2',
+            'orderNullc',
+            'orderNulld',
+            'order8'
+        ]
             
     }
 

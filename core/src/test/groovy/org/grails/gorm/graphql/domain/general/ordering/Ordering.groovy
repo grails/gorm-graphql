@@ -5,29 +5,29 @@ import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 
 @Entity
 class Ordering {
-    String d
-    String c
-    String a
-    String b
+
+    String order0
+    String orderNeg
+    String order2
+    String order1a
     
     // Checks default property order 
-    String g
-    String f
-    String q
+    String orderNullc
+    String orderNulld
+    String order8
     
     static constraints = {
-        a order: 4
-        b order: 1
-        d order: 0
-        c order: -10
-
+        order2 order: 4
+        order1a order: 1
+        order0 order: 0
+        orderNeg order: -21
     }
     
     static graphql = GraphQLMapping.build {
-        add("aa",String.class,{
+        add("order1",String.class,{
             order(1) // same order as 'a'
         })
-        property("q",[order:8])
-        property("a",[order:2])
+        property("order8",[order:8])
+        property("order2",[order:2])
     }
 }

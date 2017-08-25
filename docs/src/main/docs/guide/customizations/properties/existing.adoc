@@ -2,6 +2,38 @@
 
 It is possible to control several aspects of how existing persistent properties on GORM entities are represented in the generated schema.
 
+There are several ways to modify the fields available. Consider a property `foo`:
+
+[source,groovy]
+----
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
+import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
+
+static graphql = GraphQLMapping.build {
+
+    foo description: "Foo"
+    //or
+    foo {
+        description "Foo"
+    }
+    //or (code completion)
+    foo GraphQLPropertyMapping.build {
+        description "Foo"
+    }
+    //or
+    property('foo', description: "Foo")
+    //or (code completion)
+    property('foo') {
+        description "Foo"
+    }
+    //or (code completion)
+    property('foo', GraphQLPropertyMapping.build {
+        description "Foo"
+    })
+}
+
+----
+
 === Exclusion
 
 To exclude a property from being included from the schema entirely:
@@ -26,10 +58,6 @@ To make a property read only:
 ----
 static graphql = GraphQLMapping.build {
     property('name', input: false)
-    //or
-    property('name') {
-        input false
-    }
 }
 ----
 
@@ -39,10 +67,6 @@ To make a property write only:
 ----
 static graphql = GraphQLMapping.build {
     property('name', output: false)
-    //or
-    property('name') {
-        output false
-    }
 }
 ----
 
@@ -101,33 +125,38 @@ static graphql = GraphQLMapping.build {
 === Order 
 
 The order in which the fields appear in the schema can be customized. 
-By default, if available, the identity and version property appear on top of the schema type.
+By default any identity properties and the version property appear first in order.
 
-Changing order using mapping (leading):     
+To customize the order of an existing property:
+
 [source,groovy]
 ----
    static graphql = GraphQLMapping.build {
-       property('name', [order:1])
+       property('name', order: 1)
    }
 ----
 
-If a constrained order is available, it will be used: 
+If the order is supplied via the constraints block, then that value will be used.
+
 [source,groovy]
 ----
-   static constrained = {
+   static constraints = {
         name order: 1
    }
 ----
 
-If no specific order is defined, the order in which the property appears in the persistent entity will be used. 
-If you don't want this behaviour simply set all order values to zero by default, using the configuration setting: 
+NOTE: If the order is specified in both the constraints and the property mapping, the property mapping wins. If the order of two or more properties is the same, they are then sorted by name.
+
+If no order is specified, the default order provided by GORM is used. To enable name based sorting by default, configure the default constraints to set the order property to 0 for all domains.
+
+Example:
+
 [source,groovy]
+.grails-app/conf/application.groovy
 ----
-   grails.gorm.default.constraints = {
-       '*'(order: 0)
-   }
+grails.gorm.default.constraints = {
+   '*'(order: 0)
+}
 ----
 
-Finally when order equality is found, the properties will be compared by name. 
-
-WARNING: Order should be a positive integer, 0 or negative will be ignored  
+TIP: To customize properties to come before the identifier or version, set the value as negative. The default order for id properties is -20 and the default order for version properties is -10.

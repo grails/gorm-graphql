@@ -9,10 +9,13 @@ import graphql.schema.GraphQLType
 import org.codehaus.groovy.util.HashCodeHelper
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
+import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.HibernateSpec
 import org.grails.gorm.graphql.domain.general.ordering.Ordering
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.types.GraphQLTypeManager
+import spock.lang.Unroll
 
 import static org.grails.gorm.graphql.types.GraphQLPropertyType.*
 
@@ -26,8 +29,15 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         typeManager = Mock(GraphQLTypeManager)
     }
 
-    PersistentGraphQLProperty getProperty(Class clazz, String name,GraphQLPropertyMapping propertyMapping=new GraphQLPropertyMapping()) {
+    PersistentGraphQLProperty getProperty(Class clazz, String name) {
         PersistentProperty p = mappingContext.getPersistentEntity(clazz.name).getPropertyByName(name)
+        GraphQLMapping domainMapping = GraphQLEntityHelper.getMapping(p.owner)
+        GraphQLPropertyMapping propertyMapping
+        if (domainMapping == null) {
+            propertyMapping = new GraphQLPropertyMapping()
+        } else {
+            propertyMapping = domainMapping.getPropertyMappings().getOrDefault(name, new GraphQLPropertyMapping())
+        }
         new PersistentGraphQLProperty(mappingContext, p, propertyMapping)
     }
 
@@ -312,59 +322,27 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         !(type instanceof GraphQLList)
     }
 
-    void "test graphQL order for identity"(){
-        given:
-            PersistentGraphQLProperty property = getProperty(Ordering, 'id')
-        expect:
-            property.order == -2
-    }
-    void "test graphQL order for version"(){
-        given:
-            PersistentGraphQLProperty property = getProperty(Ordering, 'version')
-        expect:
-            property.order == -1
-    }
-    void "test graphQL property order"(){
-        given:
-            PersistentGraphQLProperty property1 = getProperty(Ordering, 'g')
-            PersistentGraphQLProperty property2 = getProperty(Ordering, 'f')
-        expect: 'property 2 to be after property 1'
-            property2.order == property1.order+1
-    }
-    void "test graphQL order from constraint"(){
-        given:
-            PersistentGraphQLProperty property = getProperty(Ordering, 'b')
-        expect:
-            property.order == 1
-    }
-    
-    void "test graphQL order ignores negative order"(){
-        given:
-            PersistentGraphQLProperty property = getProperty(Ordering, 'c')
-        expect:
-            property.order == null
-    }
-    void "test graphQL order ignores 0 order"(){
-        given:
-            PersistentGraphQLProperty property = getProperty(Ordering, 'd')
-        expect:
-            property.order == null
+    @Unroll
+    void "test graphQL order for #name"(){
+        when:
+        PersistentGraphQLProperty property = getProperty(Ordering, name)
+
+        then:
+        property.order == order
+
+        where:
+        name         | order
+        'id'         | -20 //id defaults to -20
+        'version'    | -10 //version defaults to -10
+        'order1a'    | 1 //specified via constraints
+        'order2'     | 2 //specified via constraints and mapping, mapping wins
+        'order8'     | 8 //specified via mapping
+        'order0'     | 0 //specified as 0
+        'orderNeg'   | -21 //specified as -10
+        'orderNullc' | 6 //not specified, gorm supplied
+        'orderNulld' | 7 //not specified, gorm supplied
     }
 
-    void "test graphQL order through mapping"(){
-        given:
-            GraphQLPropertyMapping propertyMapping = new GraphQLPropertyMapping(order:1)
-            PersistentGraphQLProperty property = getProperty(Ordering, 'g',propertyMapping)
-        expect:
-            property.order == 1
-    }
-    void "test graphQL order with conflicting order in mapping and constraint, mapping wins"(){
-        given:
-            GraphQLPropertyMapping propertyMapping = new GraphQLPropertyMapping(order:5)
-            PersistentGraphQLProperty property = getProperty(Ordering, 'a',propertyMapping)
-        expect:
-            property.order == 5
-    }
 }
 
 @Entity

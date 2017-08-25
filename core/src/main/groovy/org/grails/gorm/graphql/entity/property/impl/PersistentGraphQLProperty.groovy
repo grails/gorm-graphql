@@ -49,6 +49,9 @@ class PersistentGraphQLProperty extends OrderedGraphQLProperty {
     PersistentProperty property
     private MappingContext mappingContext
 
+    private static final int DEFAULT_ID_ORDER = -20
+    private static final int DEFAULT_VERSION_ORDER = -10
+
     PersistentGraphQLProperty(MappingContext mappingContext, PersistentProperty property, GraphQLPropertyMapping mapping) {
         this.property = property
         this.mappingContext = mappingContext
@@ -71,17 +74,17 @@ class PersistentGraphQLProperty extends OrderedGraphQLProperty {
             Validator validator = mappingContext.getEntityValidator(property.owner)
             if (validator instanceof PersistentEntityValidator) {
                 ConstrainedProperty constrainedProperty = ((PersistentEntityValidator) validator).constrainedProperties.get(name)
-                if (constrainedProperty != null && constrainedProperty.order > 0) {
+                if (constrainedProperty != null) {
                     this.order = constrainedProperty.order
                 }
             }
         }
         if (this.order == null) {
             if (isIdentifier(property.owner, name)) {
-                this.order = -2
+                this.order = DEFAULT_ID_ORDER
             }
             else if (name == 'version') {
-                this.order = -1
+                this.order = DEFAULT_VERSION_ORDER
             }
         }
 
