@@ -200,23 +200,29 @@ abstract&nbsp;class CustomOperation
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#createField(PersistentEntity, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, MappingContext)">createField</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html'>GraphQLInterceptorManager</a> interceptorManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br>Creates the field to be added to the query or mutation returnType in the schema.</td>
+                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../../DataFetcher.html'>DataFetcher</a></code></td>
+                            <td class="colLast"><code><strong><a href="#buildDataFetcher(PersistentEntity, org.grails.gorm.graphql.GraphQLServiceManager)">buildDataFetcher</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/GraphQLServiceManager.html'>GraphQLServiceManager</a> serviceManager)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a></code></td>
+                            <td class="colLast"><code><strong><a href="#createField(PersistentEntity, org.grails.gorm.graphql.GraphQLServiceManager, MappingContext)">createField</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/GraphQLServiceManager.html'>GraphQLServiceManager</a> serviceManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br>Creates the field to be added to the query or mutation returnType in the schema.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>T</code></td>
                             <td class="colLast"><code><strong><a href="#dataFetcher(DataFetcher)">dataFetcher</a></strong>(<a href='../../../../../../DataFetcher.html'>DataFetcher</a> dataFetcher)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../../GraphQLOutputType.html'>GraphQLOutputType</a></code></td>
                             <td class="colLast"><code><strong><a href="#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)">getType</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br></td>
@@ -326,12 +332,20 @@ abstract&nbsp;class CustomOperation
                             </li>
                         </ul>
                     
-                        <a name="createField(PersistentEntity, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager, MappingContext)"><!-- --></a>
+                        <a name="buildDataFetcher(PersistentEntity, org.grails.gorm.graphql.GraphQLServiceManager)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a> <strong>createField</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html'>GraphQLInterceptorManager</a> interceptorManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</h4>
+                                <h4>protected&nbsp;<a href='../../../../../../DataFetcher.html'>DataFetcher</a> <strong>buildDataFetcher</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/GraphQLServiceManager.html'>GraphQLServiceManager</a> serviceManager)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="createField(PersistentEntity, org.grails.gorm.graphql.GraphQLServiceManager, MappingContext)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a> <strong>createField</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/GraphQLServiceManager.html'>GraphQLServiceManager</a> serviceManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</h4>
                                 <p> Creates the field to be added to the query or mutation returnType in the schema.
-     <DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity the returnType was created for</DD><DD><code>typeManager</code> -  The returnType manager</DD><DD><code>interceptorManager</code> -  The interceptor manager to be used for executing
+     <DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity the operation belongs to</DD><DD><code>typeManager</code> -  The returnType manager</DD><DD><code>interceptorManager</code> -  The interceptor manager to be used for executing
  interceptors with the custom data fetcher</DD><DD><code>mappingContext</code> -  The mapping context</DD></DL><DL><DT><B>Returns:</B></DT><DD>The custom field</DD></DL></p>
                             </li>
                         </ul>
