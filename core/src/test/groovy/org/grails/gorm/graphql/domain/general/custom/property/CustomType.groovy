@@ -3,6 +3,7 @@ package org.grails.gorm.graphql.domain.general.custom.property
 import grails.gorm.annotation.Entity
 import org.grails.gorm.graphql.domain.general.custom.OtherDomain
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
+import org.grails.gorm.graphql.types.GraphQLPropertyType
 
 @Entity
 class CustomType  {

@@ -40,8 +40,8 @@ trait Typed<T> {
         (T)this
     }
 
-    GraphQLInputType resolveInputType(GraphQLTypeManager typeManager, MappingContext mappingContext, boolean nullable) {
-        (GraphQLInputType)resolveType(typeManager, mappingContext, GraphQLPropertyType.CREATE, nullable)
+    GraphQLInputType resolveInputType(GraphQLTypeManager typeManager, MappingContext mappingContext, boolean nullable, GraphQLPropertyType propertyType = GraphQLPropertyType.CREATE) {
+        (GraphQLInputType)resolveType(typeManager, mappingContext, propertyType, nullable)
     }
 
     GraphQLType resolveType(GraphQLTypeManager typeManager, MappingContext mappingContext, GraphQLPropertyType propertyType, boolean nullable) {
@@ -59,11 +59,10 @@ trait Typed<T> {
 
             if (entity != null) {
                 if (propertyType.operationType == GraphQLOperationType.OUTPUT) {
-                    propertyType = GraphQLPropertyType.OUTPUT
-                    graphQLType = typeManager.getQueryType(entity, propertyType.nestedType)
+                    graphQLType = typeManager.getQueryType(entity, propertyType)
                 }
                 else {
-                    graphQLType = typeManager.getMutationType(entity, propertyType.nestedType, nullable)
+                    graphQLType = typeManager.getMutationType(entity, propertyType, nullable)
                 }
             }
             else {

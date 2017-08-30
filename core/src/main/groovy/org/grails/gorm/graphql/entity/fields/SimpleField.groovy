@@ -5,6 +5,7 @@ import graphql.schema.GraphQLOutputType
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.entity.dsl.helpers.Typed
 import org.grails.datastore.mapping.model.MappingContext
+import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 /**
@@ -16,13 +17,20 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
 @CompileStatic
 class SimpleField extends Field<SimpleField> implements Typed<SimpleField> {
 
+	GraphQLPropertyType propertyType = GraphQLPropertyType.UPDATE
+
+	SimpleField propertyType(GraphQLPropertyType propertyType) {
+		this.propertyType = propertyType
+		this
+	}
+
 	GraphQLOutputType getType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
 		resolveOutputType(typeManager, mappingContext)
 	}
 
 	@Override
 	GraphQLInputType getInputType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
-		resolveInputType(typeManager, mappingContext, nullable)
+		resolveInputType(typeManager, mappingContext, nullable, propertyType)
 	}
 
 	void validate() {

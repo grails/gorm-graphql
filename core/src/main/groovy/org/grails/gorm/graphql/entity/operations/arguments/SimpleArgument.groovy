@@ -5,6 +5,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.entity.dsl.helpers.Typed
+import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 /**
@@ -17,9 +18,16 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
 @InheritConstructors
 class SimpleArgument extends CustomArgument<SimpleArgument> implements Typed<SimpleArgument> {
 
+    GraphQLPropertyType propertyType = GraphQLPropertyType.UPDATE
+
+    SimpleArgument propertyType(GraphQLPropertyType propertyType) {
+        this.propertyType = propertyType
+        this
+    }
+
     @Override
     GraphQLInputType getType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
-        resolveInputType(typeManager, mappingContext, nullable)
+        resolveInputType(typeManager, mappingContext, nullable, propertyType)
     }
 
     void validate() {

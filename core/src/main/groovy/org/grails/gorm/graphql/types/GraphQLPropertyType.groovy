@@ -13,41 +13,49 @@ enum GraphQLPropertyType {
 
     /**
      * For returning data
+     * @see {@link org.grails.gorm.graphql.types.output.ShowObjectTypeBuilder}
      */
     OUTPUT(GraphQLOperationType.OUTPUT, false, false),
 
     /**
      * For creating data
+     * @see {@link org.grails.gorm.graphql.types.input.CreateInputObjectTypeBuilder}
      */
     CREATE(GraphQLOperationType.CREATE, false, false),
 
     /**
      * For updating data (typically the same as create except nulls allowed)
+     * @see {@link org.grails.gorm.graphql.types.input.UpdateInputObjectTypeBuilder}
      */
     UPDATE(GraphQLOperationType.UPDATE, false, false),
 
     /**
      * For supplying association data during a create
+     * @see {@link org.grails.gorm.graphql.types.input.NestedInputObjectTypeBuilder}
      */
     CREATE_NESTED(GraphQLOperationType.CREATE, false, true),
 
     /**
      * For supplying association data during an update
+     * @see {@link org.grails.gorm.graphql.types.input.NestedInputObjectTypeBuilder}
      */
     UPDATE_NESTED(GraphQLOperationType.UPDATE, false, true),
 
     /**
      * For creating embedded properties
+     * @see {@link org.grails.gorm.graphql.types.input.EmbeddedInputObjectTypeBuilder}
      */
     CREATE_EMBEDDED(GraphQLOperationType.CREATE, true, false),
 
     /**
      * For updating embedded properties
+     * @see {@link org.grails.gorm.graphql.types.input.EmbeddedInputObjectTypeBuilder}
      */
     UPDATE_EMBEDDED(GraphQLOperationType.UPDATE, true, false),
 
     /**
      * For displaying embedded properties
+     * @see {@link org.grails.gorm.graphql.types.output.EmbeddedObjectTypeBuilder}
      */
     OUTPUT_EMBEDDED(GraphQLOperationType.OUTPUT, true, false)
 

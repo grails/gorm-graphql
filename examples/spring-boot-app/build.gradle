@@ -1,0 +1,39 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.6.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+ext['spock.version'] = '1.1-groovy-2.4'
+
+dependencies {
+	compile 'org.springframework.boot:spring-boot-starter'
+	compile "org.springframework.boot:spring-boot-starter-web"
+	compile 'org.codehaus.groovy:groovy'
+	compile "org.grails:gorm-hibernate5-spring-boot:6.1.6.RELEASE"
+	compile "org.hibernate:hibernate-core:5.1.0.Final"
+	compile "org.hibernate:hibernate-ehcache:5.1.0.Final"
+	compile "org.grails:grails-core:$grailsVersion"
+	compile project(":gorm-graphql")
+
+	runtime "com.h2database:h2:1.4.192"
+	runtime "org.apache.tomcat:tomcat-jdbc:8.5.0"
+	runtime "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"
+
+	runtime "javax.el:javax.el-api:3.0.0"
+	runtime "org.glassfish:javax.el:3.0.0"
+
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+	testCompile 'org.spockframework:spock-spring'
+
+}
