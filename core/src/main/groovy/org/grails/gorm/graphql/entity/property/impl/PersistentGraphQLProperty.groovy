@@ -16,6 +16,7 @@ import org.grails.gorm.graphql.Schema
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.PersistentPropertyDataFetcher
 import org.grails.gorm.graphql.types.GraphQLOperationType
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
@@ -66,7 +67,7 @@ class PersistentGraphQLProperty extends OrderedGraphQLProperty {
         }
         this.output = mapping.output
         this.input = mapping.input
-        this.dataFetcher = mapping.dataFetcher ? new ClosureDataFetcher(mapping.dataFetcher) : null
+        this.dataFetcher = mapping.dataFetcher ? new ClosureDataFetcher(mapping.dataFetcher) : new PersistentPropertyDataFetcher((PersistentProperty) property)
         if (mapping.order != null) {
             this.order = mapping.order
         }

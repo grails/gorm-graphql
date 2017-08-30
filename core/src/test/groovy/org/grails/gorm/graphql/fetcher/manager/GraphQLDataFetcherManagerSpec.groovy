@@ -47,10 +47,7 @@ class GraphQLDataFetcherManagerSpec extends Specification {
             }
         }
         mockBindingFetcher = new BindingGormDataFetcher() {
-            @Override
-            void setDataBinder(GraphQLDataBinder dataBinder) {
-
-            }
+            GraphQLDataBinder dataBinder
 
             @Override
             boolean supports(GraphQLDataFetcherType type) {
@@ -63,10 +60,7 @@ class GraphQLDataFetcherManagerSpec extends Specification {
             }
         }
         mockDeletingFetcher = new DeletingGormDataFetcher() {
-            @Override
-            void setResponseHandler(GraphQLDeleteResponseHandler responseHandler) {
-
-            }
+            GraphQLDeleteResponseHandler responseHandler
 
             @Override
             boolean supports(GraphQLDataFetcherType type) {
@@ -160,8 +154,7 @@ class GraphQLDataFetcherManagerSpec extends Specification {
                 (LIST): mockReadingFetcher
         ])
         BindingGormDataFetcher myBindingFetcher = new BindingGormDataFetcher() {
-            @Override
-            void setDataBinder(GraphQLDataBinder dataBinder) {}
+            GraphQLDataBinder dataBinder
 
             @Override
             boolean supports(GraphQLDataFetcherType type) {
@@ -272,10 +265,7 @@ class GraphQLDataFetcherManagerSpec extends Specification {
 
     class FakeDeletingFetcher implements DeletingGormDataFetcher {
 
-        @Override
-        void setResponseHandler(GraphQLDeleteResponseHandler responseHandler) {
-
-        }
+        GraphQLDeleteResponseHandler responseHandler
 
         @Override
         Object get(DataFetchingEnvironment environment) {

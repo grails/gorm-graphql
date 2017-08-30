@@ -1,11 +1,9 @@
 package grails.test.app
 
+import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
 import org.grails.gorm.graphql.plugin.GraphQLPostProcessor
 import grails.gorm.DetachedCriteria
-import graphql.language.StringValue
-import graphql.schema.Coercing
 import graphql.schema.DataFetchingEnvironment
-import graphql.schema.GraphQLScalarType
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
@@ -13,9 +11,7 @@ import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
 import org.grails.gorm.graphql.fetcher.impl.SingleEntityDataFetcher
 import org.grails.gorm.graphql.fetcher.impl.SoftDeleteEntityDataFetcher
 import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
-import org.grails.gorm.graphql.types.GraphQLTypeManager
 
-import java.time.OffsetDateTime
 
 @CompileStatic
 class GraphQLCustomizer extends GraphQLPostProcessor {
@@ -41,5 +37,10 @@ class GraphQLCustomizer extends GraphQLPostProcessor {
                 }
             }
         })
+    }
+
+    @Override
+    void doWith(GraphQLDataBinderManager binderManager) {
+        binderManager.registerDataBinder(User, new UserDataBinder())
     }
 }

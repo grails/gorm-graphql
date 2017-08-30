@@ -9,6 +9,7 @@ import graphql.schema.GraphQLType
 import org.codehaus.groovy.util.HashCodeHelper
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
+import org.grails.gorm.graphql.GraphQL
 import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.HibernateSpec
 import org.grails.gorm.graphql.domain.general.ordering.Ordering
@@ -23,7 +24,7 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
 
     GraphQLTypeManager typeManager
 
-    List<Class> getDomainClasses() { [Book, Book2, Author, Tag, Metadata, OtherMetadata, Ordering] }
+    List<Class> getDomainClasses() { [Book, Book2, Author, Tag, Metadata, OtherMetadata, Ordering, MetadataTest] }
 
     void setup() {
         typeManager = Mock(GraphQLTypeManager)
@@ -343,6 +344,92 @@ class HibernatePersistentGraphQLPropertySpec extends HibernateSpec {
         'orderNulld' | 7 //not specified, gorm supplied
     }
 
+    void "test deprecation with foo property"() {
+        when:
+        PersistentGraphQLProperty prop = getProperty(MetadataTest, 'foo')
+
+        then:
+        prop.deprecated
+        prop.deprecationReason == 'Deprecated'
+    }
+
+    void "test deprecation with bar property"() {
+        when:
+        PersistentGraphQLProperty prop = getProperty(MetadataTest, 'bar')
+
+        then:
+        prop.deprecated
+        prop.deprecationReason == 'Bar deprecated from mapping'
+    }
+
+    void "test deprecation with fooBar property"() {
+        when:
+        PersistentGraphQLProperty prop = getProperty(MetadataTest, 'fooBar')
+
+        then:
+        prop.description == 'Foo Bar'
+        prop.deprecated
+        prop.deprecationReason == 'Deprecated'
+    }
+
+    void "test deprecation with barFoo property"() {
+        when:
+        PersistentGraphQLProperty prop = getProperty(MetadataTest, 'barFoo')
+
+        then:
+        prop.description == 'Bar Foo'
+        prop.deprecated
+        prop.deprecationReason == 'Deprecated'
+    }
+
+    void "test nullable with mapping"() {
+        when:
+        PersistentGraphQLProperty prop = getProperty(MetadataTest, 'foo')
+
+        then:
+        prop.nullable
+    }
+
+    void "test nullable with mapped form"() {
+        when:
+        PersistentGraphQLProperty prop = getProperty(MetadataTest, 'bar')
+
+        then:
+        prop.nullable
+    }
+
+    void "test nullable mapping overrides mapped form"() {
+        when:
+        PersistentGraphQLProperty prop = getProperty(MetadataTest, 'fooBar')
+
+        then:
+        !prop.nullable
+    }
+
+    void "test collection if association"() {
+        when:
+        PersistentGraphQLProperty prop = getProperty(Book, 'authors')
+
+        then:
+        prop.collection
+    }
+
+    void "test description in mapping overrides annotation"() {
+        when:
+        PersistentGraphQLProperty prop = getProperty(MetadataTest, 'foo')
+
+        then:
+        prop.description == 'Foo from mapping'
+    }
+
+    void "test deprecationReason in mapping overrides annotation"() {
+        when:
+        PersistentGraphQLProperty prop = getProperty(MetadataTest, 'bar')
+
+        then:
+        prop.deprecationReason == 'Bar deprecated from mapping'
+    }
+
 }
 
 @Entity
@@ -435,4 +522,41 @@ class SomeOtherMetadata {
 
 enum BookType {
     OLD, NEW
+}
+
+@Entity
+class MetadataTest {
+    @GraphQL(value = 'Foo', deprecated = true)
+    String foo
+
+    @GraphQL(value = 'Bar', deprecationReason = 'Bar is deprecated')
+    String bar
+
+    @Deprecated
+    String fooBar
+
+    @GraphQL(value = 'Bar Foo')
+    String barFoo
+
+    static constraints = {
+        bar nullable: true
+        fooBar nullable: true
+    }
+
+    static graphql = GraphQLMapping.build {
+        property('fooBar') {
+            description 'Foo Bar'
+            nullable false
+        }
+        property('barFoo') {
+            deprecated true
+        }
+        property('foo') {
+            description 'Foo from mapping'
+            nullable true
+        }
+        property('bar') {
+            deprecationReason 'Bar deprecated from mapping'
+        }
+    }
 }

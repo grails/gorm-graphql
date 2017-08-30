@@ -18,4 +18,6 @@ trait DeletingGormDataFetcher implements GormDataFetcher {
     }
 
     abstract void setResponseHandler(GraphQLDeleteResponseHandler responseHandler)
+
+    abstract GraphQLDeleteResponseHandler getResponseHandler()
 }

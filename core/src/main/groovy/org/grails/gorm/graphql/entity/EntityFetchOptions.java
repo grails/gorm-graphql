@@ -71,7 +71,6 @@ public class EntityFetchOptions {
         return association instanceof ToOne && ((ToOne) association).isForeignKeyInChild() || association instanceof ToMany;
     }
 
-    @SuppressWarnings({"NestedBlockDepth"})
     protected void handleField(String parentName, Field selectedField, Set<String> joinProperties) {
         String resolvedName;
 
@@ -211,4 +210,3 @@ public class EntityFetchOptions {
     }
 
 }
-

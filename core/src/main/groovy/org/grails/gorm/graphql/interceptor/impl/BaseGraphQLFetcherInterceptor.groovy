@@ -9,8 +9,6 @@ import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
  * Base class to extend from for custom data fetcher interceptors. Provides default
  * implementations of all methods.
  *
- * @param <T> The class to intercept
- *
  * @author James Kleeh
  * @since 1.0.0
  */

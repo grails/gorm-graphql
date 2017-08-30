@@ -90,12 +90,12 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
     void "test querying a comment with only the parent id"() {
         given:
         PrintStream originalOut = System.out
-        String query
+        List<String> queries = []
         int outCount = 0
         System.setOut(new StringMessagePrintStream() {
             @Override
             protected void printed(String message) {
-                query = message
+                queries.add(message)
                 outCount++
             }
         })
@@ -115,10 +115,11 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
         then: //The parent comment object is not queried
         obj.parentComment.id == 1
         outCount == 1
-        query ==~ 'Hibernate: select this_.id as id[0-9]_[0-9]_[0-9]_, this_.version as version[0-9]_[0-9]_[0-9]_, this_.parent_comment_id as parent_c[0-9]_[0-9]_[0-9]_, this_.text as text[0-9]_[0-9]_[0-9]_ from comment this_ where this_.id=\\? limit \\?\n'
+        queries[0] ==~ 'Hibernate: select this_.id as id[0-9]_[0-9]_[0-9]_, this_.version as version[0-9]_[0-9]_[0-9]_, this_.parent_comment_id as parent_c[0-9]_[0-9]_[0-9]_, this_.text as text[0-9]_[0-9]_[0-9]_ from comment this_ where this_.id=\\? limit \\?\n'
 
         when:
         outCount = 0
+        queries = []
         resp = graphQL.graphql("""
             {
                 comment(id: 2) {
@@ -135,7 +136,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
         obj.parentComment.id == 1
         obj.parentComment.text == 'First comment'
         outCount == 1
-        query ==~ 'Hibernate: select this_.id as id[0-9]_[0-9]_[0-9]_, this_.version as version[0-9]_[0-9]_[0-9]_, this_.parent_comment_id as parent_c[0-9]_[0-9]_[0-9]_, this_.text as text[0-9]_[0-9]_[0-9]_, comment2_.id as id[0-9]_[0-9]_[0-9]_, comment2_.version as version[0-9]_[0-9]_[0-9]_, comment2_.parent_comment_id as parent_c[0-9]_[0-9]_[0-9]_, comment2_.text as text[0-9]_[0-9]_[0-9]_ from comment this_ left outer join comment comment2_ on this_.parent_comment_id=comment2_.id where this_.id=\\?\n'
+        queries[0] ==~ 'Hibernate: select this_.id as id[0-9]_[0-9]_[0-9]_, this_.version as version[0-9]_[0-9]_[0-9]_, this_.parent_comment_id as parent_c[0-9]_[0-9]_[0-9]_, this_.text as text[0-9]_[0-9]_[0-9]_, comment2_.id as id[0-9]_[0-9]_[0-9]_, comment2_.version as version[0-9]_[0-9]_[0-9]_, comment2_.parent_comment_id as parent_c[0-9]_[0-9]_[0-9]_, comment2_.text as text[0-9]_[0-9]_[0-9]_ from comment this_ left outer join comment comment2_ on this_.parent_comment_id=comment2_.id where this_.id=\\?\n'
 
         cleanup:
         System.setOut(originalOut)

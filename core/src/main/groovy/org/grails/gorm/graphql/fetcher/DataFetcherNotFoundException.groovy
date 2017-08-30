@@ -11,6 +11,10 @@ import org.grails.datastore.mapping.model.PersistentEntity
 class DataFetcherNotFoundException extends RuntimeException {
 
     DataFetcherNotFoundException(PersistentEntity entity, GraphQLDataFetcherType type) {
-        super("No ${type.name()} data fetcher could be found for ${entity.javaClass.name}")
+        this(entity.javaClass, type)
+    }
+
+    DataFetcherNotFoundException(Class clazz, GraphQLDataFetcherType type) {
+        super("No ${type.name()} data fetcher could be found for ${clazz.name}")
     }
 }

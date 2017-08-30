@@ -46,12 +46,17 @@ abstract class ObjectTypeBuilder {
     abstract GraphQLPropertyType getType()
 
     protected GraphQLFieldDefinition.Builder buildField(GraphQLDomainProperty prop) {
-        newFieldDefinition()
+        GraphQLFieldDefinition.Builder field = newFieldDefinition()
                 .name(prop.name)
                 .deprecate(prop.deprecationReason)
                 .description(prop.description)
-                .dataFetcher(prop.dataFetcher)
-                .type((GraphQLOutputType)prop.getGraphQLType(typeManager, type))
+
+        if (prop.dataFetcher != null) {
+            field.dataFetcher(prop.dataFetcher)
+        }
+
+        field.type((GraphQLOutputType)prop.getGraphQLType(typeManager, type))
+        field
     }
 
     GraphQLOutputType build(PersistentEntity entity) {

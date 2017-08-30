@@ -11,6 +11,10 @@ import org.grails.datastore.mapping.model.PersistentEntity
 class DataBinderNotFoundException extends RuntimeException {
 
     DataBinderNotFoundException(PersistentEntity entity) {
-        super("A GraphQL data binder could not be found for ${entity.javaClass.name}")
+        this(entity.javaClass)
+    }
+
+    DataBinderNotFoundException(Class clazz) {
+        super("A GraphQL data binder could not be found for ${clazz.name}")
     }
 }

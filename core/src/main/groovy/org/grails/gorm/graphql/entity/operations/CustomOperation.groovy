@@ -4,6 +4,7 @@ import graphql.schema.*
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.gorm.graphql.GraphQLServiceManager
 import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
 import org.grails.gorm.graphql.entity.dsl.helpers.Describable
 import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
@@ -11,8 +12,10 @@ import org.grails.gorm.graphql.entity.dsl.helpers.Named
 import org.grails.gorm.graphql.entity.operations.arguments.ComplexArgument
 import org.grails.gorm.graphql.entity.operations.arguments.CustomArgument
 import org.grails.gorm.graphql.entity.operations.arguments.SimpleArgument
-import org.grails.gorm.graphql.fetcher.impl.CustomOperationInterceptorDataFetcher
-import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
+import org.grails.gorm.graphql.fetcher.interceptor.CustomMutationInterceptorInvoker
+import org.grails.gorm.graphql.fetcher.interceptor.CustomQueryInterceptorInvoker
+import org.grails.gorm.graphql.fetcher.interceptor.InterceptingDataFetcher
+import org.grails.gorm.graphql.fetcher.interceptor.InterceptorInvoker
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
@@ -28,6 +31,8 @@ import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecatable<T>, ExecutesClosures {
 
     private List<CustomArgument> arguments = []
+    private static InterceptorInvoker queryInvoker = new CustomQueryInterceptorInvoker()
+    private static InterceptorInvoker mutationInvoker = new CustomMutationInterceptorInvoker()
     DataFetcher dataFetcher
 
     T dataFetcher(DataFetcher dataFetcher) {
@@ -96,10 +101,23 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
         }
     }
 
+    protected DataFetcher buildDataFetcher(PersistentEntity entity,
+                                           GraphQLServiceManager serviceManager) {
+        InterceptorInvoker interceptorInvoker = null
+        if (operationType == OperationType.QUERY) {
+            interceptorInvoker = queryInvoker
+        }
+        else if (operationType == OperationType.MUTATION) {
+            interceptorInvoker = mutationInvoker
+        }
+
+        new InterceptingDataFetcher(entity, serviceManager, interceptorInvoker, null, dataFetcher)
+    }
+
     /**
      * Creates the field to be added to the query or mutation returnType in the schema.
      *
-     * @param entity The persistent entity the returnType was created for
+     * @param entity The persistent entity the operation belongs to
      * @param typeManager The returnType manager
      * @param interceptorManager The interceptor manager to be used for executing
      * interceptors with the custom data fetcher
@@ -107,11 +125,12 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
      * @return The custom field
      */
     GraphQLFieldDefinition.Builder createField(PersistentEntity entity,
-                                               GraphQLTypeManager typeManager,
-                                               GraphQLInterceptorManager interceptorManager,
+                                               GraphQLServiceManager serviceManager,
                                                MappingContext mappingContext) {
 
         validate()
+
+        GraphQLTypeManager typeManager = serviceManager.getService(GraphQLTypeManager)
 
         GraphQLOutputType outputType = getType(typeManager, mappingContext)
 
@@ -120,7 +139,7 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
                 .type(outputType)
                 .description(description)
                 .deprecate(deprecationReason)
-                .dataFetcher(new CustomOperationInterceptorDataFetcher(entity.javaClass, dataFetcher, interceptorManager, operationType))
+                .dataFetcher(buildDataFetcher(entity, serviceManager))
 
         if (!arguments.isEmpty()) {
             for (CustomArgument argument: arguments) {

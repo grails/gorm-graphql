@@ -1,21 +1,20 @@
-package org.grails.gorm.graphql.fetcher.invoker
+package org.grails.gorm.graphql.fetcher.interceptor
 
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.interceptor.GraphQLFetcherInterceptor
 
 /**
- * An interceptor invoker that will call the
- * {@link GraphQLFetcherInterceptor#onCustomQuery} method
+ * Executes the onCustomMutation method of an interceptor
  *
  * @author James Kleeh
  * @since 1.0.0
  */
 @CompileStatic
-class QueryInterceptorInvoker implements InterceptorInvoker {
+class CustomMutationInterceptorInvoker extends CustomInterceptorInvoker {
 
     @Override
     boolean invoke(GraphQLFetcherInterceptor interceptor, String name, DataFetchingEnvironment environment) {
-        interceptor.onCustomQuery(name, environment)
+        interceptor.onCustomMutation(name, environment)
     }
 }

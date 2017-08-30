@@ -9,10 +9,11 @@ import graphql.schema.GraphQLList
 import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.gorm.graphql.GraphQLServiceManager
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.property.impl.SimpleGraphQLProperty
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
-import org.grails.gorm.graphql.fetcher.impl.CustomOperationInterceptorDataFetcher
+import org.grails.gorm.graphql.fetcher.interceptor.InterceptingDataFetcher
 import org.grails.gorm.graphql.interceptor.manager.DefaultGraphQLInterceptorManager
 import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
@@ -114,10 +115,13 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
     void "test adding an operation" () {
         given:
         GraphQLTypeManager typeManager = new DefaultGraphQLTypeManager(new GraphQLEntityNamingConvention(), null, new DefaultGraphQLDomainPropertyManager())
+        GraphQLServiceManager serviceManager = new GraphQLServiceManager()
         GraphQLInterceptorManager interceptorManager = new DefaultGraphQLInterceptorManager()
         PersistentEntity entity = Stub(PersistentEntity) {
             getJavaClass() >> GraphQLMappingSpec
         }
+        serviceManager.registerService(GraphQLTypeManager, typeManager)
+        serviceManager.registerService(GraphQLInterceptorManager, interceptorManager)
 
         DataFetcher defaultFetcher = new DataFetcher() {
             @Override
@@ -159,16 +163,16 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         }
 
         when:
-        GraphQLFieldDefinition foo = mapping.customQueryOperations.find { it.name == 'foo' }.createField(entity, typeManager, interceptorManager, null).build()
-        GraphQLFieldDefinition bar = mapping.customQueryOperations.find { it.name == 'bar' }.createField(entity, typeManager, interceptorManager, null).build()
-        GraphQLFieldDefinition xyz = mapping.customMutationOperations.find { it.name == 'xyz' }.createField(entity, typeManager, interceptorManager, null).build()
+        GraphQLFieldDefinition foo = mapping.customQueryOperations.find { it.name == 'foo' }.createField(entity, serviceManager, null).build()
+        GraphQLFieldDefinition bar = mapping.customQueryOperations.find { it.name == 'bar' }.createField(entity, serviceManager, null).build()
+        GraphQLFieldDefinition xyz = mapping.customMutationOperations.find { it.name == 'xyz' }.createField(entity, serviceManager, null).build()
 
         then:
         foo.description == 'Foo Query'
         foo.deprecated
         foo.deprecationReason == 'Foo Query is deprecated'
         foo.type == Scalars.GraphQLBigDecimal
-        foo.dataFetcher instanceof CustomOperationInterceptorDataFetcher
+        foo.dataFetcher instanceof InterceptingDataFetcher
         foo.arguments.size() == 1
         unwrap(null, foo.getArgument('bar').type) == Scalars.GraphQLString
         foo.getArgument('bar').description == 'Bar argument'
@@ -179,7 +183,7 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         bar.deprecationReason == 'Deprecated'
         bar.type instanceof GraphQLList
         unwrap([], bar.type) == Scalars.GraphQLBigDecimal
-        bar.dataFetcher instanceof CustomOperationInterceptorDataFetcher
+        bar.dataFetcher instanceof InterceptingDataFetcher
         bar.arguments.size() == 1
         bar.getArgument('foo').type instanceof GraphQLList
         bar.getArgument('foo').description == null
@@ -192,7 +196,7 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         ((GraphQLObjectType)xyz.type).fieldDefinitions[0].name == 'bar'
         ((GraphQLObjectType)xyz.type).fieldDefinitions[0].type == Scalars.GraphQLString
         ((GraphQLObjectType)xyz.type).fieldDefinitions.size() == 1
-        xyz.dataFetcher instanceof CustomOperationInterceptorDataFetcher
+        xyz.dataFetcher instanceof InterceptingDataFetcher
         xyz.arguments.size() == 1
         xyz.arguments[0].type instanceof GraphQLNonNull
         unwrap(null, xyz.arguments[0].type) instanceof GraphQLInputObjectType

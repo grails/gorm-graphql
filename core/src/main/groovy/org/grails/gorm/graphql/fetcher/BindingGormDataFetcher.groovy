@@ -11,4 +11,6 @@ import org.grails.gorm.graphql.binding.GraphQLDataBinder
 interface BindingGormDataFetcher extends GormDataFetcher {
 
     void setDataBinder(GraphQLDataBinder dataBinder)
+
+    GraphQLDataBinder getDataBinder()
 }
