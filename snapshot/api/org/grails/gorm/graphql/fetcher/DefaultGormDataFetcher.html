@@ -147,14 +147,26 @@ abstract&nbsp;class DefaultGormDataFetcher
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../Datastore.html'>Datastore</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#datastore">datastore</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../PersistentEntity.html'>PersistentEntity</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#entity">entity</a></code></td>
                             <td class="colLast"></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../EntityFetchOptions.html'>EntityFetchOptions</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#entityFetchOptions">entityFetchOptions</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;boolean</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#multiTenant">multiTenant</a></code></td>
                             <td class="colLast"></td>
                         </tr>
                         
@@ -264,6 +276,12 @@ abstract&nbsp;class DefaultGormDataFetcher
                             <td class="colLast"><code><strong><a href="#queryInstance(DataFetchingEnvironment)">queryInstance</a></strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</code><br></td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.lang.Object</code></td>
+                            <td class="colLast"><code><strong><a href="#withTransaction(boolean, groovy.lang.Closure)">withTransaction</a></strong>(boolean readOnly, groovy.lang.Closure closure)</code><br></td>
+                        </tr>
+                        
                     </table>
                    </ul>
               </li>
@@ -313,6 +331,14 @@ abstract&nbsp;class DefaultGormDataFetcher
                             </li>
                         </ul>
                     
+                        <a name="datastore"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;<a href='../../../../../Datastore.html'>Datastore</a> <strong>datastore</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="entity"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -325,6 +351,14 @@ abstract&nbsp;class DefaultGormDataFetcher
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>protected&nbsp;<a href='../../../../../EntityFetchOptions.html'>EntityFetchOptions</a> <strong>entityFetchOptions</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="multiTenant"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;boolean <strong>multiTenant</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -434,6 +468,14 @@ abstract&nbsp;class DefaultGormDataFetcher
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>protected&nbsp;<a href='../../../../../GormEntity.html'>GormEntity</a> <strong>queryInstance</strong>(<a href='../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="withTransaction(boolean, groovy.lang.Closure)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.lang.Object <strong>withTransaction</strong>(boolean readOnly, groovy.lang.Closure closure)</h4>
                                 <p></p>
                             </li>
                         </ul>
