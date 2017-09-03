@@ -1,7 +1,5 @@
 package grails.test.app
 
-import graphql.schema.DataFetchingEnvironment
-import org.grails.gorm.graphql.entity.EntityFetchOptions
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetchingEnvironment
 
@@ -12,6 +10,7 @@ class Tag {
     static constraints = {
     }
 
+    // tag::getPosts[]
     Set<Post> getPosts(Map queryArgs) {
         Long tagId = this.id
         Post.where { tags { id == tagId } }.list(queryArgs)
@@ -25,4 +24,5 @@ class Tag {
             }
         }
     }
+    // end::getPosts[]
 }

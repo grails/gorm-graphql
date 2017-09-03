@@ -31,7 +31,6 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
     protected PersistentEntity entity
     protected String propertyName
     protected EntityFetchOptions entityFetchOptions
-    protected boolean multiTenant
     protected Datastore datastore
 
     DefaultGormDataFetcher(PersistentEntity entity) {
@@ -42,7 +41,6 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         this.entity = entity
         this.propertyName = projectionName
         this.entityFetchOptions = new EntityFetchOptions(entity, projectionName)
-        this.multiTenant = entity.multiTenant
         this.datastore = GormEnhancer.findStaticApi(entity.javaClass).datastore
         initializeEntity(entity)
     }

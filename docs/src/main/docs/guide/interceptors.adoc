@@ -64,12 +64,13 @@ GraphQLInterceptorManager interceptorManager
 interceptorManager.registerInterceptor(Author, new AuthorFetcherInterceptor())
 ----
 
+TIP: Registering an interceptor for the `Object` type will cause it to be executed for all domain classes.
+
 === Provided
 
 There are two methods that will be invoked for provided data fetchers. Which one gets invoked depends on whether the operation is a query or a mutation. For query operations (GET, LIST), the `onQuery` method will be executed. For mutation operations (CREATE, UPDATE, DELETE), the `onMutation` method will be executed.
 
 The data fetching environment and the data fetcher type are available to help make decisions about whether or not to interrupt the execution.
-
 
 === Custom
 

@@ -2,6 +2,7 @@ package org.grails.gorm.graphql.fetcher.impl
 
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
+import org.grails.datastore.gorm.GormEntity
 import org.grails.gorm.graphql.entity.EntityFetchOptions
 
 /**
@@ -39,19 +40,28 @@ class ClosureDataFetchingEnvironment {
     DataFetchingEnvironment environment
 
     private EntityFetchOptions fetchOptions
+    private Class domainType
 
-    ClosureDataFetchingEnvironment(DataFetchingEnvironment environment, EntityFetchOptions fetchOptions) {
+    ClosureDataFetchingEnvironment(DataFetchingEnvironment environment, Class domainType) {
         this.environment = environment
-        this.fetchOptions = fetchOptions
+        this.domainType = domainType
+    }
+
+    private void initializeFetchOptions(String propertyName = null) {
+        if (fetchOptions == null && domainType != null && GormEntity.isAssignableFrom(domainType)) {
+            fetchOptions = new EntityFetchOptions(domainType, propertyName)
+        }
     }
 
     /**
      * For use with domain class return types only. All other
      * invocations will return null.
      *
+     * @param projectedProperty The property name being projected on in the query
      * @return The fetch arguments to be used in your query.
      */
-    Map getFetchArguments() {
+    Map getFetchArguments(String projectedProperty = null) {
+        initializeFetchOptions(projectedProperty)
         fetchOptions?.getFetchArgument(environment)
     }
 
@@ -60,9 +70,11 @@ class ClosureDataFetchingEnvironment {
      * Based upon which fields were requested to be returned by
      * the end user.
      *
+     * @param projectedProperty The property name being projected on in the query
      * @return A set of strings representing properties to be joined
      */
-    Set<String> getJoinProperties() {
+    Set<String> getJoinProperties(String projectedProperty = null) {
+        initializeFetchOptions(projectedProperty)
         fetchOptions?.getJoinProperties(environment)
     }
 }

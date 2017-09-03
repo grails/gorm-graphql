@@ -31,7 +31,11 @@ public class EntityFetchOptions {
     private static final String FETCH = "fetch";
 
     public EntityFetchOptions(Class<?> entityClass) {
-        this(GormEnhancer.findStaticApi(entityClass).getGormPersistentEntity(), null);
+        this(entityClass, null);
+    }
+
+    public EntityFetchOptions(Class<?> entityClass, String projectionName) {
+        this(GormEnhancer.findStaticApi(entityClass).getGormPersistentEntity(), projectionName);
     }
 
     public EntityFetchOptions(PersistentEntity entity) {

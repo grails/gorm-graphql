@@ -30,7 +30,7 @@ class ClosureDataFetcher implements DataFetcher<Object> {
     Object get(DataFetchingEnvironment environment) {
         Object source = environment.source
         if (closure.maximumNumberOfParameters == 2) {
-            closure.call(source, new ClosureDataFetchingEnvironment(environment, buildFetchOptions()))
+            closure.call(source, new ClosureDataFetchingEnvironment(environment, domainType))
         }
         else {
             closure.call(source)
