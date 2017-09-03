@@ -196,6 +196,18 @@ If you need to customize more than 1 manager, only a single bean needs to be reg
 interceptorManager.registerInterceptor(Author, <span class="keyword">new</span> AuthorFetcherInterceptor())</code></pre>
 </div>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Registering an interceptor for the <code>Object</code> type will cause it to be executed for all domain classes.
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_provided">Provided</h3>

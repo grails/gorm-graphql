@@ -179,8 +179,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#ClosureDataFetchingEnvironment(DataFetchingEnvironment, EntityFetchOptions)">ClosureDataFetchingEnvironment</a>
-                                (<a href='../../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment, <a href='../../../../../../EntityFetchOptions.html'>EntityFetchOptions</a> fetchOptions)</code><br></td>
+                                <code><a href="#ClosureDataFetchingEnvironment(DataFetchingEnvironment, java.lang.Class)">ClosureDataFetchingEnvironment</a>
+                                (<a href='../../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment, java.lang.Class domainType)</code><br></td>
                         </tr>
                         
                     </table>
@@ -207,13 +207,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.Map</code></td>
-                            <td class="colLast"><code><strong><a href="#getFetchArguments()">getFetchArguments</a></strong>()</code><br>For use with domain class return types only. </td>
+                            <td class="colLast"><code><strong><a href="#getFetchArguments(java.lang.String)">getFetchArguments</a></strong>(java.lang.String projectedProperty = null)</code><br>For use with domain class return types only. </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.Set&lt;java.lang.String&gt;</code></td>
-                            <td class="colLast"><code><strong><a href="#getJoinProperties()">getJoinProperties</a></strong>()</code><br>Which properties should be joined in the subsequent query.
+                            <td class="colLast"><code><strong><a href="#getJoinProperties(java.lang.String)">getJoinProperties</a></strong>(java.lang.String projectedProperty = null)</code><br>Which properties should be joined in the subsequent query.
  </td>
                         </tr>
                         
@@ -283,10 +283,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="ClosureDataFetchingEnvironment(DataFetchingEnvironment, EntityFetchOptions)"><!-- --></a>
+                        <a name="ClosureDataFetchingEnvironment(DataFetchingEnvironment, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>ClosureDataFetchingEnvironment</strong>(<a href='../../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment, <a href='../../../../../../EntityFetchOptions.html'>EntityFetchOptions</a> fetchOptions)</h4>
+                                <h4><strong>ClosureDataFetchingEnvironment</strong>(<a href='../../../../../../DataFetchingEnvironment.html'>DataFetchingEnvironment</a> environment, java.lang.Class domainType)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -304,24 +304,24 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="getFetchArguments()"><!-- --></a>
+                        <a name="getFetchArguments(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.util.Map <strong>getFetchArguments</strong>()</h4>
+                                <h4>java.util.Map <strong>getFetchArguments</strong>(java.lang.String projectedProperty = null)</h4>
                                 <p> For use with domain class return types only. All other
  invocations will return null.
-     <DL><DT><B>Returns:</B></DT><DD>The fetch arguments to be used in your query.</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>projectedProperty</code> -  The property name being projected on in the query</DD></DL><DL><DT><B>Returns:</B></DT><DD>The fetch arguments to be used in your query.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getJoinProperties()"><!-- --></a>
+                        <a name="getJoinProperties(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.util.Set&lt;java.lang.String&gt; <strong>getJoinProperties</strong>()</h4>
+                                <h4>java.util.Set&lt;java.lang.String&gt; <strong>getJoinProperties</strong>(java.lang.String projectedProperty = null)</h4>
                                 <p> Which properties should be joined in the subsequent query.
  Based upon which fields were requested to be returned by
  the end user.
-     <DL><DT><B>Returns:</B></DT><DD>A set of strings representing properties to be joined</DD></DL></p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>projectedProperty</code> -  The property name being projected on in the query</DD></DL><DL><DT><B>Returns:</B></DT><DD>A set of strings representing properties to be joined</DD></DL></p>
                             </li>
                         </ul>
                     

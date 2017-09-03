@@ -226,7 +226,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html" title="Class in org.grails.gorm.graphql.fetcher.impl">ClosureDataFetchingEnvironment</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/impl/package-summary.html">org.grails.gorm.graphql.fetcher.impl</a>
 </dt><dd><div class="block">Provides the data fetching environment for closures. </div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html#ClosureDataFetchingEnvironment(DataFetchingEnvironment, EntityFetchOptions)" title="Constructor in ClosureDataFetchingEnvironment">ClosureDataFetchingEnvironment(DataFetchingEnvironment, EntityFetchOptions)</a></span> - Constructor in <a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html">ClosureDataFetchingEnvironment</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html#ClosureDataFetchingEnvironment(DataFetchingEnvironment, java.lang.Class)" title="Constructor in ClosureDataFetchingEnvironment">ClosureDataFetchingEnvironment(DataFetchingEnvironment, Class)</a></span> - Constructor in <a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html">ClosureDataFetchingEnvironment</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html#collection(boolean)" title="Method in ComplexTyped">collection(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html">ComplexTyped</a>
 </dt><dd> <div class="block"></div></dd>
@@ -547,7 +547,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html#getEnumType(Class<? extends Enum>, boolean)" title="Method in GraphQLTypeManager">getEnumType(Class&lt;? extends Enum&gt;, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>
 </dt><dd> <div class="block">Retrieves an enum type for the provided class</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html#getFetchArguments()" title="Method in ClosureDataFetchingEnvironment">getFetchArguments()</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html">ClosureDataFetchingEnvironment</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html#getFetchArguments(java.lang.String)" title="Method in ClosureDataFetchingEnvironment">getFetchArguments(String)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html">ClosureDataFetchingEnvironment</a>
 </dt><dd> <div class="block">For use with domain class return types only. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#getFetchArguments(DataFetchingEnvironment)" title="Method in DefaultGormDataFetcher">getFetchArguments(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
@@ -585,7 +585,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html#getInterceptors()" title="Method in GraphQLInterceptorManager">getInterceptors()</a></span> - Method in <a href="org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html">GraphQLInterceptorManager</a>
 </dt><dd> <div class="block">@param clazz The class to search for</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html#getJoinProperties()" title="Method in ClosureDataFetchingEnvironment">getJoinProperties()</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html">ClosureDataFetchingEnvironment</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html#getJoinProperties(java.lang.String)" title="Method in ClosureDataFetchingEnvironment">getJoinProperties(String)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html">ClosureDataFetchingEnvironment</a>
 </dt><dd> <div class="block">Which properties should be joined in the subsequent query.
  </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html#getList(PersistentEntity)" title="Method in GraphQLEntityNamingConvention">getList(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>
@@ -992,8 +992,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html" title="Class in org.grails.gorm.graphql.testing">MockDataFetchingEnvironment</a></span> - Class in <a href="./org/grails/gorm/graphql/testing/package-summary.html">org.grails.gorm.graphql.testing</a>
 </dt><dd><div class="block">A class to use to provide a mock DataFetchingEnvironment to
  test custom data fetchers.</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#multiTenant" title="Field in DefaultGormDataFetcher">multiTenant</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html#mutation(java.lang.String, List<Class>, groovy.lang.Closure)" title="Method in GraphQLMapping">mutation(String, List&lt;Class&gt;, Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html">GraphQLMapping</a>
 </dt><dd> <div class="block">Builds a custom mutation operation. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/interceptor/MutationInterceptorInvoker.html" title="Class in org.grails.gorm.graphql.fetcher.interceptor">MutationInterceptorInvoker</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/interceptor/package-summary.html">org.grails.gorm.graphql.fetcher.interceptor</a>
