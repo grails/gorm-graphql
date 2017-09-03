@@ -108,7 +108,7 @@ public class EntityFetchOptions {
 
         List<Field> fields = new ArrayList<>();
 
-        selections.parallelStream()
+        selections.stream()
                 .filter(Field.class::isInstance)
                 .map(Field.class::cast)
                 .forEach((Field field) -> {
@@ -118,7 +118,7 @@ public class EntityFetchOptions {
                             List<Field> nestedFields = field
                                     .getSelectionSet()
                                     .getSelections()
-                                    .parallelStream()
+                                    .stream()
                                     .filter(Field.class::isInstance)
                                     .map(Field.class::cast)
                                     .collect(Collectors.toList());
@@ -165,9 +165,9 @@ public class EntityFetchOptions {
         List<Field> environmentFields = environment.getFields();
 
         if (environmentFields != null) {
-            fields = environmentFields.parallelStream()
+            fields = environmentFields.stream()
                     .filter(field -> field.getSelectionSet() != null)
-                    .flatMap(field -> field.getSelectionSet().getSelections().parallelStream())
+                    .flatMap(field -> field.getSelectionSet().getSelections().stream())
                     .filter(Field.class::isInstance)
                     .map(Field.class::cast)
                     .collect(Collectors.toList());

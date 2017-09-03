@@ -3,8 +3,6 @@ package org.grails.gorm.graphql.fetcher.impl
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
-import org.grails.datastore.mapping.model.MappingContext
-import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.reflect.EntityReflector
 import org.grails.datastore.mapping.reflect.FieldEntityAccess

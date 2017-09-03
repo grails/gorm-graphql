@@ -1,15 +1,20 @@
 package org.grails.gorm.graphql.fetcher
 
 import grails.gorm.DetachedCriteria
+import grails.gorm.multitenancy.Tenants
+import grails.gorm.transactions.TransactionService
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import org.grails.datastore.gorm.GormEnhancer
 import org.grails.datastore.gorm.GormEntity
 import org.grails.datastore.gorm.GormStaticApi
+import org.grails.datastore.mapping.core.Datastore
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.types.Association
+import org.grails.datastore.mapping.multitenancy.MultiTenantCapableDatastore
+import org.grails.datastore.mapping.transactions.CustomizableRollbackTransactionAttribute
 import org.grails.gorm.graphql.entity.EntityFetchOptions
 
 /**
@@ -26,6 +31,8 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
     protected PersistentEntity entity
     protected String propertyName
     protected EntityFetchOptions entityFetchOptions
+    protected boolean multiTenant
+    protected Datastore datastore
 
     DefaultGormDataFetcher(PersistentEntity entity) {
         this(entity, null)
@@ -35,6 +42,8 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         this.entity = entity
         this.propertyName = projectionName
         this.entityFetchOptions = new EntityFetchOptions(entity, projectionName)
+        this.multiTenant = entity.multiTenant
+        this.datastore = GormEnhancer.findStaticApi(entity.javaClass).datastore
         initializeEntity(entity)
     }
 
@@ -92,6 +101,22 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
 
     protected GormEntity queryInstance(DataFetchingEnvironment environment) {
         buildCriteria(environment).get(getFetchArguments(environment))
+    }
+
+    protected Object withTransaction(boolean readOnly, Closure closure) {
+        Datastore datastore
+        if (entity.multiTenant && this.datastore instanceof MultiTenantCapableDatastore) {
+            MultiTenantCapableDatastore multiTenantCapableDatastore = (MultiTenantCapableDatastore)this.datastore
+            Serializable currentTenantId = Tenants.currentId(multiTenantCapableDatastore)
+            datastore = multiTenantCapableDatastore.getDatastoreForTenantId(currentTenantId)
+        }
+        else {
+            datastore = this.datastore
+        }
+        TransactionService txService = (TransactionService)datastore.getService((Class<?>)TransactionService)
+        CustomizableRollbackTransactionAttribute transactionAttribute = new CustomizableRollbackTransactionAttribute()
+        transactionAttribute.setReadOnly(readOnly)
+        txService.withTransaction(transactionAttribute, closure)
     }
 
     abstract T get(DataFetchingEnvironment environment)

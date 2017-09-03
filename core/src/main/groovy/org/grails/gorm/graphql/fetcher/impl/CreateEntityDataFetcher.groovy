@@ -1,6 +1,5 @@
 package org.grails.gorm.graphql.fetcher.impl
 
-import grails.gorm.transactions.Transactional
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
@@ -24,18 +23,19 @@ class CreateEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements Bi
     GraphQLDataBinder dataBinder
 
     @Override
-    @Transactional
     T get(DataFetchingEnvironment environment) {
-        GormEntity instance = newInstance
-        dataBinder.bind(instance, getArgument(environment))
-        if (!instance.hasErrors()) {
-            instance.save()
+        (T)withTransaction(false) {
+            GormEntity instance = newInstance
+            dataBinder.bind(instance, getArgument(environment))
+            if (!instance.hasErrors()) {
+                instance.save()
+            }
+            instance
         }
-        (T)instance
     }
 
     protected GormEntity getNewInstance() {
-        (GormEntity)entity.javaClass.newInstance()
+        (GormEntity)entity.newInstance()
     }
 
     protected Map getArgument(DataFetchingEnvironment environment) {

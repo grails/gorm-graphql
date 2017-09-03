@@ -1,6 +1,5 @@
 package org.grails.gorm.graphql.fetcher.impl
 
-import grails.gorm.transactions.Transactional
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
@@ -20,9 +19,10 @@ import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
 class SingleEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements ReadingGormDataFetcher {
 
     @Override
-    @Transactional(readOnly = true)
     T get(DataFetchingEnvironment environment) {
-        (T)queryInstance(environment)
+        (T)withTransaction(true) {
+            queryInstance(environment)
+        }
     }
 
     @Override

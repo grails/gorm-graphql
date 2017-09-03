@@ -2,6 +2,9 @@ package org.grails.gorm.graphql.fetcher.manager
 
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
+import org.grails.datastore.gorm.GormEnhancer
+import org.grails.datastore.gorm.GormStaticApi
+import org.grails.datastore.mapping.core.connections.ConnectionSource
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
@@ -137,6 +140,9 @@ class GraphQLDataFetcherManagerSpec extends Specification {
     }
 
     void "test registering a binding fetcher"() {
+        given:
+        GormEnhancer.STATIC_APIS.put(ConnectionSource.DEFAULT, ['java.lang.String': Mock(GormStaticApi)])
+
         when:
         manager.registerBindingDataFetcher(String, mockBindingFetcher)
 

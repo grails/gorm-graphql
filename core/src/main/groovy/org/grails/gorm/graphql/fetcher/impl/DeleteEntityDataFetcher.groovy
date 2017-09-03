@@ -1,6 +1,5 @@
 package org.grails.gorm.graphql.fetcher.impl
 
-import grails.gorm.transactions.Transactional
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
@@ -22,10 +21,11 @@ class DeleteEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements De
 
     GraphQLDeleteResponseHandler responseHandler
 
-    @Transactional
     void delete(DataFetchingEnvironment environment) {
-        GormEntity instance = queryInstance(environment)
-        deleteInstance(instance)
+        withTransaction(false) {
+            GormEntity instance = queryInstance(environment)
+            deleteInstance(instance)
+        }
     }
 
     protected void deleteInstance(GormEntity instance) {

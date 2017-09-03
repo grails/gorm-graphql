@@ -1,7 +1,6 @@
 package org.grails.gorm.graphql.fetcher.impl
 
 import grails.gorm.DetachedCriteria
-import grails.gorm.transactions.Transactional
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
@@ -69,31 +68,32 @@ class EntityDataFetcher<T extends Collection> extends DefaultGormDataFetcher<T> 
     }
 
     @Override
-    @Transactional(readOnly = true)
     T get(DataFetchingEnvironment environment) {
-        Map queryArgs = getFetchArguments(environment)
+        (T)withTransaction(true) {
+            Map queryArgs = getFetchArguments(environment)
 
-        for (Map.Entry<String, Object> entry: getArguments(environment)) {
-            if (ARGUMENTS.containsKey(entry.key) && entry.value != null) {
-                queryArgs.put(entry.key, entry.value)
-            }
-        }
-
-        if (queryArgs.containsKey('fetch') && (queryArgs.containsKey('max') || queryArgs.containsKey('offset'))) {
-            Map<String, String> fetch = (Map)queryArgs.get('fetch')
-            boolean showWarning = false
-            for (String key: fetch.keySet()) {
-                fetch.put(key, 'default')
-                if (!batchModeEnabled.get(key)) {
-                    showWarning = true
+            for (Map.Entry<String, Object> entry: getArguments(environment)) {
+                if (ARGUMENTS.containsKey(entry.key) && entry.value != null) {
+                    queryArgs.put(entry.key, entry.value)
                 }
             }
-            if (showWarning) {
-                log.warn("Pagination parameters were supplied for query ${environment.fields[0].name} in addition to a joined collection. The fetch mode will be lazy to ensure the correct data is returned. Configure a batchSize for better performance.")
-            }
-        }
 
-        (T)executeQuery(environment, queryArgs)
+            if (queryArgs.containsKey('fetch') && (queryArgs.containsKey('max') || queryArgs.containsKey('offset'))) {
+                Map<String, String> fetch = (Map)queryArgs.get('fetch')
+                boolean showWarning = false
+                for (String key: fetch.keySet()) {
+                    fetch.put(key, 'default')
+                    if (!batchModeEnabled.get(key)) {
+                        showWarning = true
+                    }
+                }
+                if (showWarning) {
+                    log.warn("Pagination parameters were supplied for query ${environment.fields[0].name} in addition to a joined collection. The fetch mode will be lazy to ensure the correct data is returned. Configure a batchSize for better performance.")
+                }
+            }
+
+            executeQuery(environment, queryArgs)
+        }
     }
 
     protected DetachedCriteria buildCriteria(DataFetchingEnvironment environment) {
