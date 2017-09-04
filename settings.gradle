@@ -4,6 +4,7 @@ include 'docs'
 
 include 'examples/grails-test-app'
 include 'examples/grails-docs-app'
+include 'examples/grails-tenant-app'
 include 'examples/spring-boot-app'
 
 rootProject.name = 'gorm-graphql-root'
