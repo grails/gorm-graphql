@@ -43,6 +43,34 @@ class SchemaSpec extends Specification implements GraphQLSchemaSpec {
         }.join('').replace('Output', '')
     }
 
+    void "test ComplexOperation"() {
+        given:
+        GraphQLObjectType type = schema.getType('AwesomeType')
+        GraphQLFieldDefinition query = queryType.getFieldDefinition('awesomeQuery')
+
+        expect:
+        type.getFieldDefinition('awesome')
+        query.type == type
+        query.getArgument('firstArg').type == schema.getType('FirstArgument')
+    }
+
+    void "test FirstArgument"() {
+        given:
+        GraphQLInputObjectType type = schema.getType('FirstArgument')
+
+        expect:
+        type.getFieldDefinition('subArg')
+        unwrap([null], type.getFieldDefinition('subArg2').type) == schema.getType('SubArgument2Input')
+    }
+
+    void "test SubArgument2"() {
+        given:
+        GraphQLInputObjectType type = schema.getType('SubArgument2Input')
+
+        expect:
+        type.getFieldDefinition('threeDeep')
+    }
+
     void "test DebugBar"() {
         given:
         GraphQLObjectType type = schema.getType('DebugBar')

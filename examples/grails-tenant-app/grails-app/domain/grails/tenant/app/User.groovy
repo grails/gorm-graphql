@@ -15,7 +15,7 @@ class User implements MultiTenant<User> {
         tenantId name: 'companyId'
     }
     static graphql = GraphQLMapping.build {
-        property('company') {
+        property('companyId') {
             input false
         }
     }

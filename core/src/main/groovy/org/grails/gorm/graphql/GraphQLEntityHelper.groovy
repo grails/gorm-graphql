@@ -5,6 +5,7 @@ import org.grails.datastore.mapping.config.Entity
 import org.grails.datastore.mapping.model.IllegalMappingException
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
+import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.entity.dsl.LazyGraphQLMapping
 
 import java.lang.reflect.Method
@@ -77,9 +78,29 @@ class GraphQLEntityHelper {
             if (!(mapping instanceof GraphQLMapping)) {
                 throw new IllegalMappingException("The static graphql property on ${entity.name} is not a Boolean, Closure, or GraphQLMapping")
             }
+            verifyMapping(mapping, entity)
         }
         mappings.put(entity, mapping)
         mapping
+    }
+
+    static void verifyMapping(GraphQLMapping mapping, PersistentEntity entity) {
+/*
+        Set<String> persistentPropertyNames = new HashSet<>()
+        if (entity.identity != null) {
+            persistentPropertyNames.add(entity.identity.name)
+        }
+        if (entity.compositeIdentity != null) {
+            persistentPropertyNames.addAll(entity.compositeIdentity*.name)
+        }
+        persistentPropertyNames.addAll(entity.persistentPropertyNames)
+*/
+
+        for (String name: mapping.propertyMappings.keySet()) {
+            if (entity.getPropertyByName(name) == null) {
+                throw new IllegalMappingException("GraphQL mapping: The property '${name}' was used to reference an existing property in ${entity.javaClass.name}, but no property exists with that name")
+            }
+        }
     }
 
 }
