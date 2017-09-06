@@ -2,10 +2,12 @@ package org.grails.gorm.graphql.fetcher
 
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.Tenants
+import grails.gorm.transactions.GrailsTransactionTemplate
 import grails.gorm.transactions.TransactionService
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
 import org.grails.datastore.gorm.GormEnhancer
 import org.grails.datastore.gorm.GormEntity
 import org.grails.datastore.gorm.GormStaticApi
@@ -16,6 +18,9 @@ import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.multitenancy.MultiTenantCapableDatastore
 import org.grails.datastore.mapping.transactions.CustomizableRollbackTransactionAttribute
 import org.grails.gorm.graphql.entity.EntityFetchOptions
+import org.springframework.transaction.PlatformTransactionManager
+
+import java.lang.reflect.Method
 
 /**
  * A generic class to assist with querying entities with GraphQL
@@ -25,6 +30,7 @@ import org.grails.gorm.graphql.entity.EntityFetchOptions
  * @since 1.0.0
  */
 @CompileStatic
+@Slf4j
 abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
 
     protected Map<String, Association> associations = [:]
@@ -111,10 +117,26 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         else {
             datastore = this.datastore
         }
+
+        //To support older versions of GORM
+        try {
+            Method getTransactionManager = datastore.class.getMethod('getTransactionManager', (Class<?>[]) null)
+            PlatformTransactionManager transactionManager = (PlatformTransactionManager)getTransactionManager.invoke(datastore)
+            CustomizableRollbackTransactionAttribute transactionAttribute = new CustomizableRollbackTransactionAttribute()
+            transactionAttribute.setReadOnly(readOnly)
+            new GrailsTransactionTemplate(transactionManager, transactionAttribute).execute(closure)
+        } catch (NoSuchMethodException | SecurityException e) {
+            log.error('Unable to find a transaction manager for datastore {}', datastore.class.name)
+            null
+        }
+
+        //Supports 6.1.x+ only
+        /*
         TransactionService txService = (TransactionService)datastore.getService((Class<?>)TransactionService)
         CustomizableRollbackTransactionAttribute transactionAttribute = new CustomizableRollbackTransactionAttribute()
         transactionAttribute.setReadOnly(readOnly)
         txService.withTransaction(transactionAttribute, closure)
+         */
     }
 
     abstract T get(DataFetchingEnvironment environment)
