@@ -1,6 +1,5 @@
 package org.grails.gorm.graphql.fetcher.manager
 
-import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import org.grails.datastore.gorm.GormEnhancer
 import org.grails.datastore.gorm.GormStaticApi
@@ -9,18 +8,13 @@ import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
-import org.grails.gorm.graphql.fetcher.impl.CreateEntityDataFetcher
-import org.grails.gorm.graphql.fetcher.impl.DeleteEntityDataFetcher
-import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
-import org.grails.gorm.graphql.fetcher.impl.SingleEntityDataFetcher
-import org.grails.gorm.graphql.fetcher.impl.UpdateEntityDataFetcher
-
-import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.*
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 import spock.lang.Shared
 import spock.lang.Specification
+
+import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.*
 
 class GraphQLDataFetcherManagerSpec extends Specification {
 
@@ -119,7 +113,7 @@ class GraphQLDataFetcherManagerSpec extends Specification {
 
     void "test get binding fetcher with wrong argument type"() {
         when:
-        manager.getBindingFetcher(getMockEntity(String), null, type)
+        manager.getBindingFetcher(getMockEntity(String), type)
 
         then:
         thrown(IllegalArgumentException)
@@ -147,8 +141,8 @@ class GraphQLDataFetcherManagerSpec extends Specification {
         manager.registerBindingDataFetcher(String, mockBindingFetcher)
 
         then: "the binder is not registered because it doesn't support any type"
-        manager.getBindingFetcher(getMockEntity(String), null, CREATE) instanceof CreateEntityDataFetcher
-        manager.getBindingFetcher(getMockEntity(String), null, UPDATE) instanceof UpdateEntityDataFetcher
+        manager.getBindingFetcher(getMockEntity(String), CREATE) == null
+        manager.getBindingFetcher(getMockEntity(String), UPDATE) == null
     }
 
     void "test fetchers for the exact class are resolved first (binding)"() {
@@ -172,27 +166,27 @@ class GraphQLDataFetcherManagerSpec extends Specification {
         }
 
         expect: 'The default binders are returned'
-        manager.getBindingFetcher(getMockEntity(String), null, CREATE) == mockBindingFetcher
-        manager.getBindingFetcher(getMockEntity(String), null, UPDATE) == mockBindingFetcher
+        manager.getBindingFetcher(getMockEntity(String), CREATE) == mockBindingFetcher
+        manager.getBindingFetcher(getMockEntity(String), UPDATE) == mockBindingFetcher
 
         when: 'A binder is registered for String that supports CREATE'
         manager.registerBindingDataFetcher(String, myBindingFetcher)
 
         then: 'The binder is returned for CREATE, and the Object binder is returned for update'
-        manager.getBindingFetcher(getMockEntity(String), null, CREATE) == myBindingFetcher
+        manager.getBindingFetcher(getMockEntity(String), CREATE) == myBindingFetcher
 
         when: 'The manager has no default binders'
         manager = new DefaultGraphQLDataFetcherManager()
 
-        then: 'The GORM defaults are used'
-        manager.getBindingFetcher(getMockEntity(String), null, CREATE) instanceof CreateEntityDataFetcher
-        manager.getBindingFetcher(getMockEntity(String), null, UPDATE) instanceof UpdateEntityDataFetcher
+        then: 'null is returned'
+        manager.getBindingFetcher(getMockEntity(String), CREATE) == null
+        manager.getBindingFetcher(getMockEntity(String), UPDATE) == null
 
         when: 'A custom binder is registered'
         manager.registerBindingDataFetcher(String, myBindingFetcher)
 
         then: 'The binder is returned'
-        manager.getBindingFetcher(getMockEntity(String), null, CREATE) == myBindingFetcher
+        manager.getBindingFetcher(getMockEntity(String), CREATE) == myBindingFetcher
     }
 
     void "test fetchers for the exact class are resolved first (reading)"() {
@@ -213,6 +207,7 @@ class GraphQLDataFetcherManagerSpec extends Specification {
             Object get(DataFetchingEnvironment environment) { null }
         }
 
+
         expect: 'The default binders are returned'
         manager.getReadingFetcher(getMockEntity(String), GET) == mockReadingFetcher
         manager.getReadingFetcher(getMockEntity(String), LIST) == mockReadingFetcher
@@ -226,9 +221,9 @@ class GraphQLDataFetcherManagerSpec extends Specification {
         when: 'The manager has no default binders'
         manager = new DefaultGraphQLDataFetcherManager()
 
-        then: 'The GORM defaults are used'
-        manager.getReadingFetcher(getMockEntity(String), GET) instanceof SingleEntityDataFetcher
-        manager.getReadingFetcher(getMockEntity(String), LIST) instanceof EntityDataFetcher
+        then: 'null is returned'
+        manager.getReadingFetcher(getMockEntity(String), GET) == null
+        manager.getReadingFetcher(getMockEntity(String), LIST) == null
 
         when: 'A custom binder is registered'
         manager.registerReadingDataFetcher(String, myReadingFetcher)
@@ -248,25 +243,25 @@ class GraphQLDataFetcherManagerSpec extends Specification {
         DeletingGormDataFetcher myDeletingFetcher = new FakeDeletingFetcher()
 
         expect: 'The default binders are returned'
-        manager.getDeletingFetcher(getMockEntity(String), null) == mockDeletingFetcher
+        manager.getDeletingFetcher(getMockEntity(String)) == mockDeletingFetcher
 
         when: 'A binder is registered for String that supports CREATE'
         manager.registerDeletingDataFetcher(String, myDeletingFetcher)
 
         then: 'The binder is returned for CREATE, and the Object binder is returned for update'
-        manager.getDeletingFetcher(getMockEntity(String), null) == myDeletingFetcher
+        manager.getDeletingFetcher(getMockEntity(String)) == myDeletingFetcher
 
         when: 'The manager has no default binders'
         manager = new DefaultGraphQLDataFetcherManager()
 
-        then: 'The GORM defaults are used'
-        manager.getDeletingFetcher(getMockEntity(String), null) instanceof DeleteEntityDataFetcher
+        then: 'null is returned'
+        manager.getDeletingFetcher(getMockEntity(String)) == null
 
         when: 'A custom binder is registered'
         manager.registerDeletingDataFetcher(String, myDeletingFetcher)
 
         then: 'The binder is returned'
-        manager.getDeletingFetcher(getMockEntity(String), null) == myDeletingFetcher
+        manager.getDeletingFetcher(getMockEntity(String)) == myDeletingFetcher
     }
 
     class FakeDeletingFetcher implements DeletingGormDataFetcher {

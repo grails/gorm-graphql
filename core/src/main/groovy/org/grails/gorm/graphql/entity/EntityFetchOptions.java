@@ -85,6 +85,7 @@ public class EntityFetchOptions {
         }
 
         Association association = associations.get(selectedField.getName());
+
         PersistentEntity entity = association.getAssociatedEntity();
 
         if (entity == null) {
@@ -138,22 +139,40 @@ public class EntityFetchOptions {
         joinProperties.addAll(new EntityFetchOptions(entity, resolvedName).getJoinProperties(fields));
     }
 
+
+    public Set<String> getJoinProperties(List<Field> fields) {
+        return getJoinProperties(fields, false);
+    }
+
     /**
      * Designed for internal use to inspect nested selections
      *
      * @param fields The list of fields to search
+     * @param skipCollections Whether to exclude associations that are collections
      * @return The list of properties to eagerly fetch
      */
-    public Set<String> getJoinProperties(List<Field> fields) {
+    public Set<String> getJoinProperties(List<Field> fields, boolean skipCollections) {
         Set<String> joinProperties = new HashSet<>();
 
         if (fields != null) {
             fields.stream()
                     .filter(field -> associationNames.contains(field.getName()))
+                    .filter(field -> {
+                        if (skipCollections) {
+                            return !(associations.get(field.getName()) instanceof ToMany);
+                        }
+                        else {
+                            return true;
+                        }
+                    })
                     .forEach(field -> handleField(propertyName, field, joinProperties));
         }
 
         return joinProperties;
+    }
+
+    public Set<String> getJoinProperties(DataFetchingEnvironment environment) {
+        return getJoinProperties(environment, false);
     }
 
     /**
@@ -162,9 +181,10 @@ public class EntityFetchOptions {
      * which fields should be eagerly fetched.
      *
      * @param environment The data fetching environment
+     * @param skipCollections Whether to exclude associations that are collections
      * @return The list of properties to eagerly fetch
      */
-    public Set<String> getJoinProperties(DataFetchingEnvironment environment) {
+    public Set<String> getJoinProperties(DataFetchingEnvironment environment, boolean skipCollections) {
         List<Field> fields = new ArrayList<>();
         List<Field> environmentFields = environment.getFields();
 
@@ -177,7 +197,7 @@ public class EntityFetchOptions {
                     .collect(Collectors.toList());
         }
 
-        return getJoinProperties(fields);
+        return getJoinProperties(fields, skipCollections);
     }
 
     /**
@@ -200,6 +220,11 @@ public class EntityFetchOptions {
         return arguments;
     }
 
+
+    public Map<String, Map> getFetchArgument(DataFetchingEnvironment environment) {
+        return getFetchArgument(environment, false);
+    }
+
     /**
      * Inspects the environment for requested fields and compares
      * against the {@link PersistentEntity} associations to determine
@@ -207,10 +232,10 @@ public class EntityFetchOptions {
      * prepared to pass to {@link grails.gorm.DetachedCriteria#list(Map)}
      *
      * @param environment The fetching environment
+     * @param skipCollections Whether to exclude associations that are collections
      * @return The fetch argument
      */
-    public Map<String, Map> getFetchArgument(DataFetchingEnvironment environment) {
-        return getFetchArgument(getJoinProperties(environment));
+    public Map<String, Map> getFetchArgument(DataFetchingEnvironment environment, boolean skipCollections) {
+        return getFetchArgument(getJoinProperties(environment, skipCollections));
     }
-
 }

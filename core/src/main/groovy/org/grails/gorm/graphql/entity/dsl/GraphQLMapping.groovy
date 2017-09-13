@@ -7,6 +7,7 @@ import org.grails.gorm.graphql.entity.dsl.helpers.Describable
 import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
 import org.grails.gorm.graphql.entity.operations.ComplexOperation
 import org.grails.gorm.graphql.entity.operations.CustomOperation
+import org.grails.gorm.graphql.entity.operations.ListOperation
 import org.grails.gorm.graphql.entity.operations.OperationType
 import org.grails.gorm.graphql.entity.operations.ProvidedOperation
 import org.grails.gorm.graphql.entity.operations.SimpleOperation
@@ -252,7 +253,7 @@ class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQ
      */
     class Operations {
         ProvidedOperation get = new ProvidedOperation()
-        ProvidedOperation list = new ProvidedOperation()
+        ListOperation list = new ListOperation()
         ProvidedOperation create = new ProvidedOperation()
         ProvidedOperation update = new ProvidedOperation()
         ProvidedOperation delete = new ProvidedOperation()

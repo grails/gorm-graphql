@@ -55,8 +55,8 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         this.associations = this.entityFetchOptions.associations
     }
 
-    protected Map getFetchArguments(DataFetchingEnvironment environment) {
-        Set<String> joinProperties = entityFetchOptions.getJoinProperties(environment)
+    protected Map getFetchArguments(DataFetchingEnvironment environment, boolean skipCollections = false) {
+        Set<String> joinProperties = entityFetchOptions.getJoinProperties(environment, skipCollections)
 
         if (propertyName) {
             joinProperties.add(propertyName)

@@ -14,10 +14,19 @@ import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.operations.CustomOperation
+import org.grails.gorm.graphql.entity.operations.ListOperation
 import org.grails.gorm.graphql.entity.operations.ProvidedOperation
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
+import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
+import org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
+import org.grails.gorm.graphql.fetcher.PaginatingGormDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.CreateEntityDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.DeleteEntityDataFetcher
 import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.PaginatedEntityDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.SingleEntityDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.UpdateEntityDataFetcher
 import org.grails.gorm.graphql.fetcher.interceptor.InterceptingDataFetcher
 import org.grails.gorm.graphql.fetcher.interceptor.InterceptorInvoker
 import org.grails.gorm.graphql.fetcher.interceptor.MutationInterceptorInvoker
@@ -31,6 +40,8 @@ import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandl
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
+import org.grails.gorm.graphql.response.pagination.DefaultGraphQLPaginationResponseHandler
+import org.grails.gorm.graphql.response.pagination.GraphQLPaginationResponseHandler
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
@@ -67,11 +78,15 @@ class Schema {
     GraphQLInterceptorManager interceptorManager
     GraphQLErrorsResponseHandler errorsResponseHandler
     GraphQLDomainPropertyManager domainPropertyManager
+    GraphQLPaginationResponseHandler paginationResponseHandler
     GraphQLServiceManager serviceManager
 
     List<String> dateFormats
     boolean dateFormatLenient = false
     Map<String, GraphQLInputType> listArguments
+
+    private static final String MAX = 'max'
+    private static final String OFFSET = 'offset'
 
     private boolean initialized = false
 
@@ -80,8 +95,12 @@ class Schema {
     }
 
     void setListArguments(Map<String, Class> arguments) {
+        listArguments = buildListArguments(arguments)
+    }
+
+    Map<String, GraphQLInputType> buildListArguments(Map<String, Class> arguments) {
         if (arguments != null) {
-            listArguments = [:]
+            Map<String, GraphQLInputType> listArguments = [:]
             for (Map.Entry<String, Class> entry: arguments) {
                 GraphQLType type = typeManager.getType(entry.value)
                 if (!(type instanceof GraphQLInputType)) {
@@ -89,6 +108,10 @@ class Schema {
                 }
                 listArguments.put(entry.key, (GraphQLInputType)type)
             }
+            listArguments
+        }
+        else {
+            null
         }
     }
 
@@ -155,6 +178,9 @@ class Schema {
         if (interceptorManager == null) {
             interceptorManager = new DefaultGraphQLInterceptorManager()
         }
+        if (paginationResponseHandler == null) {
+            paginationResponseHandler = new DefaultGraphQLPaginationResponseHandler()
+        }
 
         serviceManager = new GraphQLServiceManager()
         serviceManager.with {
@@ -166,6 +192,7 @@ class Schema {
             registerService(GraphQLInterceptorManager, interceptorManager)
             registerService(GraphQLDomainPropertyManager, domainPropertyManager)
             registerService(GraphQLErrorsResponseHandler, errorsResponseHandler)
+            registerService(GraphQLPaginationResponseHandler, paginationResponseHandler)
         }
 
         initialized = true
@@ -238,26 +265,60 @@ class Schema {
             ProvidedOperation getOperation = mapping.operations.get
             if (getOperation.enabled) {
 
+                DataFetcher getFetcher = dataFetcherManager.getReadingFetcher(entity, GET)
+                if (getFetcher == null) {
+                    getFetcher = new SingleEntityDataFetcher(entity)
+                }
+
                 GraphQLFieldDefinition.Builder queryOne = newFieldDefinition()
                         .name(namingConvention.getGet(entity))
                         .type(objectType)
                         .description(getOperation.description)
                         .deprecate(getOperation.deprecationReason)
-                        .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, GET, dataFetcherManager.getReadingFetcher(entity, GET)))
+                        .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, GET, getFetcher))
 
                 requiresIdentityArguments.add(queryOne)
                 queryFields.add(queryOne)
             }
 
-            ProvidedOperation listOperation = mapping.operations.list
+            ListOperation listOperation = mapping.operations.list
             if (listOperation.enabled) {
+
+                DataFetcher listFetcher = dataFetcherManager.getReadingFetcher(entity, LIST)
 
                 GraphQLFieldDefinition.Builder queryAll = newFieldDefinition()
                         .name(namingConvention.getList(entity))
-                        .type(list(objectType))
                         .description(listOperation.description)
                         .deprecate(listOperation.deprecationReason)
-                        .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, LIST, dataFetcherManager.getReadingFetcher(entity, LIST)))
+
+                Map<String, GraphQLInputType> listArguments = [:]
+                listArguments.putAll(this.listArguments)
+
+                if (listOperation.paginate) {
+                    if (listFetcher == null) {
+                        listFetcher = new PaginatedEntityDataFetcher(entity)
+                    }
+                    queryAll.type(paginationResponseHandler.getObjectType(entity, typeManager))
+
+                    if (listArguments.containsKey(MAX)) {
+                        listArguments.put(MAX,  GraphQLNonNull.nonNull(listArguments.get(MAX)))
+                    }
+                    if (listArguments.containsKey(OFFSET)) {
+                        listArguments.put(OFFSET,  GraphQLNonNull.nonNull(listArguments.get(OFFSET)))
+                    }
+                }
+                else {
+                    if (listFetcher == null) {
+                        listFetcher = new EntityDataFetcher(entity)
+                    }
+                    queryAll.type(list(objectType))
+                }
+
+                if (listFetcher instanceof PaginatingGormDataFetcher) {
+                    ((PaginatingGormDataFetcher) listFetcher).responseHandler = paginationResponseHandler
+                }
+
+                queryAll.dataFetcher(new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, LIST, listFetcher))
 
                 queryFields.add(queryAll)
 
@@ -269,15 +330,22 @@ class Schema {
             }
 
             InterceptorInvoker mutationInterceptorInvoker = new MutationInterceptorInvoker()
+
             GraphQLDataBinder dataBinder = dataBinderManager.getDataBinder(entity.javaClass)
 
             ProvidedOperation createOperation = mapping.operations.create
             if (createOperation.enabled && !Modifier.isAbstract(entity.javaClass.modifiers)) {
-                GraphQLInputType createObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.CREATE, true)
-
                 if (dataBinder == null) {
                     throw new DataBinderNotFoundException(entity)
                 }
+                GraphQLInputType createObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.CREATE, true)
+
+                BindingGormDataFetcher createFetcher = dataFetcherManager.getBindingFetcher(entity, CREATE)
+
+                if (createFetcher == null) {
+                    createFetcher = new CreateEntityDataFetcher(entity)
+                }
+                createFetcher.dataBinder = dataBinder
 
                 GraphQLFieldDefinition.Builder create = newFieldDefinition()
                         .name(namingConvention.getCreate(entity))
@@ -287,26 +355,30 @@ class Schema {
                         .argument(newArgument()
                             .name(entity.decapitalizedName)
                             .type(createObjectType))
-                            .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, CREATE, dataFetcherManager.getBindingFetcher(entity, dataBinder, CREATE)))
+                            .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, CREATE, createFetcher))
 
                 mutationFields.add(create)
             }
 
             ProvidedOperation updateOperation = mapping.operations.update
             if (updateOperation.enabled) {
-
-                GraphQLInputType updateObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.UPDATE, true)
-
                 if (dataBinder == null) {
                     throw new DataBinderNotFoundException(entity)
                 }
+                GraphQLInputType updateObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.UPDATE, true)
+
+                BindingGormDataFetcher updateFetcher = dataFetcherManager.getBindingFetcher(entity, UPDATE)
+                if (updateFetcher == null) {
+                    updateFetcher = new UpdateEntityDataFetcher(entity)
+                }
+                updateFetcher.dataBinder = dataBinder
 
                 GraphQLFieldDefinition.Builder update = newFieldDefinition()
                         .name(namingConvention.getUpdate(entity))
                         .type(objectType)
                         .description(updateOperation.description)
                         .deprecate(updateOperation.deprecationReason)
-                        .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, UPDATE, dataFetcherManager.getBindingFetcher(entity, dataBinder, UPDATE)))
+                        .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, UPDATE, updateFetcher))
 
                 postIdentityExecutables.add {
                     update.argument(newArgument()
@@ -321,12 +393,18 @@ class Schema {
             ProvidedOperation deleteOperation = mapping.operations.delete
             if (deleteOperation.enabled) {
 
+                DeletingGormDataFetcher deleteFetcher = dataFetcherManager.getDeletingFetcher(entity)
+                if (deleteFetcher == null) {
+                    deleteFetcher = new DeleteEntityDataFetcher(entity)
+                }
+                deleteFetcher.responseHandler = deleteResponseHandler
+
                 GraphQLFieldDefinition.Builder delete = newFieldDefinition()
                         .name(namingConvention.getDelete(entity))
                         .type(deleteResponseHandler.getObjectType(typeManager))
                         .description(deleteOperation.description)
                         .deprecate(deleteOperation.deprecationReason)
-                        .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, DELETE, dataFetcherManager.getDeletingFetcher(entity, deleteResponseHandler)))
+                        .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, DELETE, deleteFetcher))
 
                 requiresIdentityArguments.add(delete)
                 mutationFields.add(delete)

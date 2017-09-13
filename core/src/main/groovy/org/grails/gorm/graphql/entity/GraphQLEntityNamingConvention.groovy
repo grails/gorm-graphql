@@ -77,4 +77,11 @@ class GraphQLEntityNamingConvention {
         typeName + normalizeType(type)
     }
 
+    /**
+     * @param entity The persistent entity
+     * @return The name to use. Ex: "PersonPagedResult"
+     */
+    String getPagination(PersistentEntity entity) {
+        entity.javaClass.simpleName + 'PagedResult'
+    }
 }

@@ -3,13 +3,10 @@ package org.grails.gorm.graphql.fetcher.manager
 import graphql.schema.DataFetcher
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
-import org.grails.gorm.graphql.fetcher.impl.*
-import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 
 /**
  * A default implementation of {@link GraphQLDataFetcherManager}.
@@ -18,7 +15,7 @@ import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
  * searched for. If a parent class is registered and a subclass is searched,
  * the parent class fetcher will not be returned. If no fetchers are found,
  * the optional provided default fetchers will be searched. If no default
- * fetchers are provided, the generic GORM data fetchers will be used.
+ * fetchers are provided, null will be returned.
  *
  * @author James Kleeh
  * @since 1.0.0
@@ -95,51 +92,23 @@ class DefaultGraphQLDataFetcherManager implements GraphQLDataFetcherManager {
     }
 
     @Override
-    DataFetcher getBindingFetcher(PersistentEntity entity, GraphQLDataBinder dataBinder, GraphQLDataFetcherType type) {
+    BindingGormDataFetcher getBindingFetcher(PersistentEntity entity, GraphQLDataFetcherType type) {
         if (type?.requiredClass != BindingGormDataFetcher) {
             throw new IllegalArgumentException("The type specified (${type}) is null or invalid")
         }
-        BindingGormDataFetcher customFetcher = (BindingGormDataFetcher)getCustomFetcher(entity, type)
-        if (customFetcher == null) {
-            switch (type) {
-                case GraphQLDataFetcherType.CREATE:
-                    customFetcher = new CreateEntityDataFetcher(entity)
-                    break
-                case GraphQLDataFetcherType.UPDATE:
-                    customFetcher = new UpdateEntityDataFetcher(entity)
-                    break
-            }
-        }
-        customFetcher.dataBinder = dataBinder
-        customFetcher
+        (BindingGormDataFetcher)getCustomFetcher(entity, type)
     }
 
     @Override
-    DataFetcher getDeletingFetcher(PersistentEntity entity, GraphQLDeleteResponseHandler responseHandler) {
-        DeletingGormDataFetcher fetcher = (DeletingGormDataFetcher)getCustomFetcher(entity, GraphQLDataFetcherType.DELETE)
-        if (fetcher == null) {
-            fetcher = new DeleteEntityDataFetcher(entity)
-        }
-        fetcher.responseHandler = responseHandler
-        fetcher
+    DeletingGormDataFetcher getDeletingFetcher(PersistentEntity entity) {
+        (DeletingGormDataFetcher)getCustomFetcher(entity, GraphQLDataFetcherType.DELETE)
     }
 
     @Override
-    DataFetcher getReadingFetcher(PersistentEntity entity, GraphQLDataFetcherType type) {
+    ReadingGormDataFetcher getReadingFetcher(PersistentEntity entity, GraphQLDataFetcherType type) {
         if (type?.requiredClass != ReadingGormDataFetcher) {
             throw new IllegalArgumentException("The type specified (${type}) is null or invalid")
         }
-        DataFetcher customFetcher = getCustomFetcher(entity, type)
-        if (customFetcher == null) {
-            switch (type) {
-                case GraphQLDataFetcherType.GET:
-                    customFetcher = new SingleEntityDataFetcher(entity)
-                    break
-                case GraphQLDataFetcherType.LIST:
-                    customFetcher = new EntityDataFetcher(entity)
-                    break
-            }
-        }
-        customFetcher
+        (ReadingGormDataFetcher)getCustomFetcher(entity, type)
     }
 }

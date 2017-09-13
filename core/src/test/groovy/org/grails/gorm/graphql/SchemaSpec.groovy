@@ -5,8 +5,11 @@ import org.grails.datastore.mapping.config.Settings
 import org.grails.datastore.mapping.core.DatastoreUtils
 import org.grails.gorm.graphql.domain.general.GeneralPackage
 import org.grails.gorm.graphql.domain.hibernate.HibernatePackage
+import org.grails.gorm.graphql.fetcher.PaginatingGormDataFetcher
+import org.grails.gorm.graphql.fetcher.interceptor.InterceptingDataFetcher
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.types.GraphQLPropertyType
+import org.grails.gorm.graphql.types.scalars.GormScalars
 import org.grails.orm.hibernate.HibernateDatastore
 import spock.lang.AutoCleanup
 import spock.lang.Shared
@@ -52,6 +55,18 @@ class SchemaSpec extends Specification implements GraphQLSchemaSpec {
         type.getFieldDefinition('awesome')
         query.type == type
         query.getArgument('firstArg').type == schema.getType('FirstArgument')
+    }
+
+    void "test SimpleOperation"() {
+        given:
+        GraphQLFieldDefinition query = queryType.getFieldDefinition('getData')
+        GraphQLFieldDefinition list = queryType.getFieldDefinition('simpleOperationList')
+
+        expect: 'max and offset are required'
+        unwrap(null, list.getArgument('max').type) == GormScalars.GraphQLInt
+        unwrap(null, list.getArgument('offset').type) == GormScalars.GraphQLInt
+        ((InterceptingDataFetcher)list.dataFetcher).wrappedFetcher instanceof PaginatingGormDataFetcher
+        unwrap([], query.type) == schema.getType('OtherDomain')
     }
 
     void "test FirstArgument"() {

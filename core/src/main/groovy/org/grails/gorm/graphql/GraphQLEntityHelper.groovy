@@ -5,7 +5,6 @@ import org.grails.datastore.mapping.config.Entity
 import org.grails.datastore.mapping.model.IllegalMappingException
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
-import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.entity.dsl.LazyGraphQLMapping
 
 import java.lang.reflect.Method

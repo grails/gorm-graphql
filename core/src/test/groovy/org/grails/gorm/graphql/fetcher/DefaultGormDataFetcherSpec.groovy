@@ -3,9 +3,8 @@ package org.grails.gorm.graphql.fetcher
 import graphql.language.Field
 import graphql.language.SelectionSet
 import graphql.schema.DataFetchingEnvironment
-import groovy.transform.InheritConstructors
+import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.HibernateSpec
-import org.grails.gorm.graphql.SchemaSpec
 import org.grails.gorm.graphql.domain.general.GeneralPackage
 import org.grails.gorm.graphql.domain.general.tomany.ToMany
 import org.grails.gorm.graphql.domain.general.toone.EmbedOne
@@ -65,6 +64,21 @@ class DefaultGormDataFetcherSpec extends HibernateSpec {
     void "test should join a toOne when more than the ID is requested"() {
         given:
         TestingFetcher fetcher = new TestingFetcher(ToOne.gormPersistentEntity)
+
+        expect:
+        fetcher.joinProperties { ->
+            someQueryName {
+                one {
+                    id
+                    version
+                }
+            }
+        } == ['one'] as Set
+    }
+
+    void "test should join a toOne with skipCollection true"() {
+        given:
+        TestingFetcher fetcher = new TestingFetcher(ToOne.gormPersistentEntity, true)
 
         expect:
         fetcher.joinProperties { ->
@@ -376,12 +390,66 @@ class DefaultGormDataFetcherSpec extends HibernateSpec {
         } == ['foo', 'foo.manyToOne', 'foo.manyToOne.one'] as Set
     }
 
+    void "test toMany properties are excluded with skipCollections with projection"() {
+        given:
+        TestingFetcher fetcher = new TestingFetcher(ToMany.gormPersistentEntity, 'foo', true)
 
-    @InheritConstructors
+        expect: "the projection name is still included"
+        fetcher.joinProperties { ->
+            someQueryName {
+                many {
+                    id
+                }
+                manyToOne {
+                    id
+                }
+                manyToMany {
+                    id
+                }
+                enums
+                strings
+            }
+        } == ['foo'] as Set
+    }
+
+    void "test toMany properties are excluded with skipCollections"() {
+        given:
+        TestingFetcher fetcher = new TestingFetcher(ToMany.gormPersistentEntity, true)
+
+        expect: "the projection name is still included"
+        fetcher.joinProperties { ->
+            someQueryName {
+                many {
+                    id
+                }
+                manyToOne {
+                    id
+                }
+                manyToMany {
+                    id
+                }
+                enums
+                strings
+            }
+        }.empty
+    }
+
     class TestingFetcher extends DefaultGormDataFetcher {
 
+        boolean skipCollections
+
+        TestingFetcher(PersistentEntity entity, boolean skipCollections = false) {
+            super(entity)
+            this.skipCollections = skipCollections
+        }
+
+        TestingFetcher(PersistentEntity entity, String projectionName, boolean skipCollections = false) {
+            super(entity, projectionName)
+            this.skipCollections = skipCollections
+        }
+
         Set<String> joinProperties(Closure c) {
-            Map args = getFetchArguments(new MockDataFetchingEnvironment(fields: new MockFieldBuilder().build(c)))
+            Map args = getFetchArguments(new MockDataFetchingEnvironment(fields: new MockFieldBuilder().build(c)), skipCollections)
 
             if (args.containsKey('fetch')) {
                 args.fetch.keySet()

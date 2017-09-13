@@ -1,13 +1,10 @@
 package org.grails.gorm.graphql.fetcher.manager
 
-import graphql.schema.DataFetcher
 import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.fetcher.ReadingGormDataFetcher
-import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
 
 /**
  * An interface to register and retrieve data fetcher instances
@@ -48,28 +45,26 @@ interface GraphQLDataFetcherManager {
      * Returns a data fetcher instance to be used in CREATE or UPDATE
      *
      * @param entity The entity representing the domain used in the fetcher
-     * @param dataBinder The data binder responsible for binding data to the domain instance
      * @param type Which returnType of fetcher to return (CREATE or UPDATE)
-     * @return The matched data binder
+     * @return The data fetcher found, or null
      */
-    DataFetcher getBindingFetcher(PersistentEntity entity, GraphQLDataBinder dataBinder, GraphQLDataFetcherType type)
+    BindingGormDataFetcher getBindingFetcher(PersistentEntity entity, GraphQLDataFetcherType type)
 
     /**
      * Returns a data fetcher instance to be used in DELETE
      *
      * @param entity The entity representing the domain used in the fetcher
-     * @param responseHandler The response handler responsible for generating the delete response
-     * @return The matched data binder
+     * @return The data fetcher found, or null
      */
-    DataFetcher getDeletingFetcher(PersistentEntity entity, GraphQLDeleteResponseHandler responseHandler)
+    DeletingGormDataFetcher getDeletingFetcher(PersistentEntity entity)
 
     /**
      * Returns a data fetcher instance to be used in GET or LIST
      *
      * @param entity The entity representing the domain used in the fetcher
      * @param type Which returnType of fetcher to return (GET or LIST)
-     * @return The matched data binder
+     * @return The data fetcher found, or null
      */
-    DataFetcher getReadingFetcher(PersistentEntity entity, GraphQLDataFetcherType type)
+    ReadingGormDataFetcher getReadingFetcher(PersistentEntity entity, GraphQLDataFetcherType type)
 
 }

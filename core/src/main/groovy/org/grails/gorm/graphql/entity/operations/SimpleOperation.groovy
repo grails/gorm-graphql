@@ -10,7 +10,9 @@ import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.dsl.helpers.Typed
 import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
+import org.grails.gorm.graphql.fetcher.PaginatingGormDataFetcher
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
+import org.grails.gorm.graphql.response.pagination.GraphQLPaginationResponseHandler
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 /**
@@ -40,6 +42,12 @@ class SimpleOperation extends CustomOperation<SimpleOperation> implements Typed<
             DeletingGormDataFetcher deletingFetcher = ((DeletingGormDataFetcher) dataFetcher)
             if (deletingFetcher.responseHandler == null) {
                 deletingFetcher.responseHandler = serviceManager.getService(GraphQLDeleteResponseHandler)
+            }
+        }
+        if (dataFetcher instanceof PaginatingGormDataFetcher) {
+            PaginatingGormDataFetcher paginatingFetcher = (PaginatingGormDataFetcher) dataFetcher
+            if (paginatingFetcher.responseHandler == null) {
+                paginatingFetcher.responseHandler = serviceManager.getService(GraphQLPaginationResponseHandler)
             }
         }
 
