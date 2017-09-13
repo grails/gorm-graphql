@@ -24,6 +24,7 @@ org.grails.gorm.graphql.plugin.testing
 org.grails.gorm.graphql.response
 org.grails.gorm.graphql.response.delete
 org.grails.gorm.graphql.response.errors
+org.grails.gorm.graphql.response.pagination
 org.grails.gorm.graphql.testing
 org.grails.gorm.graphql.types
 org.grails.gorm.graphql.types.input

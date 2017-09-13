@@ -117,7 +117,7 @@ class DefaultGraphQLDataFetcherManager
  searched for. If a parent class is registered and a subclass is searched,
  the parent class fetcher will not be returned. If no fetchers are found,
  the optional provided default fetchers will be searched. If no default
- fetchers are provided, the generic GORM data fetchers will be used.
+ fetchers are provided, null will be returned.
  <DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
 
           </li>
@@ -212,8 +212,8 @@ class DefaultGraphQLDataFetcherManager
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../DataFetcher.html'>DataFetcher</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getBindingFetcher(PersistentEntity, org.grails.gorm.graphql.binding.GraphQLDataBinder, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)">getBindingFetcher</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/binding/GraphQLDataBinder.html'>GraphQLDataBinder</a> dataBinder, <a href='../../../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type)</code><br></td>
+                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/fetcher/BindingGormDataFetcher.html'>BindingGormDataFetcher</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getBindingFetcher(PersistentEntity, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)">getBindingFetcher</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -230,13 +230,13 @@ class DefaultGraphQLDataFetcherManager
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../DataFetcher.html'>DataFetcher</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getDeletingFetcher(PersistentEntity, org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler)">getDeletingFetcher</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/response/delete/GraphQLDeleteResponseHandler.html'>GraphQLDeleteResponseHandler</a> responseHandler)</code><br></td>
+                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/fetcher/DeletingGormDataFetcher.html'>DeletingGormDataFetcher</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getDeletingFetcher(PersistentEntity)">getDeletingFetcher</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../DataFetcher.html'>DataFetcher</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/fetcher/ReadingGormDataFetcher.html'>ReadingGormDataFetcher</a></code></td>
                             <td class="colLast"><code><strong><a href="#getReadingFetcher(PersistentEntity, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)">getReadingFetcher</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type)</code><br></td>
                         </tr>
                         
@@ -364,11 +364,11 @@ class DefaultGraphQLDataFetcherManager
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="getBindingFetcher(PersistentEntity, org.grails.gorm.graphql.binding.GraphQLDataBinder, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)"><!-- --></a>
+                        <a name="getBindingFetcher(PersistentEntity, org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@java.lang.Override
-<a href='../../../../../../DataFetcher.html'>DataFetcher</a> <strong>getBindingFetcher</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/binding/GraphQLDataBinder.html'>GraphQLDataBinder</a> dataBinder, <a href='../../../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type)</h4>
+<a href='../../../../../../org/grails/gorm/graphql/fetcher/BindingGormDataFetcher.html'>BindingGormDataFetcher</a> <strong>getBindingFetcher</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -389,11 +389,11 @@ class DefaultGraphQLDataFetcherManager
                             </li>
                         </ul>
                     
-                        <a name="getDeletingFetcher(PersistentEntity, org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler)"><!-- --></a>
+                        <a name="getDeletingFetcher(PersistentEntity)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@java.lang.Override
-<a href='../../../../../../DataFetcher.html'>DataFetcher</a> <strong>getDeletingFetcher</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/response/delete/GraphQLDeleteResponseHandler.html'>GraphQLDeleteResponseHandler</a> responseHandler)</h4>
+<a href='../../../../../../org/grails/gorm/graphql/fetcher/DeletingGormDataFetcher.html'>DeletingGormDataFetcher</a> <strong>getDeletingFetcher</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -402,7 +402,7 @@ class DefaultGraphQLDataFetcherManager
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@java.lang.Override
-<a href='../../../../../../DataFetcher.html'>DataFetcher</a> <strong>getReadingFetcher</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type)</h4>
+<a href='../../../../../../org/grails/gorm/graphql/fetcher/ReadingGormDataFetcher.html'>ReadingGormDataFetcher</a> <strong>getReadingFetcher</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/fetcher/GraphQLDataFetcherType.html'>GraphQLDataFetcherType</a> type)</h4>
                                 <p></p>
                             </li>
                         </ul>

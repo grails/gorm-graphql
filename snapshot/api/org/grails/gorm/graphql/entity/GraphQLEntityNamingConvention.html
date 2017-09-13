@@ -167,16 +167,22 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)">getType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br>@param entity The persistent entity</td>
+                            <td class="colLast"><code><strong><a href="#getPagination(PersistentEntity)">getPagination</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br>@param entity The persistent entity</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getType(java.lang.String, org.grails.gorm.graphql.types.GraphQLPropertyType)">getType</a></strong>(java.lang.String typeName, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br>@param typeName The custom type name</td>
+                            <td class="colLast"><code><strong><a href="#getType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)">getType</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br>@param entity The persistent entity</td>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#getType(java.lang.String, org.grails.gorm.graphql.types.GraphQLPropertyType)">getType</a></strong>(java.lang.String typeName, <a href='../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a> type)</code><br>@param typeName The custom type name</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#getUpdate(PersistentEntity)">getUpdate</a></strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</code><br>@param entity The persistent entity</td>
@@ -265,6 +271,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                                 <h4>java.lang.String <strong>getList</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
                                 <p>
      <DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity</DD></DL><DL><DT><B>Returns:</B></DT><DD>The name to use. Ex: "personList"</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getPagination(PersistentEntity)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.lang.String <strong>getPagination</strong>(<a href='../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
+                                <p>
+     <DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity</DD></DL><DL><DT><B>Returns:</B></DT><DD>The name to use. Ex: "PersonPagedResult"</DD></DL></p>
                             </li>
                         </ul>
                     

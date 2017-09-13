@@ -22,8 +22,8 @@
 <html>
 <head>
 
-<title>org.grails.gorm.graphql.entity.operations</title>
-<meta name="keywords" content="org.grails.gorm.graphql.entity.operations package">
+<title>org.grails.gorm.graphql.response.pagination</title>
+<meta name="keywords" content="org.grails.gorm.graphql.response.pagination package">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel ="stylesheet" TYPE="text/css" HREF="../../../../../../stylesheet.css" title="Style">
 <link href="../../../../../../groovy.ico" type="image/x-icon" rel="shortcut icon">
@@ -31,7 +31,7 @@
 <script type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="org.grails.gorm.graphql.entity.operations";
+    parent.document.title="org.grails.gorm.graphql.response.pagination";
 }
 </script>
 <noscript>
@@ -60,7 +60,7 @@ function windowTitle()
 
 <div class="subNav">
     <ul class="navList">
-        <li><a href="../../../../../../index.html?org/grails/gorm/graphql/entity/operations/package-summary.html" target="_top">Frames</a></li>
+        <li><a href="../../../../../../index.html?org/grails/gorm/graphql/response/pagination/package-summary.html" target="_top">Frames</a></li>
         <li><a href="package-summary.html" target="_top">No Frames</a></li>
     </ul>
 </div>
@@ -68,13 +68,47 @@ function windowTitle()
 <!-- ========= END OF TOP NAVBAR ========= -->
 
 <div class="header">
-    <h1 class="title">Package org.grails.gorm.graphql.entity.operations</h1>
+    <h1 class="title">Package org.grails.gorm.graphql.response.pagination</h1>
 </div>
 
 
 
 <div class="contentContainer">
 
+
+    <div class="summary">
+        <ul class="blockList">
+            <li class="blockList">
+                <table border="0" cellpadding="3" cellspacing="0" summary="Interface Summary">
+                    <caption><span>Interface Summary</span><span class="tabEnd">&nbsp;</span></caption>
+                    <tbody>
+                    <tr>
+                        <th class="colFirst" scope="col">Interface</th>
+                        <th class="colLast" scope="col">Description</th>
+                    </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="GraphQLPaginationResponseHandler.html" title="class in org/grails/gorm/graphql/response/pagination">
+                                    GraphQLPaginationResponseHandler
+                                </a></strong>
+                            </td>
+                            <td>Defines how a pagination response is defined and built</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="PaginationResult.html" title="class in org/grails/gorm/graphql/response/pagination">
+                                    PaginationResult
+                                </a></strong>
+                            </td>
+                            <td>Stores the result of a pagination query</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </li>
+            </ul>
+        </div>
+    
 
 
 
@@ -90,46 +124,20 @@ function windowTitle()
                     </tr>
 <tr class="altColor">
                             <td class="colOne">
-                                <strong><a href="ComplexOperation.html" title="class in org/grails/gorm/graphql/entity/operations">
-                                    ComplexOperation
+                                <strong><a href="DefaultGraphQLPaginationResponseHandler.html" title="class in org/grails/gorm/graphql/response/pagination">
+                                    DefaultGraphQLPaginationResponseHandler
                                 </a></strong>
                             </td>
-                            <td>Used to create custom operations with custom (complex) types</td>
+                            <td>Controls how a page of results are returned</td>
                         </tr>
 <tr class="altColor">
                             <td class="colOne">
-                                <strong><a href="CustomOperation.html" title="class in org/grails/gorm/graphql/entity/operations">
-                                    CustomOperation
+                                <strong><a href="PagedResultListPaginationResponse.html" title="class in org/grails/gorm/graphql/response/pagination">
+                                    PagedResultListPaginationResponse
                                 </a></strong>
                             </td>
-                            <td>This class stores data about custom query operations
- that users provide in the mapping of the entity.</td>
-                        </tr>
-<tr class="altColor">
-                            <td class="colOne">
-                                <strong><a href="ListOperation.html" title="class in org/grails/gorm/graphql/entity/operations">
-                                    ListOperation
-                                </a></strong>
-                            </td>
-                            <td>Stores metadata about the list operation that this library
- provides by default. </td>
-                        </tr>
-<tr class="altColor">
-                            <td class="colOne">
-                                <strong><a href="ProvidedOperation.html" title="class in org/grails/gorm/graphql/entity/operations">
-                                    ProvidedOperation
-                                </a></strong>
-                            </td>
-                            <td>Stores metadata about the operations that this library
- provides by default. </td>
-                        </tr>
-<tr class="altColor">
-                            <td class="colOne">
-                                <strong><a href="SimpleOperation.html" title="class in org/grails/gorm/graphql/entity/operations">
-                                    SimpleOperation
-                                </a></strong>
-                            </td>
-                            <td>Used to create custom operations with simple types</td>
+                            <td>A default pagination response that gathers data
+ from a PagedResultList</td>
                         </tr>
 
                     </tbody>
@@ -139,33 +147,6 @@ function windowTitle()
         </div>
     
 
-
-    <div class="summary">
-        <ul class="blockList">
-            <li class="blockList">
-                <table border="0" cellpadding="3" cellspacing="0" summary="Enum Summary">
-                    <caption><span>Enum Summary</span><span class="tabEnd">&nbsp;</span></caption>
-                    <tbody>
-                    <tr>
-                        <th class="colFirst" scope="col">Enum</th>
-                        <th class="colLast" scope="col">Description</th>
-                    </tr>
-<tr class="altColor">
-                            <td class="colOne">
-                                <strong><a href="OperationType.html" title="class in org/grails/gorm/graphql/entity/operations">
-                                    OperationType
-                                </a></strong>
-                            </td>
-                            <td>Used to determine if a custom operation is for
- querying or mutating.</td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </li>
-            </ul>
-        </div>
-    
 
 
 
