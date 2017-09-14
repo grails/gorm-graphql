@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>4.1.2 Custom Properties 1.0.0.RC1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        GORM GraphQL
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/installation.html"><strong>2</strong><span>Installation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/dataBinders.html"><strong>7</strong><span>Data Binding</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/interceptors.html"><strong>8</strong><span>Interceptors</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/otherNotes.html"><strong>9</strong><span>Other Notes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/APIDocs.html"><strong>10</strong><span>API Docs</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>4.1.2 Custom Properties</h1>
+
+                    <p><strong>Version:</strong> 1.0.0.RC1</p>
+                </div>
+
+                
+
+                
+
+<h2 id="custom">4.1.2 Custom Properties</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/properties/custom.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_adding_custom_properties">Adding Custom Properties</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is possible to add custom properties to your domain class solely for the use in the GraphQL schema. You must supply either a custom data binder or a setter method for properties that will be used for input. For output, a data fetcher or getter method must be made available.</p>
+</div>
+<div class="paragraph">
+<p>In this example we are adding a property to the GraphQL schema that will allow users to retrieve the age of authors. In this case the property doesn&#8217;t make sense to allow users to provide the property when creating or updating because they should be modifying the <code>birthDay</code> instead. For that reason, <code>input false</code> is specified to prevent that behavior.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Supplying other domain classes as the return type is supported
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
+<span class="keyword">import</span> <span class="include">java.time.Period</span>
+
+<span class="type">class</span> <span class="class">Author</span> {
+
+    LocalDate birthDay
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+        add(<span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>, <span class="predefined-type">Integer</span>) {
+            dataFetcher { Author author -&gt;
+                Period.between(author.birthDay, LocalDate.now()).years
+            }
+            input <span class="predefined-constant">false</span>
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Instead of providing a data fetcher, it is possible to create a getter method to do the same thing.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">Integer</span> getAge() {
+    Period.between(birthDay, LocalDate.now()).years
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_returning_a_collection">Returning A Collection</h3>
+<div class="paragraph">
+<p>The above example creates a custom property that returns an Integer. The property were to return a collection, the following notation can be used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">add(<span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>, [<span class="predefined-type">Integer</span>]) {
+    ...
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nullable_description_deprecation">Nullable, Description, Deprecation</h3>
+<div class="paragraph">
+<p>Very similar to how existing domain properties can be configured, it is also possible to configure additional properties.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">add(<span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>, <span class="predefined-type">Integer</span>) {
+
+    nullable <span class="predefined-constant">false</span> <span class="comment">//default is true</span>
+
+    description <span class="string"><span class="delimiter">'</span><span class="content">How old the author is in years</span><span class="delimiter">'</span></span>
+
+    deprecationReason <span class="string"><span class="delimiter">'</span><span class="content">To be removed in the future</span><span class="delimiter">'</span></span>
+    <span class="comment">//or</span>
+    deprecated <span class="predefined-constant">true</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_read_or_write_only">Read or Write Only</h3>
+<div class="paragraph">
+<p>Custom properties can also be controlled in the same way to existing properties in regards to whether they are read or write only.</p>
+</div>
+<div class="paragraph">
+<p>To make a property read only:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">add(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>) {
+    input <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To make a property write only:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">add(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>) {
+    output <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_custom_type">Custom Type</h3>
+<div class="paragraph">
+<p>If a property needs to handle something more complex than a collection of a single class, this library supports creating custom types.</p>
+</div>
+<div class="paragraph">
+<p>For example if our age property needs to return years, months, and days:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
+<span class="keyword">import</span> <span class="include">java.time.temporal.ChronoUnit</span>
+
+<span class="type">class</span> <span class="class">Author</span> {
+
+    LocalDate birthDay
+
+    <span class="predefined-type">Map</span> getAge() {
+        LocalDate now = LocalDate.now()
+
+        [<span class="key">days</span>: ChronoUnit.DAYS.between(birthDay, now),
+         <span class="key">months</span>: ChronoUnit.MONTHS.between(birthDay, now),
+         <span class="key">years</span>: ChronoUnit.YEARS.between(birthDay, now)]
+    }
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+        add(<span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Age</span><span class="delimiter">'</span></span>) {
+            input <span class="predefined-constant">false</span>
+            type {
+                field(<span class="string"><span class="delimiter">'</span><span class="content">days</span><span class="delimiter">'</span></span>, <span class="predefined-type">Long</span>)
+                field(<span class="string"><span class="delimiter">'</span><span class="content">months</span><span class="delimiter">'</span></span>, <span class="predefined-type">Long</span>)
+                field(<span class="string"><span class="delimiter">'</span><span class="content">years</span><span class="delimiter">'</span></span>, <span class="predefined-type">Long</span>)
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example we have added a new property to the domain class called <code>age</code>. That property returns a custom data type that consists of 3 properties. The name that represents that type in the GraphQL schema is "Age". In our getter method we are returning a Map that contains those properties, however any POGO that contains those properties would work as well.</p>
+</div>
+<div class="paragraph">
+<p>Similar to properties, the fields themselves can have complex subtypes with the <code>field(String, String, Closure)</code> method signature.</p>
+</div>
+<div class="paragraph">
+<p>For instance if we were to add a property to our domain to represent a list of books:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
+
+<span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="comment">//A getter method or dataFetcher is required to make this configuration valid</span>
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+        add(<span class="string"><span class="delimiter">'</span><span class="content">books</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Book</span><span class="delimiter">'</span></span>) {
+            type {
+                field(<span class="string"><span class="delimiter">'</span><span class="content">title</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+                field(<span class="string"><span class="delimiter">'</span><span class="content">publisher</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Publisher</span><span class="delimiter">'</span></span>) {
+                    field(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+                    field(<span class="string"><span class="delimiter">'</span><span class="content">address</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+                }
+                collection <span class="predefined-constant">true</span>
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+When creating custom types, it is important that the name you choose does not already exist. For example if this application also had a Publisher domain class, the types will conflict because in GraphQL the type names must be unique.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_order">Order</h3>
+<div class="paragraph">
+<p>The order in which the fields appear in the schema can be customized.
+By default any identity properties and the version property appear first in order.</p>
+</div>
+<div class="paragraph">
+<p>To customize the order of a custom property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">   <span class="directive">static</span> graphql = GraphQLMapping.build {
+       add(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>) {
+            order <span class="integer">1</span>
+       }
+   }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If no order is specified, added properties will be put at the end of the list of properties in the schema. Properties with the same or no order will be ordered by name.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To customize properties to come before the identifier or version, set the value as negative. The default order for id properties is -20 and the default order for version properties is -10.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

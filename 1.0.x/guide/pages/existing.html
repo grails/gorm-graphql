@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>4.1.1 GORM Properties 1.0.0.RC1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        GORM GraphQL
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/installation.html"><strong>2</strong><span>Installation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/dataBinders.html"><strong>7</strong><span>Data Binding</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/interceptors.html"><strong>8</strong><span>Interceptors</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/otherNotes.html"><strong>9</strong><span>Other Notes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/APIDocs.html"><strong>10</strong><span>API Docs</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>4.1.1 GORM Properties</h1>
+
+                    <p><strong>Version:</strong> 1.0.0.RC1</p>
+                </div>
+
+                
+
+                
+
+<h2 id="existing">4.1.1 GORM Properties</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/properties/existing.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_persistent_property_options">Persistent Property Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is possible to control several aspects of how existing persistent properties on GORM entities are represented in the generated schema.</p>
+</div>
+<div class="paragraph">
+<p>There are several ways to modify the fields available. Consider a property <code>foo</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
+<span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping</span>
+
+<span class="directive">static</span> graphql = GraphQLMapping.build {
+
+    foo <span class="key">description</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    <span class="comment">//or</span>
+    foo {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    }
+    <span class="comment">//or (code completion)</span>
+    foo GraphQLPropertyMapping.build {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    }
+    <span class="comment">//or</span>
+    property(<span class="string"><span class="delimiter">'</span><span class="content">foo</span><span class="delimiter">'</span></span>, <span class="key">description</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>)
+    <span class="comment">//or (code completion)</span>
+    property(<span class="string"><span class="delimiter">'</span><span class="content">foo</span><span class="delimiter">'</span></span>) {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    }
+    <span class="comment">//or (code completion)</span>
+    property(<span class="string"><span class="delimiter">'</span><span class="content">foo</span><span class="delimiter">'</span></span>, GraphQLPropertyMapping.build {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    })
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_exclusion">Exclusion</h3>
+<div class="paragraph">
+<p>To exclude a property from being included from the schema entirely:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
+
+<span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+        exclude(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To make a property read only:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">input</span>: <span class="predefined-constant">false</span>)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To make a property write only:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">output</span>: <span class="predefined-constant">false</span>)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nullable">Nullable</h3>
+<div class="paragraph">
+<p>By default, a property will be nullable based on the constraints provided in the domain class. You can override that specifically for GraphQL, however.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">nullable</span>: <span class="predefined-constant">false</span>) <span class="comment">//or true</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_fetching">Fetching</h3>
+<div class="paragraph">
+<p>To customize the way a property is retrieved, you can supply a data fetcher with a closure. The domain instance is passed as an argument to the closure.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>) {
+        dataFetcher { Author author -&gt;
+            author.name ?: <span class="string"><span class="delimiter">&quot;</span><span class="content">Default Name</span><span class="delimiter">&quot;</span></span>
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The data type returned must be the same as the property type.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description">Description</h3>
+<div class="paragraph">
+<p>A description of a property can be specified in the mapping to be registered in the schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">description</span>: <span class="string"><span class="delimiter">'</span><span class="content">The name of the author</span><span class="delimiter">'</span></span>)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_deprecation">Deprecation</h3>
+<div class="paragraph">
+<p>A property can be marked as deprecated in the schema to inform users the property may be removed in the future.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">deprecationReason</span>: <span class="string"><span class="delimiter">'</span><span class="content">To be removed August 1st, 2018</span><span class="delimiter">'</span></span>)
+    <span class="comment">//or</span>
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">deprecated</span>: <span class="predefined-constant">true</span>) <span class="comment">//&quot;Deprecated&quot; will be the reason</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_order">Order</h3>
+<div class="paragraph">
+<p>The order in which the fields appear in the schema can be customized.
+By default any identity properties and the version property appear first in order.</p>
+</div>
+<div class="paragraph">
+<p>To customize the order of an existing property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">   <span class="directive">static</span> graphql = GraphQLMapping.build {
+       property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">order</span>: <span class="integer">1</span>)
+   }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the order is supplied via the constraints block, then that value will be used.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">   <span class="directive">static</span> constraints = {
+        name <span class="key">order</span>: <span class="integer">1</span>
+   }</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the order is specified in both the constraints and the property mapping, the property mapping wins. If the order of two or more properties is the same, they are then sorted by name.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If no order is specified, the default order provided by GORM is used. To enable name based sorting by default, configure the default constraints to set the order property to 0 for all domains.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="title">grails-app/conf/application.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">grails.gorm.default.constraints = {
+   <span class="string"><span class="delimiter">'</span><span class="content">*</span><span class="delimiter">'</span></span>(<span class="key">order</span>: <span class="integer">0</span>)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To customize properties to come before the identifier or version, set the value as negative. The default order for id properties is -20 and the default order for version properties is -10.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
