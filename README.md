@@ -3,4 +3,4 @@
 
 [![Build Status](https://travis-ci.org/grails/gorm-graphql.svg?branch=master)](https://travis-ci.org/grails/gorm-graphql)
 
-Current snapshot documentation https://grails.github.io/gorm-graphql/snapshot/guide/index.html
+Current documentation https://grails.github.io/gorm-graphql/latest/guide/index.html
