@@ -203,6 +203,8 @@ The above example will function properly, however it is missing out on one of th
 |link:{api}/org/grails/gorm/graphql/fetcher/impl/SingleEntityDataFetcher.html[SingleEntityDataFetcher]
 |LIST
 |link:{api}/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html[EntityDataFetcher]
+|LIST (Paginated Response)
+|link:{api}/org/grails/gorm/graphql/fetcher/impl/PaginatedEntityDataFetcher.html[PaginatedEntityDataFetcher]
 |CREATE
 |link:{api}/org/grails/gorm/graphql/fetcher/impl/CreateEntityDataFetcher.html[CreateEntityDataFetcher]
 |UPDATE

@@ -12,7 +12,7 @@ In addition to mapping domain classes to a GraphQL schema, the core library also
 
 Because GraphQL is different in the way that the fields requested to be returned are included with the request, it allows the server to be smart about the query being executed. For example, when a property is requested, the server knows whether or not that property is an association. If it is an association, the query parameters can be set to eagerly fetch the association, resulting in a single query instead of many. The end result is that less queries will be executed against your database, greatly increasing the performance of your API.
 
-CAUTION: Requires Java 8, GORM 6.1 +
+CAUTION: Requires Java 8. Effort has been made to support GORM 6.0.x, however this library is only tested against 6.1.x.
 
 == Grails Plugin
 
