@@ -79,7 +79,7 @@ Brief summary/description of the plugin.
             dataBinderManager = ref("graphQLDataBinderManager")
             dataFetcherManager = ref("graphQLDataFetcherManager")
             interceptorManager = ref("graphQLInterceptorManager")
-            paginationResponseHandler = ref("paginationResponseHandler")
+            paginationResponseHandler = ref("graphQLPaginationResponseHandler")
 
             dateFormats = '#{grailsGraphQLConfiguration.getDateFormats()}'
             dateFormatLenient = '#{grailsGraphQLConfiguration.getDateFormatLenient()}'
