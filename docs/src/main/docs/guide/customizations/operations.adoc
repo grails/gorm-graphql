@@ -33,6 +33,49 @@ static graphql = GraphQLMapping.build {
 }
 ----
 
+=== Pagination
+
+By default, list operations return a list of instances. For most pagination solutions, that is not enough data. In addition to the list of results, the total count is required to be able to calculate pagination controls. Pagination is supported in this library through configuration of the list operation.
+
+[source,groovy]
+----
+static graphql = GraphQLMapping.build {
+    operations.list.paginate(true)
+}
+----
+
+By configuring the list operation to paginate, instead of a list of results being returned, an object will be returned that has a "results" value, which is the list, and a "totalCount" value which is the total count not considering the pagination parameters.
+
+==== Customization
+
+It is possible to customize how the pagination response is created through the creation of a link:{api}/org/grails/gorm/graphql/response/pagination/GraphQLPaginationResponseHandler.html[GraphQLPaginationResponseHandler].
+
+How you can supply your own pagination response handler depends on whether the library is being used standalone or part of a Grails application.
+
+For standalone applications, simply set the handler on the schema.
+
+[source,groovy]
+----
+import org.grails.gorm.graphql.Schema
+
+Schema schema = ...
+schema.paginationResponseHandler = new MyPaginationResponseHandler()
+...
+schema.generate()
+----
+
+For Grails applications, override the `graphQLPaginationResponseHandler` bean.
+
+[source,groovy]
+.grails-app/config/spring/resources.groovy
+----
+beans = {
+    graphQLPaginationResponseHandler(MyPaginationResponseHandler)
+}
+----
+
+NOTE: Data fetchers must respond according to the object type definition created by the pagination response handler. When supplying your own data fetcher, implement link:{api}/org/grails/gorm/graphql/fetcher/PaginatingGormDataFetcher.html[PaginatingGormDataFetcher] and the response handler will be populated for you. The response handler is responsible for creating the response in order to assure it is compatible.
+
 == Custom Operations
 
 In addition to the provided operations, it is possible to add custom operations through the mapping block in an entity.

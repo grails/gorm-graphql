@@ -12,6 +12,7 @@ import org.grails.gorm.graphql.interceptor.manager.DefaultGraphQLInterceptorMana
 import org.grails.gorm.graphql.plugin.binding.GrailsGraphQLDataBinder
 import org.grails.gorm.graphql.response.delete.DefaultGraphQLDeleteResponseHandler
 import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
+import org.grails.gorm.graphql.response.pagination.DefaultGraphQLPaginationResponseHandler
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 
 class GormGraphqlGrailsPlugin extends Plugin {
@@ -69,6 +70,7 @@ Brief summary/description of the plugin.
         graphQLDeleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
         graphQLDataFetcherManager(DefaultGraphQLDataFetcherManager)
         graphQLInterceptorManager(DefaultGraphQLInterceptorManager)
+        graphQLPaginationResponseHandler(DefaultGraphQLPaginationResponseHandler)
 
         graphQLSchemaGenerator(Schema, ref("grailsDomainClassMappingContext")) {
             deleteResponseHandler = ref("graphQLDeleteResponseHandler")
@@ -77,6 +79,8 @@ Brief summary/description of the plugin.
             dataBinderManager = ref("graphQLDataBinderManager")
             dataFetcherManager = ref("graphQLDataFetcherManager")
             interceptorManager = ref("graphQLInterceptorManager")
+            paginationResponseHandler = ref("paginationResponseHandler")
+
             dateFormats = '#{grailsGraphQLConfiguration.getDateFormats()}'
             dateFormatLenient = '#{grailsGraphQLConfiguration.getDateFormatLenient()}'
             listArguments = '#{grailsGraphQLConfiguration.getListArguments()}'
