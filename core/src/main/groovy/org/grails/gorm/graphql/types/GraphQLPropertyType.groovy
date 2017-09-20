@@ -57,7 +57,12 @@ enum GraphQLPropertyType {
      * For displaying embedded properties
      * @see {@link org.grails.gorm.graphql.types.output.EmbeddedObjectTypeBuilder}
      */
-    OUTPUT_EMBEDDED(GraphQLOperationType.OUTPUT, true, false)
+    OUTPUT_EMBEDDED(GraphQLOperationType.OUTPUT, true, false),
+
+    /**
+     * For displaying a page of results
+     */
+    OUTPUT_PAGED(GraphQLOperationType.OUTPUT, false, false)
 
     final GraphQLOperationType operationType
     final boolean embedded

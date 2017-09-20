@@ -144,21 +144,21 @@ class Schema {
 
     @PostConstruct
     void initialize() {
+        if (namingConvention == null) {
+            namingConvention = new GraphQLEntityNamingConvention()
+        }
+        if (errorsResponseHandler == null) {
+            errorsResponseHandler = new DefaultGraphQLErrorsResponseHandler(new StaticMessageSource())
+        }
+        if (domainPropertyManager == null) {
+            domainPropertyManager = new DefaultGraphQLDomainPropertyManager()
+        }
+        if (paginationResponseHandler == null) {
+            paginationResponseHandler = new DefaultGraphQLPaginationResponseHandler()
+        }
+
         if (typeManager == null) {
-            if (namingConvention == null) {
-                namingConvention = new GraphQLEntityNamingConvention()
-            }
-            if (errorsResponseHandler == null) {
-                errorsResponseHandler = new DefaultGraphQLErrorsResponseHandler(new StaticMessageSource())
-            }
-            if (domainPropertyManager == null) {
-                domainPropertyManager = new DefaultGraphQLDomainPropertyManager()
-            }
-            typeManager = new DefaultGraphQLTypeManager(namingConvention, errorsResponseHandler, domainPropertyManager)
-        } else {
-            if (namingConvention == null) {
-                namingConvention = typeManager.namingConvention
-            }
+            typeManager = new DefaultGraphQLTypeManager(namingConvention, errorsResponseHandler, domainPropertyManager, paginationResponseHandler)
         }
 
         populateDefaultDateTypes()
@@ -177,9 +177,6 @@ class Schema {
         }
         if (interceptorManager == null) {
             interceptorManager = new DefaultGraphQLInterceptorManager()
-        }
-        if (paginationResponseHandler == null) {
-            paginationResponseHandler = new DefaultGraphQLPaginationResponseHandler()
         }
 
         serviceManager = new GraphQLServiceManager()
@@ -298,7 +295,7 @@ class Schema {
                     if (listFetcher == null) {
                         listFetcher = new PaginatedEntityDataFetcher(entity)
                     }
-                    queryAll.type(paginationResponseHandler.getObjectType(entity, typeManager))
+                    queryAll.type(typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT_PAGED))
 
                     if (listArguments.containsKey(MAX)) {
                         listArguments.put(MAX,  GraphQLNonNull.nonNull(listArguments.get(MAX)))

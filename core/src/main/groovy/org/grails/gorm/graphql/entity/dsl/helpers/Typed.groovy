@@ -24,6 +24,7 @@ trait Typed<T> {
 
     Class returnType
     boolean collection = false
+    boolean paginated = false
 
     T returns(List<Class> list) {
         if (list.empty || list.size() > 1 || !(list[0] instanceof Class)) {
@@ -78,7 +79,14 @@ trait Typed<T> {
     }
 
     GraphQLOutputType resolveOutputType(GraphQLTypeManager typeManager, MappingContext mappingContext) {
-        (GraphQLOutputType)resolveType(typeManager, mappingContext, GraphQLPropertyType.OUTPUT, true)
+        GraphQLPropertyType propertyType
+        if (paginated) {
+            propertyType = GraphQLPropertyType.OUTPUT_PAGED
+        }
+        else {
+            propertyType = GraphQLPropertyType.OUTPUT
+        }
+        (GraphQLOutputType)resolveType(typeManager, mappingContext, propertyType, true)
     }
 
 }

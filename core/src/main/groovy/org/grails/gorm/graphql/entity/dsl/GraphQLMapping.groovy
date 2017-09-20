@@ -14,6 +14,7 @@ import org.grails.gorm.graphql.entity.operations.SimpleOperation
 import org.grails.gorm.graphql.entity.property.impl.ComplexGraphQLProperty
 import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
 import org.grails.gorm.graphql.entity.property.impl.SimpleGraphQLProperty
+import org.grails.gorm.graphql.response.pagination.PaginatedType
 import org.springframework.beans.MutablePropertyValues
 import org.springframework.validation.DataBinder
 
@@ -306,6 +307,30 @@ class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQ
         SimpleOperation operation = new SimpleOperation().name(name).returns(type)
         handleCustomOperation(operation, OperationType.QUERY, closure)
         customQueryOperations.add(operation)
+    }
+
+    /**
+     * Builds a custom query operation that returns a paginated result.
+     *
+     * @param name The name used by clients of the GraphQL API to execute the operation
+     * @param type The return type. May be an enum, simple class, or domain class.
+     * @param closure The closure to build the operation
+     */
+    void query(String name, PaginatedType type, @DelegatesTo(value = SimpleOperation, strategy = Closure.DELEGATE_ONLY) Closure closure) {
+        SimpleOperation operation = new SimpleOperation().name(name).returns(type.type)
+        operation.paginated = true
+        handleCustomOperation(operation, OperationType.QUERY, closure)
+        customQueryOperations.add(operation)
+    }
+
+    /**
+     * Denotes the return type of an operation should be paginated
+     *
+     * @param type The domain class being returned
+     * @return The type holder
+     */
+    PaginatedType pagedResult(Class type) {
+        new PaginatedType(type: type)
     }
 
     /**

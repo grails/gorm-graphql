@@ -14,7 +14,7 @@ import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyMana
  */
 @CompileStatic
 @InheritConstructors
-class ShowObjectTypeBuilder extends ObjectTypeBuilder {
+class ShowObjectTypeBuilder extends AbstractObjectTypeBuilder {
 
     GraphQLDomainPropertyManager.Builder builder = propertyManager.builder()
             .alwaysNullable()

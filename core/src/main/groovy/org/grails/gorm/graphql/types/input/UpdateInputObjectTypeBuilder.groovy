@@ -14,7 +14,7 @@ import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyMana
  */
 @CompileStatic
 @InheritConstructors
-class UpdateInputObjectTypeBuilder extends InputObjectTypeBuilder {
+class UpdateInputObjectTypeBuilder extends AbstractInputObjectTypeBuilder {
 
     GraphQLDomainPropertyManager.Builder builder = propertyManager.builder()
             .excludeTimestamps()

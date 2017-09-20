@@ -17,7 +17,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * @since 1.0.0
  */
 @CompileStatic
-class EmbeddedInputObjectTypeBuilder extends InputObjectTypeBuilder {
+class EmbeddedInputObjectTypeBuilder extends AbstractInputObjectTypeBuilder {
 
     EmbeddedInputObjectTypeBuilder(GraphQLDomainPropertyManager propertyManager, GraphQLTypeManager typeManager, GraphQLPropertyType type) {
         super(propertyManager, typeManager)

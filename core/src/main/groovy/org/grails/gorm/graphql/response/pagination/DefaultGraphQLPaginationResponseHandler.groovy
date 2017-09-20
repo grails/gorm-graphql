@@ -3,15 +3,12 @@ package org.grails.gorm.graphql.response.pagination
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLList
-import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLOutputType
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
-import static graphql.schema.GraphQLObjectType.newObject
 
 /**
  * Controls how a page of results are returned
@@ -22,11 +19,11 @@ import static graphql.schema.GraphQLObjectType.newObject
 @CompileStatic
 class DefaultGraphQLPaginationResponseHandler implements GraphQLPaginationResponseHandler {
 
-    private GraphQLObjectType cachedObjectType
     protected String resultsField = 'results'
     protected String totalField = 'totalCount'
 
-    protected List<GraphQLFieldDefinition> getFields(GraphQLOutputType resultsType, GraphQLTypeManager typeManager) {
+    @Override
+    List<GraphQLFieldDefinition> getFields(GraphQLOutputType resultsType, GraphQLTypeManager typeManager) {
         [newFieldDefinition()
                 .name(resultsField)
                 .type(GraphQLList.list(resultsType))
@@ -38,15 +35,8 @@ class DefaultGraphQLPaginationResponseHandler implements GraphQLPaginationRespon
     }
 
     @Override
-    GraphQLObjectType getObjectType(PersistentEntity entity, GraphQLTypeManager typeManager) {
-        if (cachedObjectType == null) {
-            GraphQLOutputType resultsType = typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT)
-            cachedObjectType = newObject()
-                .name(typeManager.namingConvention.getPagination(entity))
-                .fields(getFields(resultsType, typeManager))
-                .build()
-        }
-        cachedObjectType
+    String getDescription(PersistentEntity entity) {
+        null
     }
 
     @Override

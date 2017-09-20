@@ -17,9 +17,10 @@ import org.grails.gorm.graphql.domain.general.toone.One
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.response.errors.DefaultGraphQLErrorsResponseHandler
+import org.grails.gorm.graphql.response.pagination.DefaultGraphQLPaginationResponseHandler
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
-import org.grails.gorm.graphql.types.input.InputObjectTypeBuilder
-import org.grails.gorm.graphql.types.output.ObjectTypeBuilder
+import org.grails.gorm.graphql.types.input.AbstractInputObjectTypeBuilder
+import org.grails.gorm.graphql.types.output.AbstractObjectTypeBuilder
 import org.grails.gorm.graphql.types.scalars.GormScalars
 import org.grails.gorm.graphql.types.scalars.GraphQLByteArray
 import org.grails.gorm.graphql.types.scalars.GraphQLCharacterArray
@@ -37,7 +38,10 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
     DefaultGraphQLTypeManager typeManager
     
     void setup() {
-        typeManager = new DefaultGraphQLTypeManager(new GraphQLEntityNamingConvention(), new DefaultGraphQLErrorsResponseHandler(new StaticMessageSource()), new DefaultGraphQLDomainPropertyManager())
+        typeManager = new DefaultGraphQLTypeManager(new GraphQLEntityNamingConvention(),
+                new DefaultGraphQLErrorsResponseHandler(new StaticMessageSource()),
+                new DefaultGraphQLDomainPropertyManager(),
+                new DefaultGraphQLPaginationResponseHandler())
     }
 
     @Unroll
@@ -147,7 +151,7 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
         given:
         PersistentEntity entity = One.gormPersistentEntity
         GraphQLObjectType type = GraphQLObjectType.newObject().name("One").field(GraphQLFieldDefinition.newFieldDefinition().name('foo').type(Scalars.GraphQLString).build()).build()
-        typeManager.objectTypeBuilders.put(GraphQLPropertyType.OUTPUT, Mock(ObjectTypeBuilder) {
+        typeManager.objectTypeBuilders.put(GraphQLPropertyType.OUTPUT, Mock(AbstractObjectTypeBuilder) {
             1 * build(entity) >> type
         })
 
@@ -160,7 +164,7 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
         PersistentEntity entity = One.gormPersistentEntity
         GraphQLObjectType type = GraphQLObjectType.newObject().name("One").field(GraphQLFieldDefinition.newFieldDefinition().name('foo').type(Scalars.GraphQLString).build()).build()
         GraphQLOutputType nestedType = null
-        typeManager.objectTypeBuilders.put(GraphQLPropertyType.OUTPUT, Mock(ObjectTypeBuilder) {
+        typeManager.objectTypeBuilders.put(GraphQLPropertyType.OUTPUT, Mock(AbstractObjectTypeBuilder) {
             1 * build(entity) >> {
                 nestedType = typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT)
                 type
@@ -180,7 +184,7 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
         given:
         PersistentEntity entity = One.gormPersistentEntity
         GraphQLInputObjectType type = GraphQLInputObjectType.newInputObject().name('Test').field(GraphQLInputObjectField.newInputObjectField().name('foo').type(Scalars.GraphQLString)).build()
-        typeManager.inputObjectTypeBuilders.put(GraphQLPropertyType.CREATE, Mock(InputObjectTypeBuilder) {
+        typeManager.inputObjectTypeBuilders.put(GraphQLPropertyType.CREATE, Mock(AbstractInputObjectTypeBuilder) {
             2 * build(entity) >> type
         })
 

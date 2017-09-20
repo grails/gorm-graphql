@@ -65,12 +65,13 @@ Brief summary/description of the plugin.
         graphQLErrorsResponseHandler(DefaultGraphQLErrorsResponseHandler, ref("messageSource"))
         graphQLEntityNamingConvention(GraphQLEntityNamingConvention)
         graphQLDomainPropertyManager(DefaultGraphQLDomainPropertyManager)
-        graphQLTypeManager(DefaultGraphQLTypeManager, ref("graphQLEntityNamingConvention"), ref("graphQLErrorsResponseHandler"), ref("graphQLDomainPropertyManager"))
+        graphQLPaginationResponseHandler(DefaultGraphQLPaginationResponseHandler)
+
+        graphQLTypeManager(DefaultGraphQLTypeManager, ref("graphQLEntityNamingConvention"), ref("graphQLErrorsResponseHandler"), ref("graphQLDomainPropertyManager"), ref("graphQLPaginationResponseHandler"))
         graphQLDataBinderManager(DefaultGraphQLDataBinderManager, ref("graphQLDataBinder"))
         graphQLDeleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
         graphQLDataFetcherManager(DefaultGraphQLDataFetcherManager)
         graphQLInterceptorManager(DefaultGraphQLInterceptorManager)
-        graphQLPaginationResponseHandler(DefaultGraphQLPaginationResponseHandler)
 
         graphQLSchemaGenerator(Schema, ref("grailsDomainClassMappingContext")) {
             deleteResponseHandler = ref("graphQLDeleteResponseHandler")

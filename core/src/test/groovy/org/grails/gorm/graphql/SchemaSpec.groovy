@@ -57,16 +57,30 @@ class SchemaSpec extends Specification implements GraphQLSchemaSpec {
         query.getArgument('firstArg').type == schema.getType('FirstArgument')
     }
 
+    void "test PaginatedOne"() {
+        given:
+        GraphQLFieldDefinition list = queryType.getFieldDefinition('paginatedOneList')
+
+        expect: 'max and offset are required'
+        list.type == schema.getType('PaginatedOnePagedResult')
+    }
+
+    void "test PaginatedTwo"() {
+        given:
+        GraphQLFieldDefinition list = queryType.getFieldDefinition('paginatedTwoList')
+
+        expect: 'max and offset are required'
+        list.type == schema.getType('PaginatedTwoPagedResult')
+    }
+
     void "test SimpleOperation"() {
         given:
         GraphQLFieldDefinition query = queryType.getFieldDefinition('getData')
-        GraphQLFieldDefinition list = queryType.getFieldDefinition('simpleOperationList')
+        GraphQLFieldDefinition query2 = queryType.getFieldDefinition('getMoreData')
 
         expect: 'max and offset are required'
-        unwrap(null, list.getArgument('max').type) == GormScalars.GraphQLInt
-        unwrap(null, list.getArgument('offset').type) == GormScalars.GraphQLInt
-        ((InterceptingDataFetcher)list.dataFetcher).wrappedFetcher instanceof PaginatingGormDataFetcher
         unwrap([], query.type) == schema.getType('OtherDomain')
+        query2.type == schema.getType('OtherDomainPagedResult')
     }
 
     void "test FirstArgument"() {

@@ -16,7 +16,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * @since 1.0.0
  */
 @CompileStatic
-class NestedInputObjectTypeBuilder extends InputObjectTypeBuilder {
+class NestedInputObjectTypeBuilder extends AbstractInputObjectTypeBuilder {
 
     NestedInputObjectTypeBuilder(GraphQLDomainPropertyManager propertyManager, GraphQLTypeManager typeManager, GraphQLPropertyType type) {
         super(propertyManager, typeManager)

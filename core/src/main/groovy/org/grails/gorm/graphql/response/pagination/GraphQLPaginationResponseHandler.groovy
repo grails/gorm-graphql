@@ -1,7 +1,8 @@
 package org.grails.gorm.graphql.response.pagination
 
 import graphql.schema.DataFetchingEnvironment
-import graphql.schema.GraphQLObjectType
+import graphql.schema.GraphQLFieldDefinition
+import graphql.schema.GraphQLOutputType
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
@@ -14,12 +15,18 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
 interface GraphQLPaginationResponseHandler {
 
     /**
-     * Creates the schema object for a pagination response
+     * Creates the fields to be used in the schema object for a pagination response
      *
+     * @param resultsType The graphql type of the results
      * @param typeManager The type manager
      * @return The GraphQL type
      */
-    GraphQLObjectType getObjectType(PersistentEntity entity, GraphQLTypeManager typeManager)
+    List<GraphQLFieldDefinition> getFields(GraphQLOutputType resultsType, GraphQLTypeManager typeManager)
+
+    /**
+     * @return The description to use in the schema, or null
+     */
+    String getDescription(PersistentEntity entity)
 
     /**
      * Create the response data to be sent to the client

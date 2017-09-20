@@ -16,6 +16,7 @@ import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPrope
 import org.grails.gorm.graphql.fetcher.interceptor.InterceptingDataFetcher
 import org.grails.gorm.graphql.interceptor.manager.DefaultGraphQLInterceptorManager
 import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
+import org.grails.gorm.graphql.response.pagination.DefaultGraphQLPaginationResponseHandler
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.gorm.graphql.types.GraphQLTypeManager
@@ -114,7 +115,7 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
 
     void "test adding an operation" () {
         given:
-        GraphQLTypeManager typeManager = new DefaultGraphQLTypeManager(new GraphQLEntityNamingConvention(), null, new DefaultGraphQLDomainPropertyManager())
+        GraphQLTypeManager typeManager = new DefaultGraphQLTypeManager(new GraphQLEntityNamingConvention(), null, new DefaultGraphQLDomainPropertyManager(), new DefaultGraphQLPaginationResponseHandler())
         GraphQLServiceManager serviceManager = new GraphQLServiceManager()
         GraphQLInterceptorManager interceptorManager = new DefaultGraphQLInterceptorManager()
         PersistentEntity entity = Stub(PersistentEntity) {

@@ -10,9 +10,17 @@ import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 class SimpleOperation {
 
     static graphql = GraphQLMapping.build {
-        operations.list.paginate true
 
         query('getData', [OtherDomain]) {
+            dataFetcher new DataFetcher() {
+                @Override
+                Object get(DataFetchingEnvironment environment) {
+                    return null
+                }
+            }
+        }
+
+        query('getMoreData', pagedResult(OtherDomain)) {
             dataFetcher new DataFetcher() {
                 @Override
                 Object get(DataFetchingEnvironment environment) {

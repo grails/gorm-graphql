@@ -10,9 +10,11 @@ import org.grails.gorm.graphql.Schema
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
+import org.grails.gorm.graphql.response.pagination.GraphQLPaginationResponseHandler
 import org.grails.gorm.graphql.types.input.*
 import org.grails.gorm.graphql.types.output.EmbeddedObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ObjectTypeBuilder
+import org.grails.gorm.graphql.types.output.PaginatedObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ShowObjectTypeBuilder
 import org.grails.gorm.graphql.types.scalars.*
 
@@ -61,14 +63,19 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     GraphQLEntityNamingConvention namingConvention
     GraphQLErrorsResponseHandler errorsResponseHandler
     GraphQLDomainPropertyManager propertyManager
+    GraphQLPaginationResponseHandler paginationResponseHandler
 
     Map<GraphQLPropertyType, InputObjectTypeBuilder> inputObjectTypeBuilders = [:]
     Map<GraphQLPropertyType, ObjectTypeBuilder> objectTypeBuilders = [:]
 
-    DefaultGraphQLTypeManager(GraphQLEntityNamingConvention namingConvention, GraphQLErrorsResponseHandler errorsResponseHandler, GraphQLDomainPropertyManager propertyManager) {
+    DefaultGraphQLTypeManager(GraphQLEntityNamingConvention namingConvention,
+                              GraphQLErrorsResponseHandler errorsResponseHandler,
+                              GraphQLDomainPropertyManager propertyManager,
+                              GraphQLPaginationResponseHandler paginationResponseHandler) {
         this.namingConvention = namingConvention
         this.propertyManager = propertyManager
         this.errorsResponseHandler = errorsResponseHandler
+        this.paginationResponseHandler = paginationResponseHandler
         initialize()
     }
 
@@ -91,6 +98,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         List<ObjectTypeBuilder> builders = []
         builders.add(new EmbeddedObjectTypeBuilder(propertyManager, typeManager, null))
         builders.add(new ShowObjectTypeBuilder(propertyManager, typeManager, errorsResponseHandler))
+        builders.add(new PaginatedObjectTypeBuilder(paginationResponseHandler, typeManager))
 
         for (ObjectTypeBuilder builder: builders) {
             objectTypeBuilders.put(builder.type, builder)
