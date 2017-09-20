@@ -103,6 +103,25 @@ class Author {
 }
 ----
 
+In the case where a pagination result should be returned from the custom operation, a simple method `pagedResult` is available to mark the type.
+
+[source,groovy]
+----
+class Author {
+
+    String name
+
+    static graphql = GraphQLMapping.build {
+
+        //authorsByName is the name exposed by the API
+        //The return type will have a results key and a totalCount key
+        query('authorsByName', pagedResult(Author)) {
+            ...
+        }
+    }
+}
+----
+
 For operations with a custom return type, it possible to define a custom type using the `returns` block. The API inside of the returns block is exactly the same as the API for defining link:#custom[custom properties] with custom types.
 
 [source,groovy]
