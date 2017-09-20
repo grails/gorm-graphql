@@ -70,11 +70,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     <a name="skip-navbar_top">
@@ -87,19 +87,18 @@ if (location.href.indexOf('is-external=true') == -1) {
 
     <div class="subTitle">Package: <strong>org.grails.gorm.graphql.types.output</strong></div>
 
-    <h2 title="[Groovy] Class ObjectTypeBuilder" class="title">[Groovy] Class ObjectTypeBuilder</h2>
+    <h2 title="[Groovy] Interface ObjectTypeBuilder" class="title">[Groovy] Interface ObjectTypeBuilder</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li>org.grails.gorm.graphql.types.output.ObjectTypeBuilder
+
 </ul>
 <div class="description">
     <ul class="blockList">
         <li class="blockList">
 
 
-
-    <p> A base class used to create object types that represent an entity
+    <p> Definition of a builder that creates output types
  <DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>1.0.0</DD></DL></p>
 
           </li>
@@ -116,48 +115,6 @@ if (location.href.indexOf('is-external=true') == -1) {
         
         <!-- =========== FIELD SUMMARY =========== -->
         
-            <ul class="blockList">
-                <li class="blockList"><a name="field_summary"><!--   --></a>
-                    <h3>Field Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Enum constants summary table">
-                        <caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Modifiers</th>
-                            <th class="colLast" scope="col">Name</th>
-                            <th class="colLast" scope="col">Description</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../../org/grails/gorm/graphql/response/errors/GraphQLErrorsResponseHandler.html'>GraphQLErrorsResponseHandler</a></strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#errorsResponseHandler">errorsResponseHandler</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLOutputType&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#objectTypeCache">objectTypeCache</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../../org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.html'>GraphQLDomainPropertyManager</a></strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#propertyManager">propertyManager</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a></strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#typeManager">typeManager</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                    </table>
-                   </ul>
-                </li>
-                
-            </ul>
-        
 
         <!-- =========== PROPERTY SUMMARY =========== -->
         
@@ -165,28 +122,6 @@ if (location.href.indexOf('is-external=true') == -1) {
         <!-- =========== ELEMENT SUMMARY =========== -->
         
 
-        
-        <!-- ======== CONSTRUCTOR SUMMARY ======== -->
-        <ul class="blockList">
-                <li class="blockList"><a name="constructor_summary"><!--   --></a>
-                    <h3>Constructor Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructors Summary table">
-                        <caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Constructor and description</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst">
-                                <code><a href="#ObjectTypeBuilder(org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler)">ObjectTypeBuilder</a>
-                                (<a href='../../../../../../org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.html'>GraphQLDomainPropertyManager</a> propertyManager, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/response/errors/GraphQLErrorsResponseHandler.html'>GraphQLErrorsResponseHandler</a> errorsResponseHandler)</code><br></td>
-                        </tr>
-                        
-                    </table>
-                   </ul>
-              </li>
-        </ul>
         
 
         
@@ -212,30 +147,6 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildField(org.grails.gorm.graphql.entity.property.GraphQLDomainProperty)">buildField</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html'>GraphQLDomainProperty</a> prop)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../GraphQLInterfaceType.html'>GraphQLInterfaceType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildInterfaceType(PersistentEntity, java.lang.String, java.lang.String, List<GraphQLFieldDefinition>)">buildInterfaceType</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.String name, java.lang.String description, java.util.List&lt;GraphQLFieldDefinition&gt; fields)</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildObjectType(PersistentEntity, java.lang.String, java.lang.String, List<GraphQLFieldDefinition>)">buildObjectType</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.String name, java.lang.String description, java.util.List&lt;GraphQLFieldDefinition&gt; fields)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.Builder.html'>Builder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getBuilder()">getBuilder</a></strong>()</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/types/GraphQLPropertyType.html'>GraphQLPropertyType</a></code></td>
                             <td class="colLast"><code><strong><a href="#getType()">getType</a></strong>()</code><br></td>
                         </tr>
@@ -244,24 +155,6 @@ if (location.href.indexOf('is-external=true') == -1) {
                    </ul>
               </li>
             
-            <li class="blockList"><a name="method_summary"><!--   --></a>
-                    <h3>Inherited Methods Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
-                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Methods inherited from class</th>
-                            <th class="colLast" scope="col">Name</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code>class java.lang.Object</code></td>
-                            <td class="colLast"><code>java.lang.Object#wait(long, int), java.lang.Object#wait(long), java.lang.Object#wait(), java.lang.Object#equals(java.lang.Object), java.lang.Object#toString(), java.lang.Object#hashCode(), java.lang.Object#getClass(), java.lang.Object#notify(), java.lang.Object#notifyAll()</code></td>
-                        </tr>
-                    </table>
-                   </ul>
-              </li>
-                
         </ul>
         
     </li>
@@ -274,71 +167,11 @@ if (location.href.indexOf('is-external=true') == -1) {
            
 
             
-            <!-- =========== FIELD DETAIL =========== -->
-            <ul class="blockList">
-                <li class="blockList"><a name="field_detail">
-                    <!--   -->
-                </a>
-                    <h3>Field Detail</h3>
-                    
-                        <a name="errorsResponseHandler"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../../org/grails/gorm/graphql/response/errors/GraphQLErrorsResponseHandler.html'>GraphQLErrorsResponseHandler</a> <strong>errorsResponseHandler</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="objectTypeCache"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;java.util.Map&lt;PersistentEntity, GraphQLOutputType&gt; <strong>objectTypeCache</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="propertyManager"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../../org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.html'>GraphQLDomainPropertyManager</a> <strong>propertyManager</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="typeManager"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> <strong>typeManager</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                </li>
-            </ul>
-            
 
             
 
             
 
-            
-            <!-- =========== CONSTRUCTOR DETAIL =========== -->
-            <ul class="blockList">
-                <li class="blockList"><a name="constructor_detail">
-                    <!--   -->
-                </a>
-                    <h3>Constructor Detail</h3>
-                    
-                        <a name="ObjectTypeBuilder(org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><strong>ObjectTypeBuilder</strong>(<a href='../../../../../../org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.html'>GraphQLDomainPropertyManager</a> propertyManager, <a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../org/grails/gorm/graphql/response/errors/GraphQLErrorsResponseHandler.html'>GraphQLErrorsResponseHandler</a> errorsResponseHandler)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                </li>
-            </ul>
             
 
 
@@ -354,38 +187,6 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../../GraphQLOutputType.html'>GraphQLOutputType</a> <strong>build</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="buildField(org.grails.gorm.graphql.entity.property.GraphQLDomainProperty)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a> <strong>buildField</strong>(<a href='../../../../../../org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html'>GraphQLDomainProperty</a> prop)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="buildInterfaceType(PersistentEntity, java.lang.String, java.lang.String, List<GraphQLFieldDefinition>)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><a href='../../../../../../GraphQLInterfaceType.html'>GraphQLInterfaceType</a> <strong>buildInterfaceType</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.String name, java.lang.String description, java.util.List&lt;GraphQLFieldDefinition&gt; fields)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="buildObjectType(PersistentEntity, java.lang.String, java.lang.String, List<GraphQLFieldDefinition>)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><a href='../../../../../../GraphQLObjectType.html'>GraphQLObjectType</a> <strong>buildObjectType</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, java.lang.String name, java.lang.String description, java.util.List&lt;GraphQLFieldDefinition&gt; fields)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="getBuilder()"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.Builder.html'>Builder</a> <strong>getBuilder</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -432,11 +233,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     

@@ -308,45 +308,57 @@ class GraphQLMapping
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/response/pagination/PaginatedType.html'>PaginatedType</a></code></td>
+                            <td class="colLast"><code><strong><a href="#pagedResult(java.lang.Class)">pagedResult</a></strong>(java.lang.Class type)</code><br>Denotes the return type of an operation should be paginated</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a></code></td>
                             <td class="colLast"><code><strong><a href="#property(java.lang.String, groovy.lang.Closure)">property</a></strong>(java.lang.String name, groovy.lang.Closure closure)</code><br>Supply metadata about an existing property</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a></code></td>
                             <td class="colLast"><code><strong><a href="#property(java.lang.String, java.util.Map)">property</a></strong>(java.lang.String name, java.util.Map namedArgs)</code><br>Supply metadata about an existing property</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a></code></td>
                             <td class="colLast"><code><strong><a href="#property(java.util.Map, java.lang.String)">property</a></strong>(java.util.Map namedArgs, java.lang.String name)</code><br>Supply metadata about an existing property</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a></code></td>
                             <td class="colLast"><code><strong><a href="#property(java.lang.String, org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping)">property</a></strong>(java.lang.String name, <a href='../../../../../../org/grails/gorm/graphql/entity/dsl/GraphQLPropertyMapping.html'>GraphQLPropertyMapping</a> mapping)</code><br>Supply metadata about an existing property</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#query(java.lang.String, java.lang.String, groovy.lang.Closure)">query</a></strong>(java.lang.String name, java.lang.String typeName, groovy.lang.Closure closure)</code><br>Builds a custom query operation with a complex type to be 
  built in the provided closure.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#query(java.lang.String, List<Class>, groovy.lang.Closure)">query</a></strong>(java.lang.String name, java.util.List&lt;java.lang.Class&gt; type, groovy.lang.Closure closure)</code><br>Builds a custom query operation. </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#query(java.lang.String, java.lang.Class, groovy.lang.Closure)">query</a></strong>(java.lang.String name, java.lang.Class type, groovy.lang.Closure closure)</code><br>Builds a custom query operation.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#query(java.lang.String, org.grails.gorm.graphql.response.pagination.PaginatedType, groovy.lang.Closure)">query</a></strong>(java.lang.String name, <a href='../../../../../../org/grails/gorm/graphql/response/pagination/PaginatedType.html'>PaginatedType</a> type, groovy.lang.Closure closure)</code><br>Builds a custom query operation that returns a paginated result.</td>
                         </tr>
                         
                     </table>
@@ -584,6 +596,15 @@ java.lang.Object <strong>methodMissing</strong>(java.lang.String name, java.lang
                             </li>
                         </ul>
                     
+                        <a name="pagedResult(java.lang.Class)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../../../org/grails/gorm/graphql/response/pagination/PaginatedType.html'>PaginatedType</a> <strong>pagedResult</strong>(java.lang.Class type)</h4>
+                                <p> Denotes the return type of an operation should be paginated
+     <DL><DT><B>Parameters:</B></DT><DD><code>type</code> -  The domain class being returned</DD></DL><DL><DT><B>Returns:</B></DT><DD>The type holder</DD></DL></p>
+                            </li>
+                        </ul>
+                    
                         <a name="property(java.lang.String, groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -650,6 +671,15 @@ java.lang.Object <strong>methodMissing</strong>(java.lang.String name, java.lang
                             <li class="blockList">
                                 <h4>void <strong>query</strong>(java.lang.String name, java.lang.Class type, @groovy.lang.DelegatesTo(value = SimpleOperation, strategy = Closure.DELEGATE_ONLY) groovy.lang.Closure closure)</h4>
                                 <p> Builds a custom query operation.
+     <DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The name used by clients of the GraphQL API to execute the operation</DD><DD><code>type</code> -  The return type. May be an enum, simple class, or domain class.</DD><DD><code>closure</code> -  The closure to build the operation</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="query(java.lang.String, org.grails.gorm.graphql.response.pagination.PaginatedType, groovy.lang.Closure)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>query</strong>(java.lang.String name, <a href='../../../../../../org/grails/gorm/graphql/response/pagination/PaginatedType.html'>PaginatedType</a> type, @groovy.lang.DelegatesTo(value = SimpleOperation, strategy = Closure.DELEGATE_ONLY) groovy.lang.Closure closure)</h4>
+                                <p> Builds a custom query operation that returns a paginated result.
      <DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The name used by clients of the GraphQL API to execute the operation</DD><DD><code>type</code> -  The return type. May be an enum, simple class, or domain class.</DD><DD><code>closure</code> -  The closure to build the operation</DD></DL></p>
                             </li>
                         </ul>

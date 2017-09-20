@@ -1313,6 +1313,26 @@ Data fetchers must respond according to the object type definition created by th
 </div>
 </div>
 <div class="paragraph">
+<p>In the case where a pagination result should be returned from the custom operation, a simple method <code>pagedResult</code> is available to mark the type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+
+        <span class="comment">//authorsByName is the name exposed by the API</span>
+        <span class="comment">//The return type will have a results key and a totalCount key</span>
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorsByName</span><span class="delimiter">'</span></span>, pagedResult(Author)) {
+            ...
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>For operations with a custom return type, it possible to define a custom type using the <code>returns</code> block. The API inside of the returns block is exactly the same as the API for defining <a href="#custom">custom properties</a> with custom types.</p>
 </div>
 <div class="listingblock">
