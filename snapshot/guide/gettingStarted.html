@@ -106,10 +106,13 @@ function addJsClass() {
                     <div class="toc-item" style="margin-left:0px"><a href="#list"><strong>3.3</strong><span>List</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#update"><strong>3.4</strong><span>Update</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#count"><strong>3.4</strong><span>Count</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#delete"><strong>3.5</strong><span>Delete</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#update"><strong>3.5</strong><span>Update</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#delete"><strong>3.6</strong><span>Delete</span></a>
                     </div>
                     
                 </div>
@@ -478,7 +481,43 @@ If there was a validation error during the create process, the <code>errors</cod
 </div>
 
 
-<h2 id="update">3.4 Update</h2>
+<h2 id="count">3.4 Count</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/gettingStarted/count.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>In this example the query is demonstrating retrieving the total count of speakers.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
+     -d $'
+{
+  speakerCount
+}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>which returns:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerCount</span><span class="delimiter">&quot;</span></span>: <span class="integer">7</span>
+    }
+}</code></pre>
+</div>
+</div>
+
+
+<h2 id="update">3.5 Update</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/gettingStarted/update.adoc"'>
@@ -555,7 +594,7 @@ If there was a validation error during the update process, the <code>errors</cod
 </div>
 
 
-<h2 id="delete">3.5 Delete</h2>
+<h2 id="delete">3.6 Delete</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/gettingStarted/delete.adoc"'>

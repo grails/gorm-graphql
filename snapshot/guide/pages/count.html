@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>3.6 Delete 1.0.0.BUILD-SNAPSHOT</title>
+    <title>3.4 Count 1.0.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -88,7 +88,7 @@ function addJsClass() {
 
 
                 <div class="project">
-                    <h1>3.6 Delete</h1>
+                    <h1>3.4 Count</h1>
 
                     <p><strong>Version:</strong> 1.0.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -97,53 +97,39 @@ function addJsClass() {
 
                 
 
-<h2 id="delete">3.6 Delete</h2>
+<h2 id="count">3.4 Count</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/gettingStarted/delete.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/gettingStarted/count.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>In this example we are deleting a speaker. None of the normal properties of a speaker are available, however a <code>success</code> property is available to let you know whether or not the operation was successful.</p>
+<p>In this example the query is demonstrating retrieving the total count of speakers.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">curl -X "POST" "http://localhost:8080/graphql" \
      -H "Content-Type: application/graphql" \
      -d $'
-mutation {
-  speakerDelete(id: 8) {
-    success
-    error
-  }
+{
+  speakerCount
 }'</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>and the server acknowledges the deletion:</p>
+<p>which returns:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json">{
     <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerDelete</span><span class="delimiter">&quot;</span></span>: {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">success</span><span class="delimiter">&quot;</span></span>: <span class="value">true</span>,
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">error</span><span class="delimiter">&quot;</span></span>: <span class="value">null</span>  <i class="conum" data-value="1"></i><b>(1)</b>
-        }
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerCount</span><span class="delimiter">&quot;</span></span>: <span class="integer">7</span>
     }
 }</code></pre>
 </div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The message of any exception that occurred will be returned if the action wasn&#8217;t successful.</td>
-</tr>
-</table>
 </div>
 
 
