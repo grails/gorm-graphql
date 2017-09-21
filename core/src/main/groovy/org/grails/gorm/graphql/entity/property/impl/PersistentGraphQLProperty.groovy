@@ -56,7 +56,7 @@ class PersistentGraphQLProperty extends OrderedGraphQLProperty {
     PersistentGraphQLProperty(MappingContext mappingContext, PersistentProperty property, GraphQLPropertyMapping mapping) {
         this.property = property
         this.mappingContext = mappingContext
-        this.name = property.name
+        this.name = mapping.name ?: property.name
         this.type = getBaseType(property)
         this.collection = (property instanceof ToMany)
         if (mapping.nullable != null) {

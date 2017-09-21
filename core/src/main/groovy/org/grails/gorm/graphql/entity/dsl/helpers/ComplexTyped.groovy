@@ -45,7 +45,7 @@ trait ComplexTyped<T> {
     /**
      * This method exists because of https://issues.apache.org/jira/browse/GROOVY-8272
      *
-     * Normally the {@link ExecutesClosures} trait would be extended from
+     * Normally this class could extend from {@link ExecutesClosures}
      */
     private void withDelegate(Closure closure, Object delegate) {
         if (closure != null) {
@@ -131,6 +131,10 @@ trait ComplexTyped<T> {
     private void handleField(Closure closure, Field field) {
         field.nullable(defaultNull)
         withDelegate(closure, field)
+        handleField(field)
+    }
+
+    private void handleField(Field field) {
         field.validate()
         fields.add(field)
     }
@@ -148,6 +152,10 @@ trait ComplexTyped<T> {
     void field(String name, String typeName, @DelegatesTo(value = ComplexField, strategy = Closure.DELEGATE_ONLY) Closure closure) {
         Field field = new ComplexField().name(name).typeName(typeName)
         handleField(closure, field)
+    }
+
+    void field(ComplexField field) {
+        handleField(field)
     }
 
 }

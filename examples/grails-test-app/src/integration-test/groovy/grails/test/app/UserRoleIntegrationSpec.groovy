@@ -45,7 +45,7 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
         resp = graphQL.graphql("""
             mutation {
                 roleCreate(role: {
-                    authority: "ROLE_ADMIN"
+                    name: "ROLE_ADMIN"
                 }) {
                     id
                 }
@@ -73,16 +73,17 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
                         }
                     }
                     role {
-                        authority
+                        name
                     }
                 }
             }
         """)
+        println resp.json
         JSONObject obj = resp.json.data.userRoleCreate
 
         then:
         obj.user.profile.email == 'admin@email.com'
-        obj.role.authority == 'ROLE_ADMIN'
+        obj.role.name == 'ROLE_ADMIN'
     }
 
     void "test reading an entity with a complex composite id"() {
@@ -130,7 +131,7 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
                         }
                     }
                     role {
-                        authority
+                        name
                     }
                 }
             }
@@ -139,7 +140,7 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
 
         then: 'The user and role will be fetched with the same query'
         obj.user.profile.email == 'admin@email.com'
-        obj.role.authority == 'ROLE_ADMIN'
+        obj.role.name == 'ROLE_ADMIN'
         outCount == 1
         query ==~ 'Hibernate: select this_.user_id as user_id[0-9]+_[0-9]{2}_[0-9]_, this_.role_id as role_id[0-9]+_[0-9]+_[0-9]+_, user2_.id as id[0-9]+_[0-9]+_[0-9]+_, user2_.version as version[0-9]+_[0-9]+_[0-9]+_, user2_.manager_id as manager_[0-9]+_[0-9]+_[0-9]+_, user2_.added_numbers as added_nu[0-9]+_[0-9]+_[0-9]+_, user2_.address_zip as address_[0-9]+_[0-9]+_[0-9]+_, user2_.address_city as address_[0-9]+_[0-9]+_[0-9]+_, user2_.address_state as address_[0-9]+_[0-9]+_[0-9]+_, user2_.profile_first_name as profile_[0-9]+_[0-9]+_[0-9]+_, user2_.profile_last_name as profile_[0-9]+_[0-9]+_[0-9]+_, user2_.profile_email as profile[0-9]+_[0-9]+_[0-9]+_, role3_.id as id[0-9]+_[0-9]+_[0-9]+_, role3_.version as version[0-9]+_[0-9]+_[0-9]+_, role3_.authority as authorit[0-9]+_[0-9]+_[0-9]+_ from user_role this_ inner join user user2_ on this_.user_id=user2_.id inner join role role3_ on this_.role_id=role3_.id where this_.user_id=\\? and this_.role_id=\\?\n'
 
@@ -179,7 +180,7 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
                         }
                     }
                     role {
-                        authority
+                        name
                     }
                 }
             }
@@ -189,7 +190,7 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
         then:
         obj.size() == 1
         obj[0].user.profile.email == 'admin@email.com'
-        obj[0].role.authority == 'ROLE_ADMIN'
+        obj[0].role.name == 'ROLE_ADMIN'
     }
 
     void "test custom query operation added in the mapping"() {
@@ -215,7 +216,7 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
         def resp = graphQL.graphql("""
             mutation {
                 roleCreate(role: {
-                    authority: "ROLE_USER"
+                    name: "ROLE_USER"
                 }) {
                     id
                 }
@@ -247,7 +248,7 @@ class UserRoleIntegrationSpec extends Specification implements GraphQLSpec {
             {
                 userRoleList {
                     role {
-                        authority
+                        name
                     }
                 }
             }

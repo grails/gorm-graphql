@@ -1,5 +1,8 @@
 package grails.test.app
 
+import grails.databinding.BindUsing
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
+
 class Role {
 
     String authority
@@ -7,5 +10,9 @@ class Role {
     static constraints = {
     }
 
-    static graphql = true
+    static graphql = GraphQLMapping.build {
+        property('authority') {
+            name 'name'
+        }
+    }
 }

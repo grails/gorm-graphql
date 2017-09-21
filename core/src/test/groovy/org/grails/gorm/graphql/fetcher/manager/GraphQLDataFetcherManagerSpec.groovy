@@ -89,8 +89,10 @@ class GraphQLDataFetcherManagerSpec extends Specification {
         DELETE | mockBindingFetcher
         GET    | mockBindingFetcher
         LIST   | mockBindingFetcher
+        COUNT  | mockBindingFetcher
 
         LIST   | mockDeletingFetcher
+        COUNT  | mockDeletingFetcher
         GET    | mockDeletingFetcher
         CREATE | mockDeletingFetcher
         UPDATE | mockDeletingFetcher
@@ -103,12 +105,13 @@ class GraphQLDataFetcherManagerSpec extends Specification {
                 (CREATE): mockBindingFetcher,
                 (UPDATE): mockBindingFetcher,
                 (GET): mockReadingFetcher,
-                (LIST): mockReadingFetcher
+                (LIST): mockReadingFetcher,
+                (COUNT): mockReadingFetcher
         ])
 
         then:
         noExceptionThrown()
-        GraphQLDataFetcherType.values().size() == 5
+        GraphQLDataFetcherType.values().size() == 6
     }
 
     void "test get binding fetcher with wrong argument type"() {
@@ -151,7 +154,8 @@ class GraphQLDataFetcherManagerSpec extends Specification {
                 (CREATE): mockBindingFetcher,
                 (UPDATE): mockBindingFetcher,
                 (GET): mockReadingFetcher,
-                (LIST): mockReadingFetcher
+                (LIST): mockReadingFetcher,
+                (COUNT): mockReadingFetcher
         ])
         BindingGormDataFetcher myBindingFetcher = new BindingGormDataFetcher() {
             GraphQLDataBinder dataBinder
@@ -195,7 +199,8 @@ class GraphQLDataFetcherManagerSpec extends Specification {
                 (CREATE): mockBindingFetcher,
                 (UPDATE): mockBindingFetcher,
                 (GET): mockReadingFetcher,
-                (LIST): mockReadingFetcher
+                (LIST): mockReadingFetcher,
+                (COUNT): mockReadingFetcher
         ])
         ReadingGormDataFetcher myReadingFetcher = new ReadingGormDataFetcher() {
             @Override
@@ -211,11 +216,12 @@ class GraphQLDataFetcherManagerSpec extends Specification {
         expect: 'The default binders are returned'
         manager.getReadingFetcher(getMockEntity(String), GET) == mockReadingFetcher
         manager.getReadingFetcher(getMockEntity(String), LIST) == mockReadingFetcher
+        manager.getReadingFetcher(getMockEntity(String), COUNT) == mockReadingFetcher
 
-        when: 'A binder is registered for String that supports CREATE'
+        when: 'A binder is registered for String that supports GET'
         manager.registerReadingDataFetcher(String, myReadingFetcher)
 
-        then: 'The binder is returned for CREATE, and the Object binder is returned for update'
+        then: 'The binder is returned for GET, and the Object binder is returned for update'
         manager.getReadingFetcher(getMockEntity(String), GET) == myReadingFetcher
 
         when: 'The manager has no default binders'
@@ -224,6 +230,7 @@ class GraphQLDataFetcherManagerSpec extends Specification {
         then: 'null is returned'
         manager.getReadingFetcher(getMockEntity(String), GET) == null
         manager.getReadingFetcher(getMockEntity(String), LIST) == null
+        manager.getReadingFetcher(getMockEntity(String), COUNT) == null
 
         when: 'A custom binder is registered'
         manager.registerReadingDataFetcher(String, myReadingFetcher)
@@ -238,7 +245,8 @@ class GraphQLDataFetcherManagerSpec extends Specification {
                 (CREATE): mockBindingFetcher,
                 (UPDATE): mockBindingFetcher,
                 (GET): mockReadingFetcher,
-                (LIST): mockReadingFetcher
+                (LIST): mockReadingFetcher,
+                (COUNT): mockReadingFetcher
         ])
         DeletingGormDataFetcher myDeletingFetcher = new FakeDeletingFetcher()
 

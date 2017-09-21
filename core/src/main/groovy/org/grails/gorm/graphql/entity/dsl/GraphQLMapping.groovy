@@ -248,18 +248,6 @@ class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQ
         mapping
     }
 
-    /**
-     * Stores metadata about the default operations provided
-     * by this library
-     */
-    class Operations {
-        ProvidedOperation get = new ProvidedOperation()
-        ListOperation list = new ListOperation()
-        ProvidedOperation create = new ProvidedOperation()
-        ProvidedOperation update = new ProvidedOperation()
-        ProvidedOperation delete = new ProvidedOperation()
-    }
-
     private CustomOperation handleCustomOperation(CustomOperation operation, OperationType type, Closure closure) {
         operation.operationType = type
         withDelegate(closure, operation)

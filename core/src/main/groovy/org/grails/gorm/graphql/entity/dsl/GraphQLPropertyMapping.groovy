@@ -6,6 +6,7 @@ import groovy.transform.builder.SimpleStrategy
 import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
 import org.grails.gorm.graphql.entity.dsl.helpers.Describable
 import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
+import org.grails.gorm.graphql.entity.dsl.helpers.Named
 
 /**
  * Builder to provide GraphQL specific data for a GORM entity property
@@ -37,7 +38,7 @@ import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
  */
 @Builder(builderStrategy = SimpleStrategy, prefix = '')
 @CompileStatic
-class GraphQLPropertyMapping implements Describable<GraphQLPropertyMapping>, Deprecatable<GraphQLPropertyMapping>, ExecutesClosures {
+class GraphQLPropertyMapping implements Describable<GraphQLPropertyMapping>, Deprecatable<GraphQLPropertyMapping>, Named<GraphQLPropertyMapping>, ExecutesClosures {
 
     /**
      * Whether or not the property should be available to

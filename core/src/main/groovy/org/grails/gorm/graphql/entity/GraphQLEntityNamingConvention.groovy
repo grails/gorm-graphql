@@ -31,6 +31,14 @@ class GraphQLEntityNamingConvention {
 
     /**
      * @param entity The persistent entity
+     * @return The name to use. Ex: "personCount"
+     */
+    String getCount(PersistentEntity entity) {
+        entity.decapitalizedName + 'Count'
+    }
+
+    /**
+     * @param entity The persistent entity
      * @return The name to use. Ex: "personCreate"
      */
     String getCreate(PersistentEntity entity) {

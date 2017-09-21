@@ -21,6 +21,7 @@ import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyMana
 import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.PaginatingGormDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.CountEntityDataFetcher
 import org.grails.gorm.graphql.fetcher.impl.CreateEntityDataFetcher
 import org.grails.gorm.graphql.fetcher.impl.DeleteEntityDataFetcher
 import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
@@ -84,9 +85,6 @@ class Schema {
     List<String> dateFormats
     boolean dateFormatLenient = false
     Map<String, GraphQLInputType> listArguments
-
-    private static final String MAX = 'max'
-    private static final String OFFSET = 'offset'
 
     private boolean initialized = false
 
@@ -288,21 +286,11 @@ class Schema {
                         .description(listOperation.description)
                         .deprecate(listOperation.deprecationReason)
 
-                Map<String, GraphQLInputType> listArguments = [:]
-                listArguments.putAll(this.listArguments)
-
                 if (listOperation.paginate) {
                     if (listFetcher == null) {
                         listFetcher = new PaginatedEntityDataFetcher(entity)
                     }
                     queryAll.type(typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT_PAGED))
-
-                    if (listArguments.containsKey(MAX)) {
-                        listArguments.put(MAX,  GraphQLNonNull.nonNull(listArguments.get(MAX)))
-                    }
-                    if (listArguments.containsKey(OFFSET)) {
-                        listArguments.put(OFFSET,  GraphQLNonNull.nonNull(listArguments.get(OFFSET)))
-                    }
                 }
                 else {
                     if (listFetcher == null) {
@@ -324,6 +312,26 @@ class Schema {
                             .name(argument.key)
                             .type(argument.value))
                 }
+            }
+
+            ProvidedOperation countOperation = mapping.operations.count
+            if (countOperation.enabled) {
+
+                DataFetcher countFetcher = dataFetcherManager.getReadingFetcher(entity, COUNT)
+
+                GraphQLFieldDefinition.Builder queryCount = newFieldDefinition()
+                        .name(namingConvention.getCount(entity))
+                        .type((GraphQLOutputType)typeManager.getType(Integer))
+                        .description(countOperation.description)
+                        .deprecate(countOperation.deprecationReason)
+
+                if (countFetcher == null) {
+                    countFetcher = new CountEntityDataFetcher(entity)
+                }
+
+                queryCount.dataFetcher(new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, COUNT, countFetcher))
+
+                queryFields.add(queryCount)
             }
 
             InterceptorInvoker mutationInterceptorInvoker = new MutationInterceptorInvoker()

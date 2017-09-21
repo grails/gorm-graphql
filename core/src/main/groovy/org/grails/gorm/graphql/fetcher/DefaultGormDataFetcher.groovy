@@ -37,6 +37,7 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
     protected PersistentEntity entity
     protected String propertyName
     protected EntityFetchOptions entityFetchOptions
+    protected GormStaticApi staticApi
     protected Datastore datastore
 
     DefaultGormDataFetcher(PersistentEntity entity) {
@@ -47,7 +48,8 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         this.entity = entity
         this.propertyName = projectionName
         this.entityFetchOptions = new EntityFetchOptions(entity, projectionName)
-        this.datastore = GormEnhancer.findStaticApi(entity.javaClass).datastore
+        this.staticApi = GormEnhancer.findStaticApi(entity.javaClass)
+        this.datastore = staticApi.datastore
         initializeEntity(entity)
     }
 
@@ -66,8 +68,7 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
     }
 
     protected Object loadEntity(PersistentEntity entity, Object argument) {
-        GormStaticApi api = (GormStaticApi)GormEnhancer.findStaticApi(entity.javaClass)
-        api.load((Serializable)argument)
+        GormEnhancer.findStaticApi(entity.javaClass).load((Serializable)argument)
     }
 
     protected Map<String, Object> getIdentifierValues(DataFetchingEnvironment environment) {

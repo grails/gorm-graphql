@@ -42,5 +42,6 @@ class GraphQLCustomizer extends GraphQLPostProcessor {
     @Override
     void doWith(GraphQLDataBinderManager binderManager) {
         binderManager.registerDataBinder(User, new UserDataBinder())
+        binderManager.registerDataBinder(Role, new RoleDataBinder())
     }
 }

@@ -15,6 +15,7 @@ enum GraphQLDataFetcherType {
     CREATE(BindingGormDataFetcher),
     GET(ReadingGormDataFetcher),
     LIST(ReadingGormDataFetcher),
+    COUNT(ReadingGormDataFetcher),
     UPDATE(BindingGormDataFetcher),
     DELETE(DeletingGormDataFetcher)
 

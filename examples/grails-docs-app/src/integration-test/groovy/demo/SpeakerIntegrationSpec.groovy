@@ -270,4 +270,33 @@ curl -X "POST" "{url}" \
                         .replace('\n// end::listResponse[]\n', '')
 
     }
+
+    void "test fetch speaker count"() {
+        when:
+        String curlCommand = '''
+            // tag::countCurlCommand[]
+curl -X "POST" "{url}" \
+     -H "Content-Type: application/graphql" \
+     -d $'
+{
+  speakerCount
+}'
+            // end::countCurlCommand[]
+        '''.toString().replace('{url}', getUrl())
+        Process process = [ 'bash', '-c', curlCommand ].execute()
+        process.waitFor()
+        then:
+        JsonOutput.prettyPrint(process.text) ==
+                """
+// tag::countResponse[]
+{
+    "data": {
+        "speakerCount": 7
+    }
+}
+// end::countResponse[]
+""".replace('\n// tag::countResponse[]\n', '')
+                        .replace('\n// end::countResponse[]\n', '')
+
+    }
 }

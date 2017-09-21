@@ -5,6 +5,7 @@ gettingStarted:
     create: Create
     read: Read
     list: List
+    count: Count
     update: Update
     delete: Delete
 customizations:

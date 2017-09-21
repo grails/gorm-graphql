@@ -60,6 +60,19 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
         assert resp.json.data.postCreate.tags.size() == 3
     }
 
+    void "test getting the count"() {
+        when:
+        def resp = graphQL.graphql("""
+            {
+              tagCount
+            }
+        """)
+        def obj = resp.json.data.tagCount
+
+        then:
+        obj == 4
+    }
+
     void "test a custom property can reference a domain"() {
         when:
         def resp = graphQL.graphql("""
