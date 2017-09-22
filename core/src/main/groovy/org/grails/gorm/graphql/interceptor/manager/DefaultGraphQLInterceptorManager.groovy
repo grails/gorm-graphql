@@ -34,7 +34,7 @@ class DefaultGraphQLInterceptorManager implements GraphQLInterceptorManager, Key
 
     protected List<GraphQLSchemaInterceptor> schemaInterceptors = []
 
-    protected Comparator interceptorComparator = new OrderedComparator<GraphQLFetcherInterceptor>()
+    protected Comparator interceptorComparator = new OrderedComparator<>()
 
     /**
      * @see GraphQLInterceptorManager#registerInterceptor
@@ -66,6 +66,6 @@ class DefaultGraphQLInterceptorManager implements GraphQLInterceptorManager, Key
 
     @Override
     List<GraphQLSchemaInterceptor> getInterceptors() {
-        schemaInterceptors
+        schemaInterceptors.sort(true, interceptorComparator)
     }
 }

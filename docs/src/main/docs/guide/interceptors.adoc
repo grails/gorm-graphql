@@ -2,6 +2,8 @@ This library provides 2 types of interceptors, data fetcher and schema. Data fet
 
 Schema interceptors allow users to hook directly into the schema creation process to modify the schema directly before it is created. This option is for users who are comfortable with the link:https://github.com/graphql-java/graphql-java[graphql-java] library and would like to manipulate the schema as they see fit.
 
+NOTE: Any interceptor can implement link:{gormapi}/org/grails/datastore/mapping/core/Ordered.html[Ordered] to control the order it is invoked.
+
 == Get The Manager
 
 To register a data fetcher interceptor, you need to get a reference to the link:{api}/org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html[GraphQLInterceptorManager]. If you are using the manager provided by default, how you access it will depend on whether you are using the plugin or standalone.
