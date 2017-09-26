@@ -71,7 +71,7 @@
                     <h1>GORM GraphQL</h1>
                     <p></p>
                     <p>Generates a GraphQL schema based on entities in GORM</p>
-                    <p><strong>Version:</strong> 1.0.0.RC1</p>
+                    <p><strong>Version:</strong> 1.0.0.RC2</p>
 
                 </div>
 
@@ -116,7 +116,7 @@
 <i class="fa icon-caution" title="Caution"></i>
 </td>
 <td class="content">
-Requires Java 8, GORM 6.1<br>
+Requires Java 8. Effort has been made to support GORM 6.0.x, however this library is only tested against 6.1.x.
 </td>
 </tr>
 </table>
@@ -167,7 +167,7 @@ Requires Java 8, GORM 6.1<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails.plugins:gorm-graphql:1.0.0.RC1"</code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails.plugins:gorm-graphql:1.0.0.RC2"</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -175,7 +175,7 @@ Requires Java 8, GORM 6.1<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails:gorm-graphql:1.0.0.RC1"</code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails:gorm-graphql:1.0.0.RC2"</code></pre>
 </div>
 </div>
 
@@ -541,7 +541,43 @@ If there was a validation error during the create process, the <code>errors</cod
 </div>
 
 
-<h2 id="update">3.4 Update</h2>
+<h2 id="count">3.4 Count</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/gettingStarted/count.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>In this example the query is demonstrating retrieving the total count of speakers.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
+     -d $'
+{
+  speakerCount
+}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>which returns:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">speakerCount</span><span class="delimiter">&quot;</span></span>: <span class="integer">7</span>
+    }
+}</code></pre>
+</div>
+</div>
+
+
+<h2 id="update">3.5 Update</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/gettingStarted/update.adoc"'>
@@ -618,7 +654,7 @@ If there was a validation error during the update process, the <code>errors</cod
 </div>
 
 
-<h2 id="delete">3.5 Delete</h2>
+<h2 id="delete">3.6 Delete</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/gettingStarted/delete.adoc"'>
@@ -849,6 +885,48 @@ The data type returned must be the same as the property type.
     property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">deprecated</span>: <span class="predefined-constant">true</span>) <span class="comment">//&quot;Deprecated&quot; will be the reason</span>
 }</code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_name">Name</h3>
+<div class="paragraph">
+<p>It is possible to change the name of existing properties as they appear in the schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">authority</span><span class="delimiter">'</span></span>, <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+When changing the name of a property, you must also account for the change when it comes to data binding in create or update operations. The following is an example data binder implementation for changing the property name from <code>authority</code> to <code>name</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.binding.GrailsGraphQLDataBinder</span>
+
+<span class="type">class</span> <span class="class">RoleDataBinder</span> <span class="directive">extends</span> GrailsGraphQLDataBinder {
+
+    <span class="annotation">@Override</span>
+    <span class="type">void</span> bind(<span class="predefined-type">Object</span> object, <span class="predefined-type">Map</span> data) {
+        data.put(<span class="string"><span class="delimiter">'</span><span class="content">authority</span><span class="delimiter">'</span></span>, data.remove(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>))
+        <span class="local-variable">super</span>.bind(object, data)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The data binding implementation is removing the <code>name</code> property and assigning it back to <code>authority</code> so it can be correctly bound to the domain object.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1218,6 +1296,67 @@ To customize properties to come before the identifier or version, set the value 
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_pagination">Pagination</h3>
+<div class="paragraph">
+<p>By default, list operations return a list of instances. For most pagination solutions, that is not enough data. In addition to the list of results, the total count is required to be able to calculate pagination controls. Pagination is supported in this library through configuration of the list operation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.list.paginate(<span class="predefined-constant">true</span>)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By configuring the list operation to paginate, instead of a list of results being returned, an object will be returned that has a "results" value, which is the list, and a "totalCount" value which is the total count not considering the pagination parameters.</p>
+</div>
+<div class="sect3">
+<h4 id="_customization">Customization</h4>
+<div class="paragraph">
+<p>It is possible to customize how the pagination response is created through the creation of a <a href="../api/org/grails/gorm/graphql/response/pagination/GraphQLPaginationResponseHandler.html">GraphQLPaginationResponseHandler</a>.</p>
+</div>
+<div class="paragraph">
+<p>How you can supply your own pagination response handler depends on whether the library is being used standalone or part of a Grails application.</p>
+</div>
+<div class="paragraph">
+<p>For standalone applications, simply set the handler on the schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.paginationResponseHandler = <span class="keyword">new</span> MyPaginationResponseHandler()
+...
+schema.generate()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For Grails applications, override the <code>graphQLPaginationResponseHandler</code> bean.</p>
+</div>
+<div class="listingblock">
+<div class="title">grails-app/config/spring/resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">beans = {
+    graphQLPaginationResponseHandler(MyPaginationResponseHandler)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Data fetchers must respond according to the object type definition created by the pagination response handler. When supplying your own data fetcher, implement <a href="../api/org/grails/gorm/graphql/fetcher/PaginatingGormDataFetcher.html">PaginatingGormDataFetcher</a> and the response handler will be populated for you. The response handler is responsible for creating the response in order to assure it is compatible.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1245,6 +1384,26 @@ To customize properties to come before the identifier or version, set the value 
         <span class="comment">//authorByName is the name exposed by the API</span>
         <span class="comment">//Author is the return type</span>
         query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) { <span class="comment">//or [Author] to return a list of authors</span>
+            ...
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the case where a pagination result should be returned from the custom operation, a simple method <code>pagedResult</code> is available to mark the type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+
+        <span class="comment">//authorsByName is the name exposed by the API</span>
+        <span class="comment">//The return type will have a results key and a totalCount key</span>
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorsByName</span><span class="delimiter">'</span></span>, pagedResult(Author)) {
             ...
         }
     }
@@ -1375,6 +1534,10 @@ To customize properties to come before the identifier or version, set the value 
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">LIST</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html">EntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LIST (Paginated Response)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/PaginatedEntityDataFetcher.html">PaginatedEntityDataFetcher</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CREATE</p></td>
@@ -2274,6 +2437,18 @@ For Grails applications, a default data binder is supplied that uses the standar
 <div class="paragraph">
 <p>Schema interceptors allow users to hook directly into the schema creation process to modify the schema directly before it is created. This option is for users who are comfortable with the <a href="https://github.com/graphql-java/graphql-java">graphql-java</a> library and would like to manipulate the schema as they see fit.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Any interceptor can implement <a href="http://gorm.grails.org/latest/api//org/grails/datastore/mapping/core/Ordered.html">Ordered</a> to control the order it is invoked.
+</td>
+</tr>
+</table>
+</div>
 <div class="sect1">
 <h2 id="_get_the_manager">Get The Manager</h2>
 <div class="sectionbody">
@@ -2741,9 +2916,11 @@ mutation {
                     
                     <div class="toc-item" style="margin-left:10px"><a href="#list"><strong>3.3</strong><span>List</span></a></div>
                     
-                    <div class="toc-item" style="margin-left:10px"><a href="#update"><strong>3.4</strong><span>Update</span></a></div>
+                    <div class="toc-item" style="margin-left:10px"><a href="#count"><strong>3.4</strong><span>Count</span></a></div>
                     
-                    <div class="toc-item" style="margin-left:10px"><a href="#delete"><strong>3.5</strong><span>Delete</span></a></div>
+                    <div class="toc-item" style="margin-left:10px"><a href="#update"><strong>3.5</strong><span>Update</span></a></div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#delete"><strong>3.6</strong><span>Delete</span></a></div>
                     
                     <div class="toc-item" style="margin-left:0px"><a href="#customizations"><strong>4</strong><span>Customizing The Schema</span></a></div>
                     

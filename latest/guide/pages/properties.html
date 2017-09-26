@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>4.1 Properties 1.0.0.RC1</title>
+    <title>4.1 Properties 1.0.0.RC2</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -90,7 +90,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>4.1 Properties</h1>
 
-                    <p><strong>Version:</strong> 1.0.0.RC1</p>
+                    <p><strong>Version:</strong> 1.0.0.RC2</p>
                 </div>
 
                 
@@ -275,6 +275,48 @@ The data type returned must be the same as the property type.
     property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">deprecated</span>: <span class="predefined-constant">true</span>) <span class="comment">//&quot;Deprecated&quot; will be the reason</span>
 }</code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_name">Name</h3>
+<div class="paragraph">
+<p>It is possible to change the name of existing properties as they appear in the schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">authority</span><span class="delimiter">'</span></span>, <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+When changing the name of a property, you must also account for the change when it comes to data binding in create or update operations. The following is an example data binder implementation for changing the property name from <code>authority</code> to <code>name</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.binding.GrailsGraphQLDataBinder</span>
+
+<span class="type">class</span> <span class="class">RoleDataBinder</span> <span class="directive">extends</span> GrailsGraphQLDataBinder {
+
+    <span class="annotation">@Override</span>
+    <span class="type">void</span> bind(<span class="predefined-type">Object</span> object, <span class="predefined-type">Map</span> data) {
+        data.put(<span class="string"><span class="delimiter">'</span><span class="content">authority</span><span class="delimiter">'</span></span>, data.remove(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>))
+        <span class="local-variable">super</span>.bind(object, data)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The data binding implementation is removing the <code>name</code> property and assigning it back to <code>authority</code> so it can be correctly bound to the domain object.</p>
 </div>
 </div>
 <div class="sect2">

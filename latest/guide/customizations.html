@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>4 Customizing The Schema 1.0.0.RC1</title>
+    <title>4 Customizing The Schema 1.0.0.RC2</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -90,7 +90,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>4 Customizing The Schema</h1>
 
-                    <p><strong>Version:</strong> 1.0.0.RC1</p>
+                    <p><strong>Version:</strong> 1.0.0.RC2</p>
                 </div>
 
                 
@@ -304,6 +304,48 @@ The data type returned must be the same as the property type.
     property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">deprecated</span>: <span class="predefined-constant">true</span>) <span class="comment">//&quot;Deprecated&quot; will be the reason</span>
 }</code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_name">Name</h3>
+<div class="paragraph">
+<p>It is possible to change the name of existing properties as they appear in the schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">authority</span><span class="delimiter">'</span></span>, <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+When changing the name of a property, you must also account for the change when it comes to data binding in create or update operations. The following is an example data binder implementation for changing the property name from <code>authority</code> to <code>name</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.binding.GrailsGraphQLDataBinder</span>
+
+<span class="type">class</span> <span class="class">RoleDataBinder</span> <span class="directive">extends</span> GrailsGraphQLDataBinder {
+
+    <span class="annotation">@Override</span>
+    <span class="type">void</span> bind(<span class="predefined-type">Object</span> object, <span class="predefined-type">Map</span> data) {
+        data.put(<span class="string"><span class="delimiter">'</span><span class="content">authority</span><span class="delimiter">'</span></span>, data.remove(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>))
+        <span class="local-variable">super</span>.bind(object, data)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The data binding implementation is removing the <code>name</code> property and assigning it back to <code>authority</code> so it can be correctly bound to the domain object.</p>
 </div>
 </div>
 <div class="sect2">
@@ -673,6 +715,67 @@ To customize properties to come before the identifier or version, set the value 
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_pagination">Pagination</h3>
+<div class="paragraph">
+<p>By default, list operations return a list of instances. For most pagination solutions, that is not enough data. In addition to the list of results, the total count is required to be able to calculate pagination controls. Pagination is supported in this library through configuration of the list operation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.list.paginate(<span class="predefined-constant">true</span>)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By configuring the list operation to paginate, instead of a list of results being returned, an object will be returned that has a "results" value, which is the list, and a "totalCount" value which is the total count not considering the pagination parameters.</p>
+</div>
+<div class="sect3">
+<h4 id="_customization">Customization</h4>
+<div class="paragraph">
+<p>It is possible to customize how the pagination response is created through the creation of a <a href="../api/org/grails/gorm/graphql/response/pagination/GraphQLPaginationResponseHandler.html">GraphQLPaginationResponseHandler</a>.</p>
+</div>
+<div class="paragraph">
+<p>How you can supply your own pagination response handler depends on whether the library is being used standalone or part of a Grails application.</p>
+</div>
+<div class="paragraph">
+<p>For standalone applications, simply set the handler on the schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.paginationResponseHandler = <span class="keyword">new</span> MyPaginationResponseHandler()
+...
+schema.generate()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For Grails applications, override the <code>graphQLPaginationResponseHandler</code> bean.</p>
+</div>
+<div class="listingblock">
+<div class="title">grails-app/config/spring/resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">beans = {
+    graphQLPaginationResponseHandler(MyPaginationResponseHandler)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Data fetchers must respond according to the object type definition created by the pagination response handler. When supplying your own data fetcher, implement <a href="../api/org/grails/gorm/graphql/fetcher/PaginatingGormDataFetcher.html">PaginatingGormDataFetcher</a> and the response handler will be populated for you. The response handler is responsible for creating the response in order to assure it is compatible.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -700,6 +803,26 @@ To customize properties to come before the identifier or version, set the value 
         <span class="comment">//authorByName is the name exposed by the API</span>
         <span class="comment">//Author is the return type</span>
         query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) { <span class="comment">//or [Author] to return a list of authors</span>
+            ...
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the case where a pagination result should be returned from the custom operation, a simple method <code>pagedResult</code> is available to mark the type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+
+        <span class="comment">//authorsByName is the name exposed by the API</span>
+        <span class="comment">//The return type will have a results key and a totalCount key</span>
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorsByName</span><span class="delimiter">'</span></span>, pagedResult(Author)) {
             ...
         }
     }
@@ -830,6 +953,10 @@ To customize properties to come before the identifier or version, set the value 
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">LIST</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html">EntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LIST (Paginated Response)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/PaginatedEntityDataFetcher.html">PaginatedEntityDataFetcher</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CREATE</p></td>

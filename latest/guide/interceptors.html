@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>8 Interceptors 1.0.0.RC1</title>
+    <title>8 Interceptors 1.0.0.RC2</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -90,7 +90,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>8 Interceptors</h1>
 
-                    <p><strong>Version:</strong> 1.0.0.RC1</p>
+                    <p><strong>Version:</strong> 1.0.0.RC2</p>
                 </div>
 
                 
@@ -111,6 +111,18 @@ function addJsClass() {
 </div>
 <div class="paragraph">
 <p>Schema interceptors allow users to hook directly into the schema creation process to modify the schema directly before it is created. This option is for users who are comfortable with the <a href="https://github.com/graphql-java/graphql-java">graphql-java</a> library and would like to manipulate the schema as they see fit.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Any interceptor can implement <a href="http://gorm.grails.org/latest/api//org/grails/datastore/mapping/core/Ordered.html">Ordered</a> to control the order it is invoked.
+</td>
+</tr>
+</table>
 </div>
 <div class="sect1">
 <h2 id="_get_the_manager">Get The Manager</h2>
