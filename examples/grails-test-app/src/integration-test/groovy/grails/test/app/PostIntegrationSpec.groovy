@@ -14,6 +14,11 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
 
     @Shared SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
 
+    @Shared Long postId
+    @Shared Long post2Id
+    @Shared Long tagId
+    @Shared Long tag2Id
+
     void "test creating a post without tags"() {
         when:
         def resp = graphQL.graphql("""
@@ -75,9 +80,12 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
             }
         """)
         def obj = resp.json.data.postCreate
+        postId = obj.id
+        tagId = obj?.tags?.find { it.name == 'Grails' }?.id
+        tag2Id = obj?.tags?.find { it.name == 'Groovy' }?.id
 
         then:
-        obj.id == 2
+        obj.id
         obj.title == 'Grails 3.3 Release'
         obj.tags.size() == 3
         obj.tags.find { it.name == 'Grails' }
@@ -94,7 +102,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               postCreate(post: {
                 title: "Grails 3.4 Release",
                 tags: [
-                  {id: 1}
+                  {id: ${tagId}}
                 ]
               }) {
                 id
@@ -105,16 +113,21 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
                   id
                   name
                 }
+                errors {
+                  field
+                  message
+                }
               }
             }
         """)
         def obj = resp.json.data.postCreate
+        post2Id = obj.id
 
         then:
-        obj.id == 3
+        obj.id
         obj.title == 'Grails 3.4 Release'
         obj.tags.size() == 1
-        obj.tags.find { it.id == 1 }
+        obj.tags.find { it.name == 'Grails' }
         obj.dateCreated != null
         obj.lastUpdated != null
     }
@@ -124,11 +137,11 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
         Thread.sleep(1000)
         def resp = graphQL.graphql("""
             mutation {
-              postUpdate(id: 3, post: {
+              postUpdate(id: ${post2Id}, post: {
                 title: "Grails 3.5 Release",
                 tags: [
-                    {id: 1},
-                    {id: 2}
+                    {id: ${tagId}},
+                    {id: ${tag2Id}}
                 ]
               }) {
                 id
@@ -148,8 +161,8 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
         obj.id
         obj.title == 'Grails 3.5 Release'
         obj.tags.size() == 2
-        obj.tags.find { it.id == 1 }
-        obj.tags.find { it.id == 2 }
+        obj.tags.find { it.name == 'Grails' }
+        obj.tags.find { it.name == 'Groovy' }
         format.parse(obj.lastUpdated) > format.parse(obj.dateCreated)
     }
 
@@ -210,7 +223,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
         when:
         def resp = graphQL.graphql("""
             {
-              post(id: 3) {
+              post(id: ${post2Id}) {
                 title
               }
             }
@@ -225,7 +238,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
         when:
         def resp = graphQL.graphql("""
             mutation {
-              postDelete(id: 3) {
+              postDelete(id: ${post2Id}) {
                 success
               }
             }
@@ -239,7 +252,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
     void cleanupSpec() {
         def result = graphQL.graphql("""
             mutation {
-              postDelete(id: 2) {
+              postDelete(id: ${postId}) {
                 success
               }
             }
