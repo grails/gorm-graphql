@@ -21,7 +21,6 @@ import org.grails.gorm.graphql.response.pagination.DefaultGraphQLPaginationRespo
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.types.input.AbstractInputObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.AbstractObjectTypeBuilder
-import org.grails.gorm.graphql.types.scalars.GormScalars
 import org.grails.gorm.graphql.types.scalars.GraphQLByteArray
 import org.grails.gorm.graphql.types.scalars.GraphQLCharacterArray
 import org.springframework.context.support.StaticMessageSource
@@ -67,11 +66,11 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
         where:
         clazz   | expectedType
         boolean | Scalars.GraphQLBoolean
-        int     | GormScalars.GraphQLInt
-        short   | GormScalars.GraphQLShort
-        byte    | GormScalars.GraphQLByte
+        int     | Scalars.GraphQLInt
+        short   | Scalars.GraphQLShort
+        byte    | Scalars.GraphQLByte
         char    | Scalars.GraphQLChar
-        long    | GormScalars.GraphQLLong
+        long    | Scalars.GraphQLLong
         float   | Scalars.GraphQLFloat
         double  | Scalars.GraphQLFloat
     }
@@ -107,10 +106,10 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
         thrown(TypeNotFoundException)
 
         when:
-        typeManager.registerType(AtomicLong, GormScalars.GraphQLLong)
+        typeManager.registerType(AtomicLong, Scalars.GraphQLLong)
 
         then:
-        typeManager.getType(AtomicLong) == GormScalars.GraphQLLong
+        typeManager.getType(AtomicLong) == Scalars.GraphQLLong
     }
 
     void "test getEnumType Foo"() {

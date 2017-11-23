@@ -20,7 +20,6 @@ import org.grails.gorm.graphql.response.pagination.DefaultGraphQLPaginationRespo
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.gorm.graphql.types.GraphQLTypeManager
-import org.grails.gorm.graphql.types.scalars.GormScalars
 import spock.lang.Specification
 
 class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
@@ -204,7 +203,7 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         xyz.arguments[0].name == 'fooBar'
 
         ((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType).getField('foo').type instanceof GraphQLNonNull
-        ((GraphQLNonNull)(((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType)).getField('foo').type).wrappedType == GormScalars.GraphQLInt
+        ((GraphQLNonNull)(((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType)).getField('foo').type).wrappedType == Scalars.GraphQLInt
         (((GraphQLInputObjectType)((GraphQLNonNull)xyz.arguments[0].type).wrappedType)).fieldDefinitions.size() == 1
     }
 }

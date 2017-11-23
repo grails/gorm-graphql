@@ -5,11 +5,8 @@ import org.grails.datastore.mapping.config.Settings
 import org.grails.datastore.mapping.core.DatastoreUtils
 import org.grails.gorm.graphql.domain.general.GeneralPackage
 import org.grails.gorm.graphql.domain.hibernate.HibernatePackage
-import org.grails.gorm.graphql.fetcher.PaginatingGormDataFetcher
-import org.grails.gorm.graphql.fetcher.interceptor.InterceptingDataFetcher
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.types.GraphQLPropertyType
-import org.grails.gorm.graphql.types.scalars.GormScalars
 import org.grails.orm.hibernate.HibernateDatastore
 import spock.lang.AutoCleanup
 import spock.lang.Shared
