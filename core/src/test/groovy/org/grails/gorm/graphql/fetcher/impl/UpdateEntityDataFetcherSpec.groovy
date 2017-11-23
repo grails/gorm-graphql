@@ -38,6 +38,43 @@ class UpdateEntityDataFetcherSpec extends HibernateSpec {
         updated.name == 'Sally'
     }
 
+    void "test optimistic locking"() {
+        given:
+        OtherDomain other = createInstance()
+        DataFetchingEnvironment env = Mock(DataFetchingEnvironment)
+        GraphQLDataBinder binder = new DefaultGraphQLDataBinderManager().getDataBinder(Object)
+        UpdateEntityDataFetcher fetcher = new UpdateEntityDataFetcher<>(mappingContext.getPersistentEntity(OtherDomain.name))
+        fetcher.dataBinder = binder
+
+        when:
+        OtherDomain updated = fetcher.get(env)
+
+        then:
+        1 * env.getArgument('id') >> other.id
+        1 * env.getArgument('otherDomain') >> ['name': 'Sally', 'version': -1L]
+        updated.name == 'John'
+        updated.errors.hasFieldErrors('version')
+    }
+
+
+    void "test optimistic locking with null version"() {
+        given:
+        OtherDomain other = createInstance()
+        DataFetchingEnvironment env = Mock(DataFetchingEnvironment)
+        GraphQLDataBinder binder = new DefaultGraphQLDataBinderManager().getDataBinder(Object)
+        UpdateEntityDataFetcher fetcher = new UpdateEntityDataFetcher<>(mappingContext.getPersistentEntity(OtherDomain.name))
+        fetcher.dataBinder = binder
+
+        when:
+        OtherDomain updated = fetcher.get(env)
+
+        then:
+        1 * env.getArgument('id') >> other.id
+        1 * env.getArgument('otherDomain') >> ['name': 'Sally', 'version': null]
+        updated.name == 'Sally'
+        !updated.hasErrors()
+    }
+
     void "test supports"() {
         when:
         UpdateEntityDataFetcher fetcher = new UpdateEntityDataFetcher<>(mappingContext.getPersistentEntity(OtherDomain.name))

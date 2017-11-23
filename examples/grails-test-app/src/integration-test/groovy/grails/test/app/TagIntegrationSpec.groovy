@@ -133,6 +133,30 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
         System.setOut(originalOut)
     }
 
+    void "test optimistic locking"() {
+        when:
+        def resp = graphQL.graphql("""
+            mutation {
+              tagUpdate(id: ${grailsId}, tag: {version: -1, name: "Grails 3"}) {
+                id
+                name
+                errors {
+                  field 
+                  message
+                }  
+              }
+            }
+        """)
+        JSONObject obj = resp.json.data.tagUpdate
+
+        then:
+        obj.id == grailsId
+        obj.name == "Grails" //Updated data not bound
+        obj.errors.size() == 1
+        obj.errors[0].field == "version"
+        obj.errors[0].message == "Another user has updated this Tag while you were editing"
+    }
+
     void cleanupSpec() {
         def resp = graphQL.graphql("""
             { 
