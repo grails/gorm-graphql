@@ -1,11 +1,12 @@
 buildscript {
     repositories {
         mavenLocal()
+        maven { url 'https://repo.grails.org/grails/libs-snapshots-local/' }
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "org.grails:grails-docs:$grailsVersion"
+        classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
         classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
@@ -20,7 +21,7 @@ repositories {
 version project.projectVersion
 
 ext {
-    commonBuild = "https://raw.githubusercontent.com/grails/grails-common-build/cfd3bca16661cbb6fead6006715ea5ee26fb737a/"
+    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/d46efe9f0b41d6d215e245451a4c9d3504c347ee'
 }
 
 subprojects {
