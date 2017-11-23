@@ -36,6 +36,7 @@ Just by adding the `graphql = true` property on your domain, full CRUD capabilit
 - Queries
 ** `book(id: ..)`
 ** `bookList(max: .., sort: .., etc)`
+** `bookCount`
 
 - Mutations
 ** `bookCreate(book: {})`
