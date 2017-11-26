@@ -3,6 +3,7 @@ package org.grails.gorm.graphql.plugin
 import grails.plugins.Plugin
 import grails.web.mime.MimeType
 import graphql.GraphQL
+import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.Schema
 import org.grails.gorm.graphql.binding.manager.DefaultGraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
@@ -73,7 +74,7 @@ Brief summary/description of the plugin.
         graphQLDataFetcherManager(DefaultGraphQLDataFetcherManager)
         graphQLInterceptorManager(DefaultGraphQLInterceptorManager)
 
-        graphQLSchemaGenerator(Schema, ref("grailsDomainClassMappingContext")) {
+        graphQLSchemaGenerator(Schema) {
             deleteResponseHandler = ref("graphQLDeleteResponseHandler")
             namingConvention = ref("graphQLEntityNamingConvention")
             typeManager = ref("graphQLTypeManager")
