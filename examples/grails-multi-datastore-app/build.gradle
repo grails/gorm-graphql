@@ -23,6 +23,7 @@ dependencies {
     console "org.grails:grails-console"
     profile "org.grails.profiles:rest-api"
     provided "org.grails.plugins:embedded-mongodb:1.0.2"
+    compile "org.apache.commons:commons-compress:1.10"
     runtime "org.glassfish.web:el-impl:2.1.2-b03"
     runtime "com.h2database:h2"
     runtime "org.apache.tomcat:tomcat-jdbc"

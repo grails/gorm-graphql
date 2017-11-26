@@ -10,7 +10,7 @@ import spock.lang.Specification
 @Integration
 class BarIntegrationSpec extends Specification implements GraphQLSpec {
 
-    void "test a foo can be created"() {
+    void "test a bar can be created"() {
         when:
         def resp = graphQL.graphql("""
             mutation {
