@@ -70,4 +70,11 @@ subprojects {
     dependencies {
         testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"
     }
+
+    tasks.withType(Test) {
+        testLogging {
+            events "failed"
+            exceptionFormat "full"
+        }
+    }
 }
