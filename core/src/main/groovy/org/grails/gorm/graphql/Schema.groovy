@@ -261,10 +261,7 @@ class Schema {
                 ProvidedOperation getOperation = mapping.operations.get
                 if (getOperation.enabled) {
 
-                    DataFetcher getFetcher = dataFetcherManager.getReadingFetcher(entity, GET)
-                    if (getFetcher == null) {
-                        getFetcher = new SingleEntityDataFetcher(entity)
-                    }
+                    DataFetcher getFetcher = dataFetcherManager.getReadingFetcher(entity, GET).orElse(new SingleEntityDataFetcher(entity))
 
                     GraphQLFieldDefinition.Builder queryOne = newFieldDefinition()
                             .name(namingConvention.getGet(entity))
@@ -280,7 +277,7 @@ class Schema {
                 ListOperation listOperation = mapping.operations.list
                 if (listOperation.enabled) {
 
-                    DataFetcher listFetcher = dataFetcherManager.getReadingFetcher(entity, LIST)
+                    DataFetcher listFetcher = dataFetcherManager.getReadingFetcher(entity, LIST).orElse(null)
 
                     GraphQLFieldDefinition.Builder queryAll = newFieldDefinition()
                             .name(namingConvention.getList(entity))
@@ -318,17 +315,13 @@ class Schema {
                 ProvidedOperation countOperation = mapping.operations.count
                 if (countOperation.enabled) {
 
-                    DataFetcher countFetcher = dataFetcherManager.getReadingFetcher(entity, COUNT)
+                    DataFetcher countFetcher = dataFetcherManager.getReadingFetcher(entity, COUNT).orElse(new CountEntityDataFetcher(entity))
 
                     GraphQLFieldDefinition.Builder queryCount = newFieldDefinition()
                             .name(namingConvention.getCount(entity))
                             .type((GraphQLOutputType)typeManager.getType(Integer))
                             .description(countOperation.description)
                             .deprecate(countOperation.deprecationReason)
-
-                    if (countFetcher == null) {
-                        countFetcher = new CountEntityDataFetcher(entity)
-                    }
 
                     queryCount.dataFetcher(new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, COUNT, countFetcher))
 
@@ -346,11 +339,8 @@ class Schema {
                     }
                     GraphQLInputType createObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.CREATE, true)
 
-                    BindingGormDataFetcher createFetcher = dataFetcherManager.getBindingFetcher(entity, CREATE)
+                    BindingGormDataFetcher createFetcher = dataFetcherManager.getBindingFetcher(entity, CREATE).orElse(new CreateEntityDataFetcher(entity))
 
-                    if (createFetcher == null) {
-                        createFetcher = new CreateEntityDataFetcher(entity)
-                    }
                     createFetcher.dataBinder = dataBinder
 
                     GraphQLFieldDefinition.Builder create = newFieldDefinition()
@@ -373,10 +363,8 @@ class Schema {
                     }
                     GraphQLInputType updateObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.UPDATE, true)
 
-                    BindingGormDataFetcher updateFetcher = dataFetcherManager.getBindingFetcher(entity, UPDATE)
-                    if (updateFetcher == null) {
-                        updateFetcher = new UpdateEntityDataFetcher(entity)
-                    }
+                    BindingGormDataFetcher updateFetcher = dataFetcherManager.getBindingFetcher(entity, UPDATE).orElse(new UpdateEntityDataFetcher(entity))
+
                     updateFetcher.dataBinder = dataBinder
 
                     GraphQLFieldDefinition.Builder update = newFieldDefinition()
@@ -399,10 +387,8 @@ class Schema {
                 ProvidedOperation deleteOperation = mapping.operations.delete
                 if (deleteOperation.enabled) {
 
-                    DeletingGormDataFetcher deleteFetcher = dataFetcherManager.getDeletingFetcher(entity)
-                    if (deleteFetcher == null) {
-                        deleteFetcher = new DeleteEntityDataFetcher(entity)
-                    }
+                    DeletingGormDataFetcher deleteFetcher = dataFetcherManager.getDeletingFetcher(entity).orElse(new DeleteEntityDataFetcher(entity))
+
                     deleteFetcher.responseHandler = deleteResponseHandler
 
                     GraphQLFieldDefinition.Builder delete = newFieldDefinition()

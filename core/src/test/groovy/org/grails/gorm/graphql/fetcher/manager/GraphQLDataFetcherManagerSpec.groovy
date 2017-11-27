@@ -144,8 +144,8 @@ class GraphQLDataFetcherManagerSpec extends Specification {
         manager.registerBindingDataFetcher(String, mockBindingFetcher)
 
         then: "the binder is not registered because it doesn't support any type"
-        manager.getBindingFetcher(getMockEntity(String), CREATE) == null
-        manager.getBindingFetcher(getMockEntity(String), UPDATE) == null
+        !manager.getBindingFetcher(getMockEntity(String), CREATE).isPresent()
+        !manager.getBindingFetcher(getMockEntity(String), UPDATE).isPresent()
     }
 
     void "test fetchers for the exact class are resolved first (binding)"() {
@@ -170,27 +170,27 @@ class GraphQLDataFetcherManagerSpec extends Specification {
         }
 
         expect: 'The default binders are returned'
-        manager.getBindingFetcher(getMockEntity(String), CREATE) == mockBindingFetcher
-        manager.getBindingFetcher(getMockEntity(String), UPDATE) == mockBindingFetcher
+        manager.getBindingFetcher(getMockEntity(String), CREATE).get() == mockBindingFetcher
+        manager.getBindingFetcher(getMockEntity(String), UPDATE).get() == mockBindingFetcher
 
         when: 'A binder is registered for String that supports CREATE'
         manager.registerBindingDataFetcher(String, myBindingFetcher)
 
         then: 'The binder is returned for CREATE, and the Object binder is returned for update'
-        manager.getBindingFetcher(getMockEntity(String), CREATE) == myBindingFetcher
+        manager.getBindingFetcher(getMockEntity(String), CREATE).get() == myBindingFetcher
 
         when: 'The manager has no default binders'
         manager = new DefaultGraphQLDataFetcherManager()
 
         then: 'null is returned'
-        manager.getBindingFetcher(getMockEntity(String), CREATE) == null
-        manager.getBindingFetcher(getMockEntity(String), UPDATE) == null
+        !manager.getBindingFetcher(getMockEntity(String), CREATE).isPresent()
+        !manager.getBindingFetcher(getMockEntity(String), UPDATE).isPresent()
 
         when: 'A custom binder is registered'
         manager.registerBindingDataFetcher(String, myBindingFetcher)
 
         then: 'The binder is returned'
-        manager.getBindingFetcher(getMockEntity(String), CREATE) == myBindingFetcher
+        manager.getBindingFetcher(getMockEntity(String), CREATE).get() == myBindingFetcher
     }
 
     void "test fetchers for the exact class are resolved first (reading)"() {
@@ -214,29 +214,29 @@ class GraphQLDataFetcherManagerSpec extends Specification {
 
 
         expect: 'The default binders are returned'
-        manager.getReadingFetcher(getMockEntity(String), GET) == mockReadingFetcher
-        manager.getReadingFetcher(getMockEntity(String), LIST) == mockReadingFetcher
-        manager.getReadingFetcher(getMockEntity(String), COUNT) == mockReadingFetcher
+        manager.getReadingFetcher(getMockEntity(String), GET).get() == mockReadingFetcher
+        manager.getReadingFetcher(getMockEntity(String), LIST).get() == mockReadingFetcher
+        manager.getReadingFetcher(getMockEntity(String), COUNT).get() == mockReadingFetcher
 
         when: 'A binder is registered for String that supports GET'
         manager.registerReadingDataFetcher(String, myReadingFetcher)
 
         then: 'The binder is returned for GET, and the Object binder is returned for update'
-        manager.getReadingFetcher(getMockEntity(String), GET) == myReadingFetcher
+        manager.getReadingFetcher(getMockEntity(String), GET).get() == myReadingFetcher
 
         when: 'The manager has no default binders'
         manager = new DefaultGraphQLDataFetcherManager()
 
         then: 'null is returned'
-        manager.getReadingFetcher(getMockEntity(String), GET) == null
-        manager.getReadingFetcher(getMockEntity(String), LIST) == null
-        manager.getReadingFetcher(getMockEntity(String), COUNT) == null
+        !manager.getReadingFetcher(getMockEntity(String), GET).isPresent()
+        !manager.getReadingFetcher(getMockEntity(String), LIST).isPresent()
+        !manager.getReadingFetcher(getMockEntity(String), COUNT).isPresent()
 
         when: 'A custom binder is registered'
         manager.registerReadingDataFetcher(String, myReadingFetcher)
 
         then: 'The binder is returned'
-        manager.getReadingFetcher(getMockEntity(String), GET) == myReadingFetcher
+        manager.getReadingFetcher(getMockEntity(String), GET).get() == myReadingFetcher
     }
 
     void "test fetchers for the exact class are resolved first (deleting)"() {
@@ -251,25 +251,25 @@ class GraphQLDataFetcherManagerSpec extends Specification {
         DeletingGormDataFetcher myDeletingFetcher = new FakeDeletingFetcher()
 
         expect: 'The default binders are returned'
-        manager.getDeletingFetcher(getMockEntity(String)) == mockDeletingFetcher
+        manager.getDeletingFetcher(getMockEntity(String)).get() == mockDeletingFetcher
 
         when: 'A binder is registered for String that supports CREATE'
         manager.registerDeletingDataFetcher(String, myDeletingFetcher)
 
         then: 'The binder is returned for CREATE, and the Object binder is returned for update'
-        manager.getDeletingFetcher(getMockEntity(String)) == myDeletingFetcher
+        manager.getDeletingFetcher(getMockEntity(String)).get() == myDeletingFetcher
 
         when: 'The manager has no default binders'
         manager = new DefaultGraphQLDataFetcherManager()
 
         then: 'null is returned'
-        manager.getDeletingFetcher(getMockEntity(String)) == null
+        !manager.getDeletingFetcher(getMockEntity(String)).isPresent()
 
         when: 'A custom binder is registered'
         manager.registerDeletingDataFetcher(String, myDeletingFetcher)
 
         then: 'The binder is returned'
-        manager.getDeletingFetcher(getMockEntity(String)) == myDeletingFetcher
+        manager.getDeletingFetcher(getMockEntity(String)).get() == myDeletingFetcher
     }
 
     class FakeDeletingFetcher implements DeletingGormDataFetcher {

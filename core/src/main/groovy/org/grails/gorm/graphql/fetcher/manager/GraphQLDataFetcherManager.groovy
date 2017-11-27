@@ -46,25 +46,25 @@ interface GraphQLDataFetcherManager {
      *
      * @param entity The entity representing the domain used in the fetcher
      * @param type Which returnType of fetcher to return (CREATE or UPDATE)
-     * @return The data fetcher found, or null
+     * @return An optional data fetcher
      */
-    BindingGormDataFetcher getBindingFetcher(PersistentEntity entity, GraphQLDataFetcherType type)
+    Optional<BindingGormDataFetcher> getBindingFetcher(PersistentEntity entity, GraphQLDataFetcherType type)
 
     /**
      * Returns a data fetcher instance to be used in DELETE
      *
      * @param entity The entity representing the domain used in the fetcher
-     * @return The data fetcher found, or null
+     * @return An optional data fetcher
      */
-    DeletingGormDataFetcher getDeletingFetcher(PersistentEntity entity)
+    Optional<DeletingGormDataFetcher> getDeletingFetcher(PersistentEntity entity)
 
     /**
      * Returns a data fetcher instance to be used in GET or LIST
      *
      * @param entity The entity representing the domain used in the fetcher
      * @param type Which returnType of fetcher to return (GET or LIST)
-     * @return The data fetcher found, or null
+     * @return An optional data fetcher
      */
-    ReadingGormDataFetcher getReadingFetcher(PersistentEntity entity, GraphQLDataFetcherType type)
+    Optional<ReadingGormDataFetcher> getReadingFetcher(PersistentEntity entity, GraphQLDataFetcherType type)
 
 }

@@ -7,9 +7,7 @@ import org.grails.gorm.graphql.entity.dsl.helpers.Describable
 import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
 import org.grails.gorm.graphql.entity.operations.ComplexOperation
 import org.grails.gorm.graphql.entity.operations.CustomOperation
-import org.grails.gorm.graphql.entity.operations.ListOperation
 import org.grails.gorm.graphql.entity.operations.OperationType
-import org.grails.gorm.graphql.entity.operations.ProvidedOperation
 import org.grails.gorm.graphql.entity.operations.SimpleOperation
 import org.grails.gorm.graphql.entity.property.impl.ComplexGraphQLProperty
 import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty

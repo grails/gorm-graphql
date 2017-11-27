@@ -87,28 +87,33 @@ class DefaultGraphQLDataFetcherManager implements GraphQLDataFetcherManager {
         null
     }
 
-    protected DataFetcher getCustomFetcher(PersistentEntity entity, GraphQLDataFetcherType type) {
-        getCustomFetcher(entity.javaClass, type) ?: getCustomFetcher(Object, type)
+    protected Optional<DataFetcher> getCustomFetcher(PersistentEntity entity, GraphQLDataFetcherType type) {
+        DataFetcher fetcher = getCustomFetcher(entity.javaClass, type) ?: getCustomFetcher(Object, type)
+        if (fetcher != null) {
+            Optional.of(fetcher)
+        } else {
+            Optional.empty()
+        }
     }
 
     @Override
-    BindingGormDataFetcher getBindingFetcher(PersistentEntity entity, GraphQLDataFetcherType type) {
+    Optional<BindingGormDataFetcher> getBindingFetcher(PersistentEntity entity, GraphQLDataFetcherType type) {
         if (type?.requiredClass != BindingGormDataFetcher) {
             throw new IllegalArgumentException("The type specified (${type}) is null or invalid")
         }
-        (BindingGormDataFetcher)getCustomFetcher(entity, type)
+        getCustomFetcher(entity, type).map { DataFetcher d -> (BindingGormDataFetcher) d }
     }
 
     @Override
-    DeletingGormDataFetcher getDeletingFetcher(PersistentEntity entity) {
-        (DeletingGormDataFetcher)getCustomFetcher(entity, GraphQLDataFetcherType.DELETE)
+    Optional<DeletingGormDataFetcher> getDeletingFetcher(PersistentEntity entity) {
+        getCustomFetcher(entity, GraphQLDataFetcherType.DELETE).map { DataFetcher d -> (DeletingGormDataFetcher) d }
     }
 
     @Override
-    ReadingGormDataFetcher getReadingFetcher(PersistentEntity entity, GraphQLDataFetcherType type) {
+    Optional<ReadingGormDataFetcher> getReadingFetcher(PersistentEntity entity, GraphQLDataFetcherType type) {
         if (type?.requiredClass != ReadingGormDataFetcher) {
             throw new IllegalArgumentException("The type specified (${type}) is null or invalid")
         }
-        (ReadingGormDataFetcher)getCustomFetcher(entity, type)
+        getCustomFetcher(entity, type).map { DataFetcher d -> (ReadingGormDataFetcher) d }
     }
 }
