@@ -2,6 +2,10 @@
 
 This section of the documentation is designed to inform you about special circumstances that may impact some use cases.
 
+=== Metadata
+
+You may come across a time when you would like to supply metadata for a property or type, but because that type is not part of an exposed persistent entity, it is not possible to do so via the mapping DSL. For those use cases, a link:{api}/org/grails/gorm/graphql/GraphQL.html[@GraphQL] annotation exists. The annotation can be applied to related entities or enums, for example.
+
 === Nullability
 
 The nullable constraint on persistent properties is only respected during the create operation. For all other cases, null is always allowed. The reasoning for allowing nulls for output operations (get or list) is due to the possibility of the properties being null as a result of validation errors during a create or update. Nulls are allowed for update operations to allow users to send a partial object instead of the entire object.
