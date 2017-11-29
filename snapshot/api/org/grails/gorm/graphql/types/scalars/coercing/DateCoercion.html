@@ -206,23 +206,29 @@ class DateCoercion
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;java.util.Date</code></td>
-                            <td class="colLast"><code><strong><a href="#parseDate(java.lang.String)">parseDate</a></strong>(java.lang.String value)</code><br></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.Optional&lt;java.util.Date&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#convert(java.lang.Object)">convert</a></strong>(java.lang.Object input)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>java.util.Date</code></td>
-                            <td class="colLast"><code><strong><a href="#parseLiteral(java.lang.Object)">parseLiteral</a></strong>(java.lang.Object input)</code><br></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.Optional&lt;java.util.Date&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#parseDate(java.lang.String)">parseDate</a></strong>(java.lang.String value)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.Date</code></td>
-                            <td class="colLast"><code><strong><a href="#parseValue(java.lang.Object)">parseValue</a></strong>(java.lang.Object input)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#parseLiteral(java.lang.Object)">parseLiteral</a></strong>(java.lang.Object input)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.util.Date</code></td>
+                            <td class="colLast"><code><strong><a href="#parseValue(java.lang.Object)">parseValue</a></strong>(java.lang.Object input)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.Date</code></td>
                             <td class="colLast"><code><strong><a href="#serialize(java.lang.Object)">serialize</a></strong>(java.lang.Object input)</code><br></td>
@@ -322,10 +328,18 @@ class DateCoercion
                 </a>
                     <h3>Method Detail</h3>
                     
+                        <a name="convert(java.lang.Object)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.Optional&lt;java.util.Date&gt; <strong>convert</strong>(java.lang.Object input)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="parseDate(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;java.util.Date <strong>parseDate</strong>(java.lang.String value)</h4>
+                                <h4>protected&nbsp;java.util.Optional&lt;java.util.Date&gt; <strong>parseDate</strong>(java.lang.String value)</h4>
                                 <p></p>
                             </li>
                         </ul>
