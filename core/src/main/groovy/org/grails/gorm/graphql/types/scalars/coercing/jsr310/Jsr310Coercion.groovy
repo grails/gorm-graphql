@@ -2,6 +2,8 @@ package org.grails.gorm.graphql.types.scalars.coercing.jsr310
 
 import graphql.language.StringValue
 import graphql.schema.Coercing
+import graphql.schema.CoercingParseValueException
+import graphql.schema.CoercingSerializeException
 import groovy.transform.CompileStatic
 
 import java.time.format.DateTimeParseException
@@ -24,23 +26,22 @@ abstract class Jsr310Coercion<T> implements Coercing<T, T> {
 
     @Override
     T serialize(Object input) {
-        if (input instanceof T) {
-            (T) input
-        }
-        else {
-            null
+        convertValue(input).orElseThrow {
+            throw new CoercingSerializeException("Could not convert ${input.class.name} to the required date type")
         }
     }
 
     @Override
     T parseValue(Object input) {
-        serialize(input)
+        convertValue(input).orElseThrow {
+            throw new CoercingParseValueException("Could not convert ${input.class.name} to the required date type")
+        }
     }
 
     @Override
     T parseLiteral(Object input) {
         if (input instanceof StringValue) {
-            convert(((StringValue) input).value)
+            convert(((StringValue) input).value).orElse(null)
         }
         else {
             null
@@ -49,11 +50,22 @@ abstract class Jsr310Coercion<T> implements Coercing<T, T> {
 
     abstract T parse(String value, String format)
 
-    T convert(String value) {
-        T dateValue
-        if (!value) {
-            return null
+    abstract Class getTypeClass()
+
+    protected Optional<T> convertValue(Object value) {
+        if (typeClass.isAssignableFrom(value.class)) {
+            Optional.of((T) value)
         }
+        else if (value instanceof String) {
+            convert((String) value)
+        }
+        else {
+            Optional.empty()
+        }
+    }
+
+    protected Optional<T> convert(String value) {
+        T dateValue
         Exception firstException
         formats.each { String format ->
             if (dateValue == null) {
@@ -64,10 +76,11 @@ abstract class Jsr310Coercion<T> implements Coercing<T, T> {
                 }
             }
         }
-        if (dateValue == null && firstException) {
-            throw firstException
-        }
 
-        dateValue
+        if (dateValue == null) {
+            Optional.empty()
+        } else {
+            Optional.of(dateValue)
+        }
     }
 }

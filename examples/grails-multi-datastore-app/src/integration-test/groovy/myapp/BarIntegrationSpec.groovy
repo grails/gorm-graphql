@@ -1,6 +1,7 @@
 package myapp
 
 import grails.testing.mixin.integration.Integration
+import org.bson.types.ObjectId
 import org.grails.datastore.gorm.GormEnhancer
 import org.grails.datastore.mapping.mongo.MongoDatastore
 import org.grails.gorm.graphql.plugin.testing.GraphQLSpec
@@ -26,7 +27,7 @@ class BarIntegrationSpec extends Specification implements GraphQLSpec {
         JSONObject obj = resp.json.data.barCreate
 
         then:
-        obj.id == 1
+        new ObjectId((String) obj.id)
         GormEnhancer.findStaticApi(Bar).datastore instanceof MongoDatastore
     }
 }

@@ -43,7 +43,8 @@ class GraphQLRequestUtils {
         graphQLRequest.with {
             query = json.query.toString()
             operationName = json.containsKey('operationName') ? json.operationName : null
-            variables = (json.variables instanceof Map) ? json.variables as Map : Collections.emptyMap()
+
+            variables = (json.variables instanceof Map) ? (Map)json.variables : Collections.emptyMap()
         }
         graphQLRequest
     }

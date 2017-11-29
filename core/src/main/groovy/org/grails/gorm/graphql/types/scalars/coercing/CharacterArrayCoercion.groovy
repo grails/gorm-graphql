@@ -1,9 +1,11 @@
 package org.grails.gorm.graphql.types.scalars.coercing
 
-import graphql.Scalars
 import graphql.language.ArrayValue
+import graphql.language.StringValue
 import graphql.language.Value
 import graphql.schema.Coercing
+import graphql.schema.CoercingParseValueException
+import graphql.schema.CoercingSerializeException
 import groovy.transform.CompileStatic
 import java.lang.reflect.Array
 
@@ -16,54 +18,65 @@ import java.lang.reflect.Array
 @CompileStatic
 class CharacterArrayCoercion implements Coercing<Character[], Character[]> {
 
-    Coercing<Character, Character> charCoercion = Scalars.GraphQLChar.coercing
+    protected Optional<Character[]> convert(Object input) {
+        if (input instanceof Character[]) {
+            Optional.of((Character[]) input)
+        }
+        else if (input instanceof Collection) {
+            Collection c = (Collection) input
+            Character[] converted = new Character[c.size()]
+            for (int i = 0; i < c.size(); i++) {
+                converted[i] = new Character((char)c[i])
+            }
+            Optional.of(converted)
+        }
+        else if (input.class.array) {
+            Character[] chars = new Character[Array.getLength(input)]
+            for (int i = 0; i < chars.length; i++) {
+                chars[i] = new Character((char)Array.get(input, i))
+            }
+            Optional.of(chars)
+        }
+        else {
+            Optional.empty()
+        }
+    }
 
     @Override
     Character[] serialize(Object input) {
-        if (input instanceof Character[]) {
-            (Character[]) input
-        }
-        else {
-            null
+        convert(input).orElseThrow {
+            throw new CoercingSerializeException("Could not convert ${input.class.name} to a Character[]")
         }
     }
 
     @Override
     Character[] parseValue(Object input) {
-        if (input instanceof Collection) {
-            Collection collection = (Collection) input
-            Character[] characters = new Character[collection.size()]
-            for (int i = 0; i < characters.length; i++) {
-                characters[i] = charCoercion.serialize(((Collection)input)[i].toString())
-            }
-            characters
+        convert(input).orElseThrow {
+            throw new CoercingParseValueException("Could not convert ${input.class.name} to a Character[]")
         }
-        else if (input.class.array) {
-            if (input instanceof Character[]) {
-                (Character[]) input
-            }
-            else {
-                Character[] strings = new Character[Array.getLength(input)]
-                for (int i = 0; i < strings.length; i++) {
-                    strings[i] = charCoercion.serialize(Array.get(input, i).toString())
-                }
-                strings
-            }
+    }
+
+    private Character convertValue(Value input) {
+        if (!(input instanceof StringValue)) {
+            return null
         }
-        else {
-            null
+        String value = ((StringValue) input).value
+        if (value.length() != 1) {
+            return null
         }
+        new Character(value.charAt(0))
     }
 
     @Override
     Character[] parseLiteral(Object input) {
         if (input instanceof ArrayValue) {
-            List<Character> returnList = []
             List<Value> values = ((ArrayValue) input).values
-            for (Value value: values) {
-                returnList.add(charCoercion.parseLiteral(value))
+            Character[] returnArray = new Character[values.size()]
+            for (int i = 0; i < values.size(); i++) {
+                Character convertedValue = convertValue(values[i])
+                returnArray[i] = convertedValue
             }
-            (Character[])returnList.toArray()
+            returnArray
         }
         else {
             null

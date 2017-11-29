@@ -20,4 +20,9 @@ class LocalDateCoercion extends Jsr310Coercion<LocalDate> {
     LocalDate parse(String value, String format) {
         LocalDate.parse((CharSequence) value, DateTimeFormatter.ofPattern(format))
     }
+
+    @Override
+    Class getTypeClass() {
+        LocalDate
+    }
 }

@@ -3,6 +3,8 @@ package org.grails.gorm.graphql.types.scalars.coercing
 import graphql.language.IntValue
 import graphql.language.StringValue
 import graphql.schema.Coercing
+import graphql.schema.CoercingParseValueException
+import graphql.schema.CoercingSerializeException
 import groovy.transform.CompileStatic
 
 import java.sql.Time
@@ -16,19 +18,30 @@ import java.sql.Time
 @CompileStatic
 class TimeCoercion implements Coercing<Time, Time> {
 
-    @Override
-    Time serialize(Object input) {
+    protected Optional<Time> convert(Object input) {
         if (input instanceof Time) {
-            (Time) input
+            Optional.of((Time) input)
+        }
+        else if (input instanceof String) {
+            parseTime((String) input)
         }
         else {
-            null
+            Optional.empty()
+        }
+    }
+
+    @Override
+    Time serialize(Object input) {
+        convert(input).orElseThrow {
+            throw new CoercingSerializeException("Could not convert ${input.class.name} to a java.sql.Time")
         }
     }
 
     @Override
     Time parseValue(Object input) {
-        serialize(input)
+        convert(input).orElseThrow {
+            throw new CoercingParseValueException("Could not convert ${input.class.name} to a java.sql.Time")
+        }
     }
 
     @Override
@@ -37,10 +50,18 @@ class TimeCoercion implements Coercing<Time, Time> {
             new Time(((IntValue) input).value.longValue())
         }
         else if (input instanceof StringValue) {
-            Time.valueOf(((StringValue) input).value)
+            parseTime(((StringValue) input).value).orElse(null)
         }
         else {
             null
+        }
+    }
+
+    protected Optional<Time> parseTime(String input) {
+        try {
+            Optional.of(Time.valueOf(input))
+        } catch (Exception e) {
+            Optional.empty()
         }
     }
 }

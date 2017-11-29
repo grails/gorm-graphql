@@ -20,4 +20,9 @@ class ZonedDateTimeCoercion extends Jsr310Coercion<ZonedDateTime> {
     ZonedDateTime parse(String value, String format) {
         ZonedDateTime.parse((CharSequence)value, DateTimeFormatter.ofPattern(format))
     }
+
+    @Override
+    Class getTypeClass() {
+        ZonedDateTime
+    }
 }

@@ -51,12 +51,6 @@ trait GraphQLSpec {
 
         private RestResponse buildJsonRequest(Map data) {
             StringWriter sw = new StringWriter()
-            if (data.containsKey('variables')) {
-                sw = new StringWriter()
-                new StreamingJsonBuilder(sw).call(data.variables)
-                data.put('variables', sw.toString())
-            }
-            sw = new StringWriter()
             new StreamingJsonBuilder(sw).call(data)
 
             rest.post(url) {

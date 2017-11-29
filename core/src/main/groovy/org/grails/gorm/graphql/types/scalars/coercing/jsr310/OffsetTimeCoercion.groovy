@@ -20,4 +20,9 @@ class OffsetTimeCoercion extends Jsr310Coercion<OffsetTime> {
     OffsetTime parse(String value, String format) {
         OffsetTime.parse((CharSequence)value, DateTimeFormatter.ofPattern(format))
     }
+
+    @Override
+    Class getTypeClass() {
+        OffsetTime
+    }
 }

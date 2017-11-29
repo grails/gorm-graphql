@@ -3,6 +3,8 @@ package org.grails.gorm.graphql.types.scalars.coercing
 import graphql.language.IntValue
 import graphql.language.StringValue
 import graphql.schema.Coercing
+import graphql.schema.CoercingParseValueException
+import graphql.schema.CoercingSerializeException
 import groovy.transform.CompileStatic
 
 import java.sql.Timestamp
@@ -16,19 +18,30 @@ import java.sql.Timestamp
 @CompileStatic
 class TimestampCoercion implements Coercing<Timestamp, Timestamp> {
 
-    @Override
-    Timestamp serialize(Object input) {
+    protected Optional<Timestamp> convert(Object input) {
         if (input instanceof Timestamp) {
-            (Timestamp) input
+            Optional.of((Timestamp) input)
+        }
+        else if (input instanceof String) {
+            parseTimestamp((String) input)
         }
         else {
-            null
+            Optional.empty()
+        }
+    }
+
+    @Override
+    Timestamp serialize(Object input) {
+        convert(input).orElseThrow {
+            throw new CoercingSerializeException("Could not convert ${input.class.name} to a java.sql.Timestamp")
         }
     }
 
     @Override
     Timestamp parseValue(Object input) {
-        serialize(input)
+        convert(input).orElseThrow {
+            throw new CoercingParseValueException("Could not convert ${input.class.name} to a java.sql.Timestamp")
+        }
     }
 
     @Override
@@ -37,10 +50,18 @@ class TimestampCoercion implements Coercing<Timestamp, Timestamp> {
             new Timestamp(((IntValue) input).value.longValue())
         }
         else if (input instanceof StringValue) {
-            Timestamp.valueOf(((StringValue) input).value)
+            parseTimestamp(((StringValue) input).value).orElse(null)
         }
         else {
             null
+        }
+    }
+
+    protected Optional<Timestamp> parseTimestamp(String input) {
+        try {
+            Optional.of(Timestamp.valueOf(input))
+        } catch (Exception e) {
+            Optional.empty()
         }
     }
 }

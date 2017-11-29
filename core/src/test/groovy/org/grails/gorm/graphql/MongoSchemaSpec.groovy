@@ -3,6 +3,8 @@ package org.grails.gorm.graphql
 import com.github.fakemongo.Fongo
 import graphql.language.StringValue
 import graphql.schema.Coercing
+import graphql.schema.CoercingParseValueException
+import graphql.schema.CoercingSerializeException
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLScalarType
 import graphql.schema.GraphQLSchema
@@ -34,28 +36,48 @@ class MongoSchemaSpec extends Specification implements GraphQLSchemaSpec {
         // tag::registerObjectId[]
 typeManager.registerType(ObjectId, new GraphQLScalarType("ObjectId", "Hex representation of a Mongo object id", new Coercing<ObjectId, ObjectId>() {
 
-    @Override
-    ObjectId serialize(Object input) {
+    protected Optional<ObjectId> convert(Object input) {
         if (input instanceof ObjectId) {
-            (ObjectId) input
+            Optional.of((ObjectId) input)
+        }
+        else if (input instanceof String) {
+            parseObjectId((String) input)
         }
         else {
-            null
+            Optional.empty()
         }
     }
 
     @Override
+    ObjectId serialize(Object input) {
+        convert(input).orElseThrow( {
+            throw new CoercingSerializeException("Could not convert ${input.class.name} to an ObjectId")
+        })
+    }
+
+    @Override
     ObjectId parseValue(Object input) {
-        serialize(input)
+        convert(input).orElseThrow( {
+            throw new CoercingParseValueException("Could not convert ${input.class.name} to an ObjectId")
+        })
     }
 
     @Override
     ObjectId parseLiteral(Object input) {
         if (input instanceof StringValue) {
-            new ObjectId(((StringValue) input).value)
+            parseObjectId(((StringValue) input).value).orElse(null)
         }
         else {
             null
+        }
+    }
+
+    protected Optional<ObjectId> parseObjectId(String input) {
+        if (ObjectId.isValid(input)) {
+            Optional.of(new ObjectId(input))
+        }
+        else {
+            Optional.empty()
         }
     }
 

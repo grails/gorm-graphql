@@ -3,6 +3,8 @@ package org.grails.gorm.graphql.types.scalars.coercing
 import graphql.language.IntValue
 import graphql.language.StringValue
 import graphql.schema.Coercing
+import graphql.schema.CoercingParseValueException
+import graphql.schema.CoercingSerializeException
 import groovy.transform.CompileStatic
 
 import java.text.DateFormat
@@ -26,19 +28,30 @@ class DateCoercion implements Coercing<Date, Date> {
         this.lenient = lenient
     }
 
-    @Override
-    Date serialize(Object input) {
+    protected Optional<Date> convert(Object input) {
         if (input instanceof Date) {
-            (Date) input
+            Optional.of((Date) input)
+        }
+        else if (input instanceof String)  {
+            parseDate((String) input)
         }
         else {
-            null
+            Optional.empty()
+        }
+    }
+
+    @Override
+    Date serialize(Object input) {
+        convert(input).orElseThrow {
+            throw new CoercingSerializeException("Could not convert ${input.class.name} to a Date")
         }
     }
 
     @Override
     Date parseValue(Object input) {
-        serialize(input)
+        convert(input).orElseThrow {
+            throw new CoercingParseValueException("Could not convert ${input.class.name} to a Date")
+        }
     }
 
     @Override
@@ -47,14 +60,14 @@ class DateCoercion implements Coercing<Date, Date> {
             new Date(((IntValue) input).value.longValue())
         }
         else if (input instanceof StringValue) {
-            parseDate(((StringValue) input).value)
+            parseDate(((StringValue) input).value).orElse(null)
         }
         else {
             null
         }
     }
 
-    protected Date parseDate(String value) {
+    protected Optional<Date> parseDate(String value) {
         Date dateValue
         if (!value || !formats) {
             return null
@@ -71,10 +84,12 @@ class DateCoercion implements Coercing<Date, Date> {
                 }
             }
         }
-        if (dateValue == null && firstException) {
-            throw firstException
+        if (dateValue == null) {
+            Optional.empty()
         }
-        dateValue
+        else {
+            Optional.of(dateValue)
+        }
     }
 
 }

@@ -3,9 +3,6 @@ package grails.test.app
 import org.grails.gorm.graphql.plugin.binding.GrailsGraphQLDataBinder
 import groovy.transform.CompileStatic
 
-/**
- * Created by jameskleeh on 7/17/17.
- */
 @CompileStatic
 class UserDataBinder extends GrailsGraphQLDataBinder {
 
