@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>9 Other Notes 1.0.0.RC2</title>
+    <title>9 Other Notes 1.0.0</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -90,7 +90,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>9 Other Notes</h1>
 
-                    <p><strong>Version:</strong> 1.0.0.RC2</p>
+                    <p><strong>Version:</strong> 1.0.0</p>
                 </div>
 
                 
@@ -111,6 +111,12 @@ function addJsClass() {
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section of the documentation is designed to inform you about special circumstances that may impact some use cases.</p>
+</div>
+<div class="sect2">
+<h3 id="_metadata">Metadata</h3>
+<div class="paragraph">
+<p>You may come across a time when you would like to supply metadata for a property or type, but because that type is not part of an exposed persistent entity, it is not possible to do so via the mapping DSL. For those use cases, a <a href="../api/org/grails/gorm/graphql/GraphQL.html">@GraphQL</a> annotation exists. The annotation can be applied to related entities or enums, for example.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_nullability">Nullability</h3>
