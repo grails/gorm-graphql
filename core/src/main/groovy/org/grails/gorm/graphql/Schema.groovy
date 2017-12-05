@@ -176,8 +176,10 @@ class Schema {
         if (interceptorManager == null) {
             interceptorManager = new DefaultGraphQLInterceptorManager()
         }
+        if (serviceManager == null) {
+            serviceManager = new GraphQLServiceManager()
+        }
 
-        serviceManager = new GraphQLServiceManager()
         serviceManager.with {
             registerService(GraphQLTypeManager, typeManager)
             registerService(GraphQLEntityNamingConvention, namingConvention)

@@ -3,7 +3,7 @@ package org.grails.gorm.graphql.plugin
 import grails.plugins.Plugin
 import grails.web.mime.MimeType
 import graphql.GraphQL
-import org.grails.datastore.mapping.model.MappingContext
+import org.grails.gorm.graphql.GraphQLServiceManager
 import org.grails.gorm.graphql.Schema
 import org.grails.gorm.graphql.binding.manager.DefaultGraphQLDataBinderManager
 import org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention
@@ -73,6 +73,7 @@ Brief summary/description of the plugin.
         graphQLDeleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
         graphQLDataFetcherManager(DefaultGraphQLDataFetcherManager)
         graphQLInterceptorManager(DefaultGraphQLInterceptorManager)
+        graphQLServiceManager(GraphQLServiceManager)
 
         graphQLSchemaGenerator(Schema) {
             deleteResponseHandler = ref("graphQLDeleteResponseHandler")
@@ -82,6 +83,7 @@ Brief summary/description of the plugin.
             dataFetcherManager = ref("graphQLDataFetcherManager")
             interceptorManager = ref("graphQLInterceptorManager")
             paginationResponseHandler = ref("graphQLPaginationResponseHandler")
+            serviceManager = ref("graphQLServiceManager")
 
             dateFormats = '#{grailsGraphQLConfiguration.getDateFormats()}'
             dateFormatLenient = '#{grailsGraphQLConfiguration.getDateFormatLenient()}'
