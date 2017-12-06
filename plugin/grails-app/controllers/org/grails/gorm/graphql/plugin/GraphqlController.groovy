@@ -29,37 +29,36 @@ class GraphqlController {
             return
         }
 
-        GraphQLRequest graphQLRequest
+        GraphQLRequests graphQLRequests
 
         HttpMethod method = HttpMethod.resolve(request.method)
         if (request.contentLength != 0 && method != HttpMethod.GET) {
             String encoding = request.characterEncoding ?: 'UTF-8'
             String body = IOUtils.toString(request.inputStream, encoding)
-            graphQLRequest = GraphQLRequestUtils.graphQLRequestWithBodyAndMimeTypes(body, request.mimeTypes)
+            graphQLRequests = GraphQLRequestUtils.graphQLRequestWithBodyAndMimeTypes(body, request.mimeTypes)
         } else {
-            graphQLRequest = GraphQLRequestUtils.graphQLRequestWithParams(params)
+            graphQLRequests = GraphQLRequestUtils.graphQLRequestWithParams(params)
         }
 
-        if (!graphQLRequest?.validate()) {
+        if (!graphQLRequests.validate()) {
             String message = messageSource.getMessage('graphql.invalid.request', [] as Object[], 'Invalid GraphQL request', request.locale)
             render view: '/graphql/invalidRequest', model: [error: message]
             return
+        }        
+                
+        while(graphQLRequests.hasNext()){
+            GraphQLRequest graphQLRequest = graphQLRequests.next()
+            
+            Object context = graphQLContextBuilder.buildContext(currentRequestAttributes())
+
+            ExecutionResult executionResult = graphQL.execute(graphQLRequest.query,
+                graphQLRequest.operationName,
+                context,
+                graphQLRequest.variables)
+            graphQLRequests.setResult(executionResult)
         }
-
-        Object context = graphQLContextBuilder.buildContext(currentRequestAttributes())
-
-        Map<String, Object> result = new LinkedHashMap<>()
-
-        ExecutionResult executionResult = graphQL.execute(graphQLRequest.query,
-                                                          graphQLRequest.operationName,
-                                                          context,
-                                                          graphQLRequest.variables)
-        if (executionResult.errors.size() > 0) {
-            result.put('errors', executionResult.errors)
-        }
-        result.put('data', executionResult.data)
-
-        result
+        
+        render view: graphQLRequests.view,model: graphQLRequests.model
     }
 
     private String resolvedBrowserHtml

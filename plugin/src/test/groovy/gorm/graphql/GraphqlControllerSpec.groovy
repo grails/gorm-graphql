@@ -10,6 +10,8 @@ import org.grails.gorm.graphql.plugin.GraphqlController
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import spock.lang.Specification
 
+import java.lang.reflect.Array
+
 class GraphqlControllerSpec extends Specification implements ControllerUnitTest<GraphqlController> {
 
     def setup() {
@@ -26,6 +28,12 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         Mock(ExecutionResult) {
             1 * getErrors() >> []
             1 * getData() >> ''
+        }
+    }
+    private ExecutionResult mockBatchExecutionResult() {
+        Mock(ExecutionResult) {
+            2 * getErrors() >> []
+            2 * getData() >> ''
         }
     }
 
@@ -136,6 +144,26 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         then:
         1 * graphQL.execute('{"query": "query"}', null, [locale: request.locale], Collections.emptyMap()) >> mockExecutionResult()
     }
+
+    void "test graphql with POST batch body application/json (query)"() {
+        given:
+            GraphQL graphQL = Mock(GraphQL)
+            controller.graphQL = graphQL
+            controller.grailsGraphQLConfiguration = mockConfiguration()
+
+        when:
+            request.setJson('[{"query": "query"},{"query": "query"}]')
+            request.method = 'POST'
+            controller.index()
+
+        then:
+            2 * graphQL.execute('query', null, [locale: request.locale], Collections.emptyMap()) >> mockBatchExecutionResult()
+            view == '/graphql/batch'
+            model.data.class.array
+
+    }
+    
+    
 
     void "test browser when disabled"() {
         when:
