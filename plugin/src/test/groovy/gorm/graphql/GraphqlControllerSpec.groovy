@@ -1,6 +1,7 @@
 package gorm.graphql
 
 import grails.testing.web.controllers.ControllerUnitTest
+import graphql.ExecutionInput
 import graphql.ExecutionResult
 import graphql.GraphQL
 import org.grails.gorm.graphql.plugin.DefaultGraphQLContextBuilder
@@ -56,7 +57,13 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         controller.index()
 
         then:
-        1 * graphQL.execute('query', null, [locale: request.locale], Collections.emptyMap()) >> mockExecutionResult()
+        1 * graphQL.execute(_) >> { ExecutionInput ei ->
+            assert ei.query == "query"
+            assert ei.operationName == null
+            assert ei.context == [locale: request.locale]
+            assert ei.variables.isEmpty()
+            mockExecutionResult()
+        }
 
         when:
         params.query = 'query2'
@@ -64,7 +71,13 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         controller.index()
 
         then:
-        1 * graphQL.execute('query2', 'operationName', [locale: request.locale], Collections.emptyMap()) >> mockExecutionResult()
+        1 * graphQL.execute(_) >> { ExecutionInput ei ->
+            assert ei.query == "query2"
+            assert ei.operationName == "operationName"
+            assert ei.context == [locale: request.locale]
+            assert ei.variables.isEmpty()
+            mockExecutionResult()
+        }
 
         when:
         params.query = 'query2'
@@ -73,7 +86,13 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         controller.index()
 
         then:
-        1 * graphQL.execute('query2', 'operationName', [locale: request.locale], [foo: 2]) >> mockExecutionResult()
+        1 * graphQL.execute(_) >> { ExecutionInput ei ->
+            assert ei.query == "query2"
+            assert ei.operationName == "operationName"
+            assert ei.context == [locale: request.locale]
+            assert ei.variables == [foo: 2]
+            mockExecutionResult()
+        }
     }
 
     void "test graphql with POST body application/json (query only)"() {
@@ -88,7 +107,13 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         controller.index()
 
         then:
-        1 * graphQL.execute('query', null, [locale: request.locale], Collections.emptyMap()) >> mockExecutionResult()
+        1 * graphQL.execute(_) >> { ExecutionInput ei ->
+            assert ei.query == "query"
+            assert ei.operationName == null
+            assert ei.context == [locale: request.locale]
+            assert ei.variables.isEmpty()
+            mockExecutionResult()
+        }
     }
 
     void "test graphql with POST body application/json (query and operationName)"() {
@@ -103,7 +128,13 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         controller.index()
 
         then:
-        1 * graphQL.execute('query2', 'operationName', [locale: request.locale], Collections.emptyMap()) >> mockExecutionResult()
+        1 * graphQL.execute(_) >> { ExecutionInput ei ->
+            assert ei.query == "query2"
+            assert ei.operationName == "operationName"
+            assert ei.context == [locale: request.locale]
+            assert ei.variables.isEmpty()
+            mockExecutionResult()
+        }
     }
 
     void "test graphql with POST body application/json (all data)"() {
@@ -118,7 +149,13 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         controller.index()
 
         then:
-        1 * graphQL.execute('query2', 'operationName', [locale: request.locale], [foo: 2]) >> mockExecutionResult()
+        1 * graphQL.execute(_) >> { ExecutionInput ei ->
+            assert ei.query == "query2"
+            assert ei.operationName == "operationName"
+            assert ei.context == [locale: request.locale]
+            assert ei.variables == [foo: 2]
+            mockExecutionResult()
+        }
     }
 
     void "test graphql with POST body application/graphql"() {
@@ -134,7 +171,13 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         controller.index()
 
         then:
-        1 * graphQL.execute('{"query": "query"}', null, [locale: request.locale], Collections.emptyMap()) >> mockExecutionResult()
+        1 * graphQL.execute(_) >> { ExecutionInput ei ->
+            assert ei.query == '{"query": "query"}'
+            assert ei.operationName == null
+            assert ei.context == [locale: request.locale]
+            assert ei.variables.isEmpty()
+            mockExecutionResult()
+        }
     }
 
     void "test browser when disabled"() {

@@ -2,6 +2,7 @@ package org.grails.gorm.graphql.plugin
 
 import grails.io.IOUtils
 import grails.web.mapping.LinkGenerator
+import graphql.ExecutionInput
 import graphql.ExecutionResult
 import graphql.GraphQL
 import groovy.transform.CompileStatic
@@ -50,10 +51,14 @@ class GraphqlController {
 
         Map<String, Object> result = new LinkedHashMap<>()
 
-        ExecutionResult executionResult = graphQL.execute(graphQLRequest.query,
-                                                          graphQLRequest.operationName,
-                                                          context,
-                                                          graphQLRequest.variables)
+        ExecutionResult executionResult = graphQL.execute(ExecutionInput.newExecutionInput()
+                .query(graphQLRequest.query)
+                .operationName(graphQLRequest.operationName)
+                .context(context)
+                .root(context) // This we are doing do be backwards compatible
+                .variables(graphQLRequest.variables)
+                .build())
+
         if (executionResult.errors.size() > 0) {
             result.put('errors', executionResult.errors)
         }
