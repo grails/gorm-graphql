@@ -295,7 +295,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">A class for retrieving how many entities exist in the datastore</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/CreateEntityDataFetcher.html" title="Class in org.grails.gorm.graphql.fetcher.impl">CreateEntityDataFetcher</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/impl/package-summary.html">org.grails.gorm.graphql.fetcher.impl</a>
 </dt><dd><div class="block">A class for creating entities with GraphQL</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html#createField(PersistentEntity, org.grails.gorm.graphql.GraphQLServiceManager, MappingContext)" title="Method in CustomOperation">createField(PersistentEntity, GraphQLServiceManager, MappingContext)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html">CustomOperation</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html#createField(PersistentEntity, org.grails.gorm.graphql.GraphQLServiceManager, MappingContext, Map<String, GraphQLInputType>)" title="Method in CustomOperation">createField(PersistentEntity, GraphQLServiceManager, MappingContext, Map&lt;String, GraphQLInputType&gt;)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html">CustomOperation</a>
 </dt><dd> <div class="block">Creates the field to be added to the query or mutation returnType in the schema.</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/input/CreateInputObjectTypeBuilder.html" title="Class in org.grails.gorm.graphql.types.input">CreateInputObjectTypeBuilder</a></span> - Class in <a href="./org/grails/gorm/graphql/types/input/package-summary.html">org.grails.gorm.graphql.types.input</a>
 </dt><dd><div class="block">The class used to define which properties are available
@@ -400,6 +400,11 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">The default implementation of <a href='../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html' title='GraphQLTypeManager'>GraphQLTypeManager</a></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#DefaultGraphQLTypeManager(org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention, org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler, org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager, org.grails.gorm.graphql.response.pagination.GraphQLPaginationResponseHandler)" title="Constructor in DefaultGraphQLTypeManager">DefaultGraphQLTypeManager(GraphQLEntityNamingConvention, GraphQLErrorsResponseHandler, GraphQLDomainPropertyManager, GraphQLPaginationResponseHandler)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html#defaultListArguments(boolean)" title="Method in CustomOperation">defaultListArguments(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html">CustomOperation</a>
+</dt><dd> <div class="block">If the argument is true, the default list arguments created in the
+ schema through configuration will be prepended to any other
+ arguments defined for the operation.
+ </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html#defaultNull(boolean)" title="Method in ComplexTyped">defaultNull(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html">ComplexTyped</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/Defaultable.html#defaultValue(java.lang.Object)" title="Method in Defaultable">defaultValue(Object)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/Defaultable.html">Defaultable</a>

@@ -149,6 +149,11 @@ abstract&nbsp;class CustomOperation
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code><strong>boolean</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#defaultListArguments">defaultListArguments</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong><a href='../../../../../../org/grails/gorm/graphql/entity/operations/OperationType.html'>OperationType</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#operationType">operationType</a></code><br></td>
                         </tr>
@@ -207,7 +212,7 @@ abstract&nbsp;class CustomOperation
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#createField(PersistentEntity, org.grails.gorm.graphql.GraphQLServiceManager, MappingContext)">createField</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/GraphQLServiceManager.html'>GraphQLServiceManager</a> serviceManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br>Creates the field to be added to the query or mutation returnType in the schema.</td>
+                            <td class="colLast"><code><strong><a href="#createField(PersistentEntity, org.grails.gorm.graphql.GraphQLServiceManager, MappingContext, Map<String, GraphQLInputType>)">createField</a></strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/GraphQLServiceManager.html'>GraphQLServiceManager</a> serviceManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext, java.util.Map&lt;java.lang.String, GraphQLInputType&gt; listArguments)</code><br>Creates the field to be added to the query or mutation returnType in the schema.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -218,11 +223,20 @@ abstract&nbsp;class CustomOperation
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a></code></td>
+                            <td class="colLast"><code><strong><a href="#defaultListArguments(boolean)">defaultListArguments</a></strong>(boolean useDefaultListArguments = true)</code><br>If the argument is true, the default list arguments created in the
+ schema through configuration will be prepended to any other
+ arguments defined for the operation.
+ </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../../GraphQLOutputType.html'>GraphQLOutputType</a></code></td>
                             <td class="colLast"><code><strong><a href="#getType(org.grails.gorm.graphql.types.GraphQLTypeManager, MappingContext)">getType</a></strong>(<a href='../../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html'>GraphQLTypeManager</a> typeManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br></td>
@@ -275,6 +289,14 @@ abstract&nbsp;class CustomOperation
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../../../DataFetcher.html'>DataFetcher</a> <strong>dataFetcher</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="defaultListArguments"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>boolean <strong>defaultListArguments</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -340,10 +362,10 @@ abstract&nbsp;class CustomOperation
                             </li>
                         </ul>
                     
-                        <a name="createField(PersistentEntity, org.grails.gorm.graphql.GraphQLServiceManager, MappingContext)"><!-- --></a>
+                        <a name="createField(PersistentEntity, org.grails.gorm.graphql.GraphQLServiceManager, MappingContext, Map<String, GraphQLInputType>)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a> <strong>createField</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/GraphQLServiceManager.html'>GraphQLServiceManager</a> serviceManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext)</h4>
+                                <h4><a href='../../../../../../GraphQLFieldDefinition.Builder.html'>Builder</a> <strong>createField</strong>(<a href='../../../../../../PersistentEntity.html'>PersistentEntity</a> entity, <a href='../../../../../../org/grails/gorm/graphql/GraphQLServiceManager.html'>GraphQLServiceManager</a> serviceManager, <a href='../../../../../../MappingContext.html'>MappingContext</a> mappingContext, java.util.Map&lt;java.lang.String, GraphQLInputType&gt; listArguments)</h4>
                                 <p> Creates the field to be added to the query or mutation returnType in the schema.
      <DL><DT><B>Parameters:</B></DT><DD><code>entity</code> -  The persistent entity the operation belongs to</DD><DD><code>typeManager</code> -  The returnType manager</DD><DD><code>interceptorManager</code> -  The interceptor manager to be used for executing
  interceptors with the custom data fetcher</DD><DD><code>mappingContext</code> -  The mapping context</DD></DL><DL><DT><B>Returns:</B></DT><DD>The custom field</DD></DL></p>
@@ -355,6 +377,18 @@ abstract&nbsp;class CustomOperation
                             <li class="blockList">
                                 <h4>T <strong>dataFetcher</strong>(<a href='../../../../../../DataFetcher.html'>DataFetcher</a> dataFetcher)</h4>
                                 <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="defaultListArguments(boolean)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../../../org/grails/gorm/graphql/entity/operations/CustomOperation.html'>CustomOperation</a> <strong>defaultListArguments</strong>(boolean useDefaultListArguments = true)</h4>
+                                <p> If the argument is true, the default list arguments created in the
+ schema through configuration will be prepended to any other
+ arguments defined for the operation.
+ (max, offset, sort, order, etc..)
+     <DL><DT><B>Parameters:</B></DT><DD><code>useDefaultListArguments</code> -  Whether to use the default list args</DD></DL><DL><DT><B>Returns:</B></DT><DD>The operation in order to chain method calls</DD></DL></p>
                             </li>
                         </ul>
                     
