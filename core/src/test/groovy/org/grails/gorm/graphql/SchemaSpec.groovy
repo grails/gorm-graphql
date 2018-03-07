@@ -6,6 +6,7 @@ import org.grails.datastore.mapping.core.DatastoreUtils
 import org.grails.gorm.graphql.domain.general.GeneralPackage
 import org.grails.gorm.graphql.domain.hibernate.HibernatePackage
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
+import org.grails.gorm.graphql.types.GraphQLOperationType
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.orm.hibernate.HibernateDatastore
 import spock.lang.AutoCleanup
@@ -207,6 +208,20 @@ class SchemaSpec extends Specification implements GraphQLSchemaSpec {
 
         expect:
         nestedCircular.getFieldDefinition('one').type == nestedCircular
+    }
+
+    void "test the default list arguments are applied"() {
+        given:
+        GraphQLFieldDefinition fooBar = queryType.getFieldDefinition("fooBar")
+
+        expect:
+        unwrap([], fooBar.type).name == "TestListArgs"
+        fooBar.arguments.size() == 5
+        fooBar.arguments[0].name == "max"
+        fooBar.arguments[1].name == "offset"
+        fooBar.arguments[2].name == "sort"
+        fooBar.arguments[3].name == "order"
+        fooBar.arguments[4].name == "ignoreCase"
     }
 
 }

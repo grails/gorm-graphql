@@ -163,9 +163,9 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         }
 
         when:
-        GraphQLFieldDefinition foo = mapping.customQueryOperations.find { it.name == 'foo' }.createField(entity, serviceManager, null).build()
-        GraphQLFieldDefinition bar = mapping.customQueryOperations.find { it.name == 'bar' }.createField(entity, serviceManager, null).build()
-        GraphQLFieldDefinition xyz = mapping.customMutationOperations.find { it.name == 'xyz' }.createField(entity, serviceManager, null).build()
+        GraphQLFieldDefinition foo = mapping.customQueryOperations.find { it.name == 'foo' }.createField(entity, serviceManager, null, [:]).build()
+        GraphQLFieldDefinition bar = mapping.customQueryOperations.find { it.name == 'bar' }.createField(entity, serviceManager, null, [:]).build()
+        GraphQLFieldDefinition xyz = mapping.customMutationOperations.find { it.name == 'xyz' }.createField(entity, serviceManager, null, [:]).build()
 
         then:
         foo.description == 'Foo Query'

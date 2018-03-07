@@ -411,11 +411,11 @@ class Schema {
                 }
 
                 for (CustomOperation operation: mapping.customQueryOperations) {
-                    queryFields.add(operation.createField(entity, serviceManager, mappingContext))
+                    queryFields.add(operation.createField(entity, serviceManager, mappingContext, listArguments))
                 }
 
                 for (CustomOperation operation: mapping.customMutationOperations) {
-                    mutationFields.add(operation.createField(entity, serviceManager, mappingContext))
+                    mutationFields.add(operation.createField(entity, serviceManager, mappingContext, Collections.emptyMap()))
                 }
 
                 for (GraphQLSchemaInterceptor schemaInterceptor: interceptorManager.interceptors) {

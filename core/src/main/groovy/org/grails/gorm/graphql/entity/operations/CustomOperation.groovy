@@ -18,6 +18,7 @@ import org.grails.gorm.graphql.fetcher.interceptor.InterceptingDataFetcher
 import org.grails.gorm.graphql.fetcher.interceptor.InterceptorInvoker
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
+import static graphql.schema.GraphQLArgument.newArgument
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 
 /**
@@ -34,6 +35,7 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
     private static InterceptorInvoker queryInvoker = new CustomQueryInterceptorInvoker()
     private static InterceptorInvoker mutationInvoker = new CustomMutationInterceptorInvoker()
     DataFetcher dataFetcher
+    boolean defaultListArguments = false
 
     T dataFetcher(DataFetcher dataFetcher) {
         this.dataFetcher = dataFetcher
@@ -90,6 +92,23 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
         this
     }
 
+    /**
+     * If the argument is true, the default list arguments created in the
+     * schema through configuration will be prepended to any other
+     * arguments defined for the operation.
+     * (max, offset, sort, order, etc..)
+     *
+     * @param useDefaultListArguments Whether to use the default list args
+     * @return The operation in order to chain method calls
+     */
+    CustomOperation defaultListArguments(boolean useDefaultListArguments = true) {
+        if (operationType == OperationType.MUTATION && useDefaultListArguments) {
+            throw new UnsupportedOperationException("The default list arguments are only supported for query operations")
+        }
+        this.defaultListArguments = useDefaultListArguments
+        this
+    }
+
     protected abstract GraphQLOutputType getType(GraphQLTypeManager typeManager, MappingContext mappingContext)
 
     void validate() {
@@ -126,7 +145,8 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
      */
     GraphQLFieldDefinition.Builder createField(PersistentEntity entity,
                                                GraphQLServiceManager serviceManager,
-                                               MappingContext mappingContext) {
+                                               MappingContext mappingContext,
+                                               Map<String, GraphQLInputType> listArguments) {
 
         validate()
 
@@ -140,6 +160,14 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
                 .description(description)
                 .deprecate(deprecationReason)
                 .dataFetcher(buildDataFetcher(entity, serviceManager))
+
+        if (defaultListArguments) {
+            for (Map.Entry<String, GraphQLInputType> argument: listArguments) {
+                customQuery.argument(newArgument()
+                           .name(argument.key)
+                           .type(argument.value))
+            }
+        }
 
         if (!arguments.isEmpty()) {
             for (CustomArgument argument: arguments) {
