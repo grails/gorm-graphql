@@ -95,17 +95,16 @@ publishing {
 
             from components.java
 
-            artifact sourcesJar {
-                classifier "sources"
+            afterEvaluate {
+                artifact source: sourcesJar, classifier: "sources"
+                artifact source: javadocJar, classifier: "javadoc"
+                if(isGrailsPlugin) {
+                    artifact source:"${sourceSets.main.output.classesDir}/META-INF/grails-plugin.xml",
+                            classifier:"plugin",
+                            extension:'xml'
+                }
             }
-            artifact javadocJar {
-                classifier "javadoc"
-            }
-            if(isGrailsPlugin) {
-                artifact source:"${sourceSets.main.output.classesDir}/META-INF/grails-plugin.xml",
-                        classifier:"plugin",
-                        extension:'xml'
-            }
+
             pom.withXml {
                 def xml = asNode()
 
