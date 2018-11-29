@@ -39,8 +39,8 @@ subprojects {
         maven { url "https://repo.grails.org/grails/core" }
     }
 
-    if(project.name.startsWith("examples/")) {
-        if(project.name.startsWith("examples/grails")) {
+    if(project.name.startsWith("examples-")) {
+        if(project.name.startsWith("examples-grails-")) {
             apply plugin:"org.grails.grails-web"
         }
         return
