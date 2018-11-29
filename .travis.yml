@@ -4,6 +4,7 @@ cache:
   - "$HOME/.m2/repository"
 jdk:
 - oraclejdk8
+- openjdk11
 env:
   global:
   - TERM=dumb
