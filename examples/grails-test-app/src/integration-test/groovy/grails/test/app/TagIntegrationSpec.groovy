@@ -34,7 +34,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        JSONArray obj = resp.json.data.postCreate.tags
+        List obj = resp.body().data.postCreate.tags
         def grails = obj.find { it.name == 'Grails' }.id
         grailsId = grails
         def groovy = obj.find { it.name == 'Groovy' }.id
@@ -57,7 +57,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        assert resp.json.data.postCreate.tags.size() == 3
+        assert resp.body().data.postCreate.tags.size() == 3
     }
 
     void "test getting the count"() {
@@ -67,7 +67,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
               tagCount
             }
         """)
-        def obj = resp.json.data.tagCount
+        def obj = resp.body().data.tagCount
 
         then:
         obj == 4
@@ -86,7 +86,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        JSONArray obj = resp.json.data.tagList
+        List obj = resp.body().data.tagList
 
         then:
         obj.size() == 4
@@ -122,7 +122,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        JSONObject obj = resp.json.data.tag
+        List obj = resp.body().data.tag
 
         then:
         //queries.size() == 2 ignored due to GORM issue https://github.com/grails/grails-data-mapping/issues/989
@@ -147,7 +147,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        JSONObject obj = resp.json.data.tagUpdate
+        Map obj = resp.body().data.tagUpdate
 
         then:
         obj.id == grailsId
@@ -165,7 +165,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def posts = resp.json.data.postList
+        def posts = resp.body().data.postList
         assert posts.size() == 2
         posts.each {
             resp = graphQL.graphql("""
@@ -175,7 +175,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
                 }
               }
             """)
-            assert resp.json.data.postDelete.success
+            assert resp.body().data.postDelete.success
         }
         resp = graphQL.graphql("""
             { 
@@ -184,7 +184,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def tags = resp.json.data.tagList
+        def tags = resp.body().data.tagList
         assert tags.size() == 4
         tags.each {
             resp = graphQL.graphql("""
@@ -194,7 +194,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
                 }
               }
             """)
-            assert resp.json.data.tagDelete.success
+            assert resp.body().data.tagDelete.success
         }
     }
 }

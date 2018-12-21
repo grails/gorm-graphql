@@ -62,7 +62,7 @@ class TypeTestIntegrationSpec extends Specification implements GraphQLSpec {
             }
         """)
 
-        JSONObject json = resp.json.data.typeTestCreate
+        Map json = resp.body().data.typeTestCreate
 
         then:
         json.id
@@ -120,7 +120,7 @@ class TypeTestIntegrationSpec extends Specification implements GraphQLSpec {
               charPrimitive: "x",
               booleanPrimitive: true]])
 
-        JSONObject json = resp.json.data.typeTestCreate
+        Map json = resp.body().data.typeTestCreate
 
         then:
         json.id

@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "org.grails.plugins:views-gradle:1.2.3"
+        classpath "org.grails.plugins:views-gradle:2.0.0.BUILD-SNAPSHOT"
     }
 }
 
@@ -19,9 +19,9 @@ dependencies {
         exclude group: 'org.grails.plugins', module: 'converters'
     }
     compile "org.grails:grails-plugin-url-mappings"
-    compile "org.grails.plugins:views-json:1.2.3"
+    compile "org.grails.plugins:views-json:2.0.0.BUILD-SNAPSHOT"
     compile "javax.servlet:javax.servlet-api:3.0.1"
-    compileOnly "org.grails:grails-datastore-rest-client"
+    compile "io.micronaut:micronaut-http-client:1.0.2"
     compileOnly "org.grails.plugins:converters:3.3.0"
     testCompile "org.grails:grails-web-testing-support"
     testCompile "cglib:cglib-nodep:3.2.5"

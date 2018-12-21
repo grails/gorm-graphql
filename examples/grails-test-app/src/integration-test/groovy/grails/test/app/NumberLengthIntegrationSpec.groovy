@@ -23,7 +23,7 @@ class NumberLengthIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject data = resp.json
+        Map data = resp.body()
 
         then:
         data.data.numberLengthCreate.id
@@ -43,7 +43,7 @@ class NumberLengthIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject data = resp.json
+        Map data = resp.body()
 
         then:
         data.data == null
@@ -64,7 +64,7 @@ class NumberLengthIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject data = resp.json
+        Map data = resp.body()
 
         then:
         data.data == null
@@ -85,7 +85,7 @@ class NumberLengthIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject data = resp.json
+        Map data = resp.body()
 
         then:
         data.data == null
@@ -106,7 +106,7 @@ class NumberLengthIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject data = resp.json
+        Map data = resp.body()
 
         then:
         data.data == null

@@ -1,6 +1,9 @@
 package grails.test.app
 
 import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
+import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
+import org.grails.gorm.graphql.interceptor.impl.BaseGraphQLFetcherInterceptor
+import org.grails.gorm.graphql.interceptor.manager.GraphQLInterceptorManager
 import org.grails.gorm.graphql.plugin.GraphQLPostProcessor
 import grails.gorm.DetachedCriteria
 import graphql.schema.DataFetchingEnvironment
@@ -35,6 +38,16 @@ class GraphQLCustomizer extends GraphQLPostProcessor {
                 super.buildCriteria(environment).where {
                     eq('active', true)
                 }
+            }
+        })
+    }
+
+    @Override
+    void doWith(GraphQLInterceptorManager interceptorManager) {
+        //The restricted domain cannot be edited or deleted
+        interceptorManager.registerInterceptor(Restricted, new BaseGraphQLFetcherInterceptor() {
+            boolean onMutation(DataFetchingEnvironment environment, GraphQLDataFetcherType type) {
+                type == GraphQLDataFetcherType.CREATE
             }
         })
     }

@@ -37,7 +37,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def obj = resp.json.data.postCreate
+        def obj = resp.body().data.postCreate
 
         then:
         obj.id
@@ -79,7 +79,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def obj = resp.json.data.postCreate
+        def obj = resp.body().data.postCreate
         postId = obj.id
         tagId = obj?.tags?.find { it.name == 'Grails' }?.id
         tag2Id = obj?.tags?.find { it.name == 'Groovy' }?.id
@@ -120,7 +120,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def obj = resp.json.data.postCreate
+        def obj = resp.body().data.postCreate
         post2Id = obj.id
 
         then:
@@ -155,7 +155,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def obj = resp.json.data.postUpdate
+        def obj = resp.body().data.postUpdate
 
         then:
         obj.id
@@ -179,7 +179,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def obj = resp.json.data.postList
+        def obj = resp.body().data.postList
 
         then:
         obj.size() == 2
@@ -198,7 +198,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def obj = resp.json.data.postList
+        def obj = resp.body().data.postList
 
         then:
         obj.size() == 1
@@ -212,7 +212,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        obj = resp.json.data.postList
+        obj = resp.body().data.postList
 
         then:
         obj.size() == 1
@@ -228,7 +228,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def obj = resp.json.data.post
+        def obj = resp.body().data.post
 
         then:
         obj.title == 'Grails 3.5 Release'
@@ -243,7 +243,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def obj = resp.json.data.postDelete
+        def obj = resp.body().data.postDelete
 
         then:
         obj.success
@@ -265,7 +265,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def tags = resp.json.data.tagList
+        def tags = resp.body().data.tagList
         assert tags.size() == 3
         tags.each {
             resp = graphQL.graphql("""
@@ -276,7 +276,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
                 }
               }
             """)
-            assert resp.json.data.tagDelete.success
+            assert resp.body().data.tagDelete.success
         }
     }
 }

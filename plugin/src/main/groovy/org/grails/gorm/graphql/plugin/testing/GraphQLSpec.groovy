@@ -1,14 +1,15 @@
 package org.grails.gorm.graphql.plugin.testing
 
-import grails.plugins.rest.client.RestBuilder
-import grails.plugins.rest.client.RestResponse
 import groovy.json.StreamingJsonBuilder
 import groovy.transform.TupleConstructor
+import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.client.RxHttpClient
+import io.micronaut.http.uri.UriBuilder
 import org.springframework.beans.factory.annotation.Value
 
 trait GraphQLSpec {
 
-    private static RestBuilder _rest
     private static String _url
     private static GraphQLRequestHelper _graphql
 
@@ -17,16 +18,9 @@ trait GraphQLSpec {
 
     GraphQLRequestHelper getGraphQL() {
         if (_graphql == null) {
-            _graphql = new GraphQLRequestHelper(getRest(), getUrl())
+            _graphql = new GraphQLRequestHelper(RxHttpClient.create(new URL(getUrl())))
         }
         _graphql
-    }
-
-    RestBuilder getRest() {
-        if (_rest == null) {
-            _rest = new RestBuilder()
-        }
-        _rest
     }
 
     String getUrl() {
@@ -39,57 +33,54 @@ trait GraphQLSpec {
     @TupleConstructor
     static class GraphQLRequestHelper {
 
-        RestBuilder rest
-        String url
+        RxHttpClient rest
 
-        RestResponse graphql(String requestBody) {
-            rest.post(url) {
-                contentType('application/graphql')
-                body(requestBody)
-            }
+        HttpResponse<Map> graphql(String requestBody) {
+            rest.exchange(HttpRequest.POST('/', requestBody).contentType('application/graphql'), Map)
+                    .firstOrError().blockingGet()
         }
 
-        private RestResponse buildJsonRequest(Map data) {
-            StringWriter sw = new StringWriter()
-            new StreamingJsonBuilder(sw).call(data)
-
-            rest.post(url) {
-                json(sw.toString())
-            }
+        private HttpResponse<Map> buildJsonRequest(Map<String, Object> data) {
+            rest.exchange(HttpRequest.POST('/', data), Map).firstOrError().blockingGet()
         }
-        private RestResponse buildGetRequest(Map data) {
+        private HttpResponse<Map> buildGetRequest(Map<String, Object> data) {
             if (data.containsKey('variables')) {
                 StringWriter sw = new StringWriter()
                 new StreamingJsonBuilder(sw).call(data.variables)
                 data.put('variables', sw.toString())
             }
 
-            rest.get(url, data)
+            UriBuilder uriBuilder = UriBuilder.of('/')
+            data.forEach({ key, value ->
+                uriBuilder.queryParam(key, value)
+            })
+
+            rest.exchange(HttpRequest.GET(uriBuilder.build()), Map).firstOrError().blockingGet()
         }
-        
-        RestResponse json(String query) {
+
+        HttpResponse<Map> json(String query) {
             buildJsonRequest([query: query])
         }
-        RestResponse json(String query, String operationName) {
+        HttpResponse<Map> json(String query, String operationName) {
             buildJsonRequest([query: query, operationName: operationName])
         }
-        RestResponse json(String query, Map variables) {
+        HttpResponse<Map> json(String query, Map variables) {
             buildJsonRequest([query: query, variables: variables])
         }
-        RestResponse json(String query, Map variables, String operationName) {
+        HttpResponse<Map> json(String query, Map variables, String operationName) {
             buildJsonRequest([query: query, operationName: operationName, variables: variables])
         }
 
-        RestResponse get(String query) {
+        HttpResponse<Map> get(String query) {
             buildGetRequest([query: query])
         }
-        RestResponse get(String query, String operationName) {
+        HttpResponse<Map> get(String query, String operationName) {
             buildGetRequest([query: query, operationName: operationName])
         }
-        RestResponse get(String query, Map variables) {
+        HttpResponse<Map> get(String query, Map variables) {
             buildGetRequest([query: query, variables: variables])
         }
-        RestResponse get(String query, Map variables, String operationName) {
+        HttpResponse<Map> get(String query, Map variables, String operationName) {
             buildGetRequest([query: query, operationName: operationName, variables: variables])
         }
     }

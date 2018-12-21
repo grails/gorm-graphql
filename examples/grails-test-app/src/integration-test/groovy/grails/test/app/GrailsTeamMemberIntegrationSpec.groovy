@@ -20,8 +20,7 @@ class GrailsTeamMemberIntegrationSpec extends Specification implements GraphQLSp
                 }
             }
         """)
-        println resp.json
-        JSONObject data = resp.json.data.grailsTeamMemberList
+        Map data = resp.body().data.grailsTeamMemberList
         JSONArray results = data.results
 
         expect:
@@ -45,8 +44,7 @@ class GrailsTeamMemberIntegrationSpec extends Specification implements GraphQLSp
                 }
             }
         """)
-        println resp.json
-        JSONObject data = resp.json.data.grailsTeamMemberList
+        Map data = resp.body().data.grailsTeamMemberList
         JSONArray results = data.results
 
         expect:

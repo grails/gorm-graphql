@@ -24,7 +24,7 @@ class BarIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.barCreate
+        Map obj = resp.body().data.barCreate
 
         then:
         new ObjectId((String) obj.id)

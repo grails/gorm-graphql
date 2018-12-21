@@ -24,7 +24,7 @@ class SoftDeleteIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        id = resp.json.data.softDeleteCreate.id
+        id = resp.body().data.softDeleteCreate.id
         assert id != null
     }
 
@@ -37,7 +37,7 @@ class SoftDeleteIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def json = resp.json.data.softDelete
+        def json = resp.body().data.softDelete
 
         then:
         json.name == 'foo'
@@ -52,7 +52,7 @@ class SoftDeleteIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        JSONArray json = resp.json.data.softDeleteList
+        List json = resp.body().data.softDeleteList
 
         then:
         json.size() == 1
@@ -68,7 +68,7 @@ class SoftDeleteIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def json = resp.json.data.softDeleteDelete
+        def json = resp.body().data.softDeleteDelete
         SoftDelete softDelete
         SoftDelete.withNewSession {
             softDelete = SoftDelete.get(id)
@@ -89,7 +89,7 @@ class SoftDeleteIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        def json = resp.json.data.softDelete
+        def json = resp.body().data.softDelete
 
         then:
         json == null
@@ -104,7 +104,7 @@ class SoftDeleteIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        JSONArray json = resp.json.data.softDeleteList
+        List json = resp.body().data.softDeleteList
 
         then:
         json.empty

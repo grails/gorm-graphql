@@ -28,7 +28,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json
+        Map obj = resp.body()
 
         then:
         obj.data == null
@@ -55,7 +55,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        obj = resp.json
+        obj = resp.body()
 
         then:
         obj.data == null
@@ -80,7 +80,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json
+        Map obj = resp.body()
 
         then:
         obj.data == null
@@ -107,7 +107,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        obj = resp.json
+        obj = resp.body()
 
         then:
         obj.data == null
@@ -151,7 +151,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.userCreate
+        Map obj = resp.body().data.userCreate
 
         then:
         obj.id == 1
@@ -204,7 +204,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.userCreate
+        Map obj = resp.body().data.userCreate
 
         then:
         obj.id == 2
@@ -254,7 +254,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.userUpdate
+        Map obj = resp.body().data.userUpdate
 
         then:
         obj.id == 2
@@ -292,8 +292,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        println resp.json
-        JSONArray obj = resp.json.data.userList
+        List obj = resp.body().data.userList
 
         then:
         obj.size() == 2
@@ -344,8 +343,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject json = resp.json
-        println json.toString()
+        Map json = resp.body()
         JSONObject obj = json.data.user
 
         then:
@@ -370,7 +368,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.userDelete
+        Map obj = resp.body().data.userDelete
 
         then:
         !obj.success
@@ -385,7 +383,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.userDelete
+        Map obj = resp.body().data.userDelete
 
         then:
         obj.success
@@ -400,7 +398,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.userDelete
+        Map obj = resp.body().data.userDelete
 
         then:
         obj.success

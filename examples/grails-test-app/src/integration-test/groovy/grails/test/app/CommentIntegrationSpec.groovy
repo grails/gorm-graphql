@@ -27,7 +27,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.commentCreate
+        Map obj = resp.body().data.commentCreate
 
         then:
         obj.id == 1
@@ -56,7 +56,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.commentCreate
+        Map obj = resp.body().data.commentCreate
 
         then:
         obj.id == 2
@@ -78,7 +78,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.comment
+        Map obj = resp.body().data.comment
 
         then:
         obj.id == 1
@@ -110,7 +110,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.comment
+        Map obj = resp.body().data.comment
 
         then: //The parent comment object is not queried
         obj.parentComment.id == 1
@@ -130,7 +130,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        obj = resp.json.data.comment
+        obj = resp.body().data.comment
 
         then: //The parent comment object is queried
         obj.parentComment.id == 1
@@ -158,7 +158,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.commentCreate
+        Map obj = resp.body().data.commentCreate
 
         then:
         obj.id == 3
@@ -179,7 +179,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        obj = resp.json.data.comment
+        obj = resp.body().data.comment
 
         then:
         obj.id == 1
@@ -204,7 +204,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.commentUpdate
+        Map obj = resp.body().data.commentUpdate
 
         then:
         obj.id == 3
@@ -227,7 +227,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONArray obj = resp.json.data.commentList
+        List obj = resp.body().data.commentList
 
         then:
         obj[0].id == 1
@@ -257,7 +257,7 @@ class CommentIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.commentDelete
+        Map obj = resp.body().data.commentDelete
 
         then:
         obj.success
