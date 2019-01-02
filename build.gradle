@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         mavenLocal()
-        maven { url 'https://repo.grails.org/grails/libs-snapshots-local/' }
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
