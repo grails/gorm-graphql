@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.fetcher
 
 import graphql.language.Field
+import graphql.language.Selection
 import graphql.language.SelectionSet
 import graphql.schema.DataFetchingEnvironment
 import org.grails.datastore.mapping.model.PersistentEntity
@@ -472,9 +473,8 @@ class MockFieldBuilder {
     List<Field> fields = []
 
     Field newField(String name) {
-        Field field = new Field()
-        field.name = name
-        field.selectionSet = new SelectionSet()
+        Field field = new Field(name)
+        field.selectionSet = new SelectionSet([] as List<Selection>)
         field
     }
 
