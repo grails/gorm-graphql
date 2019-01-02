@@ -19,7 +19,7 @@ dependencies {
         exclude group: 'org.grails.plugins', module: 'converters'
     }
     compile "org.grails:grails-plugin-url-mappings"
-    compile "org.grails.plugins:views-json:2.0.0.BUILD-SNAPSHOT"
+    compile "org.grails.plugins:views-json:$viewsJsonVersion"
     compile "javax.servlet:javax.servlet-api:3.0.1"
     compile "io.micronaut:micronaut-http-client:$micronautVersion"
     compileOnly "org.grails.plugins:converters:3.3.0"
