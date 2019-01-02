@@ -307,7 +307,6 @@ ruleset {
     'SerializableClassMustDefineSerialVersionUID' enabled: false
 
     // rulesets/size.xml
-    AbcComplexity   // DEPRECATED: Use the AbcMetric rule instead. Requires the GMetrics jar
     //'AbcMetric' doNotApplyToFilesMatching: '.*Spec.groovy'   // Requires the GMetrics jar
     ClassSize
     CrapMetric   // Requires the GMetrics jar and a Cobertura coverage file
