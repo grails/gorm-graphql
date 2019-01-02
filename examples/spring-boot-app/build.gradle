@@ -20,9 +20,9 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter'
 	compile "org.springframework.boot:spring-boot-starter-web"
 	compile 'org.codehaus.groovy:groovy'
-	compile "org.hibernate:hibernate-ehcache:5.1.0.Final"
 	compile "org.grails:gorm-hibernate5-spring-boot:$gormVersion"
 	compile "org.hibernate:hibernate-core:$hibernateCoreVersion"
+	compile "org.hibernate:hibernate-ehcache:$hibernateEcacheVersion"
 	compile "org.grails:grails-core:$grailsVersion"
 	compile project(":gorm-graphql")
 
