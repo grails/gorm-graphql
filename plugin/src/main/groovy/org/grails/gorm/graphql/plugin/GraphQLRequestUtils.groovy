@@ -16,7 +16,7 @@ class GraphQLRequestUtils {
         if (params.containsKey('variables')) {
             graphQLRequest.variables = new JsonSlurper().parseText(params.variables as String) as Map
         } else {
-            graphQLRequest.variables = Collections.emptyMap()
+            graphQLRequest.variables = Collections.emptyMap() as Map<String, Object>
         }
         graphQLRequest
     }
@@ -54,7 +54,7 @@ class GraphQLRequestUtils {
         graphQLRequest.with {
             query = body
             operationName = null
-            variables = Collections.emptyMap()
+            variables = Collections.emptyMap() as Map<String, Object>
         }
         graphQLRequest
     }
