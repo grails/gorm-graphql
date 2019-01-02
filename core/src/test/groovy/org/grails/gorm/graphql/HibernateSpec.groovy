@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.config.Settings
 import org.grails.datastore.mapping.core.DatastoreUtils
@@ -40,6 +41,7 @@ abstract class HibernateSpec extends Specification {
      */
     List<Class> getDomainClasses() { [] }
 
+    @CompileDynamic
     Package getPackage() {
         getClass().getClassLoader().getPackage('org.grails.gorm.graphql.domain')
     }
