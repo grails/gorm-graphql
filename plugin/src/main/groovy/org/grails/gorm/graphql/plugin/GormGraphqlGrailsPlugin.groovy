@@ -19,7 +19,7 @@ import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 class GormGraphqlGrailsPlugin extends Plugin {
 
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "3.2.9 > *"
+    def grailsVersion = "4.0.0.BUILD-SNAPSHOT > *"
 
 
     // TODO Fill in these fields
