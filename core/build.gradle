@@ -4,7 +4,7 @@ dependencies {
     compile "org.grails:grails-datastore-gorm:$gormVersion"
     compile "com.graphql-java:graphql-java:$graphqlJavaVersion"
 
-    codenarc 'org.codenarc:CodeNarc:0.25.2'
+    codenarc "org.codenarc:CodeNarc:$codenarcVersion"
 
     testCompile "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
     testCompile "org.grails:grails-datastore-gorm-mongodb:6.1.2.RELEASE"
@@ -19,7 +19,7 @@ targetCompatibility = 1.8
 sourceCompatibility = 1.8
 
 codenarc {
-    toolVersion = '0.25.2'
+    toolVersion = codenarcVersion
     configFile = file("${projectDir}/config/codenarc/rules.groovy")
     maxPriority1Violations = 0
     maxPriority2Violations = 2
