@@ -21,7 +21,7 @@ dependencies {
     compile "org.grails:grails-plugin-url-mappings"
     compile "org.grails.plugins:views-json:2.0.0.BUILD-SNAPSHOT"
     compile "javax.servlet:javax.servlet-api:3.0.1"
-    compile "io.micronaut:micronaut-http-client:1.0.2"
+    compile "io.micronaut:micronaut-http-client:$micronautVersion"
     compileOnly "org.grails.plugins:converters:3.3.0"
     testCompile "org.grails:grails-web-testing-support"
     testCompile "cglib:cglib-nodep:3.2.5"
