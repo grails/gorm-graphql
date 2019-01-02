@@ -31,8 +31,8 @@ abstract class HibernateSpec extends Specification {
     /**
      * @return The configuration
      */
-    Map getConfiguration() {
-        [(Settings.SETTING_DB_CREATE): 'create-drop', (Settings.SETTING_DATASOURCE + '.logSql'):  true]
+    Map<String, Object> getConfiguration() {
+        [(Settings.SETTING_DB_CREATE): 'create-drop', (Settings.SETTING_DATASOURCE + '.logSql'):  true] as Map<String, Object>
     }
 
     /**
