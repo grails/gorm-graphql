@@ -15,8 +15,6 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-ext['spock.version'] = '1.2-groovy-2.5'
-
 dependencies {
 	compile 'org.springframework.boot:spring-boot-starter'
 	compile "org.springframework.boot:spring-boot-starter-web"
@@ -35,6 +33,6 @@ dependencies {
 	runtime "org.glassfish:javax.el:3.0.0"
 
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
-	testCompile 'org.spockframework:spock-spring'
+	testCompile "org.spockframework:spock-spring:$spockVersion"
 
 }
