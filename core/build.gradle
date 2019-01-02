@@ -12,7 +12,7 @@ dependencies {
     testRuntime "com.h2database:h2:1.4.192"
     testRuntime "org.apache.tomcat:tomcat-jdbc:8.5.0"
     testRuntime "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"
-    testRuntime "org.slf4j:slf4j-api:1.7.10"
+    testRuntime "org.slf4j:slf4j-api:$slf4jVersion"
 }
 
 targetCompatibility = 1.8
