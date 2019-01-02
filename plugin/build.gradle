@@ -20,7 +20,7 @@ dependencies {
     }
     compile "org.grails:grails-plugin-url-mappings"
     compile "org.grails.plugins:views-json:$viewsJsonVersion"
-    compile "javax.servlet:javax.servlet-api:3.0.1"
+    compile "javax.servlet:javax.servlet-api:$servletApiVersion"
     compile "io.micronaut:micronaut-http-client:$micronautVersion"
     compileOnly "org.grails.plugins:converters:3.3.0"
     testCompile "org.grails:grails-web-testing-support"
