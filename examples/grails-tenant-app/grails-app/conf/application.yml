@@ -3,9 +3,6 @@ grails:
     profile: rest-api
     codegen:
         defaultPackage: grails.tenant.app
-    spring:
-        transactionManagement:
-            proxies: false
     gorm:
         reactor:
             # Whether to translate GORM events into Reactor events

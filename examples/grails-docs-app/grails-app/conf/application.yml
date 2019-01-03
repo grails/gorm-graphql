@@ -3,9 +3,6 @@ grails:
     profile: rest-api
     codegen:
         defaultPackage: demo
-    spring:
-        transactionManagement:
-            proxies: false
     gorm:
         reactor:
             # Whether to translate GORM events into Reactor events

@@ -3,9 +3,6 @@ grails:
     profile: web-plugin
     codegen:
         defaultPackage: org.grails.gorm.graphql.plugin
-    spring:
-        transactionManagement:
-            proxies: false
     gorm:
         # Whether to autowire entities. 
         # Disabled by default for performance reasons.

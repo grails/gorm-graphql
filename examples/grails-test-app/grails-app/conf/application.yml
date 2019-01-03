@@ -3,9 +3,6 @@ grails:
     profile: rest-api
     codegen:
         defaultPackage: grails.test.app
-    spring:
-        transactionManagement:
-            proxies: false
     gorm:
         # Whether to autowire entities. 
         # Disabled by default for performance reasons.
