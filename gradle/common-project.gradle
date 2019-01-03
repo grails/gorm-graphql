@@ -27,11 +27,10 @@ dependencies {
     testCompile("org.spockframework:spock-core:${spockVersion}") {
         exclude module:'groovy-all'
     }
-
-    documentation("org.fusesource.jansi:jansi:1.14")
     testCompile "cglib:cglib-nodep:$cglibNodepVersion"
     testCompile "org.objenesis:objenesis:$objenesisVersion"
 
+    documentation("org.fusesource.jansi:jansi:$jansiVersion")
 }
 
 test {
