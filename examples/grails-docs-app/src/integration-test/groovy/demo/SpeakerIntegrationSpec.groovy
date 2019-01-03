@@ -3,7 +3,6 @@ package demo
 import grails.testing.mixin.integration.Integration
 import groovy.json.JsonOutput
 import org.grails.gorm.graphql.plugin.testing.GraphQLSpec
-import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Specification
 import spock.lang.Stepwise
