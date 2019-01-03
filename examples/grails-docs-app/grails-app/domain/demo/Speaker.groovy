@@ -1,6 +1,9 @@
 // tag::wholeFile[]
 package demo
 
+import grails.compiler.GrailsCompileStatic
+
+@GrailsCompileStatic
 class Speaker {
 
     String firstName
