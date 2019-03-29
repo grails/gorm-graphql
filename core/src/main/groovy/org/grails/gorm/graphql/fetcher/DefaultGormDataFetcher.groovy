@@ -119,25 +119,10 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
             datastore = this.datastore
         }
 
-        //To support older versions of GORM
-        try {
-            Method getTransactionManager = datastore.class.getMethod('getTransactionManager', (Class<?>[]) null)
-            PlatformTransactionManager transactionManager = (PlatformTransactionManager)getTransactionManager.invoke(datastore)
-            CustomizableRollbackTransactionAttribute transactionAttribute = new CustomizableRollbackTransactionAttribute()
-            transactionAttribute.setReadOnly(readOnly)
-            new GrailsTransactionTemplate(transactionManager, transactionAttribute).execute(closure)
-        } catch (NoSuchMethodException | SecurityException e) {
-            log.error('Unable to find a transaction manager for datastore {}', datastore.class.name)
-            null
-        }
-
-        //Supports 6.1.x+ only
-        /*
-        TransactionService txService = (TransactionService)datastore.getService((Class<?>)TransactionService)
+        TransactionService txService = datastore.getService(TransactionService)
         CustomizableRollbackTransactionAttribute transactionAttribute = new CustomizableRollbackTransactionAttribute()
         transactionAttribute.setReadOnly(readOnly)
         txService.withTransaction(transactionAttribute, closure)
-         */
     }
 
     abstract T get(DataFetchingEnvironment environment)
