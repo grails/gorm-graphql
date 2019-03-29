@@ -15,9 +15,15 @@ import org.grails.gorm.graphql.domain.general.GeneralPackage
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 import spock.lang.AutoCleanup
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
+/**
+ * Ignored due to https://github.com/fakemongo/fongo/issues/367.
+ * Fongo not compatible with the mongo driver being used
+ */
+@Ignore
 class MongoSchemaSpec extends Specification implements GraphQLSchemaSpec {
 
     @Shared @AutoCleanup MongoDatastore mongoDatastore

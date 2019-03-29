@@ -59,6 +59,8 @@ class DefaultGraphQLInterceptorManagerSpec extends Specification {
 
     class OrderedBaseGraphQLInterceptor extends BaseGraphQLFetcherInterceptor implements Ordered {
 
+        int order
+
         OrderedBaseGraphQLInterceptor(int order) {
             this.order = order
         }

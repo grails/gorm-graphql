@@ -44,6 +44,10 @@ class SchemaSpec extends Specification implements GraphQLSchemaSpec {
         }.join('').replace('Output', '')
     }
 
+    private String normalizeType(String prefix, GraphQLPropertyType type) {
+        prefix + normalizeType(type)
+    }
+
     void "test ComplexOperation"() {
         given:
         GraphQLObjectType type = schema.getType('AwesomeType')
@@ -134,16 +138,12 @@ class SchemaSpec extends Specification implements GraphQLSchemaSpec {
         type.getFieldDefinition('parentCircular').type == schema.getType('DebugCircular')
     }
 
-    @Unroll
-    void "test !ToOne#type"() {
+    void "test !ToOne"() {
         expect:
-        schema.getType('ToOne' + type) == null
-
-        where:
-        type << [GraphQLPropertyType.CREATE_NESTED,
-                 GraphQLPropertyType.CREATE_EMBEDDED,
-                 GraphQLPropertyType.UPDATE_NESTED,
-                 GraphQLPropertyType.UPDATE_EMBEDDED].collect{ normalizeType(it) }
+        schema.getType(normalizeType('ToOne', GraphQLPropertyType.CREATE_NESTED)) == null
+        schema.getType(normalizeType('ToOne', GraphQLPropertyType.CREATE_EMBEDDED)) == null
+        schema.getType(normalizeType('ToOne', GraphQLPropertyType.UPDATE_NESTED)) == null
+        schema.getType(normalizeType('ToOne', GraphQLPropertyType.UPDATE_EMBEDDED)) == null
     }
 
     void "test ToOne"() {
@@ -179,28 +179,19 @@ class SchemaSpec extends Specification implements GraphQLSchemaSpec {
         //everything else is a scalar.. not worth testing every property
     }
 
-    @Unroll
-    void "test !One#type"() {
+    void "test !One"() {
         expect:
-        schema.getType('One' + type) == null
-
-        where:
-        type << [GraphQLPropertyType.CREATE,
-                 GraphQLPropertyType.CREATE_EMBEDDED,
-                 GraphQLPropertyType.UPDATE,
-                 GraphQLPropertyType.UPDATE_EMBEDDED].collect{ normalizeType(it) }
+        schema.getType(normalizeType('One', GraphQLPropertyType.CREATE)) == null
+        schema.getType(normalizeType('One', GraphQLPropertyType.CREATE_EMBEDDED)) == null
+        schema.getType(normalizeType('One', GraphQLPropertyType.UPDATE)) == null
+        schema.getType(normalizeType('One', GraphQLPropertyType.UPDATE_EMBEDDED)) == null
     }
 
-    @Unroll
-    void "test One#type"() {
+    void "test One"() {
         expect:
-        schema.getType('One' + type) != null
-
-        where:
-        type << [GraphQLPropertyType.OUTPUT,
-                 GraphQLPropertyType.CREATE_NESTED,
-                 GraphQLPropertyType.UPDATE_NESTED].collect{ normalizeType(it) }
-
+        schema.getType(normalizeType('One', GraphQLPropertyType.OUTPUT)) != null
+        schema.getType(normalizeType('One', GraphQLPropertyType.CREATE_NESTED)) != null
+        schema.getType(normalizeType('One', GraphQLPropertyType.UPDATE_NESTED)) != null
     }
 
     void "test CircularOneCreateNested"() {
