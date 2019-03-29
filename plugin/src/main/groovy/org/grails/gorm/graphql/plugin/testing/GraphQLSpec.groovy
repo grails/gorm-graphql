@@ -18,14 +18,14 @@ trait GraphQLSpec {
 
     GraphQLRequestHelper getGraphQL() {
         if (_graphql == null) {
-            _graphql = new GraphQLRequestHelper(RxHttpClient.create(new URL(getUrl())))
+            _graphql = new GraphQLRequestHelper(rest: RxHttpClient.create(new URL(getUrl())))
         }
         _graphql
     }
 
     String getUrl() {
         if (_url == null) {
-            _url = "http://localhost:${serverPort}/graphql"
+            _url = "http://localhost:${serverPort}"
         }
         _url
     }
@@ -36,12 +36,12 @@ trait GraphQLSpec {
         RxHttpClient rest
 
         HttpResponse<Map> graphql(String requestBody) {
-            rest.exchange(HttpRequest.POST('/', requestBody).contentType('application/graphql'), Map)
+            rest.exchange(HttpRequest.POST('/graphql', requestBody).contentType('application/graphql'), Map)
                     .firstOrError().blockingGet()
         }
 
         private HttpResponse<Map> buildJsonRequest(Map<String, Object> data) {
-            rest.exchange(HttpRequest.POST('/', data), Map).firstOrError().blockingGet()
+            rest.exchange(HttpRequest.POST('/graphql', data), Map).firstOrError().blockingGet()
         }
         private HttpResponse<Map> buildGetRequest(Map<String, Object> data) {
             if (data.containsKey('variables')) {

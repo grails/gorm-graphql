@@ -23,7 +23,7 @@ class FooIntegrationSpec extends Specification implements GraphQLSpec {
                 }
             }
         """)
-        JSONObject obj = resp.json.data.fooCreate
+        Map obj = resp.body().data.fooCreate
 
         then:
         obj.id == 1
