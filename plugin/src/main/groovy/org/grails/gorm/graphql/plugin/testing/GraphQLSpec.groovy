@@ -44,6 +44,11 @@ trait GraphQLSpec {
                     .firstOrError().blockingGet()
         }
 
+        def <T> HttpResponse<T> graphql(String requestBody, Class<T> bodyType) {
+            rest.exchange(HttpRequest.POST('/graphql', requestBody).contentType('application/graphql'), bodyType)
+                    .firstOrError().blockingGet()
+        }
+
         private HttpResponse<Map> buildJsonRequest(Map<String, Object> data) {
             rest.exchange(HttpRequest.POST('/graphql', data), Map).firstOrError().blockingGet()
         }

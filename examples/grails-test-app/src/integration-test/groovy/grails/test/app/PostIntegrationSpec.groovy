@@ -256,7 +256,7 @@ class PostIntegrationSpec extends Specification implements GraphQLSpec {
                 success
               }
             }
-        """).json.data.postDelete
+        """).body().data.postDelete
         assert result.success
         def resp = graphQL.graphql("""
             { 

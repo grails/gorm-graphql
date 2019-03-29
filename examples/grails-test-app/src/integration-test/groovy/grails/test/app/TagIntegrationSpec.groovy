@@ -122,7 +122,7 @@ class TagIntegrationSpec extends Specification implements GraphQLSpec {
               }
             }
         """)
-        List obj = resp.body().data.tag
+        Map obj = resp.body().data.tag
 
         then:
         //queries.size() == 2 ignored due to GORM issue https://github.com/grails/grails-data-mapping/issues/989

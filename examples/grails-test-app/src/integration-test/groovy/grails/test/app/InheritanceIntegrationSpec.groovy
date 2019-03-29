@@ -30,8 +30,8 @@ class InheritanceIntegrationSpec extends Specification implements GraphQLSpec {
                     }
                 }
             }
-        """)
-        String data = resp.text
+        """, String.class)
+        String data = resp.getBody().get()
 
         then:
         data == '{"data":{"mammalList":[{"id":1,"name":"Spot","barks":true},{"id":2,"name":"Chloe","cutenessLevel":100},{"id":3,"name":"Kotlin Ken","language":true}]}}'

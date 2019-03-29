@@ -13,7 +13,6 @@ class BootStrap {
     def init = { servletContext ->
 
         dogService.save("Spot", 60)
-        dogService.save("Spot", 60)
         labradoodleService.save("Chloe", 60)
         humanService.save("Kotlin Ken")
 
