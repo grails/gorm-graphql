@@ -18,12 +18,16 @@ trait GraphQLSpec {
 
     GraphQLRequestHelper getGraphQL() {
         if (_graphql == null) {
-            _graphql = new GraphQLRequestHelper(rest: RxHttpClient.create(new URL(getUrl())))
+            _graphql = new GraphQLRequestHelper(rest: RxHttpClient.create(new URL(getServerUrl())))
         }
         _graphql
     }
 
     String getUrl() {
+       getServerUrl() + "/graphql"
+    }
+
+    String getServerUrl() {
         if (_url == null) {
             _url = "http://localhost:${serverPort}"
         }
