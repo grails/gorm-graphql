@@ -1,5 +1,5 @@
 apply plugin:'groovy'
-apply plugin:"io.github.groovylang.groovydoc"
+//apply plugin:"io.github.groovylang.groovydoc"
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -39,6 +39,6 @@ test {
     }
 }
 
-groovydoc {
-    classpath += (configurations.documentation + configurations.compileOnly)
-}
+//groovydoc {
+//    classpath += (configurations.documentation + configurations.compileOnly)
+//}

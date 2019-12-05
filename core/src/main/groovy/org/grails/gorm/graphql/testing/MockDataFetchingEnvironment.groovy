@@ -1,10 +1,15 @@
 package org.grails.gorm.graphql.testing
 
+import graphql.cachecontrol.CacheControl
 import graphql.execution.ExecutionContext
 import graphql.execution.ExecutionId
 import graphql.execution.ExecutionStepInfo
+import graphql.execution.MergedField
+import graphql.execution.directives.QueryDirectives
+import graphql.language.Document
 import graphql.language.Field
 import graphql.language.FragmentDefinition
+import graphql.language.OperationDefinition
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.DataFetchingFieldSelectionSet
 import graphql.schema.GraphQLFieldDefinition
@@ -46,7 +51,42 @@ class MockDataFetchingEnvironment implements DataFetchingEnvironment {
     }
 
     @Override
+    def <T> T getLocalContext() {
+        return null
+    }
+
+    @Override
+    MergedField getMergedField() {
+        return null
+    }
+
+    @Override
+    QueryDirectives getQueryDirectives() {
+        return null
+    }
+
+    @Override
     def <K, V> DataLoader<K,V> getDataLoader(String dataLoaderName) {
+        return null
+    }
+
+    @Override
+    CacheControl getCacheControl() {
+        return null
+    }
+
+    @Override
+    OperationDefinition getOperationDefinition() {
+        return null
+    }
+
+    @Override
+    Document getDocument() {
+        return null
+    }
+
+    @Override
+    Map<String, Object> getVariables() {
         return null
     }
 
