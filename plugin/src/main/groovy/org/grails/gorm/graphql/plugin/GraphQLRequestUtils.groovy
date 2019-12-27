@@ -43,8 +43,11 @@ class GraphQLRequestUtils {
         graphQLRequest.with {
             query = json.query.toString()
             operationName = json.containsKey('operationName') ? json.operationName : null
-
-            variables = (json.variables != null) ? (new JsonSlurper()).parseText(json.variables as String) as Map : Collections.emptyMap()
+            if (json.variables != null) {
+                variables = (json.variables instanceof Map) ? (Map) json.variables : !((String)json.variables).empty? (Map) (new JsonSlurper()).parseText(json.variables as String) : Collections.emptyList() as Map<String, Object>
+            } else {
+                variables = Collections.emptyList() as Map<String, Object>
+            }
         }
         graphQLRequest
     }
