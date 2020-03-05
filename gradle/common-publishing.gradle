@@ -87,7 +87,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             if(isGrailsPlugin) {
-                artifactId( project.name - 'plugin-gorm-' )
+                artifactId( 'gorm-graphql-plugin' )
             }
             else if(project.name.contains('/')) {
                 artifactId( project.name.substring(project.name.indexOf('/') + 1) )

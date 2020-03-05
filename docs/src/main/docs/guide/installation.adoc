@@ -4,7 +4,7 @@ To use this library in your project, add the following dependency to the
 For Grails applications
 
 [source,groovy,subs="attributes"]
-compile "org.grails.plugins:gorm-graphql:{version}"
+compile "org.grails.plugins:gorm-graphql-plugin:{version}"
 
 For standalone projects
 
