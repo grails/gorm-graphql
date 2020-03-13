@@ -19,7 +19,7 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter'
 	compile "org.springframework.boot:spring-boot-starter-web"
 	compile 'org.codehaus.groovy:groovy'
-	compile "org.grails:gorm-hibernate5-spring-boot:$gormVersion"
+	compile "org.grails:gorm-hibernate5-spring-boot:${gormHibernateVersion}"
 	compile "org.hibernate:hibernate-core:$hibernateCoreVersion"
 	compile "org.hibernate:hibernate-ehcache:$hibernateEcacheVersion"
 	compile "org.grails:grails-core:$grailsVersion"

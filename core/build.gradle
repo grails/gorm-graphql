@@ -1,13 +1,13 @@
 apply plugin: 'codenarc'
 
 dependencies {
-    compile "org.grails:grails-datastore-gorm:$gormVersion"
+    compile "org.grails:grails-datastore-gorm:${gormVersion}"
     compile "com.graphql-java:graphql-java:$graphqlJavaVersion"
 
     codenarc "org.codenarc:CodeNarc:$codenarcVersion"
 
-    testCompile "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
-    testCompile "org.grails:grails-datastore-gorm-mongodb:$gormVersion"
+    testCompile "org.grails:grails-datastore-gorm-hibernate5:${gormHibernateVersion}"
+    testCompile "org.grails:grails-datastore-gorm-mongodb:${gormMongoDbVersion}"
     testCompile 'com.github.fakemongo:fongo:2.1.0'
     testRuntime "com.h2database:h2:1.4.192"
     testRuntime "org.apache.tomcat:tomcat-jdbc:8.5.0"
