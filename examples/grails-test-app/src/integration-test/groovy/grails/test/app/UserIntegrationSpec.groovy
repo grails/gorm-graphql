@@ -305,26 +305,26 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         then:
         obj.size() == lastId + 2
 
-        obj[0].id == lastId + 1
-        obj[0].addedNumbers == 5
-        obj[0].profile.email == 'email'
-        obj[0].profile.firstName == 'First'
-        obj[0].profile.lastName == 'Last'
-        obj[0].address.city == 'Youngstown'
-        obj[0].address.state == 'OH'
-        obj[0].address.zip == 44512
-        obj[0].manager == null
+        obj[lastId].id == lastId + 1
+        obj[lastId].addedNumbers == 5
+        obj[lastId].profile.email == 'email'
+        obj[lastId].profile.firstName == 'First'
+        obj[lastId].profile.lastName == 'Last'
+        obj[lastId].address.city == 'Youngstown'
+        obj[lastId].address.state == 'OH'
+        obj[lastId].address.zip == 44512
+        obj[lastId].manager == null
 
-        obj[1].id == lastId + 2
-        obj[1].addedNumbers == 12
-        obj[1].profile.email == 'emailUpdated'
-        obj[1].profile.firstName == 'FirstUpdated'
-        obj[1].profile.lastName == 'LastUpdated'
-        obj[1].address.city == 'Pittsburgh'
-        obj[1].address.state == 'PA'
-        obj[1].address.zip == 90210
-        obj[1].manager.id == lastId + 1
-        obj[1].manager.addedNumbers == 5
+        obj[lastId + 1].id == lastId + 2
+        obj[lastId + 1].addedNumbers == 12
+        obj[lastId + 1].profile.email == 'emailUpdated'
+        obj[lastId + 1].profile.firstName == 'FirstUpdated'
+        obj[lastId + 1].profile.lastName == 'LastUpdated'
+        obj[lastId + 1].address.city == 'Pittsburgh'
+        obj[lastId + 1].address.state == 'PA'
+        obj[lastId + 1].address.zip == 90210
+        obj[lastId + 1].manager.id == lastId + 1
+        obj[lastId + 1].manager.addedNumbers == 5
     }
 
     void "test querying a single user"() {
