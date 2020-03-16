@@ -1,6 +1,8 @@
 apply plugin: 'codenarc'
 
 dependencies {
+    documentation "org.codehaus.groovy:groovy-cli-picocli:$groovyVersion"
+
     compile "org.grails:grails-datastore-gorm:${gormVersion}"
     compile "com.graphql-java:graphql-java:$graphqlJavaVersion"
 
