@@ -303,7 +303,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         List obj = resp.body().data.userList
 
         then:
-        obj.size() == 2
+        obj.size() == lastId + 2
 
         obj[0].id == lastId + 1
         obj[0].addedNumbers == 5
