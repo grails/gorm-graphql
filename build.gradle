@@ -43,6 +43,13 @@ subprojects {
         if(project.name.startsWith("examples-grails-")) {
             apply plugin:"org.grails.grails-web"
         }
+
+        tasks.withType(Test) {
+            testLogging {
+                events "failed"
+                exceptionFormat "full"
+            }
+        }
         return
     }
 
