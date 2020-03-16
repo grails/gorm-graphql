@@ -22,7 +22,7 @@ repositories {
 version project.projectVersion
 
 ext {
-    commonBuild = new File(project.rootDir, "gradle").absolutePath
+    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/47f0f2e0d9d82030b758c6dfe7bc7eefe6582342'
 }
 
 subprojects {
