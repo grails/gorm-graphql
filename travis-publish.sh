@@ -9,7 +9,7 @@ fi
 
 echo "Publishing for branch $TRAVIS_BRANCH JDK: $TRAVIS_JDK_VERSION"
 
-if [[ $TRAVIS_REPO_SLUG == "grails/gorm-graphql" && $TRAVIS_PULL_REQUEST == 'false' && $EXIT_STATUS -eq 0 ]]; then
+if [[ $TRAVIS_REPO_SLUG == "grails/gorm-graphql" && $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH =~ ^master|[123]\..\.x$ && $EXIT_STATUS -eq 0 ]]; then
 
   echo "Publishing archives"
   export GRADLE_OPTS="-Xmx1500m -Dfile.encoding=UTF-8"
