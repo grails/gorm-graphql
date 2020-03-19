@@ -2,14 +2,17 @@ package grails.test.app
 
 import org.grails.gorm.graphql.plugin.testing.GraphQLSpec
 import grails.testing.mixin.integration.Integration
-import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
 
 @Integration
 @Stepwise
 class UserIntegrationSpec extends Specification implements GraphQLSpec {
+
+    @Shared long managerId
+    @Shared long subordinateId
 
     void "test creating a user without a profile"() {
         when:
@@ -152,9 +155,10 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
             }
         """)
         Map obj = resp.body().data.userCreate
+        managerId = obj.id as Long
 
         then:
-        obj.id == 1
+        obj.id != null
         obj.addedNumbers == 5
         obj.profile.email == 'email'
         obj.profile.firstName == 'First'
@@ -183,7 +187,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
                         zip: 44512
                     }
                     manager: {
-                        id: 1
+                        id: ${managerId}
                     }
                 }) {
                     id
@@ -205,9 +209,10 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
             }
         """)
         Map obj = resp.body().data.userCreate
+        subordinateId = obj.id as Long
 
         then:
-        obj.id == 2
+        obj.id != null
         obj.addedNumbers == 11
         obj.profile.email == 'email'
         obj.profile.firstName == 'First'
@@ -215,14 +220,14 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         obj.address.city == 'Youngstown'
         obj.address.state == 'OH'
         obj.address.zip == 44512
-        obj.manager.id == 1
+        obj.manager.id == managerId
     }
 
     void "test updating a user"() {
         when:
         def resp = graphQL.graphql("""
             mutation {
-                userUpdate(id: 2, user: {
+                userUpdate(id: ${subordinateId}, user: {
                     firstNumber: 5,
                     secondNumber: 7,
                     profile: {
@@ -257,7 +262,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         Map obj = resp.body().data.userUpdate
 
         then:
-        obj.id == 2
+        obj.id == subordinateId
         obj.addedNumbers == 12
         obj.profile.email == 'emailUpdated'
         obj.profile.firstName == 'FirstUpdated'
@@ -265,7 +270,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         obj.address.city == 'Pittsburgh'
         obj.address.state == 'PA'
         obj.address.zip == 90210
-        obj.manager.id == 1
+        obj.manager.id == managerId
     }
 
     void "test listing users"() {
@@ -295,35 +300,36 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         List obj = resp.body().data.userList
 
         then:
-        obj.size() == 2
+        JSONObject subordinate = obj.find { it.id == subordinateId }
+        JSONObject manager = obj.find { it.id == managerId }
 
-        obj[0].id == 1
-        obj[0].addedNumbers == 5
-        obj[0].profile.email == 'email'
-        obj[0].profile.firstName == 'First'
-        obj[0].profile.lastName == 'Last'
-        obj[0].address.city == 'Youngstown'
-        obj[0].address.state == 'OH'
-        obj[0].address.zip == 44512
-        obj[0].manager == null
+        manager.id != null
+        manager.addedNumbers == 5
+        manager.profile.email == 'email'
+        manager.profile.firstName == 'First'
+        manager.profile.lastName == 'Last'
+        manager.address.city == 'Youngstown'
+        manager.address.state == 'OH'
+        manager.address.zip == 44512
+        manager.manager == null
 
-        obj[1].id == 2
-        obj[1].addedNumbers == 12
-        obj[1].profile.email == 'emailUpdated'
-        obj[1].profile.firstName == 'FirstUpdated'
-        obj[1].profile.lastName == 'LastUpdated'
-        obj[1].address.city == 'Pittsburgh'
-        obj[1].address.state == 'PA'
-        obj[1].address.zip == 90210
-        obj[1].manager.id == 1
-        obj[1].manager.addedNumbers == 5
+        subordinate.id != null
+        subordinate.addedNumbers == 12
+        subordinate.profile.email == 'emailUpdated'
+        subordinate.profile.firstName == 'FirstUpdated'
+        subordinate.profile.lastName == 'LastUpdated'
+        subordinate.address.city == 'Pittsburgh'
+        subordinate.address.state == 'PA'
+        subordinate.address.zip == 90210
+        subordinate.manager.id != null
+        subordinate.manager.addedNumbers == 5
     }
 
     void "test querying a single user"() {
         when:
         def resp = graphQL.graphql("""
             {
-                user(id: 2) {
+                user(id: ${subordinateId}) {
                     id
                     addedNumbers
                     profile {
@@ -347,7 +353,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         JSONObject obj = json.data.user
 
         then:
-        obj.id == 2
+        obj.id == subordinateId
         obj.addedNumbers == 12
         obj.profile.email == 'emailUpdated'
         obj.profile.firstName == 'FirstUpdated'
@@ -355,7 +361,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         obj.address.city == 'Pittsburgh'
         obj.address.state == 'PA'
         obj.address.zip == 90210
-        obj.manager.id == 1
+        obj.manager.id == managerId
         obj.manager.addedNumbers == 5
     }
 
@@ -363,7 +369,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         when:
         def resp = graphQL.graphql("""
             mutation {
-                userDelete(id: 1) {
+                userDelete(id: ${managerId}) {
                     success
                 }
             }
@@ -378,7 +384,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         when:
         def resp = graphQL.graphql("""
             mutation {
-                userDelete(id: 2) {
+                userDelete(id: ${subordinateId}) {
                     success
                 }
             }
@@ -393,7 +399,7 @@ class UserIntegrationSpec extends Specification implements GraphQLSpec {
         when:
         def resp = graphQL.graphql("""
             mutation {
-                userDelete(id: 1) {
+                userDelete(id: ${managerId}) {
                     success
                 }
             }
