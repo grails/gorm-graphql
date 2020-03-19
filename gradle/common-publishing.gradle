@@ -60,8 +60,8 @@ publishing {
     repositories {
         maven {
             credentials {
-                def u = System.getenv("ARTIFACTORY_USERNAME") ?: project.hasProperty("artifactoryPublishUsername") ? project.artifactoryPublishUsername : ''
-                def p = System.getenv("ARTIFACTORY_PASSWORD") ?: project.hasProperty("artifactoryPublishPassword") ? project.artifactoryPublishPassword : ''
+                def u = System.getenv("GRAILS_CENTRAL_USERNAME") ?: project.hasProperty("grailsCentralUsername") ? project.grailsCentralUsername : ''
+                def p = System.getenv("GRAILS_CENTRAL_PASSWORD") ?: project.hasProperty("grailsCentralPassword") ? project.grailsCentralPassword : ''
                 username = u
                 password = p
             }
