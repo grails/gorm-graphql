@@ -3,7 +3,6 @@ package org.grails.gorm.graphql.fetcher
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.Tenants
 import grails.gorm.transactions.GrailsTransactionTemplate
-import grails.gorm.transactions.TransactionService
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
@@ -17,10 +16,9 @@ import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.multitenancy.MultiTenantCapableDatastore
 import org.grails.datastore.mapping.transactions.CustomizableRollbackTransactionAttribute
+import org.grails.datastore.mapping.transactions.TransactionCapableDatastore
 import org.grails.gorm.graphql.entity.EntityFetchOptions
 import org.springframework.transaction.PlatformTransactionManager
-
-import java.lang.reflect.Method
 
 /**
  * A generic class to assist with querying entities with GraphQL
@@ -111,18 +109,38 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
     protected Object withTransaction(boolean readOnly, Closure closure) {
         Datastore datastore
         if (entity.multiTenant && this.datastore instanceof MultiTenantCapableDatastore) {
-            MultiTenantCapableDatastore multiTenantCapableDatastore = (MultiTenantCapableDatastore)this.datastore
+            MultiTenantCapableDatastore multiTenantCapableDatastore = (MultiTenantCapableDatastore) this.datastore
             Serializable currentTenantId = Tenants.currentId(multiTenantCapableDatastore)
             datastore = multiTenantCapableDatastore.getDatastoreForTenantId(currentTenantId)
-        }
-        else {
+        } else {
             datastore = this.datastore
         }
 
-        TransactionService txService = datastore.getService(TransactionService)
+        //To support older versions of GORM
+        try {
+            PlatformTransactionManager transactionManager = getTransactionManager(datastore)
+            CustomizableRollbackTransactionAttribute transactionAttribute = new CustomizableRollbackTransactionAttribute()
+            transactionAttribute.setReadOnly(readOnly)
+            new GrailsTransactionTemplate(transactionManager, transactionAttribute).execute(closure)
+        } catch (NoSuchMethodException | SecurityException e) {
+            log.error('Unable to find a transaction manager for datastore {}', datastore.class.name)
+            null
+        }
+
+        //Supports 6.1.x+ only
+        /*
+        TransactionService txService = (TransactionService)datastore.getService((Class<?>)TransactionService)
         CustomizableRollbackTransactionAttribute transactionAttribute = new CustomizableRollbackTransactionAttribute()
         transactionAttribute.setReadOnly(readOnly)
         txService.withTransaction(transactionAttribute, closure)
+         */
+    }
+
+    private static PlatformTransactionManager getTransactionManager(Datastore datastore) {
+        if (!datastore instanceof TransactionCapableDatastore) {
+            throw new IllegalArgumentException("Domain mapped DataStore should be transactional")
+        }
+        return ((TransactionCapableDatastore) datastore).getTransactionManager()
     }
 
     abstract T get(DataFetchingEnvironment environment)
