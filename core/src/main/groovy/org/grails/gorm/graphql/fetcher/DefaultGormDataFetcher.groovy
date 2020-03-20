@@ -2,7 +2,6 @@ package org.grails.gorm.graphql.fetcher
 
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.Tenants
-import grails.gorm.transactions.GrailsTransactionTemplate
 import grails.gorm.transactions.TransactionService
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
@@ -18,9 +17,6 @@ import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.multitenancy.MultiTenantCapableDatastore
 import org.grails.datastore.mapping.transactions.CustomizableRollbackTransactionAttribute
 import org.grails.gorm.graphql.entity.EntityFetchOptions
-import org.springframework.transaction.PlatformTransactionManager
-
-import java.lang.reflect.Method
 
 /**
  * A generic class to assist with querying entities with GraphQL
@@ -37,8 +33,6 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
     protected PersistentEntity entity
     protected String propertyName
     protected EntityFetchOptions entityFetchOptions
-    protected GormStaticApi staticApi
-    protected Datastore datastore
 
     DefaultGormDataFetcher(PersistentEntity entity) {
         this(entity, null)
@@ -48,8 +42,6 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         this.entity = entity
         this.propertyName = projectionName
         this.entityFetchOptions = new EntityFetchOptions(entity, projectionName)
-        this.staticApi = GormEnhancer.findStaticApi(entity.javaClass)
-        this.datastore = staticApi.datastore
         initializeEntity(entity)
     }
 
@@ -123,6 +115,14 @@ abstract class DefaultGormDataFetcher<T> implements DataFetcher<T> {
         CustomizableRollbackTransactionAttribute transactionAttribute = new CustomizableRollbackTransactionAttribute()
         transactionAttribute.setReadOnly(readOnly)
         txService.withTransaction(transactionAttribute, closure)
+    }
+
+    protected Datastore getDatastore() {
+        staticApi.datastore
+    }
+
+    protected GormStaticApi getStaticApi() {
+        GormEnhancer.findStaticApi(entity.javaClass)
     }
 
     abstract T get(DataFetchingEnvironment environment)
