@@ -22,7 +22,7 @@ repositories {
 version project.projectVersion
 
 ext {
-    commonBuild = new File(project.rootDir, "gradle").absolutePath
+    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/47f0f2e0d9d82030b758c6dfe7bc7eefe6582342'
 }
 
 subprojects {
@@ -42,6 +42,13 @@ subprojects {
     if(project.name.startsWith("examples-")) {
         if(project.name.startsWith("examples-grails-")) {
             apply plugin:"org.grails.grails-web"
+        }
+
+        tasks.withType(Test) {
+            testLogging {
+                events "failed"
+                exceptionFormat "full"
+            }
         }
         return
     }
