@@ -78,6 +78,12 @@ subprojects {
         testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"
     }
 
+    tasks.withType(GroovyCompile) {
+        configure(groovyOptions) {
+            forkOptions.jvmArgs = ['-Xmx1024m']
+        }
+    }
+
     tasks.withType(Test) {
         testLogging {
             events "failed"

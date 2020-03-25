@@ -23,9 +23,8 @@ class GraphQLServiceManager {
     public <T extends Object> T getService(Class<T> serviceType) throws ServiceNotFoundException {
         if (services.containsKey(serviceType)) {
             return (T)services.get(serviceType)
-        } else {
-            throw new ServiceNotFoundException("No GraphQL service could be found for ${serviceType.name}")
         }
+        throw new ServiceNotFoundException("No GraphQL service could be found for ${serviceType.name}")
     }
 
 }

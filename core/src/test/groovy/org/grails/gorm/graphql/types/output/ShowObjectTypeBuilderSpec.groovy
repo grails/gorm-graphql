@@ -1,11 +1,13 @@
 package org.grails.gorm.graphql.types.output
 
+import graphql.schema.GraphQLCodeRegistry
 import org.grails.gorm.graphql.HibernateSpec
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.entity.property.manager.CompositeId
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.entity.property.manager.EmbeddedEntity
 import org.grails.gorm.graphql.types.GraphQLPropertyType
+import spock.lang.Shared
 
 class ShowObjectTypeBuilderSpec extends HibernateSpec {
 
@@ -14,9 +16,10 @@ class ShowObjectTypeBuilderSpec extends HibernateSpec {
     ] }
 
     ShowObjectTypeBuilder builder
+    @Shared GraphQLCodeRegistry.Builder codeRegistry
 
     void setup() {
-        builder = new ShowObjectTypeBuilder(new DefaultGraphQLDomainPropertyManager(), null, null)
+        builder = new ShowObjectTypeBuilder(codeRegistry, new DefaultGraphQLDomainPropertyManager(), null, null)
     }
 
     void "test type"() {

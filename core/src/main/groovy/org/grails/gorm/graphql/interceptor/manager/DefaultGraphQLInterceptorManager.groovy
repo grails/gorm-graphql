@@ -54,18 +54,19 @@ class DefaultGraphQLInterceptorManager implements GraphQLInterceptorManager, Key
     void registerInterceptor(GraphQLSchemaInterceptor interceptor) {
         schemaInterceptors.add(interceptor)
     }
-/**
+
+    /**
      * @see GraphQLInterceptorManager#getInterceptors
      *
      * @return NULL if no interceptors found
      */
     @Override
     List<GraphQLFetcherInterceptor> getInterceptors(Class clazz) {
-        searchMapAll(interceptors, clazz).sort(true, interceptorComparator)
+        searchMapAll(interceptors, clazz).<GraphQLFetcherInterceptor> sort(true, interceptorComparator)
     }
 
     @Override
     List<GraphQLSchemaInterceptor> getInterceptors() {
-        schemaInterceptors.sort(true, interceptorComparator)
+        schemaInterceptors.<GraphQLSchemaInterceptor> sort(true, interceptorComparator)
     }
 }

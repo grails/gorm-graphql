@@ -3,6 +3,7 @@ package org.grails.gorm.graphql.entity.dsl
 import graphql.Scalars
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
+import graphql.schema.GraphQLCodeRegistry
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLInputObjectType
 import graphql.schema.GraphQLList
@@ -114,7 +115,8 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
 
     void "test adding an operation" () {
         given:
-        GraphQLTypeManager typeManager = new DefaultGraphQLTypeManager(new GraphQLEntityNamingConvention(), null, new DefaultGraphQLDomainPropertyManager(), new DefaultGraphQLPaginationResponseHandler())
+        GraphQLCodeRegistry.Builder codeRegistry = GraphQLCodeRegistry.newCodeRegistry()
+        GraphQLTypeManager typeManager = new DefaultGraphQLTypeManager(codeRegistry, new GraphQLEntityNamingConvention(), null, new DefaultGraphQLDomainPropertyManager(), new DefaultGraphQLPaginationResponseHandler())
         GraphQLServiceManager serviceManager = new GraphQLServiceManager()
         GraphQLInterceptorManager interceptorManager = new DefaultGraphQLInterceptorManager()
         PersistentEntity entity = Stub(PersistentEntity) {
@@ -166,6 +168,9 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         GraphQLFieldDefinition foo = mapping.customQueryOperations.find { it.name == 'foo' }.createField(entity, serviceManager, null, [:]).build()
         GraphQLFieldDefinition bar = mapping.customQueryOperations.find { it.name == 'bar' }.createField(entity, serviceManager, null, [:]).build()
         GraphQLFieldDefinition xyz = mapping.customMutationOperations.find { it.name == 'xyz' }.createField(entity, serviceManager, null, [:]).build()
+
+        and:
+        codeRegistry.build()
 
         then:
         foo.description == 'Foo Query'

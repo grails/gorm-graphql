@@ -6,7 +6,6 @@ import org.grails.gorm.graphql.HibernateSpec
 import org.grails.gorm.graphql.domain.general.toone.One
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.response.delete.GraphQLDeleteResponseHandler
-import spock.lang.Stepwise
 
 class DeleteEntityDataFetcherSpec extends HibernateSpec {
 
@@ -23,7 +22,7 @@ class DeleteEntityDataFetcherSpec extends HibernateSpec {
         GraphQLDeleteResponseHandler responseHandler = Mock(GraphQLDeleteResponseHandler)
         DataFetchingEnvironment env = Mock(DataFetchingEnvironment) {
             1 * getArgument('id') >> one.id
-            1 * getFields() >> []
+            1 * getMergedField()
         }
         DeleteEntityDataFetcher fetcher = new DeleteEntityDataFetcher<>(mappingContext.getPersistentEntity(One.name))
         fetcher.responseHandler = responseHandler
@@ -46,7 +45,7 @@ class DeleteEntityDataFetcherSpec extends HibernateSpec {
         GraphQLDeleteResponseHandler responseHandler = Mock(GraphQLDeleteResponseHandler)
         DataFetchingEnvironment env = Mock(DataFetchingEnvironment) {
             1 * getArgument('id') >> 95
-            1 * getFields() >> []
+            1 * getMergedField()
         }
         DeleteEntityDataFetcher fetcher = new DeleteEntityDataFetcher<>(mappingContext.getPersistentEntity(One.name))
         fetcher.responseHandler = responseHandler

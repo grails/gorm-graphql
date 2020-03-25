@@ -22,7 +22,7 @@ class SingleEntityDataFetcherSpec extends HibernateSpec {
         given:
         DataFetchingEnvironment env = Mock(DataFetchingEnvironment) {
             1 * getArgument('id') >> id
-            1 * getFields() >> []
+            1 * getMergedField()
         }
         SingleEntityDataFetcher fetcher = new SingleEntityDataFetcher<>(mappingContext.getPersistentEntity(One.name))
 

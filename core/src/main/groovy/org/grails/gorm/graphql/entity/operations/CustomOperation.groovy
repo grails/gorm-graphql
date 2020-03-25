@@ -103,7 +103,7 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
      */
     CustomOperation defaultListArguments(boolean useDefaultListArguments = true) {
         if (operationType == OperationType.MUTATION && useDefaultListArguments) {
-            throw new UnsupportedOperationException("The default list arguments are only supported for query operations")
+            throw new UnsupportedOperationException('The default list arguments are only supported for query operations')
         }
         this.defaultListArguments = useDefaultListArguments
         this

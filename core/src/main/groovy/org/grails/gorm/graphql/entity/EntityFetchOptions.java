@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.entity;
 
+import graphql.execution.MergedField;
 import graphql.language.Field;
 import graphql.language.Selection;
 import graphql.language.SelectionSet;
@@ -186,10 +187,12 @@ public class EntityFetchOptions {
      */
     public Set<String> getJoinProperties(DataFetchingEnvironment environment, boolean skipCollections) {
         List<Field> fields = new ArrayList<>();
-        List<Field> environmentFields = environment.getFields();
+        MergedField environmentMergedField = environment.getMergedField();
 
-        if (environmentFields != null) {
-            fields = environmentFields.stream()
+        if (environmentMergedField != null) {
+            fields = environmentMergedField
+                    .getFields()
+                    .stream()
                     .filter(field -> field.getSelectionSet() != null)
                     .flatMap(field -> field.getSelectionSet().getSelections().stream())
                     .filter(Field.class::isInstance)

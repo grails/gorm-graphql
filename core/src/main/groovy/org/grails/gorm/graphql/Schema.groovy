@@ -55,6 +55,7 @@ import org.springframework.context.support.StaticMessageSource
 import javax.annotation.PostConstruct
 import java.time.*
 
+import static graphql.schema.FieldCoordinates.coordinates
 import static graphql.schema.GraphQLArgument.newArgument
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLList.list
@@ -71,6 +72,7 @@ class Schema {
 
     protected MappingContext[] mappingContexts
 
+    GraphQLCodeRegistry.Builder codeRegistry
     GraphQLTypeManager typeManager
     GraphQLDeleteResponseHandler deleteResponseHandler
     GraphQLEntityNamingConvention namingConvention
@@ -102,14 +104,11 @@ class Schema {
             for (Map.Entry<String, Class> entry: arguments) {
                 GraphQLType type = typeManager.getType(entry.value)
                 if (!(type instanceof GraphQLInputType)) {
-                    throw new IllegalArgumentException("Error while setting list arguments. Invalid returnType found for ${entry.value.name}. GraphQLType found ${type.name} of returnType ${type.class.name} is not an instance of ${GraphQLInputType.name}")
+                    throw new IllegalArgumentException("Error while setting list arguments. Invalid returnType found for ${entry.value.name}. GraphQLType found ${type} of returnType ${type.class.name} is not an instance of ${GraphQLInputType.name}")
                 }
                 listArguments.put(entry.key, (GraphQLInputType)type)
             }
-            listArguments
-        }
-        else {
-            null
+            return listArguments
         }
     }
 
@@ -142,11 +141,14 @@ class Schema {
 
     @PostConstruct
     void initialize() {
+        if (codeRegistry == null) {
+            codeRegistry = GraphQLCodeRegistry.newCodeRegistry()
+        }
         if (namingConvention == null) {
             namingConvention = new GraphQLEntityNamingConvention()
         }
         if (errorsResponseHandler == null) {
-            errorsResponseHandler = new DefaultGraphQLErrorsResponseHandler(new StaticMessageSource())
+            errorsResponseHandler = new DefaultGraphQLErrorsResponseHandler(new StaticMessageSource(), codeRegistry)
         }
         if (domainPropertyManager == null) {
             domainPropertyManager = new DefaultGraphQLDomainPropertyManager()
@@ -156,7 +158,7 @@ class Schema {
         }
 
         if (typeManager == null) {
-            typeManager = new DefaultGraphQLTypeManager(namingConvention, errorsResponseHandler, domainPropertyManager, paginationResponseHandler)
+            typeManager = new DefaultGraphQLTypeManager(codeRegistry, namingConvention, errorsResponseHandler, domainPropertyManager, paginationResponseHandler)
         }
 
         populateDefaultDateTypes()
@@ -234,9 +236,11 @@ class Schema {
         if (!initialized) {
             initialize()
         }
+        final String QUERY_TYPE_NAME = 'Query'
+        final String MUTATION_TYPE_NAME = 'Mutation'
 
-        GraphQLObjectType.Builder queryType = newObject().name('Query')
-        GraphQLObjectType.Builder mutationType = newObject().name('Mutation')
+        GraphQLObjectType.Builder queryType = newObject().name(QUERY_TYPE_NAME)
+        GraphQLObjectType.Builder mutationType = newObject().name(MUTATION_TYPE_NAME)
 
         Set<PersistentEntity> childrenNotMapped = []
 
@@ -254,7 +258,7 @@ class Schema {
                 List<GraphQLFieldDefinition.Builder> queryFields = []
                 List<GraphQLFieldDefinition.Builder> mutationFields = []
 
-                GraphQLOutputType objectType = typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT)
+                final GraphQLOutputType OBJECT_TYPE = typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT)
 
                 List<GraphQLFieldDefinition.Builder> requiresIdentityArguments = []
                 List<Closure> postIdentityExecutables = []
@@ -265,12 +269,19 @@ class Schema {
 
                     DataFetcher getFetcher = dataFetcherManager.getReadingFetcher(entity, GET).orElse(new SingleEntityDataFetcher(entity))
 
+                    final String GET_FIELD_NAME = namingConvention.getGet(entity)
+
                     GraphQLFieldDefinition.Builder queryOne = newFieldDefinition()
-                            .name(namingConvention.getGet(entity))
-                            .type(objectType)
+                            .name(GET_FIELD_NAME)
+                            .type(OBJECT_TYPE)
                             .description(getOperation.description)
                             .deprecate(getOperation.deprecationReason)
-                            .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, GET, getFetcher))
+
+                    codeRegistry
+                        .dataFetcher(
+                                coordinates(QUERY_TYPE_NAME, GET_FIELD_NAME),
+                                new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, GET, getFetcher)
+                        )
 
                     requiresIdentityArguments.add(queryOne)
                     queryFields.add(queryOne)
@@ -281,36 +292,42 @@ class Schema {
 
                     DataFetcher listFetcher = dataFetcherManager.getReadingFetcher(entity, LIST).orElse(null)
 
+                    final String LIST_FIELD_NAME = namingConvention.getList(entity)
                     GraphQLFieldDefinition.Builder queryAll = newFieldDefinition()
-                            .name(namingConvention.getList(entity))
+                            .name(LIST_FIELD_NAME)
                             .description(listOperation.description)
                             .deprecate(listOperation.deprecationReason)
 
+                    GraphQLOutputType listOutputType
                     if (listOperation.paginate) {
                         if (listFetcher == null) {
                             listFetcher = new PaginatedEntityDataFetcher(entity)
                         }
-                        queryAll.type(typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT_PAGED))
-                    }
-                    else {
+                        listOutputType = typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT_PAGED)
+                    } else {
                         if (listFetcher == null) {
                             listFetcher = new EntityDataFetcher(entity)
                         }
-                        queryAll.type(list(objectType))
+                        listOutputType = list(OBJECT_TYPE)
                     }
+                    queryAll.type(listOutputType)
 
                     if (listFetcher instanceof PaginatingGormDataFetcher) {
                         ((PaginatingGormDataFetcher) listFetcher).responseHandler = paginationResponseHandler
                     }
-
-                    queryAll.dataFetcher(new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, LIST, listFetcher))
-
+                    
+                    codeRegistry.dataFetcher(
+                            coordinates(QUERY_TYPE_NAME, LIST_FIELD_NAME),
+                            new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, LIST, listFetcher)
+                    )
+                    
                     queryFields.add(queryAll)
 
                     for (Map.Entry<String, GraphQLInputType> argument: listArguments) {
-                        queryAll.argument(newArgument()
-                                .name(argument.key)
-                                .type(argument.value))
+                        queryAll.argument(
+                                newArgument()
+                                        .name(argument.key)
+                                        .type(argument.value))
                     }
                 }
 
@@ -319,13 +336,19 @@ class Schema {
 
                     DataFetcher countFetcher = dataFetcherManager.getReadingFetcher(entity, COUNT).orElse(new CountEntityDataFetcher(entity))
 
+                    final String COUNT_FIELD_NAME = namingConvention.getCount(entity)
+                    final GraphQLOutputType COUNT_OUTPUT_TYPE = (GraphQLOutputType)typeManager.getType(Integer)
+
                     GraphQLFieldDefinition.Builder queryCount = newFieldDefinition()
-                            .name(namingConvention.getCount(entity))
-                            .type((GraphQLOutputType)typeManager.getType(Integer))
+                            .name(COUNT_FIELD_NAME)
+                            .type(COUNT_OUTPUT_TYPE)
                             .description(countOperation.description)
                             .deprecate(countOperation.deprecationReason)
 
-                    queryCount.dataFetcher(new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, COUNT, countFetcher))
+                    codeRegistry.dataFetcher(
+                            coordinates(QUERY_TYPE_NAME, COUNT_FIELD_NAME),
+                            new InterceptingDataFetcher(entity, serviceManager, queryInterceptorInvoker, COUNT, countFetcher)
+                    )
 
                     queryFields.add(queryCount)
                 }
@@ -345,16 +368,22 @@ class Schema {
 
                     createFetcher.dataBinder = dataBinder
 
+                    final String CREATE_FIELD_NAME = namingConvention.getCreate(entity)
+
                     GraphQLFieldDefinition.Builder create = newFieldDefinition()
-                            .name(namingConvention.getCreate(entity))
-                            .type(objectType)
+                            .name(CREATE_FIELD_NAME)
+                            .type(OBJECT_TYPE)
                             .description(createOperation.description)
                             .deprecate(createOperation.deprecationReason)
                             .argument(newArgument()
-                            .name(entity.decapitalizedName)
-                            .type(createObjectType))
-                            .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, CREATE, createFetcher))
+                                            .name(entity.decapitalizedName)
+                                            .type(createObjectType))
 
+                    codeRegistry.dataFetcher(
+                            coordinates(MUTATION_TYPE_NAME, CREATE_FIELD_NAME),
+                            new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, CREATE, createFetcher)
+                    )
+                    
                     mutationFields.add(create)
                 }
 
@@ -369,12 +398,18 @@ class Schema {
 
                     updateFetcher.dataBinder = dataBinder
 
+                    final String UPDATE_FIELD_NAME = namingConvention.getUpdate(entity)
+
                     GraphQLFieldDefinition.Builder update = newFieldDefinition()
-                            .name(namingConvention.getUpdate(entity))
-                            .type(objectType)
+                            .name(UPDATE_FIELD_NAME)
+                            .type(OBJECT_TYPE)
                             .description(updateOperation.description)
                             .deprecate(updateOperation.deprecationReason)
-                            .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, UPDATE, updateFetcher))
+
+                    codeRegistry.dataFetcher(
+                            coordinates(MUTATION_TYPE_NAME, UPDATE_FIELD_NAME),
+                            new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, UPDATE, updateFetcher)
+                    )
 
                     postIdentityExecutables.add {
                         update.argument(newArgument()
@@ -393,18 +428,26 @@ class Schema {
 
                     deleteFetcher.responseHandler = deleteResponseHandler
 
+                    final String DELETE_FIELD_NAME = namingConvention.getDelete(entity)
+                    final GraphQLObjectType DELETE_OBJECT_TYPE = deleteResponseHandler.getObjectType(typeManager)
+
                     GraphQLFieldDefinition.Builder delete = newFieldDefinition()
-                            .name(namingConvention.getDelete(entity))
-                            .type(deleteResponseHandler.getObjectType(typeManager))
+                            .name(DELETE_FIELD_NAME)
+                            .type(DELETE_OBJECT_TYPE)
                             .description(deleteOperation.description)
                             .deprecate(deleteOperation.deprecationReason)
-                            .dataFetcher(new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, DELETE, deleteFetcher))
+
+                    codeRegistry.dataFetcher(
+                                    coordinates(MUTATION_TYPE_NAME, DELETE_FIELD_NAME),
+                                    new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, DELETE, deleteFetcher)
+                            )
 
                     requiresIdentityArguments.add(delete)
                     mutationFields.add(delete)
                 }
 
-                populateIdentityArguments(entity, requiresIdentityArguments.toArray(new GraphQLFieldDefinition.Builder[0]))
+                final GraphQLFieldDefinition.Builder[] BUILDERS = requiresIdentityArguments as GraphQLFieldDefinition.Builder[]
+                populateIdentityArguments(entity, BUILDERS)
 
                 for (Closure c: postIdentityExecutables) {
                     c.call()
@@ -422,9 +465,9 @@ class Schema {
                     schemaInterceptor.interceptEntity(entity, queryFields, mutationFields)
                 }
 
-                queryType.fields(queryFields*.build())
+                queryType.fields((List<GraphQLFieldDefinition>) queryFields*.build())
 
-                mutationType.fields(mutationFields*.build())
+                mutationType.fields((List<GraphQLFieldDefinition>) mutationFields*.build())
             }
         }
 
@@ -444,9 +487,11 @@ class Schema {
         }
 
         GraphQLSchema.newSchema()
-            .query(queryType)
-            .mutation(mutationType)
-            .build(additionalTypes)
+                .codeRegistry(codeRegistry.build())
+                .query(queryType)
+                .mutation(mutationType)
+                .additionalTypes(additionalTypes)
+                .build()
     }
 
 }

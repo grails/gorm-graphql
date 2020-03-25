@@ -15,7 +15,7 @@ class SimpleOperation {
             dataFetcher new DataFetcher() {
                 @Override
                 Object get(DataFetchingEnvironment environment) {
-                    return null
+                    null
                 }
             }
         }
@@ -24,7 +24,7 @@ class SimpleOperation {
             dataFetcher new DataFetcher() {
                 @Override
                 Object get(DataFetchingEnvironment environment) {
-                    return null
+                    null
                 }
             }
         }

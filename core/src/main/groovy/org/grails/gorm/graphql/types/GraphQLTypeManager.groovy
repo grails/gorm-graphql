@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.types
 
+import graphql.schema.GraphQLCodeRegistry
 import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLType
@@ -99,5 +100,10 @@ interface GraphQLTypeManager {
      * @return The type representing the provided entity
      */
     GraphQLOutputType getQueryType(PersistentEntity entity, GraphQLPropertyType type)
+
+    /**
+     * @return
+     */
+    GraphQLCodeRegistry.Builder getCodeRegistry()
 
 }

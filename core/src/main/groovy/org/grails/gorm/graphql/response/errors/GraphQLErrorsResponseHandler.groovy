@@ -12,5 +12,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  */
 interface GraphQLErrorsResponseHandler {
 
-    GraphQLFieldDefinition getFieldDefinition(GraphQLTypeManager typeManager)
+    GraphQLFieldDefinition getFieldDefinition(GraphQLTypeManager typeManager,
+                                              String parentType)
+
 }

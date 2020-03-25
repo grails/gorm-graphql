@@ -21,7 +21,7 @@ class EntityDataFetcherSpec extends HibernateSpec {
         given:
         DataFetchingEnvironment env = Mock(DataFetchingEnvironment) {
             1 * getArguments() >> [:]
-            1 * getFields() >> []
+            1 * getMergedField()
         }
         EntityDataFetcher fetcher = new EntityDataFetcher<>(mappingContext.getPersistentEntity(One.name))
 
@@ -36,7 +36,7 @@ class EntityDataFetcherSpec extends HibernateSpec {
         given:
         DataFetchingEnvironment env = Mock(DataFetchingEnvironment) {
             1 * getArguments() >> [max: 2, offset: 1]
-            1 * getFields() >> []
+            1 * getMergedField() 
         }
         EntityDataFetcher fetcher = new EntityDataFetcher<>(mappingContext.getPersistentEntity(One.name))
 
