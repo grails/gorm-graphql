@@ -1,6 +1,9 @@
 package org.grails.gorm.graphql.entity.operations
 
-import graphql.schema.*
+import graphql.schema.DataFetcher
+import graphql.schema.GraphQLFieldDefinition
+import graphql.schema.GraphQLInputType
+import graphql.schema.GraphQLOutputType
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
@@ -103,7 +106,7 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
      */
     CustomOperation defaultListArguments(boolean useDefaultListArguments = true) {
         if (operationType == OperationType.MUTATION && useDefaultListArguments) {
-            throw new UnsupportedOperationException("The default list arguments are only supported for query operations")
+            throw new UnsupportedOperationException('The default list arguments are only supported for query operations')
         }
         this.defaultListArguments = useDefaultListArguments
         this

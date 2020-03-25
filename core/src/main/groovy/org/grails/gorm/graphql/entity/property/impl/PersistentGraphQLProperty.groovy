@@ -92,7 +92,7 @@ class PersistentGraphQLProperty extends OrderedGraphQLProperty {
         initializeMetadata(mapping)
     }
 
-    private initializeMetadata(GraphQLPropertyMapping mapping) {
+    private void initializeMetadata(GraphQLPropertyMapping mapping) {
         this.description = mapping.description
         this.deprecationReason = mapping.deprecationReason
         try {

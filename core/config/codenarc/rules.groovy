@@ -245,7 +245,7 @@ ruleset {
     JUnitFailWithoutMessage
     JUnitLostTest
     JUnitPublicField
-    JUnitPublicNonTestMethod
+    // JUnitPublicNonTestMethod
     JUnitPublicProperty
     JUnitSetUpCallsSuper
     JUnitStyleAssertions

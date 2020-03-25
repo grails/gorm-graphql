@@ -97,10 +97,10 @@ class DefaultGraphQLErrorsResponseHandler implements GraphQLErrorsResponseHandle
 
     protected GraphQLObjectType buildDefinition(GraphQLTypeManager typeManager) {
         codeRegistry.dataFetcher(
-                        coordinates(name, "field"),
+                        coordinates(name, 'field'),
                         fieldFetcher)
                 .dataFetcher(
-                        coordinates(name, "message"),
+                        coordinates(name, 'message'),
                         messageFetcher)
 
         newObject()
