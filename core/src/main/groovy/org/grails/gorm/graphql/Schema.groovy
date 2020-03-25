@@ -1,13 +1,6 @@
 package org.grails.gorm.graphql
 
-import graphql.schema.DataFetcher
-import graphql.schema.GraphQLCodeRegistry
-import graphql.schema.GraphQLFieldDefinition
-import graphql.schema.GraphQLInputType
-import graphql.schema.GraphQLObjectType
-import graphql.schema.GraphQLOutputType
-import graphql.schema.GraphQLSchema
-import graphql.schema.GraphQLType
+import graphql.schema.*
 import groovy.transform.CompileStatic
 import javassist.Modifier
 import org.grails.datastore.mapping.model.MappingContext
@@ -55,30 +48,12 @@ import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 import org.grails.gorm.graphql.types.scalars.GraphQLDate
 import org.grails.gorm.graphql.types.scalars.coercing.DateCoercion
-import org.grails.gorm.graphql.types.scalars.coercing.jsr310.InstantCoercion
-import org.grails.gorm.graphql.types.scalars.coercing.jsr310.LocalDateCoercion
-import org.grails.gorm.graphql.types.scalars.coercing.jsr310.LocalDateTimeCoercion
-import org.grails.gorm.graphql.types.scalars.coercing.jsr310.LocalTimeCoercion
-import org.grails.gorm.graphql.types.scalars.coercing.jsr310.OffsetDateTimeCoercion
-import org.grails.gorm.graphql.types.scalars.coercing.jsr310.OffsetTimeCoercion
-import org.grails.gorm.graphql.types.scalars.coercing.jsr310.ZonedDateTimeCoercion
-import org.grails.gorm.graphql.types.scalars.jsr310.GraphQLInstant
-import org.grails.gorm.graphql.types.scalars.jsr310.GraphQLLocalDate
-import org.grails.gorm.graphql.types.scalars.jsr310.GraphQLLocalDateTime
-import org.grails.gorm.graphql.types.scalars.jsr310.GraphQLLocalTime
-import org.grails.gorm.graphql.types.scalars.jsr310.GraphQLOffsetDateTime
-import org.grails.gorm.graphql.types.scalars.jsr310.GraphQLOffsetTime
-import org.grails.gorm.graphql.types.scalars.jsr310.GraphQLZonedDateTime
+import org.grails.gorm.graphql.types.scalars.coercing.jsr310.*
+import org.grails.gorm.graphql.types.scalars.jsr310.*
 import org.springframework.context.support.StaticMessageSource
 
 import javax.annotation.PostConstruct
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.OffsetDateTime
-import java.time.OffsetTime
-import java.time.ZonedDateTime
+import java.time.*
 
 import static graphql.schema.FieldCoordinates.coordinates
 import static graphql.schema.GraphQLArgument.newArgument
