@@ -1,10 +1,14 @@
 package org.grails.gorm.graphql.testing
 
-import graphql.execution.ExecutionContext
+import graphql.cachecontrol.CacheControl
 import graphql.execution.ExecutionId
 import graphql.execution.ExecutionStepInfo
+import graphql.execution.MergedField
+import graphql.execution.directives.QueryDirectives
+import graphql.language.Document
 import graphql.language.Field
 import graphql.language.FragmentDefinition
+import graphql.language.OperationDefinition
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.DataFetchingFieldSelectionSet
 import graphql.schema.GraphQLFieldDefinition
@@ -13,6 +17,7 @@ import graphql.schema.GraphQLSchema
 import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
 import org.dataloader.DataLoader
+import org.dataloader.DataLoaderRegistry
 
 /**
  * A class to use to provide a mock DataFetchingEnvironment to
@@ -26,6 +31,7 @@ class MockDataFetchingEnvironment implements DataFetchingEnvironment {
 
     Object source
     Object context
+    Object localContext
     Map<String, Object> arguments = [:]
     List<Field> fields = []
     GraphQLOutputType fieldType
@@ -33,12 +39,18 @@ class MockDataFetchingEnvironment implements DataFetchingEnvironment {
     GraphQLSchema graphQLSchema
     Map<String, FragmentDefinition> fragmentsByName
     ExecutionId executionId
+    DataLoaderRegistry dataLoaderRegistry
+    CacheControl cacheControl
+    OperationDefinition operationDefinition
     DataFetchingFieldSelectionSet selectionSet
     GraphQLFieldDefinition fieldDefinition
     Object root
+    MergedField mergedField
     Field field
     ExecutionStepInfo executionStepInfo
-    ExecutionContext executionContext
+    Document document
+    Map<String, Object> variables
+    QueryDirectives queryDirectives
 
     @Override
     boolean containsArgument(String name) {
@@ -46,8 +58,43 @@ class MockDataFetchingEnvironment implements DataFetchingEnvironment {
     }
 
     @Override
+    Object getLocalContext() {
+        localContext
+    }
+
+    @Override
+    MergedField getMergedField() {
+        MergedField.newMergedField(fields).build()
+    }
+
+    @Override
+    QueryDirectives getQueryDirectives() {
+        queryDirectives
+    }
+
+    @Override
     def <K, V> DataLoader<K,V> getDataLoader(String dataLoaderName) {
-        return null
+        dataLoaderRegistry ? dataLoaderRegistry.getDataLoader(dataLoaderName) : null
+    }
+
+    @Override
+    CacheControl getCacheControl() {
+        cacheControl
+    }
+
+    @Override
+    OperationDefinition getOperationDefinition() {
+         operationDefinition
+    }
+
+    @Override
+    Document getDocument() {
+        document
+    }
+
+    @Override
+    Map<String, Object> getVariables() {
+        variables
     }
 
     @Override
