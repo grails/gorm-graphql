@@ -5,6 +5,7 @@ import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLList
 import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLOutputType
+import graphql.schema.GraphQLType
 import groovy.transform.CompileStatic
 import graphql.schema.GraphQLObjectType
 import org.grails.datastore.mapping.model.MappingContext
@@ -120,9 +121,9 @@ trait ComplexTyped<T> {
             }
 
             if (collection) {
-                type = GraphQLList.list(type)
+                type = GraphQLList.list((GraphQLInputType) type)
             }
-            customInputType = type
+            customInputType = (GraphQLInputType) type
         }
 
         customInputType

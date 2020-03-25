@@ -42,6 +42,7 @@ class MockDataFetchingEnvironment implements DataFetchingEnvironment {
     DataLoaderRegistry dataLoaderRegistry
     CacheControl cacheControl
     OperationDefinition operationDefinition
+    Locale locale
     DataFetchingFieldSelectionSet selectionSet
     GraphQLFieldDefinition fieldDefinition
     Object root
@@ -55,6 +56,11 @@ class MockDataFetchingEnvironment implements DataFetchingEnvironment {
     @Override
     boolean containsArgument(String name) {
         arguments.containsKey(name)
+    }
+
+    @Override
+    Object getArgumentOrDefault(String name, Object defaultValue) {
+        return arguments.getOrDefault(name, defaultValue)
     }
 
     @Override
@@ -80,6 +86,11 @@ class MockDataFetchingEnvironment implements DataFetchingEnvironment {
     @Override
     CacheControl getCacheControl() {
         cacheControl
+    }
+
+    @Override
+    Locale getLocale() {
+        locale
     }
 
     @Override

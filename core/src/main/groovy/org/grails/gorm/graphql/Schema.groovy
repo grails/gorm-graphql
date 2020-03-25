@@ -129,7 +129,7 @@ class Schema {
             for (Map.Entry<String, Class> entry: arguments) {
                 GraphQLType type = typeManager.getType(entry.value)
                 if (!(type instanceof GraphQLInputType)) {
-                    throw new IllegalArgumentException("Error while setting list arguments. Invalid returnType found for ${entry.value.name}. GraphQLType found ${type.name} of returnType ${type.class.name} is not an instance of ${GraphQLInputType.name}")
+                    throw new IllegalArgumentException("Error while setting list arguments. Invalid returnType found for ${entry.value.name}. GraphQLType found ${type} of returnType ${type.class.name} is not an instance of ${GraphQLInputType.name}")
                 }
                 listArguments.put(entry.key, (GraphQLInputType)type)
             }
