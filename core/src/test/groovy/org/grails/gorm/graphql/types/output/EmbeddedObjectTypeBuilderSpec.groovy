@@ -1,11 +1,13 @@
 package org.grails.gorm.graphql.types.output
 
+import graphql.schema.GraphQLCodeRegistry
 import org.grails.gorm.graphql.HibernateSpec
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.entity.property.manager.CompositeId
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.entity.property.manager.EmbeddedEntity
 import org.grails.gorm.graphql.types.GraphQLPropertyType
+import spock.lang.Shared
 
 class EmbeddedObjectTypeBuilderSpec extends HibernateSpec {
 
@@ -13,10 +15,11 @@ class EmbeddedObjectTypeBuilderSpec extends HibernateSpec {
             CompositeId, EmbeddedEntity
     ] }
 
+    @Shared GraphQLCodeRegistry.Builder codeRegistry
     EmbeddedObjectTypeBuilder builder
 
     void setup() {
-        builder = new EmbeddedObjectTypeBuilder(new DefaultGraphQLDomainPropertyManager(), null, null)
+        builder = new EmbeddedObjectTypeBuilder(codeRegistry, new DefaultGraphQLDomainPropertyManager(), null, null)
     }
 
     void "test type"() {

@@ -1,7 +1,6 @@
 package org.grails.gorm.graphql.fetcher
 
 import graphql.language.Field
-import graphql.language.Selection
 import graphql.language.SelectionSet
 import graphql.schema.DataFetchingEnvironment
 import org.grails.datastore.mapping.model.PersistentEntity
@@ -472,10 +471,8 @@ class MockFieldBuilder {
 
     List<Field> fields = []
 
-    Field newField(String name) {
-        Field field = new Field(name)
-        field.selectionSet = new SelectionSet([] as List<Selection>)
-        field
+    private Field.Builder newField(String name) {
+        Field.newField(name)
     }
 
     List<Field> build(Closure closure) {
@@ -486,15 +483,16 @@ class MockFieldBuilder {
     }
 
     def methodMissing(String name, args) {
-        Field field = newField(name)
+        Field.Builder field = newField(name)
         if (args.length == 1 && args[0] instanceof Closure) {
-            field.selectionSet.selections.addAll(new MockFieldBuilder().build(args[0]))
+            final SelectionSet selectionSet = SelectionSet.newSelectionSet(new MockFieldBuilder().build((Closure) args[0])).build()
+            field.selectionSet(selectionSet)
         }
-        fields.add(field)
+        fields.add(field.build())
     }
 
     def propertyMissing(String name) {
-        fields.add(newField(name))
+        fields.add(newField(name).build())
     }
 
 }

@@ -23,7 +23,7 @@ class SoftDeleteEntityDataFetcherSpec extends HibernateSpec {
         given:
         DataFetchingEnvironment env = Mock(DataFetchingEnvironment) {
             1 * getArgument('id') >> id
-            1 * getFields() >> []
+            1 * getMergedField()
         }
         SoftDeleteEntityDataFetcher fetcher = new SoftDeleteEntityDataFetcher<>(mappingContext.getPersistentEntity(OtherDomain.name), 'name', 'John')
         fetcher.responseHandler = new DefaultGraphQLDeleteResponseHandler()
