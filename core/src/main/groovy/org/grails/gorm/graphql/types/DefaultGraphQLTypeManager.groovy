@@ -60,6 +60,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
     protected static final Map<Class, GraphQLEnumType> ENUM_TYPES = new ConcurrentHashMap<>()
 
+    final GraphQLCodeRegistry.Builder codeRegistry
     GraphQLEntityNamingConvention namingConvention
     GraphQLErrorsResponseHandler errorsResponseHandler
     GraphQLDomainPropertyManager propertyManager
@@ -68,10 +69,12 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
     Map<GraphQLPropertyType, InputObjectTypeBuilder> inputObjectTypeBuilders = [:]
     Map<GraphQLPropertyType, ObjectTypeBuilder> objectTypeBuilders = [:]
 
-    DefaultGraphQLTypeManager(GraphQLEntityNamingConvention namingConvention,
+    DefaultGraphQLTypeManager(GraphQLCodeRegistry.Builder codeRegistry,
+                              GraphQLEntityNamingConvention namingConvention,
                               GraphQLErrorsResponseHandler errorsResponseHandler,
                               GraphQLDomainPropertyManager propertyManager,
                               GraphQLPaginationResponseHandler paginationResponseHandler) {
+        this.codeRegistry = codeRegistry
         this.namingConvention = namingConvention
         this.propertyManager = propertyManager
         this.errorsResponseHandler = errorsResponseHandler
@@ -96,8 +99,8 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
         }
 
         List<ObjectTypeBuilder> builders = []
-        builders.add(new EmbeddedObjectTypeBuilder(propertyManager, typeManager, null))
-        builders.add(new ShowObjectTypeBuilder(propertyManager, typeManager, errorsResponseHandler))
+        builders.add(new EmbeddedObjectTypeBuilder(codeRegistry, propertyManager, typeManager, null))
+        builders.add(new ShowObjectTypeBuilder(codeRegistry, propertyManager, typeManager, errorsResponseHandler))
         builders.add(new PaginatedObjectTypeBuilder(paginationResponseHandler, typeManager))
 
         for (ObjectTypeBuilder builder: builders) {

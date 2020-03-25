@@ -3,6 +3,7 @@ package org.grails.gorm.graphql.plugin
 import grails.plugins.Plugin
 import grails.web.mime.MimeType
 import graphql.GraphQL
+import graphql.schema.GraphQLCodeRegistry
 import org.grails.gorm.graphql.GraphQLServiceManager
 import org.grails.gorm.graphql.Schema
 import org.grails.gorm.graphql.binding.manager.DefaultGraphQLDataBinderManager
@@ -63,12 +64,15 @@ Brief summary/description of the plugin.
         graphQLContextBuilder(DefaultGraphQLContextBuilder)
 
         graphQLDataBinder(GrailsGraphQLDataBinder)
-        graphQLErrorsResponseHandler(DefaultGraphQLErrorsResponseHandler, ref("messageSource"))
+        graphQLCodeRegistry(GraphQLCodeRegistry) { bean ->
+            bean.factoryMethod = "newCodeRegistry"
+        }
+        graphQLErrorsResponseHandler(DefaultGraphQLErrorsResponseHandler, ref("messageSource"), ref("graphQLCodeRegistry"))
         graphQLEntityNamingConvention(GraphQLEntityNamingConvention)
         graphQLDomainPropertyManager(DefaultGraphQLDomainPropertyManager)
         graphQLPaginationResponseHandler(DefaultGraphQLPaginationResponseHandler)
 
-        graphQLTypeManager(DefaultGraphQLTypeManager, ref("graphQLEntityNamingConvention"), ref("graphQLErrorsResponseHandler"), ref("graphQLDomainPropertyManager"), ref("graphQLPaginationResponseHandler"))
+        graphQLTypeManager(DefaultGraphQLTypeManager, ref("graphQLCodeRegistry"), ref("graphQLEntityNamingConvention"), ref("graphQLErrorsResponseHandler"), ref("graphQLDomainPropertyManager"), ref("graphQLPaginationResponseHandler"))
         graphQLDataBinderManager(DefaultGraphQLDataBinderManager, ref("graphQLDataBinder"))
         graphQLDeleteResponseHandler(DefaultGraphQLDeleteResponseHandler)
         graphQLDataFetcherManager(DefaultGraphQLDataFetcherManager)
@@ -76,6 +80,7 @@ Brief summary/description of the plugin.
         graphQLServiceManager(GraphQLServiceManager)
 
         graphQLSchemaGenerator(Schema) {
+            codeRegistry = ref("graphQLCodeRegistry")
             deleteResponseHandler = ref("graphQLDeleteResponseHandler")
             namingConvention = ref("graphQLEntityNamingConvention")
             typeManager = ref("graphQLTypeManager")
