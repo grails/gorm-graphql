@@ -62,6 +62,9 @@ class GraphqlController {
         if (executionResult.errors.size() > 0) {
             result.put('errors', executionResult.errors)
         }
+        if (executionResult.extensions.size() > 0) {
+            result.put('extensions', executionResult.extensions)
+        }
         result.put('data', executionResult.data)
 
         result
