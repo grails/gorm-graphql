@@ -20,4 +20,4 @@ project(":examples-spring-boot-app").projectDir = new File(settingsDir, "example
 rootProject.name = 'gorm-graphql-root'
 
 findProject(':core').name = 'gorm-graphql'
-findProject(':plugin').name = 'grails-plugin-gorm-graphql'
+findProject(':plugin').name = 'grails-plugin-gorm-graphql-plugin'

@@ -28,7 +28,7 @@ dependencies {
     testCompile "org.grails:grails-gorm-testing-support"
     testCompile "org.grails:grails-web-testing-support"
 
-    compile project(":grails-plugin-gorm-graphql")
+    compile project(":grails-plugin-gorm-graphql-plugin")
 }
 
 bootRun {
