@@ -131,7 +131,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html" title="Class in org.grails.gorm.graphql.types.output">AbstractObjectTypeBuilder</a></span> - Class in <a href="./org/grails/gorm/graphql/types/output/package-summary.html">org.grails.gorm.graphql.types.output</a>
 </dt><dd><div class="block">A base class used to create object types that represent an entity</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html#AbstractObjectTypeBuilder(org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler)" title="Constructor in AbstractObjectTypeBuilder">AbstractObjectTypeBuilder(GraphQLDomainPropertyManager, GraphQLTypeManager, GraphQLErrorsResponseHandler)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html">AbstractObjectTypeBuilder</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html#AbstractObjectTypeBuilder(GraphQLCodeRegistry.Builder, org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager, org.grails.gorm.graphql.types.GraphQLTypeManager, org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler)" title="Constructor in AbstractObjectTypeBuilder">AbstractObjectTypeBuilder(Builder, GraphQLDomainPropertyManager, GraphQLTypeManager, GraphQLErrorsResponseHandler)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html">AbstractObjectTypeBuilder</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/arguments/ComplexArgument.html#accepts(groovy.lang.Closure)" title="Method in ComplexArgument">accepts(Closure)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/arguments/ComplexArgument.html">ComplexArgument</a>
 </dt><dd> <div class="block"></div></dd>
@@ -203,7 +203,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">@return A new builder instance</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetcher.html#buildFetchOptions()" title="Method in ClosureDataFetcher">buildFetchOptions()</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetcher.html">ClosureDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html#buildField(org.grails.gorm.graphql.entity.property.GraphQLDomainProperty)" title="Method in AbstractObjectTypeBuilder">buildField(GraphQLDomainProperty)</a></span> - Method in <a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html">AbstractObjectTypeBuilder</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html#buildField(org.grails.gorm.graphql.entity.property.GraphQLDomainProperty, java.lang.String)" title="Method in AbstractObjectTypeBuilder">buildField(GraphQLDomainProperty, String)</a></span> - Method in <a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html">AbstractObjectTypeBuilder</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/delete/DefaultGraphQLDeleteResponseHandler.html#buildFieldDefinitions(org.grails.gorm.graphql.types.GraphQLTypeManager)" title="Method in DefaultGraphQLDeleteResponseHandler">buildFieldDefinitions(GraphQLTypeManager)</a></span> - Method in <a href="org/grails/gorm/graphql/response/delete/DefaultGraphQLDeleteResponseHandler.html">DefaultGraphQLDeleteResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
@@ -243,6 +243,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html" title="Class in org.grails.gorm.graphql.fetcher.impl">ClosureDataFetchingEnvironment</a></span> - Class in <a href="./org/grails/gorm/graphql/fetcher/impl/package-summary.html">org.grails.gorm.graphql.fetcher.impl</a>
 </dt><dd><div class="block">Provides the data fetching environment for closures. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html#ClosureDataFetchingEnvironment(DataFetchingEnvironment, java.lang.Class)" title="Constructor in ClosureDataFetchingEnvironment">ClosureDataFetchingEnvironment(DataFetchingEnvironment, Class)</a></span> - Constructor in <a href="org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html">ClosureDataFetchingEnvironment</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html#codeRegistry" title="Field in AbstractObjectTypeBuilder">codeRegistry</a></span> - Field in <a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html">AbstractObjectTypeBuilder</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#codeRegistry" title="Field in DefaultGraphQLErrorsResponseHandler">codeRegistry</a></span> - Field in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html#collection(boolean)" title="Method in ComplexTyped">collection(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/helpers/ComplexTyped.html">ComplexTyped</a>
 </dt><dd> <div class="block"></div></dd>
@@ -353,8 +357,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html#dataFetchers" title="Field in DefaultGraphQLDataFetcherManager">dataFetchers</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/manager/DefaultGraphQLDataFetcherManager.html">DefaultGraphQLDataFetcherManager</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#datastore" title="Field in DefaultGormDataFetcher">datastore</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/coercing/DateCoercion.html" title="Class in org.grails.gorm.graphql.types.scalars.coercing">DateCoercion</a></span> - Class in <a href="./org/grails/gorm/graphql/types/scalars/coercing/package-summary.html">org.grails.gorm.graphql.types.scalars.coercing</a>
 </dt><dd><div class="block">Default java.util.Date coercion</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/coercing/DateCoercion.html#DateCoercion(List<String>, boolean)" title="Constructor in DateCoercion">DateCoercion(List&lt;String&gt;, boolean)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/scalars/coercing/DateCoercion.html">DateCoercion</a>
@@ -388,7 +390,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html" title="Class in org.grails.gorm.graphql.response.errors">DefaultGraphQLErrorsResponseHandler</a></span> - Class in <a href="./org/grails/gorm/graphql/response/errors/package-summary.html">org.grails.gorm.graphql.response.errors</a>
 </dt><dd><div class="block">The default way to respond with validation errors in GraphQL.
  </div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#DefaultGraphQLErrorsResponseHandler(MessageSource)" title="Constructor in DefaultGraphQLErrorsResponseHandler">DefaultGraphQLErrorsResponseHandler(MessageSource)</a></span> - Constructor in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#DefaultGraphQLErrorsResponseHandler(MessageSource, GraphQLCodeRegistry.Builder)" title="Constructor in DefaultGraphQLErrorsResponseHandler">DefaultGraphQLErrorsResponseHandler(MessageSource, Builder)</a></span> - Constructor in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/interceptor/manager/DefaultGraphQLInterceptorManager.html" title="Class in org.grails.gorm.graphql.interceptor.manager">DefaultGraphQLInterceptorManager</a></span> - Class in <a href="./org/grails/gorm/graphql/interceptor/manager/package-summary.html">org.grails.gorm.graphql.interceptor.manager</a>
 </dt><dd><div class="block">Default implementation of <a href='../../../../../../org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html' title='GraphQLInterceptorManager'>GraphQLInterceptorManager</a> that
@@ -398,7 +400,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">Controls how a page of results are returned</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html" title="Class in org.grails.gorm.graphql.types">DefaultGraphQLTypeManager</a></span> - Class in <a href="./org/grails/gorm/graphql/types/package-summary.html">org.grails.gorm.graphql.types</a>
 </dt><dd><div class="block">The default implementation of <a href='../../../../../org/grails/gorm/graphql/types/GraphQLTypeManager.html' title='GraphQLTypeManager'>GraphQLTypeManager</a></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#DefaultGraphQLTypeManager(org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention, org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler, org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager, org.grails.gorm.graphql.response.pagination.GraphQLPaginationResponseHandler)" title="Constructor in DefaultGraphQLTypeManager">DefaultGraphQLTypeManager(GraphQLEntityNamingConvention, GraphQLErrorsResponseHandler, GraphQLDomainPropertyManager, GraphQLPaginationResponseHandler)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#DefaultGraphQLTypeManager(GraphQLCodeRegistry.Builder, org.grails.gorm.graphql.entity.GraphQLEntityNamingConvention, org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler, org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager, org.grails.gorm.graphql.response.pagination.GraphQLPaginationResponseHandler)" title="Constructor in DefaultGraphQLTypeManager">DefaultGraphQLTypeManager(Builder, GraphQLEntityNamingConvention, GraphQLErrorsResponseHandler, GraphQLDomainPropertyManager, GraphQLPaginationResponseHandler)</a></span> - Constructor in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html#defaultListArguments(boolean)" title="Method in CustomOperation">defaultListArguments(boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/operations/CustomOperation.html">CustomOperation</a>
 </dt><dd> <div class="block">If the argument is true, the default list arguments created in the
@@ -550,6 +552,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html#getArgument(java.lang.String)" title="Method in MockDataFetchingEnvironment">getArgument(String)</a></span> - Method in <a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html">MockDataFetchingEnvironment</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html#getArgumentOrDefault(java.lang.String, java.lang.Object)" title="Method in MockDataFetchingEnvironment">getArgumentOrDefault(String, Object)</a></span> - Method in <a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html">MockDataFetchingEnvironment</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html#getArguments(DataFetchingEnvironment)" title="Method in EntityDataFetcher">getArguments(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html">EntityDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html#getBaseType(PersistentProperty)" title="Method in PersistentGraphQLProperty">getBaseType(PersistentProperty)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/PersistentGraphQLProperty.html">PersistentGraphQLProperty</a>
@@ -562,6 +566,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html#getBuilder()" title="Method in AbstractObjectTypeBuilder">getBuilder()</a></span> - Method in <a href="org/grails/gorm/graphql/types/output/AbstractObjectTypeBuilder.html">AbstractObjectTypeBuilder</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html#getCacheControl()" title="Method in MockDataFetchingEnvironment">getCacheControl()</a></span> - Method in <a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html">MockDataFetchingEnvironment</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html#getCodeRegistry()" title="Method in GraphQLTypeManager">getCodeRegistry()</a></span> - Method in <a href="org/grails/gorm/graphql/types/GraphQLTypeManager.html">GraphQLTypeManager</a>
+</dt><dd> <div class="block">@return</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html#getCount(PersistentEntity)" title="Method in GraphQLEntityNamingConvention">getCount(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>
 </dt><dd> <div class="block">@param entity The persistent entity</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html#getCreate(PersistentEntity)" title="Method in GraphQLEntityNamingConvention">getCreate(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>
@@ -583,6 +591,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html#getDataFetcher()" title="Method in GraphQLDomainProperty">getDataFetcher()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/GraphQLDomainProperty.html">GraphQLDomainProperty</a>
 </dt><dd> <div class="block"> <DL><DT><B>Returns:</B></DT><DD>The closure to retrieve the data for the property.</DD></DL></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/SimpleGraphQLProperty.html#getDataFetcher()" title="Method in SimpleGraphQLProperty">getDataFetcher()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/SimpleGraphQLProperty.html">SimpleGraphQLProperty</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html#getDataLoader(java.lang.String)" title="Method in MockDataFetchingEnvironment">getDataLoader(String)</a></span> - Method in <a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html">MockDataFetchingEnvironment</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#getDatastore()" title="Method in DefaultGormDataFetcher">getDatastore()</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/pagination/DefaultGraphQLPaginationResponseHandler.html#getDefaultMax()" title="Method in DefaultGraphQLPaginationResponseHandler">getDefaultMax()</a></span> - Method in <a href="org/grails/gorm/graphql/response/pagination/DefaultGraphQLPaginationResponseHandler.html">DefaultGraphQLPaginationResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
@@ -612,6 +624,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/pagination/GraphQLPaginationResponseHandler.html#getDescription(PersistentEntity)" title="Method in GraphQLPaginationResponseHandler">getDescription(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/response/pagination/GraphQLPaginationResponseHandler.html">GraphQLPaginationResponseHandler</a>
 </dt><dd> <div class="block">@return The description to use in the schema, or null</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html#getDocument()" title="Method in MockDataFetchingEnvironment">getDocument()</a></span> - Method in <a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html">MockDataFetchingEnvironment</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/GraphQLPropertyType.html#getEmbeddedType()" title="Method in GraphQLPropertyType">getEmbeddedType()</a></span> - Method in <a href="org/grails/gorm/graphql/types/GraphQLPropertyType.html">GraphQLPropertyType</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/UpdateEntityDataFetcher.html#getEntityArgument(DataFetchingEnvironment)" title="Method in UpdateEntityDataFetcher">getEntityArgument(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/UpdateEntityDataFetcher.html">UpdateEntityDataFetcher</a>
@@ -624,9 +638,9 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">For use with domain class return types only. </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#getFetchArguments(DataFetchingEnvironment, boolean)" title="Method in DefaultGormDataFetcher">getFetchArguments(DataFetchingEnvironment, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#getFieldDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager)" title="Method in DefaultGraphQLErrorsResponseHandler">getFieldDefinition(GraphQLTypeManager)</a></span> - Method in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#getFieldDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager, java.lang.String)" title="Method in DefaultGraphQLErrorsResponseHandler">getFieldDefinition(GraphQLTypeManager, String)</a></span> - Method in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/GraphQLErrorsResponseHandler.html#getFieldDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager)" title="Method in GraphQLErrorsResponseHandler">getFieldDefinition(GraphQLTypeManager)</a></span> - Method in <a href="org/grails/gorm/graphql/response/errors/GraphQLErrorsResponseHandler.html">GraphQLErrorsResponseHandler</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/GraphQLErrorsResponseHandler.html#getFieldDefinition(org.grails.gorm.graphql.types.GraphQLTypeManager, java.lang.String)" title="Method in GraphQLErrorsResponseHandler">getFieldDefinition(GraphQLTypeManager, String)</a></span> - Method in <a href="org/grails/gorm/graphql/response/errors/GraphQLErrorsResponseHandler.html">GraphQLErrorsResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#getFieldDefinitions(org.grails.gorm.graphql.types.GraphQLTypeManager)" title="Method in DefaultGraphQLErrorsResponseHandler">getFieldDefinitions(GraphQLTypeManager)</a></span> - Method in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
@@ -667,11 +681,17 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html#getList(PersistentEntity)" title="Method in GraphQLEntityNamingConvention">getList(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>
 </dt><dd> <div class="block">@param entity The persistent entity</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html#getLocalContext()" title="Method in MockDataFetchingEnvironment">getLocalContext()</a></span> - Method in <a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html">MockDataFetchingEnvironment</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html#getLocale(DataFetchingEnvironment)" title="Method in DefaultGraphQLErrorsResponseHandler">getLocale(DataFetchingEnvironment)</a></span> - Method in <a href="org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.html">DefaultGraphQLErrorsResponseHandler</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/context/LocaleAwareContext.html#getLocale()" title="Method in LocaleAwareContext">getLocale()</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/context/LocaleAwareContext.html">LocaleAwareContext</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html#getLocale()" title="Method in MockDataFetchingEnvironment">getLocale()</a></span> - Method in <a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html">MockDataFetchingEnvironment</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/GraphQLEntityHelper.html#getMapping(PersistentEntity)" title="Method in GraphQLEntityHelper">getMapping(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/GraphQLEntityHelper.html">GraphQLEntityHelper</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html#getMergedField()" title="Method in MockDataFetchingEnvironment">getMergedField()</a></span> - Method in <a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html">MockDataFetchingEnvironment</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#getMutationType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType, boolean)" title="Method in DefaultGraphQLTypeManager">getMutationType(PersistentEntity, GraphQLPropertyType, boolean)</a></span> - Method in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
@@ -691,6 +711,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/delete/GraphQLDeleteResponseHandler.html#getObjectType(org.grails.gorm.graphql.types.GraphQLTypeManager)" title="Method in GraphQLDeleteResponseHandler">getObjectType(GraphQLTypeManager)</a></span> - Method in <a href="org/grails/gorm/graphql/response/delete/GraphQLDeleteResponseHandler.html">GraphQLDeleteResponseHandler</a>
 </dt><dd> <div class="block">Creates the schema object for a delete response</div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html#getOperationDefinition()" title="Method in MockDataFetchingEnvironment">getOperationDefinition()</a></span> - Method in <a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html">MockDataFetchingEnvironment</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/impl/OrderedGraphQLProperty.html#getOrder()" title="Method in OrderedGraphQLProperty">getOrder()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/impl/OrderedGraphQLProperty.html">OrderedGraphQLProperty</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html#getPagination(PersistentEntity)" title="Method in GraphQLEntityNamingConvention">getPagination(PersistentEntity)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>
@@ -698,6 +720,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.Builder.html#getProperties(PersistentEntity, org.grails.gorm.graphql.entity.dsl.GraphQLMapping)" title="Method in GraphQLDomainPropertyManager.Builder">getProperties(PersistentEntity, GraphQLMapping)</a></span> - Method in <a href="org/grails/gorm/graphql/entity/property/manager/GraphQLDomainPropertyManager.Builder.html">GraphQLDomainPropertyManager.Builder</a>
 </dt><dd> <div class="block">Retrieves the desired properties based on the conditions previously applied</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html#getPropertyMappings()" title="Method in GraphQLMapping">getPropertyMappings()</a></span> - Method in <a href="org/grails/gorm/graphql/entity/dsl/GraphQLMapping.html">GraphQLMapping</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html#getQueryDirectives()" title="Method in MockDataFetchingEnvironment">getQueryDirectives()</a></span> - Method in <a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html">MockDataFetchingEnvironment</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html#getQueryType(PersistentEntity, org.grails.gorm.graphql.types.GraphQLPropertyType)" title="Method in DefaultGraphQLTypeManager">getQueryType(PersistentEntity, GraphQLPropertyType)</a></span> - Method in <a href="org/grails/gorm/graphql/types/DefaultGraphQLTypeManager.html">DefaultGraphQLTypeManager</a>
 </dt><dd> <div class="block"></div></dd>
@@ -711,13 +735,15 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/PaginatingGormDataFetcher.html#getResponseHandler()" title="Method in PaginatingGormDataFetcher">getResponseHandler()</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/PaginatingGormDataFetcher.html">PaginatingGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/plugin/testing/GraphQLSpec.html#getRest()" title="Method in GraphQLSpec">getRest()</a></span> - Method in <a href="org/grails/gorm/graphql/plugin/testing/GraphQLSpec.html">GraphQLSpec</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/pagination/PagedResultListPaginationResponse.html#getResults()" title="Method in PagedResultListPaginationResponse">getResults()</a></span> - Method in <a href="org/grails/gorm/graphql/response/pagination/PagedResultListPaginationResponse.html">PagedResultListPaginationResponse</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/pagination/PaginationResult.html#getResults()" title="Method in PaginationResult">getResults()</a></span> - Method in <a href="org/grails/gorm/graphql/response/pagination/PaginationResult.html">PaginationResult</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/plugin/testing/GraphQLSpec.html#getServerUrl()" title="Method in GraphQLSpec">getServerUrl()</a></span> - Method in <a href="org/grails/gorm/graphql/plugin/testing/GraphQLSpec.html">GraphQLSpec</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/GraphQLServiceManager.html#getService(Class<T>)" title="Method in GraphQLServiceManager">getService(Class&lt;T&gt;)</a></span> - Method in <a href="org/grails/gorm/graphql/GraphQLServiceManager.html">GraphQLServiceManager</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#getStaticApi()" title="Method in DefaultGormDataFetcher">getStaticApi()</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/response/pagination/PagedResultListPaginationResponse.html#getTotalCount()" title="Method in PagedResultListPaginationResponse">getTotalCount()</a></span> - Method in <a href="org/grails/gorm/graphql/response/pagination/PagedResultListPaginationResponse.html">PagedResultListPaginationResponse</a>
 </dt><dd> <div class="block"></div></dd>
@@ -776,6 +802,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">@param entity The persistent entity</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/plugin/testing/GraphQLSpec.html#getUrl()" title="Method in GraphQLSpec">getUrl()</a></span> - Method in <a href="org/grails/gorm/graphql/plugin/testing/GraphQLSpec.html">GraphQLSpec</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html#getVariables()" title="Method in MockDataFetchingEnvironment">getVariables()</a></span> - Method in <a href="org/grails/gorm/graphql/testing/MockDataFetchingEnvironment.html">MockDataFetchingEnvironment</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/GormDataFetcher.html" title="Interface in org.grails.gorm.graphql.fetcher">GormDataFetcher</a></span> - Interface in <a href="./org/grails/gorm/graphql/fetcher/package-summary.html">org.grails.gorm.graphql.fetcher</a>
 </dt><dd><div class="block">A base interface to describe fetchers that
  work with GORM</div></dd>
@@ -787,7 +815,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">A default data binder using Grails data binding</div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/GraphQL.html" title="Annotation Type in org.grails.gorm.graphql">GraphQL</a></span> - Annotation Type in <a href="./org/grails/gorm/graphql/package-summary.html">org.grails.gorm.graphql</a>
 </dt><dd><div class="block">Annotation used to supply metadata to GraphQL. </div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/plugin/testing/GraphQLSpec.GraphQLRequestHelper.html#graphql(java.lang.String)" title="Method in GraphQLSpec.GraphQLRequestHelper">graphql(String)</a></span> - Method in <a href="org/grails/gorm/graphql/plugin/testing/GraphQLSpec.GraphQLRequestHelper.html">GraphQLSpec.GraphQLRequestHelper</a>
+<dt><span class="strong"><a href="org/grails/gorm/graphql/plugin/testing/GraphQLSpec.GraphQLRequestHelper.html#graphql(java.lang.String, Class<T>)" title="Method in GraphQLSpec.GraphQLRequestHelper">graphql(String, Class&lt;T&gt;)</a></span> - Method in <a href="org/grails/gorm/graphql/plugin/testing/GraphQLSpec.GraphQLRequestHelper.html">GraphQLSpec.GraphQLRequestHelper</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/plugin/GormGraphqlGrailsPlugin.html#GRAPHQL_MIME" title="Field in GormGraphqlGrailsPlugin">GRAPHQL_MIME</a></span> - Field in <a href="org/grails/gorm/graphql/plugin/GormGraphqlGrailsPlugin.html">GormGraphqlGrailsPlugin</a>
 </dt><dd> <div class="block"></div></dd>
@@ -1457,8 +1485,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/types/scalars/coercing/SqlDateCoercion.html" title="Class in org.grails.gorm.graphql.types.scalars.coercing">SqlDateCoercion</a></span> - Class in <a href="./org/grails/gorm/graphql/types/scalars/coercing/package-summary.html">org.grails.gorm.graphql.types.scalars.coercing</a>
 </dt><dd><div class="block">Default java.sql.Date coercion</div></dd>
-<dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html#staticApi" title="Field in DefaultGormDataFetcher">staticApi</a></span> - Field in <a href="org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/CountEntityDataFetcher.html#supports(org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Method in CountEntityDataFetcher">supports(GraphQLDataFetcherType)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/CountEntityDataFetcher.html">CountEntityDataFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/gorm/graphql/fetcher/impl/CreateEntityDataFetcher.html#supports(org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType)" title="Method in CreateEntityDataFetcher">supports(GraphQLDataFetcherType)</a></span> - Method in <a href="org/grails/gorm/graphql/fetcher/impl/CreateEntityDataFetcher.html">CreateEntityDataFetcher</a>
