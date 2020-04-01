@@ -1,8 +1,17 @@
 == Provided Operations
 
-The 2 query (get, list) and 3 mutation (create, update, delete) operations provided by default for all entities mapped with GraphQL are called the provided operations.
+The 3 query (get, list, count) and 3 mutation (create, update, delete) operations provided by default for all entities mapped with GraphQL are called the provided operations.
 
 It is possible to customize the provided operations as well as disable their creation.
+
+=== Disabling All Operations
+
+[source,groovy]
+----
+static graphql = GraphQLMapping.build {
+    operations.all.enabled false
+}
+----
 
 === Disabling A Provided Operation
 
@@ -19,6 +28,25 @@ static graphql = GraphQLMapping.build {
     //operations.delete
 }
 ----
+
+=== Disabling All Mutation(Write) Operation
+
+[source,groovy]
+----
+static graphql = GraphQLMapping.build {
+    operations.mutation.enabled false
+}
+----
+
+=== Disabling All Query(Read) Operation
+
+[source,groovy]
+----
+static graphql = GraphQLMapping.build {
+    operations.query.enabled false
+}
+----
+
 
 === Metadata
 
