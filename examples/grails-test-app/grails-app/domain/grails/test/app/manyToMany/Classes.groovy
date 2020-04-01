@@ -9,11 +9,6 @@ class Classes {
     static hasMany = [students: Student]
 
     static graphQL = GraphQLMapping.build {
-        operations.get.enabled false
-        operations.list.enabled false
-        operations.count.enabled false
-        operations.create.enabled false
-        operations.delete.enabled false
-        operations.update.enabled false
+        operations.all.enabled false
     }
 }
