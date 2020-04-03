@@ -1268,10 +1268,20 @@ To customize properties to come before the identifier or version, set the value 
 <h2 id="_provided_operations">Provided Operations</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The 2 query (get, list) and 3 mutation (create, update, delete) operations provided by default for all entities mapped with GraphQL are called the provided operations.</p>
+<p>The 3 query (get, list, count) and 3 mutation (create, update, delete) operations provided by default for all entities mapped with GraphQL are called the provided operations.</p>
 </div>
 <div class="paragraph">
 <p>It is possible to customize the provided operations as well as disable their creation.</p>
+</div>
+<div class="sect2">
+<h3 id="_disabling_all_operations">Disabling All Operations</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.all.enabled <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_disabling_a_provided_operation">Disabling A Provided Operation</h3>
@@ -1286,6 +1296,26 @@ To customize properties to come before the identifier or version, set the value 
     <span class="comment">//operations.create</span>
     <span class="comment">//operations.update</span>
     <span class="comment">//operations.delete</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disabling_all_mutation_write_operation">Disabling All Mutation(Write) Operation</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.mutation.enabled <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disabling_all_query_read_operation">Disabling All Query(Read) Operation</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.query.enabled <span class="predefined-constant">false</span>
 }</code></pre>
 </div>
 </div>
