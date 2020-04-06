@@ -62,6 +62,11 @@ class GraphqlController {
         if (executionResult.errors.size() > 0) {
             result.put('errors', executionResult.errors)
         }
+
+        final Map extensions = executionResult.extensions
+        if (Objects.nonNull(extensions) && extensions.size() > 0) {
+            result.put('extensions', extensions)
+        }
         result.put('data', executionResult.data)
 
         result

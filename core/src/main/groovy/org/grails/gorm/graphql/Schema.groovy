@@ -253,6 +253,8 @@ class Schema {
                         childrenNotMapped.add(entity)
                     }
                     continue
+                } else if (!mapping.operations.all.enabled) {
+                    continue
                 }
 
                 List<GraphQLFieldDefinition.Builder> queryFields = []
@@ -264,8 +266,11 @@ class Schema {
                 List<Closure> postIdentityExecutables = []
                 InterceptorInvoker queryInterceptorInvoker = new QueryInterceptorInvoker()
 
+                ProvidedOperation queryOperation = mapping.operations.query
+                ProvidedOperation mutationOperation = mapping.operations.mutation
+
                 ProvidedOperation getOperation = mapping.operations.get
-                if (getOperation.enabled) {
+                if (queryOperation.enabled && getOperation.enabled) {
 
                     DataFetcher getFetcher = dataFetcherManager.getReadingFetcher(entity, GET).orElse(new SingleEntityDataFetcher(entity))
 
@@ -288,7 +293,7 @@ class Schema {
                 }
 
                 ListOperation listOperation = mapping.operations.list
-                if (listOperation.enabled) {
+                if (queryOperation.enabled && listOperation.enabled) {
 
                     DataFetcher listFetcher = dataFetcherManager.getReadingFetcher(entity, LIST).orElse(null)
 
@@ -332,7 +337,7 @@ class Schema {
                 }
 
                 ProvidedOperation countOperation = mapping.operations.count
-                if (countOperation.enabled) {
+                if (queryOperation.enabled && countOperation.enabled) {
 
                     DataFetcher countFetcher = dataFetcherManager.getReadingFetcher(entity, COUNT).orElse(new CountEntityDataFetcher(entity))
 
@@ -358,7 +363,7 @@ class Schema {
                 GraphQLDataBinder dataBinder = dataBinderManager.getDataBinder(entity.javaClass)
 
                 ProvidedOperation createOperation = mapping.operations.create
-                if (createOperation.enabled && !Modifier.isAbstract(entity.javaClass.modifiers)) {
+                if (mutationOperation.enabled && createOperation.enabled && !Modifier.isAbstract(entity.javaClass.modifiers)) {
                     if (dataBinder == null) {
                         throw new DataBinderNotFoundException(entity)
                     }
@@ -388,7 +393,7 @@ class Schema {
                 }
 
                 ProvidedOperation updateOperation = mapping.operations.update
-                if (updateOperation.enabled) {
+                if (mutationOperation.enabled && updateOperation.enabled) {
                     if (dataBinder == null) {
                         throw new DataBinderNotFoundException(entity)
                     }
@@ -422,7 +427,7 @@ class Schema {
                 }
 
                 ProvidedOperation deleteOperation = mapping.operations.delete
-                if (deleteOperation.enabled) {
+                if (mutationOperation.enabled && deleteOperation.enabled) {
 
                     DeletingGormDataFetcher deleteFetcher = dataFetcherManager.getDeletingFetcher(entity).orElse(new DeleteEntityDataFetcher(entity))
 

@@ -14,6 +14,9 @@ import org.grails.gorm.graphql.entity.operations.ProvidedOperation
 @CompileStatic
 class Operations {
 
+    ProvidedOperation mutation = new ProvidedOperation()
+    ProvidedOperation query = new ProvidedOperation()
+    ProvidedOperation all = new ProvidedOperation()
     ProvidedOperation get = new ProvidedOperation()
     ListOperation list = new ListOperation()
     ProvidedOperation create = new ProvidedOperation()

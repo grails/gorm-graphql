@@ -6,9 +6,7 @@ import graphql.ExecutionResult
 import graphql.GraphQL
 import org.grails.gorm.graphql.plugin.DefaultGraphQLContextBuilder
 import org.grails.gorm.graphql.plugin.GrailsGraphQLConfiguration
-import org.grails.gorm.graphql.plugin.GraphQLContextBuilder
 import org.grails.gorm.graphql.plugin.GraphqlController
-import org.grails.web.servlet.mvc.GrailsWebRequest
 import spock.lang.Specification
 
 class GraphqlControllerSpec extends Specification implements ControllerUnitTest<GraphqlController> {
@@ -27,6 +25,7 @@ class GraphqlControllerSpec extends Specification implements ControllerUnitTest<
         Mock(ExecutionResult) {
             1 * getErrors() >> []
             1 * getData() >> ''
+            1 * getExtensions() >> [:]
         }
     }
 
