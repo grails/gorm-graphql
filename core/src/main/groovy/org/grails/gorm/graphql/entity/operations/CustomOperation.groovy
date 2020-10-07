@@ -9,9 +9,9 @@ import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
 import org.grails.gorm.graphql.entity.dsl.helpers.Describable
 import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
 import org.grails.gorm.graphql.entity.dsl.helpers.Named
-import org.grails.gorm.graphql.entity.operations.arguments.ComplexArgument
-import org.grails.gorm.graphql.entity.operations.arguments.CustomArgument
-import org.grails.gorm.graphql.entity.operations.arguments.SimpleArgument
+import org.grails.gorm.graphql.entity.arguments.ComplexArgument
+import org.grails.gorm.graphql.entity.arguments.CustomArgument
+import org.grails.gorm.graphql.entity.arguments.SimpleArgument
 import org.grails.gorm.graphql.fetcher.interceptor.CustomMutationInterceptorInvoker
 import org.grails.gorm.graphql.fetcher.interceptor.CustomQueryInterceptorInvoker
 import org.grails.gorm.graphql.fetcher.interceptor.InterceptingDataFetcher
