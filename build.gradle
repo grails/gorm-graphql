@@ -11,9 +11,9 @@ buildscript {
     }
 }
 
-plugins {
-    id 'com.gradle.build-scan' version '2.0.2'
-}
+//plugins {
+//    id 'com.gradle.build-scan' version '2.0.2'
+//}
 
 repositories {
     maven { url "https://repo.grails.org/grails/core" }
@@ -93,7 +93,7 @@ subprojects {
     }
 }
 
-buildScan {
-    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-    termsOfServiceAgree = 'yes'
-}
+//buildScan {
+//    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+//    termsOfServiceAgree = 'yes'
+//}
