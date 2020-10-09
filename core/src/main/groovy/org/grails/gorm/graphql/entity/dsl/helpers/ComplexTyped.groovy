@@ -25,7 +25,7 @@ import static graphql.schema.GraphQLInputObjectField.newInputObjectField
  * @since 1.0.0
  */
 @CompileStatic
-trait ComplexTyped<T> {
+trait ComplexTyped<T> extends ExecutesClosures {
 
     boolean collection = false
 
@@ -41,24 +41,6 @@ trait ComplexTyped<T> {
     T defaultNull(boolean defaultNull) {
         this.defaultNull = defaultNull
         (T)this
-    }
-
-    /**
-     * This method exists because of https://issues.apache.org/jira/browse/GROOVY-8272
-     *
-     * Normally this class could extend from {@link ExecutesClosures}
-     */
-    private void withDelegate(Closure closure, Object delegate) {
-        if (closure != null) {
-            closure.resolveStrategy = Closure.DELEGATE_ONLY
-            closure.delegate = delegate
-
-            try {
-                closure.call()
-            } finally {
-                closure.delegate = null
-            }
-        }
     }
 
     /**
