@@ -113,7 +113,7 @@ trait ComplexTyped<T> extends ExecutesClosures {
 
     private void handleField(Closure closure, Field field) {
         field.nullable(defaultNull)
-        withDelegate(closure, field)
+        withDelegate(closure, (Object)field)
         handleField(field)
     }
 
