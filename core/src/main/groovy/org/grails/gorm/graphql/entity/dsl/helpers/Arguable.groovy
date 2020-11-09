@@ -32,7 +32,7 @@ trait Arguable<T> extends ExecutesClosures {
      * @param closure To provide additional data about the argument
      * @return The operation in order to chain method calls
      */
-    T argument(String name, List<Class> type, @DelegatesTo(value = SimpleArgument, strategy = Closure.DELEGATE_ONLY) Closure closure = null) {
+    T argument(String name, List<Class<?>> type, @DelegatesTo(value = SimpleArgument, strategy = Closure.DELEGATE_ONLY) Closure closure = null) {
         CustomArgument argument = new SimpleArgument().name(name).returns(type)
         handleArgumentClosure(argument, closure)
         (T)this
@@ -46,7 +46,7 @@ trait Arguable<T> extends ExecutesClosures {
      * @param closure To provide additional data about the argument
      * @return The operation in order to chain method calls
      */
-    T argument(String name, Class type, @DelegatesTo(value = SimpleArgument, strategy = Closure.DELEGATE_ONLY) Closure closure = null) {
+    T argument(String name, Class<?> type, @DelegatesTo(value = SimpleArgument, strategy = Closure.DELEGATE_ONLY) Closure closure = null) {
         CustomArgument argument = new SimpleArgument().name(name).returns(type)
         handleArgumentClosure(argument, closure)
         (T)this
