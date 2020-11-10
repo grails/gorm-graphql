@@ -8,9 +8,11 @@ import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLOutputType
 import graphql.schema.TypeResolver
 import groovy.transform.CompileStatic
+import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
+import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.types.GraphQLPropertyType
@@ -50,11 +52,16 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
 
     abstract GraphQLPropertyType getType()
 
-    protected GraphQLFieldDefinition.Builder buildField(GraphQLDomainProperty prop, String parentType) {
+    protected GraphQLFieldDefinition.Builder buildField(GraphQLDomainProperty prop, String parentType, MappingContext mapping) {
         GraphQLFieldDefinition.Builder field = newFieldDefinition()
                 .name(prop.name)
                 .deprecate(prop.deprecationReason)
                 .description(prop.description)
+
+        if(prop instanceof CustomGraphQLProperty) {
+            CustomGraphQLProperty customProp = (CustomGraphQLProperty) prop
+            field.arguments(customProp.getArguments(typeManager, mapping))
+        }
 
         GraphQLOutputType type = (GraphQLOutputType) prop.getGraphQLType(typeManager, type)
         if (prop.dataFetcher != null) {
@@ -85,7 +92,7 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
             List<GraphQLDomainProperty> properties = builder.getProperties(entity)
             for (GraphQLDomainProperty prop: properties) {
                 if (prop.output) {
-                    fields.add(buildField(prop, NAME).build())
+                    fields.add(buildField(prop, NAME, entity.mappingContext).build())
                 }
             }
 
