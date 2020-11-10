@@ -40,6 +40,20 @@ class SimpleType {
         }
 
         add('list', [String])
+
+        add('withArgument', String) {
+            argument('arg', String)
+        }
+        add('withArgumentList', String) {
+            argument('arg', [String])
+        }
+        add('withCustomArgument', String) {
+            argument('arg', 'SimpleArg') {
+                accepts {
+                    field('field', String)
+                }
+            }
+        }
     }
 
     def methodMissing(String name, Object[] args) {
