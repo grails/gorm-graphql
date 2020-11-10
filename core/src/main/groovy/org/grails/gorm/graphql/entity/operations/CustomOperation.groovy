@@ -35,7 +35,7 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
     DataFetcher dataFetcher
     boolean defaultListArguments = false
 
-    T dataFetcher(DataFetcher dataFetcher) {
+    T dataFetcher(DataFetcher<?> dataFetcher) {
         this.dataFetcher = dataFetcher
         (T)this
     }
