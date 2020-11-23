@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.types.output
 
 import graphql.TypeResolutionEnvironment
+import graphql.schema.GraphQLArgument
 import graphql.schema.GraphQLCodeRegistry
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLInterfaceType
@@ -11,6 +12,7 @@ import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQLEntityHelper
+import org.grails.gorm.graphql.entity.dsl.helpers.Arguable
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
@@ -58,9 +60,11 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
                 .deprecate(prop.deprecationReason)
                 .description(prop.description)
 
-        if(prop instanceof CustomGraphQLProperty) {
-            CustomGraphQLProperty customProp = (CustomGraphQLProperty) prop
-            field.arguments(customProp.getArguments(typeManager, mapping))
+        if(prop instanceof Arguable) {
+            List<GraphQLArgument> arguments = prop.getArguments(typeManager, mapping)
+            if (!arguments.isEmpty()) {
+                field.arguments(arguments)
+            }
         }
 
         GraphQLOutputType type = (GraphQLOutputType) prop.getGraphQLType(typeManager, type)
