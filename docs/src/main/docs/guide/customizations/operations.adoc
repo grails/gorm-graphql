@@ -181,44 +181,6 @@ query('authorByName', Author) { //or [Author] to return a list of authors
 }
 ----
 
-=== Arguments
-
-Arguments are the way users can supply data to your operation. The argument can be a simple type (String, Integer, etc), or it can also be a custom type that you define.
-
-[source,groovy]
-----
-query('authorByName', Author) {
-    argument('name', String) //To take in a single string
-
-    argument('names', [String]) //To take in a list of strings
-
-    argument('name', 'AuthorNameArgument') { //A custom argument
-        accepts {
-            field('first', String)
-            field('last', String)
-        }
-    }
-}
-----
-
-The API inside of the last argument block is exactly the same as the API for defining link:#custom[custom properties] with custom types.
-
-==== Argument Metadata
-
-GraphQL has the ability to store metadata about arguments to operations.
-
-[source,groovy]
-----
-query('authorByName', Author) {
-    argument('name', String) {
-        defaultValue 'John' //Supply a sensible default
-
-        nullable true //Allow a null value (default false)
-
-        description 'The name of the author to search for'
-    }
-}
-----
 === Data Fetcher
 
 When creating a custom operation, it is necessary to supply a "data fetcher". The data fetcher is responsible for returning data to GraphQL to be used in generating the response. The data fetcher must be an instance of `graphql.schema.DataFetcher`.
@@ -232,6 +194,7 @@ class Author {
     static hasMany = [books: Book]
 
     static graphql = GraphQLMapping.build {
+        argument('name', String)
         query('authorByName', Author) {
             dataFetcher(new DataFetcher<>() {
                 @Override

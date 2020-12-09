@@ -15,6 +15,7 @@ customizations:
         existing: GORM Properties
         custom: Custom Properties
     operations: Operations
+    arguments: Arguments
     responseHandlers: Validation Error and Delete Responses
     namingConvention: Naming Convention
     configuration: Configuration
