@@ -54,18 +54,11 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
 
     abstract GraphQLPropertyType getType()
 
-    protected GraphQLFieldDefinition.Builder buildField(GraphQLDomainProperty prop, String parentType, MappingContext mapping) {
+    protected GraphQLFieldDefinition.Builder buildField(GraphQLDomainProperty prop, String parentType) {
         GraphQLFieldDefinition.Builder field = newFieldDefinition()
                 .name(prop.name)
                 .deprecate(prop.deprecationReason)
                 .description(prop.description)
-
-        if(prop instanceof Arguable) {
-            List<GraphQLArgument> arguments = prop.getArguments(typeManager, mapping)
-            if (!arguments.isEmpty()) {
-                field.arguments(arguments)
-            }
-        }
 
         GraphQLOutputType type = (GraphQLOutputType) prop.getGraphQLType(typeManager, type)
         if (prop.dataFetcher != null) {
@@ -77,6 +70,16 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
         field.type(type)
 
         field
+    }
+
+    protected GraphQLFieldDefinition.Builder addFieldArgs(GraphQLFieldDefinition.Builder field, GraphQLDomainProperty prop, MappingContext mapping) {
+        if (prop instanceof Arguable) {
+            List<GraphQLArgument> arguments = prop.getArguments(typeManager, mapping)
+            if (!arguments.isEmpty()) {
+                field.arguments(arguments)
+            }
+        }
+        return field
     }
 
     @Override
@@ -96,7 +99,11 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
             List<GraphQLDomainProperty> properties = builder.getProperties(entity)
             for (GraphQLDomainProperty prop: properties) {
                 if (prop.output) {
-                    fields.add(buildField(prop, NAME, entity.mappingContext).build())
+                    GraphQLFieldDefinition.Builder field = buildField(prop, NAME)
+                    if (prop instanceof Arguable) {
+                        addFieldArgs(field, prop, entity.mappingContext)
+                    }
+                    fields.add(field.build())
                 }
             }
 
