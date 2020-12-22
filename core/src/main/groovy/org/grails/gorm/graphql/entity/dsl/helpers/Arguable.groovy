@@ -74,5 +74,4 @@ trait Arguable<T> extends ExecutesClosures {
         (T)this
     }
 
-
 }

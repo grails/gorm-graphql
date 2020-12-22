@@ -1,20 +1,13 @@
 package org.grails.gorm.graphql.types.output
 
 import graphql.TypeResolutionEnvironment
-import graphql.schema.GraphQLArgument
-import graphql.schema.GraphQLCodeRegistry
-import graphql.schema.GraphQLFieldDefinition
-import graphql.schema.GraphQLInterfaceType
-import graphql.schema.GraphQLObjectType
-import graphql.schema.GraphQLOutputType
-import graphql.schema.TypeResolver
+import graphql.schema.*
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQLEntityHelper
 import org.grails.gorm.graphql.entity.dsl.helpers.Arguable
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
-import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
 import org.grails.gorm.graphql.types.GraphQLPropertyType
@@ -79,7 +72,7 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
                 field.arguments(arguments)
             }
         }
-        return field
+        field
     }
 
     @Override
