@@ -8,9 +8,12 @@ class BootStrap {
     DogService dogService
     LabradoodleService labradoodleService
     HumanService humanService
+    GuardianService guardianService
     GrailsTeamMemberService grailsTeamMemberService
 
     def init = { servletContext ->
+
+        guardianService.save("Martha")
 
         dogService.save("Spot", 60)
         labradoodleService.save("Chloe", 60)
