@@ -1,5 +1,9 @@
 package grails.test.app
 
+import grails.test.app.pogo.Painting
+import grails.test.app.pogo.Profile
+import graphql.schema.GraphQLObjectType
+import graphql.schema.GraphQLOutputType
 import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 import org.grails.gorm.graphql.interceptor.impl.BaseGraphQLFetcherInterceptor
@@ -14,6 +18,9 @@ import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
 import org.grails.gorm.graphql.fetcher.impl.SingleEntityDataFetcher
 import org.grails.gorm.graphql.fetcher.impl.SoftDeleteEntityDataFetcher
 import org.grails.gorm.graphql.fetcher.manager.GraphQLDataFetcherManager
+import org.grails.gorm.graphql.types.GraphQLTypeManager
+
+import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 
 
 @CompileStatic
@@ -56,5 +63,28 @@ class GraphQLCustomizer extends GraphQLPostProcessor {
     void doWith(GraphQLDataBinderManager binderManager) {
         binderManager.registerDataBinder(User, new UserDataBinder())
         binderManager.registerDataBinder(Role, new RoleDataBinder())
+    }
+
+    @Override
+    void doWith(GraphQLTypeManager typeManager) {
+        GraphQLOutputType stringType = (GraphQLOutputType)typeManager.getType(String)
+        GraphQLOutputType intType = (GraphQLOutputType)typeManager.getType(Integer)
+        GraphQLObjectType.Builder builder = GraphQLObjectType.newObject()
+                .name('Painting')
+                .field(newFieldDefinition()
+                        .name('name')
+                        .type(stringType))
+                .field(newFieldDefinition()
+                        .name('artistName')
+                        .type(stringType))
+                .field(newFieldDefinition()
+                        .name('heightCm')
+                        .type(intType))
+                .field(newFieldDefinition()
+                        .name('widthCm')
+                        .type(intType))
+
+
+        typeManager.registerType(Painting, builder.build())
     }
 }
