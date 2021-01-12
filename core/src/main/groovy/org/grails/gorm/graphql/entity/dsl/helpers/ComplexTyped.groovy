@@ -1,20 +1,11 @@
 package org.grails.gorm.graphql.entity.dsl.helpers
 
-import graphql.schema.GraphQLInputObjectType
-import graphql.schema.GraphQLInputType
-import graphql.schema.GraphQLList
-import graphql.schema.GraphQLNonNull
-import graphql.schema.GraphQLOutputType
-import graphql.schema.GraphQLType
+import graphql.schema.*
 import groovy.transform.CompileStatic
-import graphql.schema.GraphQLObjectType
 import org.grails.datastore.mapping.model.MappingContext
-import org.grails.gorm.graphql.entity.fields.ComplexField
 import org.grails.gorm.graphql.entity.fields.Field
-import org.grails.gorm.graphql.entity.fields.SimpleField
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
-import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLInputObjectField.newInputObjectField
 
 /**
@@ -25,40 +16,13 @@ import static graphql.schema.GraphQLInputObjectField.newInputObjectField
  * @since 1.0.0
  */
 @CompileStatic
-trait ComplexTyped<T> {
+trait ComplexTyped<T> extends CustomTyped<T> {
 
     boolean collection = false
 
     T collection(boolean collection) {
         this.collection = collection
         (T)this
-    }
-
-    List<Field> fields = []
-
-    boolean defaultNull = true
-
-    T defaultNull(boolean defaultNull) {
-        this.defaultNull = defaultNull
-        (T)this
-    }
-
-    /**
-     * This method exists because of https://issues.apache.org/jira/browse/GROOVY-8272
-     *
-     * Normally this class could extend from {@link ExecutesClosures}
-     */
-    private void withDelegate(Closure closure, Object delegate) {
-        if (closure != null) {
-            closure.resolveStrategy = Closure.DELEGATE_ONLY
-            closure.delegate = delegate
-
-            try {
-                closure.call()
-            } finally {
-                closure.delegate = null
-            }
-        }
     }
 
     /**
@@ -69,20 +33,7 @@ trait ComplexTyped<T> {
      * @return The custom returnType
      */
     GraphQLOutputType buildCustomType(String name, GraphQLTypeManager typeManager, MappingContext mappingContext) {
-        GraphQLObjectType.Builder builder = GraphQLObjectType.newObject()
-                .name(name)
-
-        for (Field field: fields) {
-            if (field.output) {
-                builder.field(newFieldDefinition()
-                        .name(field.name)
-                        .description(field.description)
-                        .deprecate(field.deprecationReason)
-                        .type(field.getType(typeManager, mappingContext)))
-            }
-        }
-        GraphQLObjectType type = builder.build()
-
+        GraphQLOutputType type = super.buildCustomType(name, typeManager, mappingContext)
         if (collection) {
             GraphQLList.list(type)
         }
@@ -127,36 +78,6 @@ trait ComplexTyped<T> {
         }
 
         customInputType
-    }
-
-    private void handleField(Closure closure, Field field) {
-        field.nullable(defaultNull)
-        withDelegate(closure, field)
-        handleField(field)
-    }
-
-    private void handleField(Field field) {
-        field.validate()
-        fields.add(field)
-    }
-
-    void field(String name, List<Class> type, @DelegatesTo(value = SimpleField, strategy = Closure.DELEGATE_ONLY) Closure closure = null) {
-        Field field = new SimpleField().name(name).returns(type)
-        handleField(closure, field)
-    }
-
-    void field(String name, Class type, @DelegatesTo(value = SimpleField, strategy = Closure.DELEGATE_ONLY) Closure closure = null) {
-        Field field = new SimpleField().name(name).returns(type)
-        handleField(closure, field)
-    }
-
-    void field(String name, String typeName, @DelegatesTo(value = ComplexField, strategy = Closure.DELEGATE_ONLY) Closure closure) {
-        Field field = new ComplexField().name(name).typeName(typeName)
-        handleField(closure, field)
-    }
-
-    void field(ComplexField field) {
-        handleField(field)
     }
 
 }
