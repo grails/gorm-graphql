@@ -19,7 +19,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  */
 @AutoClone
 @CompileStatic
-abstract class UnionGraphQLProperty<T> extends OrderedGraphQLProperty implements Named<T>, Describable<T>, Deprecatable<T>, Nullable<T>, Arguable<T> {
+abstract class UnionGraphQLProperty<T> extends OrderedGraphQLProperty implements Named<T>, Describable<T>, Deprecatable<T>, Nullable<T> {
 
     Integer order = null
     boolean input = false

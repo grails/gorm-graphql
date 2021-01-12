@@ -34,4 +34,30 @@ class UnionIntegrationSpec extends Specification implements GraphQLSpec {
         data == '{"data":{"guardianList":[{"id":1,"name":"Martha","pets":[{"__typename":"Cat","name":"Garfield","lives":9},{"__typename":"Pup","name":"Scooby","bones":50}]}]}}'
     }
 
+    void "simple union collection property"() {
+        when:
+        def resp = graphQL.graphql("""
+            {
+                guardianList {
+                    id
+                    name
+                    random {
+                        __typename
+                        ... on Labradoodle {
+                            name
+                            barks
+                        }
+                        ... on Human {
+                            name
+                            language
+                        }
+                    }
+                }
+            }
+        """, String.class)
+        String data = resp.getBody().get()
+
+        then:
+        data == '{"data":{"guardianList":[{"id":1,"name":"Martha","random":[{"__typename":"Labradoodle","name":"Chloe","barks":true},{"__typename":"Human","name":"Kotlin Ken","language":true}]}]}}'
+    }
 }

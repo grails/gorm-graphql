@@ -1,5 +1,8 @@
 package grails.test.app.unions
 
+
+import grails.test.app.inheritance.Human
+import grails.test.app.inheritance.Labradoodle
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetchingEnvironment
 
@@ -26,6 +29,12 @@ class Guardian {
                     new Cat(name: 'Garfield', lives: 9),
                     new Pup(name: 'Scooby', bones: 50)
                 ]
+            }
+        }
+        addUnion('random', 'TotallyDifferent', [Labradoodle, Human]) {
+            collection(true)
+            dataFetcher { Guardian source, ClosureDataFetchingEnvironment env ->
+                return Labradoodle.list() + Human.list()
             }
         }
     }
