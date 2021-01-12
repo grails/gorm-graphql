@@ -53,7 +53,7 @@ trait Typed<T> {
             graphQLType = typeManager.getEnumType(type, nullable)
         }
         else if (typeManager.hasType(type)) {
-            graphQLType = (GraphQLInputType)typeManager.getType(type, nullable)
+            graphQLType = typeManager.getType(type, nullable)
         }
         else {
             PersistentEntity entity = mappingContext?.getPersistentEntity(type.name)
