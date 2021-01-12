@@ -10,6 +10,7 @@ import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
+import org.grails.gorm.graphql.entity.property.impl.UnionGraphQLProperty
 import org.grails.gorm.graphql.entity.property.impl.PersistentGraphQLProperty
 
 import java.lang.reflect.Method
@@ -161,6 +162,19 @@ class DefaultGraphQLDomainPropertyManager implements GraphQLDomainPropertyManage
                 else {
                     prop = property
                 }
+                prop.mappingContext = mappingContext
+                properties.add(prop)
+            }
+
+            for (UnionGraphQLProperty property: mapping.additionalUnions) {
+                UnionGraphQLProperty prop
+                if (overrideNullable && !property.nullable) {
+                    prop = (UnionGraphQLProperty)property.clone().nullable(true)
+                }
+                else {
+                    prop = property
+                }
+
                 prop.mappingContext = mappingContext
                 properties.add(prop)
             }

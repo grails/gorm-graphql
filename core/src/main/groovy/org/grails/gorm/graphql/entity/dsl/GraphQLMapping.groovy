@@ -10,7 +10,10 @@ import org.grails.gorm.graphql.entity.operations.CustomOperation
 import org.grails.gorm.graphql.entity.operations.OperationType
 import org.grails.gorm.graphql.entity.operations.SimpleOperation
 import org.grails.gorm.graphql.entity.property.impl.ComplexGraphQLProperty
+import org.grails.gorm.graphql.entity.property.impl.ComplexUnionGraphQLProperty
 import org.grails.gorm.graphql.entity.property.impl.CustomGraphQLProperty
+import org.grails.gorm.graphql.entity.property.impl.SimpleUnionGraphQLProperty
+import org.grails.gorm.graphql.entity.property.impl.UnionGraphQLProperty
 import org.grails.gorm.graphql.entity.property.impl.SimpleGraphQLProperty
 import org.grails.gorm.graphql.response.pagination.PaginatedType
 import org.springframework.beans.MutablePropertyValues
@@ -40,6 +43,7 @@ import org.springframework.validation.DataBinder
 class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQLMapping>, ExecutesClosures {
 
     private List<CustomGraphQLProperty> additional = []
+    private List<UnionGraphQLProperty> additionalUnions = []
     private Map<String, GraphQLPropertyMapping> propertyMappings = [:]
     Set<String> excluded = [] as Set
     Operations operations = new Operations()
@@ -48,6 +52,10 @@ class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQ
 
     List<CustomGraphQLProperty> getAdditional() {
         new ArrayList<CustomGraphQLProperty>(additional)
+    }
+
+    List<UnionGraphQLProperty> getAdditionalUnions() {
+        new ArrayList<UnionGraphQLProperty>(additionalUnions)
     }
 
     Map<String, GraphQLPropertyMapping> getPropertyMappings() {
@@ -126,6 +134,40 @@ class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQ
      */
     void add(String name, String typeName, @DelegatesTo(value = ComplexGraphQLProperty, strategy = Closure.DELEGATE_ONLY) Closure closure) {
         CustomGraphQLProperty property = new ComplexGraphQLProperty().name(name).typeName(typeName)
+        withDelegate(closure, property)
+        add(property)
+    }
+
+    /**
+     * Add a new Union property to be included in the schema.
+     * @param property The Union property to include
+     */
+    void add(UnionGraphQLProperty property) {
+        property.validate()
+        additionalUnions.add(property)
+    }
+
+    /**
+     * Add a new Union property to be included in the schema.
+     * @param name The name of the property to include
+     * @param typeName The name of the custom Union type being created
+     * @param closure A closure to further configure the property
+     */
+    void addUnion(String name, String typeName, @DelegatesTo(value = ComplexUnionGraphQLProperty, strategy = Closure.DELEGATE_ONLY) Closure closure) {
+        UnionGraphQLProperty property = new ComplexUnionGraphQLProperty().name(name).typeName(typeName)
+        withDelegate(closure, property)
+        add(property)
+    }
+
+    /**
+     * Add a new Union property to be included in the schema.
+     * @param name The name of the property to include
+     * @param typeName The name of the custom Union type being created
+     * @param unionedTypes A collection of potential return types
+     * @param closure A closure to further configure the property
+     */
+    void addUnion(String name, String typeName, List<Class> unionedTypes, @DelegatesTo(value = SimpleUnionGraphQLProperty, strategy = Closure.DELEGATE_ONLY) Closure closure) {
+        UnionGraphQLProperty property = new SimpleUnionGraphQLProperty().name(name).typeName(typeName).setUnionTypes(unionedTypes.toSet())
         withDelegate(closure, property)
         add(property)
     }

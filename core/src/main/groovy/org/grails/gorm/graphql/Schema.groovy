@@ -16,6 +16,7 @@ import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.entity.operations.CustomOperation
 import org.grails.gorm.graphql.entity.operations.ListOperation
 import org.grails.gorm.graphql.entity.operations.ProvidedOperation
+import org.grails.gorm.graphql.entity.property.impl.UnionGraphQLProperty
 import org.grails.gorm.graphql.entity.property.manager.DefaultGraphQLDomainPropertyManager
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
@@ -253,6 +254,8 @@ class Schema {
                         childrenNotMapped.add(entity)
                     }
                     continue
+                } else if (mapping.additionalUnions) {
+                    childrenNotMapped.add(entity)
                 } else if (!mapping.operations.all.enabled) {
                     continue
                 }
@@ -483,8 +486,14 @@ class Schema {
             if (mapping == null) {
                 continue
             }
+            if (mapping.additionalUnions) {
+                for (UnionGraphQLProperty union : mapping.additionalUnions) {
+                    additionalTypes.addAll(union.getUnionTypes())
+                }
+            } else {
+                additionalTypes.add(typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT))
+            }
 
-            additionalTypes.add(typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT))
         }
 
         for (GraphQLSchemaInterceptor schemaInterceptor: interceptorManager.interceptors) {
