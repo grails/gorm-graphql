@@ -488,7 +488,7 @@ class Schema {
             }
             if (mapping.additionalUnions) {
                 for (UnionGraphQLProperty union : mapping.additionalUnions) {
-                    additionalTypes.addAll(union.getUnionTypes())
+                    additionalTypes.addAll(union.unionTypes)
                 }
             } else {
                 additionalTypes.add(typeManager.getQueryType(entity, GraphQLPropertyType.OUTPUT))

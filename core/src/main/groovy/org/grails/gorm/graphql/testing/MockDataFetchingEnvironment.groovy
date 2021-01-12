@@ -60,7 +60,7 @@ class MockDataFetchingEnvironment implements DataFetchingEnvironment {
 
     @Override
     Object getArgumentOrDefault(String name, Object defaultValue) {
-        return arguments.getOrDefault(name, defaultValue)
+        arguments.getOrDefault(name, defaultValue)
     }
 
     @Override

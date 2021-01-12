@@ -5,8 +5,6 @@ import graphql.schema.*
 import groovy.transform.AutoClone
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.gorm.graphql.entity.dsl.helpers.CustomTyped
-import org.grails.gorm.graphql.entity.dsl.helpers.Typed
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
@@ -25,7 +23,6 @@ class SimpleUnionGraphQLProperty extends UnionGraphQLProperty<SimpleUnionGraphQL
     String typeName
     private Set<Class> unionedTypes = []
     private Set<GraphQLObjectType> graphQLTypesMap = []
-
 
     SimpleUnionGraphQLProperty typeName(String typeName) {
         this.typeName = typeName
@@ -51,12 +48,12 @@ class SimpleUnionGraphQLProperty extends UnionGraphQLProperty<SimpleUnionGraphQL
                 .typeResolver(new TypeResolver() {
                     @Override
                     GraphQLObjectType getType(TypeResolutionEnvironment env) {
-                        String resolvedName = typeManager.namingConvention.getType(env.getObject().class.simpleName, propertyType)
+                        String resolvedName = typeManager.namingConvention.getType(env.object.class.simpleName, propertyType)
                         (GraphQLObjectType)env.schema.getType(resolvedName)
                     }
                 })
 
-        for(GraphQLObjectType possibleType : graphQLTypesMap) {
+        for (GraphQLObjectType possibleType : graphQLTypesMap) {
             obj.possibleType(possibleType)
         }
 

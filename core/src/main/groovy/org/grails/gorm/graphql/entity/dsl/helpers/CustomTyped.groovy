@@ -1,6 +1,5 @@
 package org.grails.gorm.graphql.entity.dsl.helpers
 
-
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLOutputType
 import groovy.transform.CompileStatic

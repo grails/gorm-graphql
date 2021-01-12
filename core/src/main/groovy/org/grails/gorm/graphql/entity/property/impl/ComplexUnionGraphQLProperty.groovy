@@ -25,7 +25,6 @@ class ComplexUnionGraphQLProperty extends UnionGraphQLProperty<ComplexUnionGraph
     private Map<Class, CustomTyped> unionTypedMap = [:]
     private Set<GraphQLObjectType> graphQLTypesMap = [] as Set<GraphQLObjectType>
 
-
     ComplexUnionGraphQLProperty typeName(String typeName) {
         this.typeName = typeName
         this
@@ -46,12 +45,12 @@ class ComplexUnionGraphQLProperty extends UnionGraphQLProperty<ComplexUnionGraph
                 .typeResolver(new TypeResolver() {
                     @Override
                     GraphQLObjectType getType(TypeResolutionEnvironment env) {
-                        String resolvedName = typeManager.namingConvention.getType(env.getObject().class.simpleName, propertyType)
+                        String resolvedName = typeManager.namingConvention.getType(env.object.class.simpleName, propertyType)
                         (GraphQLObjectType)env.schema.getType(resolvedName)
                     }
                 })
 
-        for(GraphQLObjectType possibleType : graphQLTypesMap) {
+        for (GraphQLObjectType possibleType : graphQLTypesMap) {
             obj.possibleType(possibleType)
         }
 
@@ -94,7 +93,7 @@ class ComplexUnionGraphQLProperty extends UnionGraphQLProperty<ComplexUnionGraph
         if (typeName == null) {
             throw new IllegalArgumentException('The type name must be specified for custom properties with a complex type')
         }
-        for(CustomTyped typed : unionTypedMap.values()) {
+        for (CustomTyped typed : unionTypedMap.values()) {
             if (typed.fields.empty) {
                 throw new IllegalArgumentException("$name: At least 1 field is required for creating a custom property")
             }
