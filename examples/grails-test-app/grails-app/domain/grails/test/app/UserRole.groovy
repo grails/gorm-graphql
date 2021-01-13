@@ -1,9 +1,11 @@
 package grails.test.app
 
+import grails.compiler.GrailsCompileStatic
 import grails.gorm.DetachedCriteria
 import org.codehaus.groovy.util.HashCodeHelper
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 
+@GrailsCompileStatic
 class UserRole implements Serializable {
 
     private static final long serialVersionUID = 1

@@ -1,15 +1,12 @@
 package org.grails.gorm.graphql.types.output
 
 import graphql.TypeResolutionEnvironment
-import graphql.schema.GraphQLCodeRegistry
-import graphql.schema.GraphQLFieldDefinition
-import graphql.schema.GraphQLInterfaceType
-import graphql.schema.GraphQLObjectType
-import graphql.schema.GraphQLOutputType
-import graphql.schema.TypeResolver
+import graphql.schema.*
 import groovy.transform.CompileStatic
+import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQLEntityHelper
+import org.grails.gorm.graphql.entity.dsl.helpers.Arguable
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyManager
 import org.grails.gorm.graphql.response.errors.GraphQLErrorsResponseHandler
@@ -68,6 +65,16 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
         field
     }
 
+    protected GraphQLFieldDefinition.Builder addFieldArgs(GraphQLFieldDefinition.Builder field, GraphQLDomainProperty prop, MappingContext mapping) {
+        if (prop instanceof Arguable) {
+            List<GraphQLArgument> arguments = prop.getArguments(typeManager, mapping)
+            if (!arguments.isEmpty()) {
+                field.arguments(arguments)
+            }
+        }
+        field
+    }
+
     @Override
     GraphQLOutputType build(PersistentEntity entity) {
 
@@ -85,7 +92,9 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
             List<GraphQLDomainProperty> properties = builder.getProperties(entity)
             for (GraphQLDomainProperty prop: properties) {
                 if (prop.output) {
-                    fields.add(buildField(prop, NAME).build())
+                    GraphQLFieldDefinition.Builder field = buildField(prop, NAME)
+                    addFieldArgs(field, prop, entity.mappingContext)
+                    fields.add(field.build())
                 }
             }
 

@@ -5,6 +5,7 @@ import graphql.schema.GraphQLType
 import groovy.transform.AutoClone
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
+import org.grails.gorm.graphql.entity.dsl.helpers.Arguable
 import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
 import org.grails.gorm.graphql.entity.dsl.helpers.Describable
 import org.grails.gorm.graphql.entity.dsl.helpers.Named
@@ -23,7 +24,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  */
 @AutoClone
 @CompileStatic
-abstract class CustomGraphQLProperty<T> extends OrderedGraphQLProperty implements Named<T>, Describable<T>, Deprecatable<T>, Nullable<T> {
+abstract class CustomGraphQLProperty<T> extends OrderedGraphQLProperty implements Named<T>, Describable<T>, Deprecatable<T>, Nullable<T>, Arguable<T> {
 
     Integer order = null
     boolean input = true

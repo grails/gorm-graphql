@@ -1,13 +1,7 @@
 package org.grails.gorm.graphql.entity.dsl.helpers
 
-import graphql.schema.GraphQLInputObjectType
-import graphql.schema.GraphQLInputType
-import graphql.schema.GraphQLList
-import graphql.schema.GraphQLNonNull
-import graphql.schema.GraphQLOutputType
-import graphql.schema.GraphQLType
+import graphql.schema.*
 import groovy.transform.CompileStatic
-import graphql.schema.GraphQLObjectType
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.entity.fields.ComplexField
 import org.grails.gorm.graphql.entity.fields.Field
@@ -25,7 +19,7 @@ import static graphql.schema.GraphQLInputObjectField.newInputObjectField
  * @since 1.0.0
  */
 @CompileStatic
-trait ComplexTyped<T> {
+trait ComplexTyped<T> extends ExecutesClosures {
 
     boolean collection = false
 
@@ -41,24 +35,6 @@ trait ComplexTyped<T> {
     T defaultNull(boolean defaultNull) {
         this.defaultNull = defaultNull
         (T)this
-    }
-
-    /**
-     * This method exists because of https://issues.apache.org/jira/browse/GROOVY-8272
-     *
-     * Normally this class could extend from {@link ExecutesClosures}
-     */
-    private void withDelegate(Closure closure, Object delegate) {
-        if (closure != null) {
-            closure.resolveStrategy = Closure.DELEGATE_ONLY
-            closure.delegate = delegate
-
-            try {
-                closure.call()
-            } finally {
-                closure.delegate = null
-            }
-        }
     }
 
     /**
@@ -131,7 +107,7 @@ trait ComplexTyped<T> {
 
     private void handleField(Closure closure, Field field) {
         field.nullable(defaultNull)
-        withDelegate(closure, field)
+        withDelegate(closure, (Object)field)
         handleField(field)
     }
 

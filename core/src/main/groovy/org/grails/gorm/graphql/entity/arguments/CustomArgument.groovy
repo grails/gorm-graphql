@@ -1,4 +1,4 @@
-package org.grails.gorm.graphql.entity.operations.arguments
+package org.grails.gorm.graphql.entity.arguments
 
 import graphql.schema.GraphQLArgument
 import graphql.schema.GraphQLInputType

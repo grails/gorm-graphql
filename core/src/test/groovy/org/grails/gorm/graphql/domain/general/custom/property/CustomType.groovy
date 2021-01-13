@@ -79,6 +79,28 @@ class CustomType  {
             }
             description 'This is a description'
         }
+        add('withArgument', 'WithArg') {
+            argument('arg', String)
+            type {
+                field('response', String)
+            }
+        }
+        add('withArgumentList', 'WithArgList') {
+            argument('arg', [String])
+            type {
+                field('response', String)
+            }
+        }
+        add('withCustomArgument', 'WithCustomArg') {
+            argument('arg', 'CustomArg') {
+                accepts {
+                    field('field', String)
+                }
+            }
+            type {
+                field('response', String)
+            }
+        }
     }
 
 }
