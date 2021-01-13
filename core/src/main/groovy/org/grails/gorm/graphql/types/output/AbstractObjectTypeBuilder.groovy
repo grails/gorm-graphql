@@ -93,9 +93,7 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
             for (GraphQLDomainProperty prop: properties) {
                 if (prop.output) {
                     GraphQLFieldDefinition.Builder field = buildField(prop, NAME)
-                    if (prop instanceof Arguable) {
-                        addFieldArgs(field, prop, entity.mappingContext)
-                    }
+                    addFieldArgs(field, prop, entity.mappingContext)
                     fields.add(field.build())
                 }
             }
