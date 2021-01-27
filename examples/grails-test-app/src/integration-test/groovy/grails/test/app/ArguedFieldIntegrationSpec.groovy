@@ -64,4 +64,19 @@ class ArguedFieldIntegrationSpec extends Specification implements GraphQLSpec {
         obj.withCustomArgument == "PONG"
     }
 
+    void "test a property argument"() {
+        when:
+        def resp = graphQL.graphql("""
+            {
+              arguedField(id: ${grailsId}) {
+                  name(isUppercase: true)
+              }
+            }
+        """)
+        def obj = resp.body().data.arguedField
+
+        then:
+        obj.name == "TEST"
+    }
+
 }

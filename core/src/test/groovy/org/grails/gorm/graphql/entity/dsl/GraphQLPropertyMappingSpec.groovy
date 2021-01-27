@@ -12,6 +12,7 @@ class GraphQLPropertyMappingSpec extends Specification {
             deprecated true
             deprecationReason 'reason'
             description 'description'
+            argument 'argument', [String]
             dataFetcher {
 
             }
@@ -23,6 +24,8 @@ class GraphQLPropertyMappingSpec extends Specification {
         mapping.deprecated
         mapping.deprecationReason == 'reason'
         mapping.description == 'description'
+        mapping.arguments.size() == 1
+        mapping.arguments.first().name == 'argument'
         mapping.dataFetcher instanceof Closure
     }
 }

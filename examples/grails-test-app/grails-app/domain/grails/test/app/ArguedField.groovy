@@ -40,5 +40,12 @@ class ArguedField {
                 ping["payload"]
             }
         }
+        property('name') {
+            argument('isUppercase', Boolean)
+            dataFetcher { ArguedField af, ClosureDataFetchingEnvironment env ->
+                Boolean isUpper = env.getArgument('isUppercase')
+                isUpper ? af.name.toUpperCase() : af.name
+            }
+        }
     }
 }
