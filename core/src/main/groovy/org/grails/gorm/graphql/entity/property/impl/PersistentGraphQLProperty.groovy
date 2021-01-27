@@ -67,6 +67,7 @@ class PersistentGraphQLProperty extends OrderedGraphQLProperty {
         }
         this.output = mapping.output
         this.input = mapping.input
+        this.arguments.addAll(mapping.arguments)
         this.dataFetcher = mapping.dataFetcher ? new ClosureDataFetcher(mapping.dataFetcher) : new PersistentPropertyDataFetcher((PersistentProperty) property)
         if (mapping.order != null) {
             this.order = mapping.order

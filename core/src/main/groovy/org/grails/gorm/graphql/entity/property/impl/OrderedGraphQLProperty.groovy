@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.entity.property.impl
 
 import groovy.transform.CompileStatic
+import org.grails.gorm.graphql.entity.dsl.helpers.Arguable
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 
 /**
@@ -11,7 +12,7 @@ import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
  * @since 1.0.0
  */
 @CompileStatic
-abstract class OrderedGraphQLProperty implements GraphQLDomainProperty, Comparable<OrderedGraphQLProperty> {
+abstract class OrderedGraphQLProperty implements GraphQLDomainProperty, Arguable, Comparable<OrderedGraphQLProperty> {
 
     abstract Integer getOrder()
 

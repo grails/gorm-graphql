@@ -2,6 +2,7 @@ package org.grails.gorm.graphql.entity.property
 
 import graphql.schema.DataFetcher
 import graphql.schema.GraphQLType
+import org.grails.gorm.graphql.entity.dsl.helpers.Arguable
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
 
@@ -12,7 +13,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * @author James Kleeh
  * @since 1.0.0
  */
-interface GraphQLDomainProperty {
+interface GraphQLDomainProperty extends Arguable {
 
     /**
      * @return The name of the property
