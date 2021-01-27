@@ -5,12 +5,11 @@ import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQLServiceManager
-import org.grails.gorm.graphql.entity.dsl.helpers.Arguable
+import org.grails.gorm.graphql.entity.arguments.CustomArgument
+import org.grails.gorm.graphql.entity.dsl.helpers.Argued
 import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
 import org.grails.gorm.graphql.entity.dsl.helpers.Describable
-import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
 import org.grails.gorm.graphql.entity.dsl.helpers.Named
-import org.grails.gorm.graphql.entity.arguments.CustomArgument
 import org.grails.gorm.graphql.fetcher.interceptor.CustomMutationInterceptorInvoker
 import org.grails.gorm.graphql.fetcher.interceptor.CustomQueryInterceptorInvoker
 import org.grails.gorm.graphql.fetcher.interceptor.InterceptingDataFetcher
@@ -28,7 +27,7 @@ import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
  * @since 1.0.0
  */
 @CompileStatic
-abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecatable<T>, Arguable<T>, ExecutesClosures {
+abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecatable<T>, Argued<T> {
 
     private static InterceptorInvoker queryInvoker = new CustomQueryInterceptorInvoker()
     private static InterceptorInvoker mutationInvoker = new CustomMutationInterceptorInvoker()

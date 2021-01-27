@@ -5,15 +5,12 @@ import graphql.schema.GraphQLType
 import groovy.transform.AutoClone
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
-import org.grails.gorm.graphql.entity.dsl.helpers.Arguable
-import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
-import org.grails.gorm.graphql.entity.dsl.helpers.Describable
-import org.grails.gorm.graphql.entity.dsl.helpers.Named
-import org.grails.gorm.graphql.entity.dsl.helpers.Nullable
+import org.grails.gorm.graphql.entity.dsl.helpers.*
 import org.grails.gorm.graphql.entity.property.GraphQLDomainProperty
 import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetcher
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
+
 
 /**
  * Implementation of {@link GraphQLDomainProperty} to be used to define
@@ -24,7 +21,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  */
 @AutoClone
 @CompileStatic
-abstract class CustomGraphQLProperty<T> extends OrderedGraphQLProperty implements Named<T>, Describable<T>, Deprecatable<T>, Nullable<T>, Arguable<T> {
+abstract class CustomGraphQLProperty<T> extends OrderedGraphQLProperty implements Named<T>, Describable<T>, Deprecatable<T>, Nullable<T>, Argued<T> {
 
     Integer order = null
     boolean input = true

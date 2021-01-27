@@ -3,10 +3,9 @@ package org.grails.gorm.graphql.entity.dsl
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.grails.gorm.graphql.entity.dsl.helpers.Arguable
+import org.grails.gorm.graphql.entity.dsl.helpers.Argued
 import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
 import org.grails.gorm.graphql.entity.dsl.helpers.Describable
-import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
 import org.grails.gorm.graphql.entity.dsl.helpers.Named
 
 /**
@@ -39,7 +38,7 @@ import org.grails.gorm.graphql.entity.dsl.helpers.Named
  */
 @Builder(builderStrategy = SimpleStrategy, prefix = '')
 @CompileStatic
-class GraphQLPropertyMapping implements Describable<GraphQLPropertyMapping>, Deprecatable<GraphQLPropertyMapping>, Named<GraphQLPropertyMapping>, Arguable<GraphQLPropertyMapping> {
+class GraphQLPropertyMapping implements Describable<GraphQLPropertyMapping>, Deprecatable<GraphQLPropertyMapping>, Named<GraphQLPropertyMapping>, Argued<GraphQLPropertyMapping> {
 
     /**
      * Whether or not the property should be available to
