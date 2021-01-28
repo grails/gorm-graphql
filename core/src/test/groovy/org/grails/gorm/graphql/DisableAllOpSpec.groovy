@@ -19,8 +19,7 @@ class DisableAllOpSpec extends HibernateSpec {
                 .generate()
 
         then:
-        schema.queryType.fieldDefinitions.isEmpty()
-        schema.mutationType.fieldDefinitions.isEmpty()
+        !schema
     }
 }
 

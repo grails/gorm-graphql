@@ -19,7 +19,7 @@ class ReadOnlyOperationsSpec extends HibernateSpec {
                 .generate()
 
         then:
-        schema.mutationType.fieldDefinitions.isEmpty()
+        !schema.mutationType
 
         and:
         schema.queryType.fieldDefinitions.size() == 3
