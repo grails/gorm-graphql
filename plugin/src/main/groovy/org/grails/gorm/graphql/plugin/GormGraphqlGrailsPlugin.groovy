@@ -96,6 +96,11 @@ Brief summary/description of the plugin.
         }
 
         graphQLSchema(graphQLSchemaGenerator: "generate")
-        graphQL(GraphQL, ref("graphQLSchema"))
+        graphQLBuilder(GraphQL.Builder, ref("graphQLSchema"))
+
+        graphQL(GraphQL) { bean ->
+            bean.factoryBean = "graphQLBuilder"
+            bean.factoryMethod = "build"
+        }
     }}
 }
