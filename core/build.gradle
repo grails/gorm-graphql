@@ -5,6 +5,7 @@ dependencies {
 
     compile "org.grails:grails-datastore-gorm:${gormVersion}"
     compile "com.graphql-java:graphql-java:$graphqlJavaVersion"
+    compile "com.graphql-java:graphql-java-extended-scalars:$graphqlJavaScalarExtVersion"
 
     codenarc "org.codenarc:CodeNarc:$codenarcVersion"
 
@@ -24,12 +25,12 @@ codenarc {
     toolVersion = codenarcVersion
     configFile = file("${projectDir}/config/codenarc/rules.groovy")
     maxPriority1Violations = 0
-    maxPriority2Violations = 2
-    maxPriority3Violations = 8
+    maxPriority2Violations = 0
+    maxPriority3Violations = 0
 }
 
 codenarcMain {
-    exclude '**/GormScalars.groovy'
+    exclude '**/CustomScalars.groovy'
 }
 
 codenarcTest {

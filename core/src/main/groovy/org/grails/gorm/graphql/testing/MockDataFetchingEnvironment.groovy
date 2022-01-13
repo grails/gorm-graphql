@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.testing
 
+import graphql.GraphQLContext
 import graphql.cachecontrol.CacheControl
 import graphql.execution.ExecutionId
 import graphql.execution.ExecutionStepInfo
@@ -9,12 +10,7 @@ import graphql.language.Document
 import graphql.language.Field
 import graphql.language.FragmentDefinition
 import graphql.language.OperationDefinition
-import graphql.schema.DataFetchingEnvironment
-import graphql.schema.DataFetchingFieldSelectionSet
-import graphql.schema.GraphQLFieldDefinition
-import graphql.schema.GraphQLOutputType
-import graphql.schema.GraphQLSchema
-import graphql.schema.GraphQLType
+import graphql.schema.*
 import groovy.transform.CompileStatic
 import org.dataloader.DataLoader
 import org.dataloader.DataLoaderRegistry
@@ -56,6 +52,11 @@ class MockDataFetchingEnvironment implements DataFetchingEnvironment {
     @Override
     boolean containsArgument(String name) {
         arguments.containsKey(name)
+    }
+
+    @Override
+    GraphQLContext getGraphQlContext() {
+        GraphQLContext.newContext().build()
     }
 
     @Override

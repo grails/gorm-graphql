@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.types
 
 import graphql.Scalars
+import graphql.scalars.ExtendedScalars
 import graphql.schema.*
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.PersistentEntity
@@ -16,7 +17,7 @@ import org.grails.gorm.graphql.types.output.EmbeddedObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.PaginatedObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.ShowObjectTypeBuilder
-import org.grails.gorm.graphql.types.scalars.*
+import org.grails.gorm.graphql.types.scalars.CustomScalars
 
 import java.lang.reflect.Array
 import java.sql.Time
@@ -36,26 +37,26 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
 
     protected static final Map<Class, GraphQLType> TYPE_MAP = new ConcurrentHashMap<Class, GraphQLType>([
         (Integer): Scalars.GraphQLInt,
-        (Long): Scalars.GraphQLLong,
-        (Short): Scalars.GraphQLShort,
-        (Byte): Scalars.GraphQLByte,
-        (Byte[]): new GraphQLByteArray(),
+        (Long):  ExtendedScalars.GraphQLLong,
+        (Short): ExtendedScalars.GraphQLShort,
+        (Byte): ExtendedScalars.GraphQLByte,
+        (Byte[]): CustomScalars.GraphQLByteArray,
         (Double): Scalars.GraphQLFloat,
         (Float): Scalars.GraphQLFloat,
-        (BigInteger): Scalars.GraphQLBigInteger,
-        (BigDecimal): Scalars.GraphQLBigDecimal,
+        (BigInteger): ExtendedScalars.GraphQLBigInteger,
+        (BigDecimal): ExtendedScalars.GraphQLBigDecimal,
         (String): Scalars.GraphQLString,
         (Boolean): Scalars.GraphQLBoolean,
-        (Character): Scalars.GraphQLChar,
-        (Character[]): new GraphQLCharacterArray(),
-        (UUID): new GraphQLUUID(),
-        (URL): new GraphQLURL(),
-        (URI): new GraphQLURI(),
-        (Time): new GraphQLTime(),
-        (java.sql.Date): new GraphQLSqlDate(),
-        (Timestamp): new GraphQLTimestamp(),
-        (Currency): new GraphQLCurrency(),
-        (TimeZone): new GraphQLTimeZone()
+        (Character): ExtendedScalars.GraphQLChar,
+        (Character[]): CustomScalars.GraphQLCharacterArray,
+        (UUID): CustomScalars.GraphQLUUID,
+        (URL): CustomScalars.GraphQLURL,
+        (URI): CustomScalars.GraphQLURI,
+        (Time): CustomScalars.GraphQLTime,
+        (java.sql.Date): CustomScalars.GraphQLSqlDate,
+        (Timestamp): CustomScalars.GraphQLTimestamp,
+        (Currency): CustomScalars.GraphQLCurrency,
+        (TimeZone): CustomScalars.GraphQLTimeZone
     ])
 
     protected static final Map<Class, GraphQLEnumType> ENUM_TYPES = new ConcurrentHashMap<>()

@@ -22,7 +22,7 @@ class DisableReadOpSpec extends HibernateSpec {
                 .generate()
 
         then:
-        !schema.queryType
+        schema.queryType.fieldDefinitions.isEmpty()
 
         and:
         schema.mutationType.fieldDefinitions.size() == 3

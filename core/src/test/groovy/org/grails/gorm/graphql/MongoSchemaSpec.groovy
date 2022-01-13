@@ -26,10 +26,15 @@ import spock.lang.Specification
 @Ignore
 class MongoSchemaSpec extends Specification implements GraphQLSchemaSpec {
 
-    @Shared @AutoCleanup MongoDatastore mongoDatastore
-    @Shared GraphQLSchema schema
-    @Shared GraphQLObjectType queryType
-    @Shared GraphQLObjectType mutationType
+    @Shared
+    @AutoCleanup
+    MongoDatastore mongoDatastore
+    @Shared
+    GraphQLSchema schema
+    @Shared
+    GraphQLObjectType queryType
+    @Shared
+    GraphQLObjectType mutationType
 
     void setupSpec() {
         mongoDatastore = new MongoDatastore(new Fongo(getClass().name).mongo,
@@ -40,54 +45,51 @@ class MongoSchemaSpec extends Specification implements GraphQLSchemaSpec {
         gormSchema.initialize()
         GraphQLTypeManager typeManager = gormSchema.typeManager
         // tag::registerObjectId[]
-typeManager.registerType(ObjectId, new GraphQLScalarType("ObjectId", "Hex representation of a Mongo object id", new Coercing<ObjectId, ObjectId>() {
+        typeManager.registerType(ObjectId, GraphQLScalarType.newScalar()
+                .name("ObjectId").description("Hex representation of a Mongo object id").coercing(new Coercing<ObjectId, ObjectId>() {
 
-    protected Optional<ObjectId> convert(Object input) {
-        if (input instanceof ObjectId) {
-            Optional.of((ObjectId) input)
-        }
-        else if (input instanceof String) {
-            parseObjectId((String) input)
-        }
-        else {
-            Optional.empty()
-        }
-    }
+            protected Optional<ObjectId> convert(Object input) {
+                if (input instanceof ObjectId) {
+                    Optional.of((ObjectId) input)
+                } else if (input instanceof String) {
+                    parseObjectId((String) input)
+                } else {
+                    Optional.empty()
+                }
+            }
 
-    @Override
-    ObjectId serialize(Object input) {
-        convert(input).orElseThrow( {
-            throw new CoercingSerializeException("Could not convert ${input.class.name} to an ObjectId")
-        })
-    }
+            @Override
+            ObjectId serialize(Object input) {
+                convert(input).orElseThrow({
+                    throw new CoercingSerializeException("Could not convert ${input.class.name} to an ObjectId")
+                })
+            }
 
-    @Override
-    ObjectId parseValue(Object input) {
-        convert(input).orElseThrow( {
-            throw new CoercingParseValueException("Could not convert ${input.class.name} to an ObjectId")
-        })
-    }
+            @Override
+            ObjectId parseValue(Object input) {
+                convert(input).orElseThrow({
+                    throw new CoercingParseValueException("Could not convert ${input.class.name} to an ObjectId")
+                })
+            }
 
-    @Override
-    ObjectId parseLiteral(Object input) {
-        if (input instanceof StringValue) {
-            parseObjectId(((StringValue) input).value).orElse(null)
-        }
-        else {
-            null
-        }
-    }
+            @Override
+            ObjectId parseLiteral(Object input) {
+                if (input instanceof StringValue) {
+                    parseObjectId(((StringValue) input).value).orElse(null)
+                } else {
+                    null
+                }
+            }
 
-    protected Optional<ObjectId> parseObjectId(String input) {
-        if (ObjectId.isValid(input)) {
-            Optional.of(new ObjectId(input))
-        }
-        else {
-            Optional.empty()
-        }
-    }
+            protected Optional<ObjectId> parseObjectId(String input) {
+                if (ObjectId.isValid(input)) {
+                    Optional.of(new ObjectId(input))
+                } else {
+                    Optional.empty()
+                }
+            }
 
-}))
+        }).build())
         // end::registerObjectId[]
         schema = gormSchema.generate()
         queryType = schema.queryType
