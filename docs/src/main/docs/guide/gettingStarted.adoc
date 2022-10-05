@@ -14,7 +14,7 @@ MappingContext mappingContext = ...
 GraphQLSchema schema = new Schema(mappingContext).generate()
 ----
 
-Refer to the link:http://graphql-java.readthedocs.io/en/stable/[graphql-java] documentation on how to use the schema to execute queries and mutations against it.
+Refer to the link:https://www.graphql-java.com/documentation/getting-started[graphql-java] documentation on how to use the schema to execute queries and mutations against it.
 
 == Grails Projects
 
