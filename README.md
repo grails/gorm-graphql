@@ -1,7 +1,7 @@
 # Gorm GraphQL
 ## An automatic GraphQL schema generator for GORM
 
-[![Build Status](https://travis-ci.org/grails/gorm-graphql.svg?branch=master)](https://travis-ci.org/grails/gorm-graphql)
+[![Java CI](https://github.com/grails/gorm-graphql/actions/workflows/gradle.yml/badge.svg)](https://github.com/grails/gorm-graphql/actions/workflows/gradle.yml)
 
 Current documentation https://grails.github.io/gorm-graphql/latest/guide/index.html
 
