@@ -10,7 +10,7 @@ dependencies {
 
     testCompile "org.grails:grails-datastore-gorm-hibernate5:${gormHibernateVersion}"
     testCompile "org.grails:grails-datastore-gorm-mongodb:${gormMongoDbVersion}"
-    testCompile 'com.github.fakemongo:fongo:2.1.0'
+    testCompile 'com.github.fakemongo:fongo:2.1.1'
     testRuntime "com.h2database:h2:1.4.192"
     testRuntime "org.apache.tomcat:tomcat-jdbc:8.5.0"
     testRuntime "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"
