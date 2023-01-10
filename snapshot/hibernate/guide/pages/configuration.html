@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>4.6 Configuration 2.0.1-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        GORM GraphQL
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/installation.html"><strong>2</strong><span>Installation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/dataBinders.html"><strong>7</strong><span>Data Binding</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/interceptors.html"><strong>8</strong><span>Interceptors</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/otherNotes.html"><strong>9</strong><span>Other Notes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/APIDocs.html"><strong>10</strong><span>API Docs</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>4.6 Configuration</h1>
+
+                    <p><strong>Version:</strong> 2.0.1-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h2 id="configuration">4.6 Configuration</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/configuration.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_standalone">Standalone</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The schema has several properties that can be modified.</p>
+</div>
+<div class="sect2">
+<h3 id="_list_arguments">List Arguments</h3>
+<div class="paragraph">
+<p>A map where the key is a string (one of <a href="../api/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html#ARGUMENTS">EntityDataFetcher.ARGUMENTS</a>) and the value is the class the argument should be coerced into.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.listArguments = (<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Class</span>&gt;)..</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_date_type">Date Type</h3>
+<div class="paragraph">
+<p>If a date type is not already registered with the type manager, a default one will be provided. The default type can be customized with the date formats that should be attempted to convert user input, and whether or not the parsing should be lenient.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.dateFormats = (<span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt;)...
+schema.dateFormatLenient = (<span class="type">boolean</span>)...</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The date formats will also be used for the Java 8 date types.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_plugin">Plugin</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following options are available to configure for Grails applications using the plugin.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">code</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the plugin is enabled</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.dateFormats</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List&lt;String&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- yyyy-MM-dd HH:mm:ss.S,
+  - yyyy-MM-dd&#8217;T&#8217;HH:mm:ss&#8217;Z'
+  - yyyy-MM-dd HH:mm:ss.S z
+  - yyyy-MM-dd&#8217;T&#8217;HH:mm:ss.SSSX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the setting is not provided, the <code>grails.databinding.dateFormats</code> will be used.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.dateFormatLenient</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">False</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the setting is not provided, the <code>grails.databinding.dateParsingLenient</code> will be used.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.listArguments</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map&lt;String, Class&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default arguments in <a href="../api/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html#ARGUMENTS">EntityDataFetcher.ARGUMENTS</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.browser</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True (only in development)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the <code>GraphqlController.browser</code> action which by default responds on the <code>graphql/browser</code> endpoint is enabled</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="_fetching_context">Fetching Context</h3>
+<div class="paragraph">
+<p>Data fetchers in GraphQL have a "context". The context is really just an Object field that can contain anything you like with the purpose of exposing it to the data fetching environment. For example, the default context created by the plugin is a Map that contains the request locale. The locale is used to render validation error messages.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you prefer to set the context to a custom class, implement <a href="../api/org/grails/gorm/graphql/fetcher/context/LocaleAwareContext.html">LocaleAwareContext</a> and the default validation errors response handler will retrieve the locale from the object.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>It is common to need to manipulate the context to include data that some or all of your data fetchers might need. If a fetcher needs to be aware of the current user and you are using the spring security plugin, you may want to add the <code>springSecurityService</code> to the context.</p>
+</div>
+<div class="paragraph">
+<p>To customize the context, register a bean named "graphQLContextBuilder" of type <a href="../api/org/grails/gorm/graphql/plugin/GraphQLContextBuilder.html">GraphQLContextBuilder</a>. If the default errors handler is being used, extend from <a href="../api/org/grails/gorm/graphql/plugin/DefaultGraphQLContextBuilder.html">DefaultGraphQLContextBuilder</a> and add to the result of the super method call.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/groovy/demo/MyGraphQLContextBuilder.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.DefaultGraphQLContextBuilder</span>
+<span class="keyword">import</span> <span class="include">org.springframework.beans.factory.annotation.Autowired</span>
+<span class="keyword">import</span> <span class="include">grails.plugin.springsecurity.SpringSecurityService</span>
+
+<span class="type">class</span> <span class="class">MyGraphQLContextBuilder</span> <span class="directive">extends</span> DefaultGraphQLContextBuilder {
+
+    <span class="annotation">@Autowired</span>
+    SpringSecurityService springSecurityService
+
+    <span class="annotation">@Override</span>
+    <span class="predefined-type">Map</span> buildContext(GrailsWebRequest request) {
+        <span class="predefined-type">Map</span> context = <span class="local-variable">super</span>.buildContext(request)
+        context.springSecurityService = springSecurityService
+        context
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">graphQLContextBuilder(MyGraphQLContextBuilder)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then in a data fetcher:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">T get(DataFetchingEnvironment environment) {
+    ((<span class="predefined-type">Map</span>) environment.context).springSecurityService
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

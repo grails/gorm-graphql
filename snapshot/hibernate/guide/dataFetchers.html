@@ -1,0 +1,365 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>6 Data Fetchers 2.0.1-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        GORM GraphQL
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/installation.html"><strong>2</strong><span>Installation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/dataBinders.html"><strong>7</strong><span>Data Binding</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/interceptors.html"><strong>8</strong><span>Interceptors</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/otherNotes.html"><strong>9</strong><span>Other Notes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/APIDocs.html"><strong>10</strong><span>API Docs</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/types.html">&lt;&lt; <strong>5</strong><span>Type Conversion And Creation</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/dataBinders.html"><strong>7</strong><span>Data Binding</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>6 Data Fetchers</h1>
+
+                    <p><strong>Version:</strong> 2.0.1-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h1 id="dataFetchers">6 Data Fetchers</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/dataFetchers.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>This library provides a means for overriding the data fetchers used for the default provided operations. That is done through the use of a <a href="../api/org/grails/gorm/graphql/fetcher/manager/GraphQLDataFetcherManager.html">GraphQLDataFetcherManager</a>.</p>
+</div>
+<div class="sect1">
+<h2 id="_get_the_manager">Get The Manager</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To register a fetcher, you need to get a reference to the <a href="../api/org/grails/gorm/graphql/fetcher/manager/GraphQLDataFetcherManager.html">GraphQLDataFetcherManager</a>. If you are using the manager provided by default, how you access it will depend on whether you are using the plugin or standalone.</p>
+</div>
+<div class="sect2">
+<h3 id="_standalone">Standalone</h3>
+<div class="paragraph">
+<p>When creating the schema, initialize it first. The default fetcher manager will then be set.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.initialize()
+GraphQLDataFetcherManager dataFetcherManager = schema.dataFetcherManager
+...
+schema.generate()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_plugin">Plugin</h3>
+<div class="paragraph">
+<p>For Grails applications it is recommended to reference the bean created by the plugin. The easiest way to do so is to register a bean post processor. The plugin has a class available to extend to make that easier.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">myGraphQLCustomizer(MyGraphQLCustomizer)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">src/main/groovy/demo/MyGraphQLCustomizer.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.GraphQLPostProcessor</span>
+
+<span class="type">class</span> <span class="class">MyGraphQLCustomizer</span> <span class="directive">extends</span> GraphQLPostProcessor {
+
+    <span class="annotation">@Override</span>
+    <span class="type">void</span> doWith(GraphQLDataFetcherManager dataFetcherManager) {
+        ...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you need to customize more than 1 manager, only a single bean needs to be registered. There are <code>doWith</code> methods for all of the managers you may need to register object instances with.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_register_a_fetcher">Register A Fetcher</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once you have access to the manager, registration of your own data fetcher is easy. In this example a data fetcher is being registered to handle soft deleting an entity.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Registering a fetcher for the <code>Object</code> type will allow it to be used for all domain classes.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">GraphQLDataFetcherManager dataFetcherManager
+
+fetcherManager.registerDeletingDataFetcher(Author, <span class="keyword">new</span> DeleteEntityDataFetcher(Author.gormPersistentEntity) {
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> <span class="type">void</span> deleteInstance(GormEntity instance) {
+        Author author = ((Author)instance)
+        author.active = <span class="predefined-constant">false</span>
+        author.save()
+    }
+})</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+A class exists to use for soft deletes: <a href="../api/org/grails/gorm/graphql/fetcher/impl/SoftDeleteEntityDataFetcher.html">SoftDeleteEntityDataFetcher</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>There are 3 types of data fetchers that can be registered.</p>
+</div>
+<div class="sect2">
+<h3 id="_binding">Binding</h3>
+<div class="paragraph">
+<p>Binding data fetchers accept a data binder object to bind the argument(s) to the domain instance. When the binding data fetcher instances are retrieved from the manager, the data binder will be set automatically.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_deleting">Deleting</h3>
+<div class="paragraph">
+<p>Deleting data fetchers accept a delete response handler object that is responsible for determining how the fetcher should respond for delete requests. When the deleting data fetcher instances are retrieved from the manager, the delete response handler will be set automatically.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_reading">Reading</h3>
+<div class="paragraph">
+<p>Reading data fetchers are designed to execute read only queries. They don&#8217;t require any other dependencies to work.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_query_optimization">Query Optimization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All of the default data fetcher classes extend from <a href="../api/org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>. If you are creating your own custom data fetcher class, it is highly recommended to extend from it as well. The main reason for doing so is to take advantage of the built in query optimization. Based on what fields are requested in any given request, the default data fetchers will execute a query that will join any associations that have been requested. This feature ensures that each API call is as efficient as possible.</p>
+</div>
+<div class="paragraph">
+<p>For example, consider the following domain structure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+    <span class="predefined-type">String</span> name
+    <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+}
+<span class="type">class</span> <span class="class">Book</span> {
+    <span class="directive">static</span> belongsTo = [<span class="key">author</span>: Author]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When executing a query against a given book, if the author object is not requested, or if only the ID of the author is requested, the association will not be joined.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">book(<span class="key">id</span>: <span class="integer">5</span>) {
+    author {
+        id
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example generated SQL:</p>
+</div>
+<div class="paragraph">
+<p><code>select * from book b where id = 5</code></p>
+</div>
+<div class="paragraph">
+<p>When any property on the author other than the ID is requested, then the association will be joined.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">book(<span class="key">id</span>: <span class="integer">5</span>) {
+    author {
+        name
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example generated SQL:</p>
+</div>
+<div class="paragraph">
+<p><code>select * from book b inner join author a on b.author_id = a.id where b.id = 5</code></p>
+</div>
+<div class="paragraph">
+<p>The logic for retrieving the list of properties to be joined is contained within the <a href="../api/org/grails/gorm/graphql/entity/EntityFetchOptions.html">EntityFetchOptions</a> class. If you prefer not to extend from the default gorm data fetcher, it is possible to make use of this class in your own data fetcher.</p>
+</div>
+<div class="sect2">
+<h3 id="_custom_property_data_fetchers">Custom Property Data Fetchers</h3>
+<div class="paragraph">
+<p>When adding a custom property to a domain class, it may be the case that a separate query is being executed on another domain class. Normally that query would not be able to benefit from the automatic join operations based on the requested fields in that domain class. When providing the closure to retrieve the relevant data, a second parameter is available. The second parameter to the closure will be an instance of <a href="../api/org/grails/gorm/graphql/fetcher/impl/ClosureDataFetchingEnvironment.html">ClosureDataFetchingEnvironment</a>.</p>
+</div>
+<div class="paragraph">
+<p>The environment is an extension of the GraphQL Java <code>DataFetchingEnvironment</code>. In addition to everything the standard environment has, the environment also has methods for retrieving the fetch options or the list of join properties to use in your query.</p>
+</div>
+<div class="paragraph">
+<p>In this example a property was added to the <code>Tag</code> domain to retrieve the list of <code>Post</code> objects that contain the given tag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">Set</span>&lt;Post&gt; getPosts(<span class="predefined-type">Map</span> queryArgs) {
+    <span class="predefined-type">Long</span> tagId = <span class="local-variable">this</span>.id
+    Post.where { tags { id == tagId } }.list(queryArgs)
+}
+
+<span class="directive">static</span> graphql = GraphQLMapping.build {
+    add(<span class="string"><span class="delimiter">'</span><span class="content">posts</span><span class="delimiter">'</span></span>, [Post]) {
+        input <span class="predefined-constant">false</span>
+        dataFetcher { Tag tag, ClosureDataFetchingEnvironment env -&gt;
+            tag.getPosts(env.fetchArguments)
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/types.html">&lt;&lt; <strong>5</strong><span>Type Conversion And Creation</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/dataBinders.html"><strong>7</strong><span>Data Binding</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

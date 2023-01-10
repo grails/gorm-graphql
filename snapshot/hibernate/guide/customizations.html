@@ -1,0 +1,1477 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>4 Customizing The Schema 2.0.1-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        GORM GraphQL
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/installation.html"><strong>2</strong><span>Installation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/dataBinders.html"><strong>7</strong><span>Data Binding</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/interceptors.html"><strong>8</strong><span>Interceptors</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/otherNotes.html"><strong>9</strong><span>Other Notes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/APIDocs.html"><strong>10</strong><span>API Docs</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>4 Customizing The Schema</h1>
+
+                    <p><strong>Version:</strong> 2.0.1-SNAPSHOT</p>
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#properties"><strong>4.1</strong><span>Properties</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#existing"><strong>4.1.1</strong><span>GORM Properties</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#custom"><strong>4.1.2</strong><span>Custom Properties</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#operations"><strong>4.2</strong><span>Operations</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#arguments"><strong>4.3</strong><span>Arguments</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#responseHandlers"><strong>4.4</strong><span>Validation Error and Delete Responses</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#namingConvention"><strong>4.5</strong><span>Naming Convention</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#configuration"><strong>4.6</strong><span>Configuration</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+
+<h1 id="customizations">4 Customizing The Schema</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>The GraphQL specification allows for properties, types, operations, etc to have metadata associated with them. Metadata might include a description or deprecation. This library exposes APIs to allow the user to customize that metadata.</p>
+</div>
+
+
+<h2 id="properties">4.1 Properties</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/properties.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+
+
+
+<h2 id="existing">4.1.1 GORM Properties</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/properties/existing.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_persistent_property_options">Persistent Property Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is possible to control several aspects of how existing persistent properties on GORM entities are represented in the generated schema.</p>
+</div>
+<div class="paragraph">
+<p>There are several ways to modify the fields available. Consider a property <code>foo</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
+<span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLPropertyMapping</span>
+
+<span class="directive">static</span> graphql = GraphQLMapping.build {
+
+    foo <span class="key">description</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    <span class="comment">//or</span>
+    foo {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    }
+    <span class="comment">//or (code completion)</span>
+    foo GraphQLPropertyMapping.build {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    }
+    <span class="comment">//or</span>
+    property(<span class="string"><span class="delimiter">'</span><span class="content">foo</span><span class="delimiter">'</span></span>, <span class="key">description</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>)
+    <span class="comment">//or (code completion)</span>
+    property(<span class="string"><span class="delimiter">'</span><span class="content">foo</span><span class="delimiter">'</span></span>) {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    }
+    <span class="comment">//or (code completion)</span>
+    property(<span class="string"><span class="delimiter">'</span><span class="content">foo</span><span class="delimiter">'</span></span>, GraphQLPropertyMapping.build {
+        description <span class="string"><span class="delimiter">&quot;</span><span class="content">Foo</span><span class="delimiter">&quot;</span></span>
+    })
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_exclusion">Exclusion</h3>
+<div class="paragraph">
+<p>To exclude a property from being included from the schema entirely:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
+
+<span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+        exclude(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To make a property read only:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">input</span>: <span class="predefined-constant">false</span>)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To make a property write only:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">output</span>: <span class="predefined-constant">false</span>)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nullable">Nullable</h3>
+<div class="paragraph">
+<p>By default, a property will be nullable based on the constraints provided in the domain class. You can override that specifically for GraphQL, however.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">nullable</span>: <span class="predefined-constant">false</span>) <span class="comment">//or true</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_fetching">Fetching</h3>
+<div class="paragraph">
+<p>To customize the way a property is retrieved, you can supply a data fetcher with a closure. The domain instance is passed as an argument to the closure.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>) {
+        dataFetcher { Author author -&gt;
+            author.name ?: <span class="string"><span class="delimiter">&quot;</span><span class="content">Default Name</span><span class="delimiter">&quot;</span></span>
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The data type returned must be the same as the property type.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_description">Description</h3>
+<div class="paragraph">
+<p>A description of a property can be specified in the mapping to be registered in the schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">description</span>: <span class="string"><span class="delimiter">'</span><span class="content">The name of the author</span><span class="delimiter">'</span></span>)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_deprecation">Deprecation</h3>
+<div class="paragraph">
+<p>A property can be marked as deprecated in the schema to inform users the property may be removed in the future.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">deprecationReason</span>: <span class="string"><span class="delimiter">'</span><span class="content">To be removed August 1st, 2018</span><span class="delimiter">'</span></span>)
+    <span class="comment">//or</span>
+    property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">deprecated</span>: <span class="predefined-constant">true</span>) <span class="comment">//&quot;Deprecated&quot; will be the reason</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_name">Name</h3>
+<div class="paragraph">
+<p>It is possible to change the name of existing properties as they appear in the schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    property(<span class="string"><span class="delimiter">'</span><span class="content">authority</span><span class="delimiter">'</span></span>, <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+When changing the name of a property, you must also account for the change when it comes to data binding in create or update operations. The following is an example data binder implementation for changing the property name from <code>authority</code> to <code>name</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.binding.GrailsGraphQLDataBinder</span>
+
+<span class="type">class</span> <span class="class">RoleDataBinder</span> <span class="directive">extends</span> GrailsGraphQLDataBinder {
+
+    <span class="annotation">@Override</span>
+    <span class="type">void</span> bind(<span class="predefined-type">Object</span> object, <span class="predefined-type">Map</span> data) {
+        data.put(<span class="string"><span class="delimiter">'</span><span class="content">authority</span><span class="delimiter">'</span></span>, data.remove(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>))
+        <span class="local-variable">super</span>.bind(object, data)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The data binding implementation is removing the <code>name</code> property and assigning it back to <code>authority</code> so it can be correctly bound to the domain object.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_order">Order</h3>
+<div class="paragraph">
+<p>The order in which the fields appear in the schema can be customized.
+By default any identity properties and the version property appear first in order.</p>
+</div>
+<div class="paragraph">
+<p>To customize the order of an existing property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">   <span class="directive">static</span> graphql = GraphQLMapping.build {
+       property(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">order</span>: <span class="integer">1</span>)
+   }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the order is supplied via the constraints block, then that value will be used.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">   <span class="directive">static</span> constraints = {
+        name <span class="key">order</span>: <span class="integer">1</span>
+   }</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the order is specified in both the constraints and the property mapping, the property mapping wins. If the order of two or more properties is the same, they are then sorted by name.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If no order is specified, the default order provided by GORM is used. To enable name based sorting by default, configure the default constraints to set the order property to 0 for all domains.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="title">grails-app/conf/application.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">grails.gorm.default.constraints = {
+   <span class="string"><span class="delimiter">'</span><span class="content">*</span><span class="delimiter">'</span></span>(<span class="key">order</span>: <span class="integer">0</span>)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To customize properties to come before the identifier or version, set the value as negative. The default order for id properties is -20 and the default order for version properties is -10.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+<h2 id="custom">4.1.2 Custom Properties</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/properties/custom.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_adding_custom_properties">Adding Custom Properties</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is possible to add custom properties to your domain class solely for the use in the GraphQL schema. You must supply either a custom data binder or a setter method for properties that will be used for input. For output, a data fetcher or getter method must be made available.</p>
+</div>
+<div class="paragraph">
+<p>In this example we are adding a property to the GraphQL schema that will allow users to retrieve the age of authors. In this case the property doesn&#8217;t make sense to allow users to provide the property when creating or updating because they should be modifying the <code>birthDay</code> instead. For that reason, <code>input false</code> is specified to prevent that behavior.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Supplying other domain classes as the return type is supported
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
+<span class="keyword">import</span> <span class="include">java.time.Period</span>
+
+<span class="type">class</span> <span class="class">Author</span> {
+
+    LocalDate birthDay
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+        add(<span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>, <span class="predefined-type">Integer</span>) {
+            dataFetcher { Author author -&gt;
+                Period.between(author.birthDay, LocalDate.now()).years
+            }
+            input <span class="predefined-constant">false</span>
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Instead of providing a data fetcher, it is possible to create a getter method to do the same thing.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">Integer</span> getAge() {
+    Period.between(birthDay, LocalDate.now()).years
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_returning_a_collection">Returning A Collection</h3>
+<div class="paragraph">
+<p>The above example creates a custom property that returns an Integer. The property were to return a collection, the following notation can be used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">add(<span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>, [<span class="predefined-type">Integer</span>]) {
+    ...
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nullable_description_deprecation">Nullable, Description, Deprecation</h3>
+<div class="paragraph">
+<p>Very similar to how existing domain properties can be configured, it is also possible to configure additional properties.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">add(<span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>, <span class="predefined-type">Integer</span>) {
+
+    nullable <span class="predefined-constant">false</span> <span class="comment">//default is true</span>
+
+    description <span class="string"><span class="delimiter">'</span><span class="content">How old the author is in years</span><span class="delimiter">'</span></span>
+
+    deprecationReason <span class="string"><span class="delimiter">'</span><span class="content">To be removed in the future</span><span class="delimiter">'</span></span>
+    <span class="comment">//or</span>
+    deprecated <span class="predefined-constant">true</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_read_or_write_only">Read or Write Only</h3>
+<div class="paragraph">
+<p>Custom properties can also be controlled in the same way to existing properties in regards to whether they are read or write only.</p>
+</div>
+<div class="paragraph">
+<p>To make a property read only:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">add(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>) {
+    input <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To make a property write only:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">add(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>) {
+    output <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_custom_type">Custom Type</h3>
+<div class="paragraph">
+<p>If a property needs to handle something more complex than a collection of a single class, this library supports creating custom types.</p>
+</div>
+<div class="paragraph">
+<p>For example if our age property needs to return years, months, and days:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
+<span class="keyword">import</span> <span class="include">java.time.temporal.ChronoUnit</span>
+
+<span class="type">class</span> <span class="class">Author</span> {
+
+    LocalDate birthDay
+
+    <span class="predefined-type">Map</span> getAge() {
+        LocalDate now = LocalDate.now()
+
+        [<span class="key">days</span>: ChronoUnit.DAYS.between(birthDay, now),
+         <span class="key">months</span>: ChronoUnit.MONTHS.between(birthDay, now),
+         <span class="key">years</span>: ChronoUnit.YEARS.between(birthDay, now)]
+    }
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+        add(<span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Age</span><span class="delimiter">'</span></span>) {
+            input <span class="predefined-constant">false</span>
+            type {
+                field(<span class="string"><span class="delimiter">'</span><span class="content">days</span><span class="delimiter">'</span></span>, <span class="predefined-type">Long</span>)
+                field(<span class="string"><span class="delimiter">'</span><span class="content">months</span><span class="delimiter">'</span></span>, <span class="predefined-type">Long</span>)
+                field(<span class="string"><span class="delimiter">'</span><span class="content">years</span><span class="delimiter">'</span></span>, <span class="predefined-type">Long</span>)
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example we have added a new property to the domain class called <code>age</code>. That property returns a custom data type that consists of 3 properties. The name that represents that type in the GraphQL schema is "Age". In our getter method we are returning a Map that contains those properties, however any POGO that contains those properties would work as well.</p>
+</div>
+<div class="paragraph">
+<p>Similar to properties, the fields themselves can have complex subtypes with the <code>field(String, String, Closure)</code> method signature.</p>
+</div>
+<div class="paragraph">
+<p>For instance if we were to add a property to our domain to represent a list of books:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.entity.dsl.GraphQLMapping</span>
+
+<span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="comment">//A getter method or dataFetcher is required to make this configuration valid</span>
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+        add(<span class="string"><span class="delimiter">'</span><span class="content">books</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Book</span><span class="delimiter">'</span></span>) {
+            type {
+                field(<span class="string"><span class="delimiter">'</span><span class="content">title</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+                field(<span class="string"><span class="delimiter">'</span><span class="content">publisher</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Publisher</span><span class="delimiter">'</span></span>) {
+                    field(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+                    field(<span class="string"><span class="delimiter">'</span><span class="content">address</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+                }
+                collection <span class="predefined-constant">true</span>
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+When creating custom types, it is important that the name you choose does not already exist. For example if this application also had a Publisher domain class, the types will conflict because in GraphQL the type names must be unique.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_order">Order</h3>
+<div class="paragraph">
+<p>The order in which the fields appear in the schema can be customized.
+By default any identity properties and the version property appear first in order.</p>
+</div>
+<div class="paragraph">
+<p>To customize the order of a custom property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">   <span class="directive">static</span> graphql = GraphQLMapping.build {
+       add(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>) {
+            order <span class="integer">1</span>
+       }
+   }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If no order is specified, added properties will be put at the end of the list of properties in the schema. Properties with the same or no order will be ordered by name.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To customize properties to come before the identifier or version, set the value as negative. The default order for id properties is -20 and the default order for version properties is -10.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+<h2 id="operations">4.2 Operations</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/operations.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_provided_operations">Provided Operations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The 3 query (get, list, count) and 3 mutation (create, update, delete) operations provided by default for all entities mapped with GraphQL are called the provided operations.</p>
+</div>
+<div class="paragraph">
+<p>It is possible to customize the provided operations as well as disable their creation.</p>
+</div>
+<div class="sect2">
+<h3 id="_disabling_all_operations">Disabling All Operations</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.all.enabled <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disabling_a_provided_operation">Disabling A Provided Operation</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.delete.enabled <span class="predefined-constant">false</span>
+    <span class="comment">//or</span>
+    <span class="comment">//operations.get</span>
+    <span class="comment">//operations.list</span>
+    <span class="comment">//operations.count</span>
+    <span class="comment">//operations.create</span>
+    <span class="comment">//operations.update</span>
+    <span class="comment">//operations.delete</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disabling_all_mutation_write_operation">Disabling All Mutation(Write) Operation</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.mutation.enabled <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disabling_all_query_read_operation">Disabling All Query(Read) Operation</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.query.enabled <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_metadata">Metadata</h3>
+<div class="paragraph">
+<p>The mapping closure also allows the description and deprecation status of the provided operations to be manipulated.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.get
+        .description(<span class="string"><span class="delimiter">&quot;</span><span class="content">Retrieve a single instance</span><span class="delimiter">&quot;</span></span>)
+        .deprecationReason(<span class="string"><span class="delimiter">&quot;</span><span class="content">Use newBook instead</span><span class="delimiter">&quot;</span></span>)
+
+    operations.delete.deprecated(<span class="predefined-constant">true</span>)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pagination">Pagination</h3>
+<div class="paragraph">
+<p>By default, list operations return a list of instances. For most pagination solutions, that is not enough data. In addition to the list of results, the total count is required to be able to calculate pagination controls. Pagination is supported in this library through configuration of the list operation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.list.paginate(<span class="predefined-constant">true</span>)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By configuring the list operation to paginate, instead of a list of results being returned, an object will be returned that has a "results" value, which is the list, and a "totalCount" value which is the total count not considering the pagination parameters.</p>
+</div>
+<div class="sect3">
+<h4 id="_customization">Customization</h4>
+<div class="paragraph">
+<p>It is possible to customize how the pagination response is created through the creation of a <a href="../api/org/grails/gorm/graphql/response/pagination/GraphQLPaginationResponseHandler.html">GraphQLPaginationResponseHandler</a>.</p>
+</div>
+<div class="paragraph">
+<p>How you can supply your own pagination response handler depends on whether the library is being used standalone or part of a Grails application.</p>
+</div>
+<div class="paragraph">
+<p>For standalone applications, simply set the handler on the schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.paginationResponseHandler = <span class="keyword">new</span> MyPaginationResponseHandler()
+...
+schema.generate()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For Grails applications, override the <code>graphQLPaginationResponseHandler</code> bean.</p>
+</div>
+<div class="listingblock">
+<div class="title">grails-app/config/spring/resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">beans = {
+    graphQLPaginationResponseHandler(MyPaginationResponseHandler)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Data fetchers must respond according to the object type definition created by the pagination response handler. When supplying your own data fetcher, implement <a href="../api/org/grails/gorm/graphql/fetcher/PaginatingGormDataFetcher.html">PaginatingGormDataFetcher</a> and the response handler will be populated for you. The response handler is responsible for creating the response in order to assure it is compatible.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_custom_operations">Custom Operations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to the provided operations, it is possible to add custom operations through the mapping block in an entity.</p>
+</div>
+<div class="paragraph">
+<p>Custom operations can be defined with the <code>query</code> method and the <code>mutation</code> method, depending on what category the operation being added falls into. In both cases the API is exactly the same.</p>
+</div>
+<div class="sect2">
+<h3 id="_definition">Definition</h3>
+<div class="paragraph">
+<p>Custom operations must be defined in the mapping block of GORM entities. In the example below we have an <code>Author</code> class that has a <code>name</code>. We want to create a custom operation to retrieve an author by it&#8217;s name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+
+        <span class="comment">//authorByName is the name exposed by the API</span>
+        <span class="comment">//Author is the return type</span>
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) { <span class="comment">//or [Author] to return a list of authors</span>
+            ...
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the case where a pagination result should be returned from the custom operation, a simple method <code>pagedResult</code> is available to mark the type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+
+        <span class="comment">//authorsByName is the name exposed by the API</span>
+        <span class="comment">//The return type will have a results key and a totalCount key</span>
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorsByName</span><span class="delimiter">'</span></span>, pagedResult(Author)) {
+            ...
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For operations with a custom return type, it possible to define a custom type using the <code>returns</code> block. The API inside of the returns block is exactly the same as the API for defining <a href="#custom">custom properties</a> with custom types.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">mutation(<span class="string"><span class="delimiter">'</span><span class="content">deleteAuthors</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">AuthorsDeletedResponse</span><span class="delimiter">'</span></span>) {
+    returns {
+        field(<span class="string"><span class="delimiter">'</span><span class="content">deletedCount</span><span class="delimiter">'</span></span>, <span class="predefined-type">Long</span>)
+        field(<span class="string"><span class="delimiter">'</span><span class="content">success</span><span class="delimiter">'</span></span>, <span class="predefined-type">Boolean</span>)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The data fetcher provided must have the defined fields.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_metadata_2">Metadata</h3>
+<div class="paragraph">
+<p>Description and deprecation information can also be supplied for custom operations.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) { <span class="comment">//or [Author] to return a list of authors</span>
+    description <span class="string"><span class="delimiter">'</span><span class="content">Retrieves an author where the name equals the supplied name`</span></span><span class="error">
+</span>
+    deprecated <span class="predefined-constant">true</span>
+    <span class="comment">//or</span>
+    deprecationReason <span class="string"><span class="delimiter">'</span><span class="content">Use authorWhereName instead`</span></span><span class="error">
+</span>}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_data_fetcher">Data Fetcher</h3>
+<div class="paragraph">
+<p>When creating a custom operation, it is necessary to supply a "data fetcher". The data fetcher is responsible for returning data to GraphQL to be used in generating the response. The data fetcher must be an instance of <code>graphql.schema.DataFetcher</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+        argument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) {
+            dataFetcher(<span class="keyword">new</span> DataFetcher&lt;&gt;() {
+                <span class="annotation">@Override</span>
+                <span class="predefined-type">Object</span> get(DataFetchingEnvironment environment) {
+                    Author.findByName(environment.getArgument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>))
+                }
+            })
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above example will function properly, however it is missing out on one of the best features of this library, query optimization. If books were requested to be returned, a separate query would need to be executed to retrieve the books. To make this better, the recommendation is to always extend from one of the provided data fetchers.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/SingleEntityDataFetcher.html">SingleEntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LIST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html">EntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LIST (Paginated Response)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/PaginatedEntityDataFetcher.html">PaginatedEntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CREATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/CreateEntityDataFetcher.html">CreateEntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UPDATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/UpdateEntityDataFetcher.html">UpdateEntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/DeleteEntityDataFetcher.html">EntityDataFetcher</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>If the data fetcher you wish to create does not fit well in any of the above use cases, you can extend directly from <a href="../api/org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>, which has all of the query optimization logic.</p>
+</div>
+<div class="paragraph">
+<p>All of the classes above have a constructor which takes in a <a href="http://gorm.grails.org/latest/api/org/grails/datastore/mapping/model/PersistentEntity.html">PersistentEntity</a>. The easiest way to get a persistent entity from a domain class is to execute the static <code>gormPersistentEntity</code> method.</p>
+</div>
+<div class="paragraph">
+<p>Using the above information, we can change the <code>authorByName</code> to extend from the <a href="../api/org/grails/gorm/graphql/fetcher/impl/SingleEntityDataFetcher.html">SingleEntityDataFetcher</a> class because we are returning a single <code>Author</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+
+    <span class="directive">static</span> graphql = GraphQLMapping.lazy {
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) {
+            argument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+            dataFetcher(<span class="keyword">new</span> SingleEntityDataFetcher&lt;&gt;(Author.gormPersistentEntity) {
+                <span class="annotation">@Override</span>
+                <span class="directive">protected</span> DetachedCriteria buildCriteria(DataFetchingEnvironment environment) {
+                    Author.where { name == environment.getArgument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>) }
+                }
+            })
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Note the use of <code>GraphQLMapping.lazy</code> in this example. Because we are accessing the persistent entity, the GORM mapping context must be created before this code is evaluated. The <code>lazy</code> method will execute the provided code when the mapping is requested (during schema creation), instead of at class initialization time. By that time it is expected that GORM is available.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+<h2 id="arguments">4.3 Arguments</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/arguments.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_arguments">Arguments</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Arguments are how users supply data to your custom operation or field. Arguments support simple types (String, Integer, etc) as well as custom types that you define.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) {
+    argument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>) <span class="comment">//To take in a single string</span>
+
+    argument(<span class="string"><span class="delimiter">'</span><span class="content">names</span><span class="delimiter">'</span></span>, [<span class="predefined-type">String</span>]) <span class="comment">//To take in a list of strings</span>
+
+    argument(<span class="string"><span class="delimiter">'</span><span class="content">fullName</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">AuthorNameArgument</span><span class="delimiter">'</span></span>) { <span class="comment">//A custom argument</span>
+        accepts {
+            field(<span class="string"><span class="delimiter">'</span><span class="content">first</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+            field(<span class="string"><span class="delimiter">'</span><span class="content">last</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The API inside of the last argument block is exactly the same as the API for defining <a href="#custom">custom properties</a> with custom types.</p>
+</div>
+<div class="sect2">
+<h3 id="_argument_metadata">Argument Metadata</h3>
+<div class="paragraph">
+<p>GraphQL has the ability to store metadata about arguments to operations.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) {
+    argument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>) {
+        defaultValue <span class="string"><span class="delimiter">'</span><span class="content">John</span><span class="delimiter">'</span></span> <span class="comment">//Supply a sensible default</span>
+
+        nullable <span class="predefined-constant">true</span> <span class="comment">//Allow a null value (default false)</span>
+
+        description <span class="string"><span class="delimiter">'</span><span class="content">The name of the author to search for</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_argument_inputs">Using Argument Inputs</h3>
+<div class="paragraph">
+<p>Within your supplied DataFetcher, arguments can easily be retrieved from their corresponding DataFetchingEnvironment and used as necessary.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) {
+            argument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+            dataFetcher(<span class="keyword">new</span> DataFetcher&lt;&gt;() {
+                <span class="annotation">@Override</span>
+                <span class="predefined-type">Object</span> get(DataFetchingEnvironment environment) {
+                    Author.findByName(environment.getArgument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>))
+                }
+            })
+        }
+        add(<span class="string"><span class="delimiter">'</span><span class="content">booksPublishedBetween</span><span class="delimiter">'</span></span>, [<span class="predefined-type">Book</span>]) {
+            input(<span class="predefined-constant">false</span>)
+            argument(<span class="string"><span class="delimiter">'</span><span class="content">from</span><span class="delimiter">'</span></span>, <span class="predefined-type">Date</span>)
+            argument(<span class="string"><span class="delimiter">'</span><span class="content">to</span><span class="delimiter">'</span></span>, <span class="predefined-type">Date</span>)
+            dataFetcher { Author author, ClosureDataFetchingEnvironment environment -&gt;
+                <span class="predefined-type">Date</span> from = environment.getArgument(<span class="string"><span class="delimiter">'</span><span class="content">from</span><span class="delimiter">'</span></span>)
+                <span class="predefined-type">Date</span> to = environment.getArgument(<span class="string"><span class="delimiter">'</span><span class="content">to</span><span class="delimiter">'</span></span>)
+                <span class="predefined-type">Book</span>.where {
+                    author == author
+                    published &gt;= from
+                    published &lt;= to
+                }.list()
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above example would support the following type of query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="graphql">query {
+  authorByName(name: &quot;Herman Melville&quot;) {
+    booksPublishedBetween(from: &quot;1850-01-01&quot;, to: &quot;1852-12-31&quot;) {
+      title
+      pageCount
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<h2 id="responseHandlers">4.4 Validation Error and Delete Responses</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/responseHandlers.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>The way the provided operations respond after deleting a GORM entity instance and how validation errors are returned is customizable.</p>
+</div>
+<div class="sect1">
+<h2 id="_delete_response">Delete Response</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete responses are handled by a <a href="../api/org/grails/gorm/graphql/response/delete/GraphQLDeleteResponseHandler.html">GraphQLDeleteResponseHandler</a>. The default implementation responds with an object that has a single property, <code>success</code>. You can register your own handler to override the default.</p>
+</div>
+<div class="paragraph">
+<p>For reference, see the <a href="https://github.com/grails/gorm-graphql/blob/master/core/src/main/groovy/org/grails/gorm/graphql/response/delete/DefaultGraphQLDeleteResponseHandler.groovy">default handler</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_standalone">Standalone</h3>
+<div class="paragraph">
+<p>After creating the schema, but before calling generate:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.deleteResponseHandler = <span class="keyword">new</span> MyDeleteResponseHandler()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_grails">Grails</h3>
+<div class="paragraph">
+<p>To override the delete response handler in a Grails application, register a bean with the name "graphQLDeleteResponseHandler".</p>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">graphQLDeleteResponseHandler(MyDeleteResponseHandler)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validation_error_response">Validation Error Response</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Validation error responses are handled by a <a href="../api/org/grails/gorm/graphql/response/errors/GraphQLErrorsResponseHandler.html">GraphQLErrorsResponseHandler</a>.</p>
+</div>
+<div class="paragraph">
+<p>For reference, see the <a href="https://github.com/grails/gorm-graphql/blob/master/core/src/main/groovy/org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.groovy">default handler</a>.</p>
+</div>
+<div class="paragraph">
+<p>If you plan to extend the default handler, a message source is required.</p>
+</div>
+<div class="sect2">
+<h3 id="_standalone_2">Standalone</h3>
+<div class="paragraph">
+<p>The errors response handler is a property of the type manager. If you are supplying a custom type manager to the schema, set the property on it directly. If you are relying on the default type manager, do the following after creating the schema, but before calling generate:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.errorsResponseHandler = <span class="keyword">new</span> MyErrorsResponseHandler()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_grails_2">Grails</h3>
+<div class="paragraph">
+<p>To override the errors response handler in a Grails application, register a bean with the name "graphQLErrorsResponseHandler".</p>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">graphQLErrorsResponseHandler(MyErrorsResponseHandler, ref(<span class="string"><span class="delimiter">&quot;</span><span class="content">messageSource</span><span class="delimiter">&quot;</span></span>))</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<h2 id="namingConvention">4.5 Naming Convention</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/namingConvention.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_custom_naming_conventions">Custom Naming Conventions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The names used to describe entities is configurable through the use of an <a href="../api/org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>.</p>
+</div>
+<div class="paragraph">
+<p>The class controls the name of the default operations and the names of the GraphQL types built from the GORM entities.</p>
+</div>
+<div class="sect2">
+<h3 id="_standalone">Standalone</h3>
+<div class="paragraph">
+<p>The naming convention is a property of the type manager. If you are supplying a custom type manager to the schema, set the property on it directly. If you are relying on the default type manager, do the following after creating the schema, but before calling generate:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.namingConvention = <span class="keyword">new</span> MyNamingConvention()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_grails">Grails</h3>
+<div class="paragraph">
+<p>To override the naming convention in a Grails application, register a bean with the name "graphQLEntityNamingConvention" that extends <a href="../api/org/grails/gorm/graphql/entity/GraphQLEntityNamingConvention.html">GraphQLEntityNamingConvention</a>.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">graphQLEntityNamingConvention(MyNamingConvention)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<h2 id="configuration">4.6 Configuration</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/configuration.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_standalone">Standalone</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The schema has several properties that can be modified.</p>
+</div>
+<div class="sect2">
+<h3 id="_list_arguments">List Arguments</h3>
+<div class="paragraph">
+<p>A map where the key is a string (one of <a href="../api/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html#ARGUMENTS">EntityDataFetcher.ARGUMENTS</a>) and the value is the class the argument should be coerced into.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.listArguments = (<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Class</span>&gt;)..</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_date_type">Date Type</h3>
+<div class="paragraph">
+<p>If a date type is not already registered with the type manager, a default one will be provided. The default type can be customized with the date formats that should be attempted to convert user input, and whether or not the parsing should be lenient.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.dateFormats = (<span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt;)...
+schema.dateFormatLenient = (<span class="type">boolean</span>)...</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The date formats will also be used for the Java 8 date types.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_plugin">Plugin</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following options are available to configure for Grails applications using the plugin.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">code</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the plugin is enabled</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.dateFormats</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List&lt;String&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- yyyy-MM-dd HH:mm:ss.S,
+  - yyyy-MM-dd&#8217;T&#8217;HH:mm:ss&#8217;Z'
+  - yyyy-MM-dd HH:mm:ss.S z
+  - yyyy-MM-dd&#8217;T&#8217;HH:mm:ss.SSSX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the setting is not provided, the <code>grails.databinding.dateFormats</code> will be used.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.dateFormatLenient</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">False</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the setting is not provided, the <code>grails.databinding.dateParsingLenient</code> will be used.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.listArguments</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map&lt;String, Class&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default arguments in <a href="../api/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html#ARGUMENTS">EntityDataFetcher.ARGUMENTS</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.gorm.graphql.browser</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True (only in development)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the <code>GraphqlController.browser</code> action which by default responds on the <code>graphql/browser</code> endpoint is enabled</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="_fetching_context">Fetching Context</h3>
+<div class="paragraph">
+<p>Data fetchers in GraphQL have a "context". The context is really just an Object field that can contain anything you like with the purpose of exposing it to the data fetching environment. For example, the default context created by the plugin is a Map that contains the request locale. The locale is used to render validation error messages.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you prefer to set the context to a custom class, implement <a href="../api/org/grails/gorm/graphql/fetcher/context/LocaleAwareContext.html">LocaleAwareContext</a> and the default validation errors response handler will retrieve the locale from the object.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>It is common to need to manipulate the context to include data that some or all of your data fetchers might need. If a fetcher needs to be aware of the current user and you are using the spring security plugin, you may want to add the <code>springSecurityService</code> to the context.</p>
+</div>
+<div class="paragraph">
+<p>To customize the context, register a bean named "graphQLContextBuilder" of type <a href="../api/org/grails/gorm/graphql/plugin/GraphQLContextBuilder.html">GraphQLContextBuilder</a>. If the default errors handler is being used, extend from <a href="../api/org/grails/gorm/graphql/plugin/DefaultGraphQLContextBuilder.html">DefaultGraphQLContextBuilder</a> and add to the result of the super method call.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/groovy/demo/MyGraphQLContextBuilder.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.DefaultGraphQLContextBuilder</span>
+<span class="keyword">import</span> <span class="include">org.springframework.beans.factory.annotation.Autowired</span>
+<span class="keyword">import</span> <span class="include">grails.plugin.springsecurity.SpringSecurityService</span>
+
+<span class="type">class</span> <span class="class">MyGraphQLContextBuilder</span> <span class="directive">extends</span> DefaultGraphQLContextBuilder {
+
+    <span class="annotation">@Autowired</span>
+    SpringSecurityService springSecurityService
+
+    <span class="annotation">@Override</span>
+    <span class="predefined-type">Map</span> buildContext(GrailsWebRequest request) {
+        <span class="predefined-type">Map</span> context = <span class="local-variable">super</span>.buildContext(request)
+        context.springSecurityService = springSecurityService
+        context
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">graphQLContextBuilder(MyGraphQLContextBuilder)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then in a data fetcher:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">T get(DataFetchingEnvironment environment) {
+    ((<span class="predefined-type">Map</span>) environment.context).springSecurityService
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

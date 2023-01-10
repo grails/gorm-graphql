@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>4.4 Validation Error and Delete Responses 2.0.1-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        GORM GraphQL
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/installation.html"><strong>2</strong><span>Installation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/dataBinders.html"><strong>7</strong><span>Data Binding</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/interceptors.html"><strong>8</strong><span>Interceptors</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/otherNotes.html"><strong>9</strong><span>Other Notes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/APIDocs.html"><strong>10</strong><span>API Docs</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>4.4 Validation Error and Delete Responses</h1>
+
+                    <p><strong>Version:</strong> 2.0.1-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h2 id="responseHandlers">4.4 Validation Error and Delete Responses</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/master/docs/src/main/docs/guide/customizations/responseHandlers.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>The way the provided operations respond after deleting a GORM entity instance and how validation errors are returned is customizable.</p>
+</div>
+<div class="sect1">
+<h2 id="_delete_response">Delete Response</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete responses are handled by a <a href="../api/org/grails/gorm/graphql/response/delete/GraphQLDeleteResponseHandler.html">GraphQLDeleteResponseHandler</a>. The default implementation responds with an object that has a single property, <code>success</code>. You can register your own handler to override the default.</p>
+</div>
+<div class="paragraph">
+<p>For reference, see the <a href="https://github.com/grails/gorm-graphql/blob/master/core/src/main/groovy/org/grails/gorm/graphql/response/delete/DefaultGraphQLDeleteResponseHandler.groovy">default handler</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_standalone">Standalone</h3>
+<div class="paragraph">
+<p>After creating the schema, but before calling generate:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.deleteResponseHandler = <span class="keyword">new</span> MyDeleteResponseHandler()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_grails">Grails</h3>
+<div class="paragraph">
+<p>To override the delete response handler in a Grails application, register a bean with the name "graphQLDeleteResponseHandler".</p>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">graphQLDeleteResponseHandler(MyDeleteResponseHandler)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validation_error_response">Validation Error Response</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Validation error responses are handled by a <a href="../api/org/grails/gorm/graphql/response/errors/GraphQLErrorsResponseHandler.html">GraphQLErrorsResponseHandler</a>.</p>
+</div>
+<div class="paragraph">
+<p>For reference, see the <a href="https://github.com/grails/gorm-graphql/blob/master/core/src/main/groovy/org/grails/gorm/graphql/response/errors/DefaultGraphQLErrorsResponseHandler.groovy">default handler</a>.</p>
+</div>
+<div class="paragraph">
+<p>If you plan to extend the default handler, a message source is required.</p>
+</div>
+<div class="sect2">
+<h3 id="_standalone_2">Standalone</h3>
+<div class="paragraph">
+<p>The errors response handler is a property of the type manager. If you are supplying a custom type manager to the schema, set the property on it directly. If you are relying on the default type manager, do the following after creating the schema, but before calling generate:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.errorsResponseHandler = <span class="keyword">new</span> MyErrorsResponseHandler()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_grails_2">Grails</h3>
+<div class="paragraph">
+<p>To override the errors response handler in a Grails application, register a bean with the name "graphQLErrorsResponseHandler".</p>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">graphQLErrorsResponseHandler(MyErrorsResponseHandler, ref(<span class="string"><span class="delimiter">&quot;</span><span class="content">messageSource</span><span class="delimiter">&quot;</span></span>))</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
