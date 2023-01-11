@@ -203,7 +203,7 @@ class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQ
      */
     @CompileDynamic
     Object methodMissing(String name, Object args) {
-        if (args && args.getClass().isArray()) {
+        if (args && args.getClass().array) {
 
             if (args[0] instanceof Closure) {
                 property(name, (Closure) args[0])
