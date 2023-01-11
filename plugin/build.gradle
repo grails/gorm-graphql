@@ -23,7 +23,7 @@ dependencies {
     compile "io.micronaut:micronaut-http-client:$micronautVersion"
     compileOnly "org.grails.plugins:converters:3.3.1"
     testCompile "org.grails:grails-web-testing-support"
-    testCompile "cglib:cglib-nodep:3.2.5"
+    testCompile "cglib:cglib-nodep:3.3.0"
     profile "org.grails.profiles:web-plugin"
 
     compile project(":gorm-graphql")
