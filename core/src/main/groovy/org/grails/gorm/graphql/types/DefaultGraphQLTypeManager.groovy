@@ -114,7 +114,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
                 clazz = Array.newInstance(boxPrimitive(clazz.componentType), 0).getClass()
             }
         }
-        else if (clazz.isPrimitive()) {
+        else if (clazz.primitive) {
             clazz = boxPrimitive(clazz)
         }
         clazz
