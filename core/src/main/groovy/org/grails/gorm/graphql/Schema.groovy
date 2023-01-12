@@ -365,27 +365,29 @@ class Schema {
                     }
                     GraphQLInputType createObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.CREATE, true)
 
-                    BindingGormDataFetcher createFetcher = dataFetcherManager.getBindingFetcher(entity, CREATE).orElse(new CreateEntityDataFetcher(entity))
+                    if(!createObjectType.getChildren().isEmpty()) {
+                        BindingGormDataFetcher createFetcher = dataFetcherManager.getBindingFetcher(entity, CREATE).orElse(new CreateEntityDataFetcher(entity))
 
-                    createFetcher.dataBinder = dataBinder
+                        createFetcher.dataBinder = dataBinder
 
-                    final String CREATE_FIELD_NAME = namingConvention.getCreate(entity)
+                        final String CREATE_FIELD_NAME = namingConvention.getCreate(entity)
 
-                    GraphQLFieldDefinition.Builder create = newFieldDefinition()
-                            .name(CREATE_FIELD_NAME)
-                            .type(OBJECT_TYPE)
-                            .description(createOperation.description)
-                            .deprecate(createOperation.deprecationReason)
-                            .argument(newArgument()
-                                    .name(entity.decapitalizedName)
-                                    .type(createObjectType))
+                        GraphQLFieldDefinition.Builder create = newFieldDefinition()
+                                .name(CREATE_FIELD_NAME)
+                                .type(OBJECT_TYPE)
+                                .description(createOperation.description)
+                                .deprecate(createOperation.deprecationReason)
+                                .argument(newArgument()
+                                                .name(entity.decapitalizedName)
+                                                .type(createObjectType))
 
-                    codeRegistry.dataFetcher(
-                            coordinates(MUTATION_TYPE_NAME, CREATE_FIELD_NAME),
-                            new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, CREATE, createFetcher)
-                    )
+                        codeRegistry.dataFetcher(
+                                coordinates(MUTATION_TYPE_NAME, CREATE_FIELD_NAME),
+                                new InterceptingDataFetcher(entity, serviceManager, mutationInterceptorInvoker, CREATE, createFetcher)
+                        )
 
-                    mutationFields.add(create)
+                        mutationFields.add(create)
+                    }
                 }
 
                 ProvidedOperation updateOperation = mapping.operations.update
@@ -487,12 +489,20 @@ class Schema {
             schemaInterceptor.interceptSchema(queryType, mutationType, additionalTypes)
         }
 
-        GraphQLSchema.newSchema()
+        GraphQLSchema.Builder schemaBuilder = GraphQLSchema.newSchema()
                 .codeRegistry(codeRegistry.build())
-                .query(queryType)
-                .mutation(mutationType)
                 .additionalTypes(additionalTypes)
-                .build()
+
+        GraphQLObjectType mutation = mutationType.build()
+        if(mutation.fieldDefinitions) {
+            schemaBuilder.mutation(mutation)
+        }
+        GraphQLObjectType query = queryType.build()
+        if(query.fieldDefinitions) {
+            schemaBuilder.query(query)
+            return schemaBuilder.build()
+        }
+
     }
 
 }

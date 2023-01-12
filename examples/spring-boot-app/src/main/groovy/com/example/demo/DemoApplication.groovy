@@ -24,6 +24,6 @@ class DemoApplication {
 
 	@Bean
 	GraphQL graphQL(@Autowired HibernateDatastore datastore) {
-		new GraphQL(new Schema(datastore.mappingContext).generate())
+		GraphQL.newGraphQL(new Schema(datastore.mappingContext).generate()).build()
 	}
 }
