@@ -68,7 +68,7 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
     protected GraphQLFieldDefinition.Builder addFieldArgs(GraphQLFieldDefinition.Builder field, GraphQLDomainProperty prop, MappingContext mapping) {
         if (prop instanceof Arguable) {
             List<GraphQLArgument> arguments = prop.getArguments(typeManager, mapping)
-            if (!arguments.isEmpty()) {
+            if (!arguments.empty) {
                 field.arguments(arguments)
             }
         }
@@ -124,7 +124,7 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
                 .description(description)
                 .fields(fields)
 
-        if (!entity.isRoot()) {
+        if (!entity.root) {
             obj.withInterface(typeManager.createReference(entity.rootEntity, GraphQLPropertyType.OUTPUT))
         }
 

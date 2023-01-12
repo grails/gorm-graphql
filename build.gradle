@@ -5,24 +5,19 @@ buildscript {
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-        classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
+        classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
     }
 }
 
-//plugins {
-//    id 'com.gradle.build-scan' version '2.0.2'
-//}
-
 repositories {
+    mavenCentral()
     maven { url "https://repo.grails.org/grails/core" }
 }
 
 version project.projectVersion
 
 ext {
-    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/9531dd5e6d774b86e2d8220aff3bcec3add43320'
+    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/master'
 }
 
 subprojects {
@@ -39,61 +34,42 @@ subprojects {
         maven { url "https://repo.grails.org/grails/core" }
     }
 
-    if(project.name.startsWith("examples-")) {
-        if(project.name.startsWith("examples-grails-")) {
-            apply plugin:"org.grails.grails-web"
-        }
-
-        tasks.withType(Test) {
-            testLogging {
-                events "failed"
-                exceptionFormat "full"
-            }
-        }
-        return
-    }
-
-    if(isGrailsPlugin) {
-        group "org.grails.plugins"
-    }
-    else {
-        group "org.grails"
-    }
-
-    if(project.name.endsWith('docs')) {
-        apply from:"${commonBuild}/common-docs.gradle"
-        return
-    }
-
-    if (isGrailsPlugin) {
-        apply plugin:"org.grails.grails-plugin"
-    }
-    else {
-        apply from:"${commonBuild}/common-project.gradle"
-    }
-
-    apply from:"${commonBuild}/common-publishing.gradle"
-
-    dependencies {
-        testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"
-    }
-
-    tasks.withType(GroovyCompile) {
+    tasks.withType(GroovyCompile).configureEach {
         configure(groovyOptions) {
             forkOptions.jvmArgs = ['-Xmx1024m']
         }
     }
 
-    tasks.withType(Test) {
+    tasks.withType(Test).configureEach {
         testLogging {
             events "failed"
             exceptionFormat "full"
             showStandardStreams true
         }
     }
+
+    if (project.name.startsWith("examples-")) {
+        if (project.name.startsWith("examples-grails-")) {
+            apply plugin: "org.grails.grails-web"
+        }
+        return
+    }
+
+    if (isGrailsPlugin) {
+        group "org.grails.plugins"
+    } else {
+        group "org.grails"
+    }
+
+    if (isGrailsPlugin) {
+        apply plugin: "org.grails.grails-plugin"
+    } else {
+        apply from: "${commonBuild}/common-project.gradle"
+    }
+
+    dependencies {
+        testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"
+    }
 }
 
-//buildScan {
-//    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-//    termsOfServiceAgree = 'yes'
-//}
+apply from: "${commonBuild}/common-publishing.gradle"

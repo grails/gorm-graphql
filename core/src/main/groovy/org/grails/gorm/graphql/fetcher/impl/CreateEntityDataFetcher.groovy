@@ -12,7 +12,7 @@ import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
 /**
  * A class for creating entities with GraphQL
  *
- * @param <T> The domain returnType to create
+ * @param <T>  The domain returnType to create
  * @author James Kleeh
  * @since 1.0.0
  */
@@ -24,7 +24,7 @@ class CreateEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements Bi
 
     @Override
     T get(DataFetchingEnvironment environment) {
-        (T)withTransaction(false) {
+        (T) withTransaction(false) {
             GormEntity instance = newInstance
             dataBinder.bind(instance, getArgument(environment))
             if (!instance.hasErrors()) {
@@ -35,11 +35,11 @@ class CreateEntityDataFetcher<T> extends DefaultGormDataFetcher<T> implements Bi
     }
 
     protected GormEntity getNewInstance() {
-        (GormEntity)entity.newInstance()
+        (GormEntity) entity.newInstance()
     }
 
     protected Map getArgument(DataFetchingEnvironment environment) {
-        (Map)environment.getArgument(entity.decapitalizedName)
+        (Map) environment.getArgument(entity.decapitalizedName)
     }
 
     @Override

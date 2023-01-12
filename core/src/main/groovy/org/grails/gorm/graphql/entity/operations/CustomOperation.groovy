@@ -119,7 +119,7 @@ abstract class CustomOperation<T> implements Named<T>, Describable<T>, Deprecata
             }
         }
 
-        if (!arguments.isEmpty()) {
+        if (!arguments.empty) {
             for (CustomArgument argument: arguments) {
                 customQuery.argument(argument.getArgument(typeManager, mappingContext))
             }

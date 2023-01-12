@@ -23,7 +23,7 @@ class CountEntityDataFetcher extends DefaultGormDataFetcher<Integer> implements 
 
     @Override
     Integer get(DataFetchingEnvironment environment) {
-        (Integer)withTransaction(true) {
+        (Integer) withTransaction(true) {
             queryCount()
         }
     }

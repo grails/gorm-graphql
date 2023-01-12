@@ -8,6 +8,7 @@ import org.grails.gorm.graphql.binding.GraphQLDataBinder
 import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.DefaultGormDataFetcher
 import org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType
+
 import static org.grails.datastore.mapping.model.config.GormProperties.VERSION
 
 /**
