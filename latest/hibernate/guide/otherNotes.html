@@ -1,0 +1,419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>9 Other Notes 2.0.1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        GORM GraphQL
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/installation.html"><strong>2</strong><span>Installation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/dataBinders.html"><strong>7</strong><span>Data Binding</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/interceptors.html"><strong>8</strong><span>Interceptors</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/otherNotes.html"><strong>9</strong><span>Other Notes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/APIDocs.html"><strong>10</strong><span>API Docs</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/interceptors.html">&lt;&lt; <strong>8</strong><span>Interceptors</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/APIDocs.html"><strong>10</strong><span>API Docs</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>9 Other Notes</h1>
+
+                    <p><strong>Version:</strong> 2.0.1</p>
+                </div>
+
+                
+
+                
+
+<h1 id="otherNotes">9 Other Notes</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/2.0.x/src/main/docs/guide/otherNotes.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_other_notes">Other Notes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section of the documentation is designed to inform you about special circumstances that may impact some use cases.</p>
+</div>
+<div class="sect2">
+<h3 id="_metadata">Metadata</h3>
+<div class="paragraph">
+<p>You may come across a time when you would like to supply metadata for a property or type, but because that type is not part of an exposed persistent entity, it is not possible to do so via the mapping DSL. For those use cases, a <a href="../api/org/grails/gorm/graphql/GraphQL.html">@GraphQL</a> annotation exists. The annotation can be applied to related entities or enums, for example.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nullability">Nullability</h3>
+<div class="paragraph">
+<p>The nullable constraint on persistent properties is only respected during the create operation. For all other cases, null is always allowed. The reasoning for allowing nulls for output operations (get or list) is due to the possibility of the properties being null as a result of validation errors during a create or update. Nulls are allowed for update operations to allow users to send a partial object instead of the entire object.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inheritance">Inheritance</h3>
+<div class="paragraph">
+<p>Because GraphQL doesn&#8217;t support the ability to have interfaces extend other interfaces, interface types will only be created for root entities that have children. All child entities, regardless of any intermediate parent classes, will set their interface type to their root entity interface.</p>
+</div>
+<div class="paragraph">
+<p>When querying the root entity, all children will be available to select properties via the <code>&#8230;&#8203; on</code> directive.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_map_properties">Map Properties</h3>
+<div class="paragraph">
+<p>Since `Map`s by definition are dynamic, they don&#8217;t fit well into the pre defined world that is the GraphQL schema. It is impossible to render them as they are with dynamic keys because the schema must be statically defined. There are a couple ways to work around this depending on how you are using the properties.</p>
+</div>
+<div class="sect3">
+<h4 id="_truly_dynamic">Truly Dynamic</h4>
+<div class="paragraph">
+<p>For <code>Map</code> properties where the keys are not known at all, it is entirely up to the user to determine how it should be handled. One example might be to return a list of objects instead. For example, consider the following domain class:</p>
+</div>
+<div class="listingblock">
+<div class="title">grails-app/domain/demo/Author.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="comment">//The key is the ISBN</span>
+    <span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Book</span>&gt; books
+
+    <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It is impossible to know what keys will be used in this example, so we will need to provide the data in a predefined format. Instead of a <code>Map&lt;String, Book&gt;</code>, we could return the books as a <code>List&lt;Map&gt;</code> where each map has a <code>key</code> property and a <code>value</code> property.</p>
+</div>
+<div class="paragraph">
+<p>To accomplish this there are several steps necessary to take in order for everything to work property.</p>
+</div>
+<div class="sect4">
+<h5 id="_configure_the_property">Configure The Property</h5>
+<div class="paragraph">
+<p>The property must be modified to contain the definition proposed above. In order to change the data type of a property, it must first be excluded and then replaced with a custom property.</p>
+</div>
+<div class="listingblock">
+<div class="title">grails-app/domain/demo/Author.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="comment">//The key is the ISBN</span>
+    <span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Book</span>&gt; books
+
+    <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+
+        exclude <span class="string"><span class="delimiter">'</span><span class="content">books</span><span class="delimiter">'</span></span> <i class="conum" data-value="1"></i><b>(1)</b>
+
+        add(<span class="string"><span class="delimiter">'</span><span class="content">books</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">BookMap</span><span class="delimiter">'</span></span>) { <i class="conum" data-value="2"></i><b>(2)</b>
+            type { <i class="conum" data-value="3"></i><b>(3)</b>
+                field(<span class="string"><span class="delimiter">'</span><span class="content">key</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+                field(<span class="string"><span class="delimiter">'</span><span class="content">value</span><span class="delimiter">'</span></span>, <span class="predefined-type">Book</span>)
+                collection <span class="predefined-constant">true</span>
+            }
+            dataFetcher { Author author -&gt;
+                <span class="comment">//author.books.entrySet() does not work here because</span>
+                <span class="comment">//the graphql-java implementation calls .get() on maps</span>
+                author.books.collect { key, value -&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+                    [<span class="key">key</span>: key, <span class="key">value</span>: value]
+                }.sort(<span class="predefined-constant">true</span>, {a, b -&gt; a.value.id &lt;=&gt; b.value.id})
+            }
+        }
+
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The persistent property is excluded from the schema</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>A custom property is created in its place</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>A custom type is defined for our property</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The data is converted to the expected data type that GraphQL expects</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The domain class configuration is enough to be able to retrieve author instances with GraphQL. If users are to be creating or updating instances, there is more work to do.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_data_binding">Data Binding</h5>
+<div class="paragraph">
+<p>A data binder must be configured to transform the data sent in the <code>key/value</code> object format to a format that can be bound to the domain. For those using this library standalone, it is up to you to determine how that is best done. Grails data binding supports binding to Map types, given the request data is in a specific format. To achieve that format, a data binder for the <code>Author</code> domain must be registered.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/groovy/demo/AuthorDataBinder.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">groovy.transform.CompileStatic</span>
+<span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.binding.GrailsGraphQLDataBinder</span>
+
+<span class="annotation">@CompileStatic</span>
+<span class="type">class</span> <span class="class">AuthorDataBinder</span> <span class="directive">extends</span> GrailsGraphQLDataBinder {
+
+    <span class="annotation">@Override</span>
+    <span class="type">void</span> bind(<span class="predefined-type">Object</span> object, <span class="predefined-type">Map</span> data) {
+        <span class="predefined-type">List</span>&lt;<span class="predefined-type">Map</span>&gt; books = (<span class="predefined-type">List</span>)data.remove(<span class="string"><span class="delimiter">'</span><span class="content">books</span><span class="delimiter">'</span></span>)
+        <span class="keyword">for</span> (<span class="predefined-type">Map</span> <span class="key">entry</span>: books) {
+            data.put(<span class="string"><span class="delimiter">&quot;</span><span class="content">books[</span><span class="inline"><span class="inline-delimiter">${</span>entry.key<span class="inline-delimiter">}</span></span><span class="content">]</span><span class="delimiter">&quot;</span></span>.toString(), entry.value)
+        }
+        <span class="local-variable">super</span>.bind(object, data)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then to register the data binder, see the section on <a href="#dataBinders.html">data binders</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pre_defined_keys">Pre Defined Keys</h4>
+<div class="paragraph">
+<p>For <code>Map</code> properties where the keys of the map are known, the process to handle them is much easier. In this example, there is a Map property on our <code>Author</code> domain class that can store a <code>lat</code> key and a <code>long</code> key to represent latitude and longitude.</p>
+</div>
+<div class="listingblock">
+<div class="title">grails-app/domain/demo/Author.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">Map</span> homeLocation
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+
+        exclude <span class="string"><span class="delimiter">'</span><span class="content">homeLocation</span><span class="delimiter">'</span></span> <i class="conum" data-value="1"></i><b>(1)</b>
+
+        add(<span class="string"><span class="delimiter">'</span><span class="content">homeLocation</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Location</span><span class="delimiter">'</span></span>) { <i class="conum" data-value="2"></i><b>(2)</b>
+            type { <i class="conum" data-value="3"></i><b>(3)</b>
+                field(<span class="string"><span class="delimiter">'</span><span class="content">lat</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+                field(<span class="string"><span class="delimiter">'</span><span class="content">long</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+            }
+        }
+
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The persistent property is excluded from the schema</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>A custom property is created in its place</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>A custom type is defined for our property</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_all_together">All Together</h4>
+<div class="paragraph">
+<p>Once all of the above is in place, here is what a create mutation might look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">curl -X "POST" "http://localhost:8080/graphql" \
+     -H "Content-Type: application/graphql" \
+     -d $'
+mutation {
+  authorCreate(author: {
+    name: "Sally",
+    homeLocation: {
+      lat: "41.101539",
+      long: "-80.653381"
+    },
+    books: [
+      {key: "0307887448", value: {title: "Ready Player One"}},
+      {key: "0743264746", value: {title: "Einstein: His Life and Universe"}}
+    ]
+  }) {
+    id
+    name
+    homeLocation {
+      lat
+      long
+    }
+    books {
+      key
+      value {
+        id
+        title
+      }
+    }
+    errors {
+      field
+      message
+    }
+  }
+}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And here is the expected response:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">authorCreate</span><span class="delimiter">&quot;</span></span>: {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">1</span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Sally</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">homeLocation</span><span class="delimiter">&quot;</span></span>: {
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">lat</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">41.101539</span><span class="delimiter">&quot;</span></span>,
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">long</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">-80.653381</span><span class="delimiter">&quot;</span></span>
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">books</span><span class="delimiter">&quot;</span></span>: [
+                {
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">key</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">0743264746</span><span class="delimiter">&quot;</span></span>,
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: {
+                        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">1</span>,
+                        <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Einstein: His Life and Universe</span><span class="delimiter">&quot;</span></span>
+                    }
+                },
+                {
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">key</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">0307887448</span><span class="delimiter">&quot;</span></span>,
+                    <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: {
+                        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="integer">2</span>,
+                        <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Ready Player One</span><span class="delimiter">&quot;</span></span>
+                    }
+                }
+            ],
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">errors</span><span class="delimiter">&quot;</span></span>: [
+
+            ]
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/interceptors.html">&lt;&lt; <strong>8</strong><span>Interceptors</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/APIDocs.html"><strong>10</strong><span>API Docs</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>8 Interceptors 2.0.1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        GORM GraphQL
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/installation.html"><strong>2</strong><span>Installation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/dataBinders.html"><strong>7</strong><span>Data Binding</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/interceptors.html"><strong>8</strong><span>Interceptors</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/otherNotes.html"><strong>9</strong><span>Other Notes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/APIDocs.html"><strong>10</strong><span>API Docs</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/dataBinders.html">&lt;&lt; <strong>7</strong><span>Data Binding</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/otherNotes.html"><strong>9</strong><span>Other Notes</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>8 Interceptors</h1>
+
+                    <p><strong>Version:</strong> 2.0.1</p>
+                </div>
+
+                
+
+                
+
+<h1 id="interceptors">8 Interceptors</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/2.0.x/src/main/docs/guide/interceptors.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>This library provides 2 types of interceptors, data fetcher and schema. Data fetcher interceptors are designed with the ability to prevent execution of a data fetcher. A common application of a data fetcher interceptor might be to implement security for the different operations available to be executed through GraphQL.</p>
+</div>
+<div class="paragraph">
+<p>Schema interceptors allow users to hook directly into the schema creation process to modify the schema directly before it is created. This option is for users who are comfortable with the <a href="https://github.com/graphql-java/graphql-java">graphql-java</a> library and would like to manipulate the schema as they see fit.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Any interceptor can implement <a href="http://gorm.grails.org/latest/api//org/grails/datastore/mapping/core/Ordered.html">Ordered</a> to control the order it is invoked.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect1">
+<h2 id="_get_the_manager">Get The Manager</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To register a data fetcher interceptor, you need to get a reference to the <a href="../api/org/grails/gorm/graphql/interceptor/manager/GraphQLInterceptorManager.html">GraphQLInterceptorManager</a>. If you are using the manager provided by default, how you access it will depend on whether you are using the plugin or standalone.</p>
+</div>
+<div class="sect2">
+<h3 id="_standalone">Standalone</h3>
+<div class="paragraph">
+<p>When creating the schema, initialize it first. The default interceptor manager will then be set.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.initialize()
+GraphQLInterceptorManager interceptorManager = schema.interceptorManager
+...
+schema.generate()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_plugin">Plugin</h3>
+<div class="paragraph">
+<p>For Grails applications it is recommended to reference the bean created by the plugin. The easiest way to do so is to register a bean post processor. The plugin has a class available to extend to make that easier.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">myGraphQLCustomizer(MyGraphQLCustomizer)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">src/main/groovy/demo/MyGraphQLCustomizer.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.plugin.GraphQLPostProcessor</span>
+
+<span class="type">class</span> <span class="class">MyGraphQLCustomizer</span> <span class="directive">extends</span> GraphQLPostProcessor {
+
+    <span class="annotation">@Override</span>
+    <span class="type">void</span> doWith(GraphQLInterceptorManager interceptorManager) {
+        ...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you need to customize more than 1 manager, only a single bean needs to be registered. There are <code>doWith</code> methods for all of the managers you may need to register object instances with.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_data_fetcher_interceptors">Data Fetcher Interceptors</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All data fetcher interceptors must implement the <a href="../api/org/grails/gorm/graphql/interceptor/GraphQLFetcherInterceptor.html">GraphQLFetcherInterceptor</a> interface. A <a href="../api/org/grails/gorm/graphql/interceptor/impl/BaseGraphQLFetcherInterceptor">base class</a> is also available to extend from that allows all fetchers to proceed.</p>
+</div>
+<div class="paragraph">
+<p>For all interceptor methods, if the return value is <code>false</code>, further interceptors will not be executed and the resulting data will be <code>null</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="_registering">Registering</h3>
+<div class="paragraph">
+<p>Once you have access to the manager, registration of your own interceptor is easy. In this example a data fetcher interceptor is being executed for the Author domain class. The interceptor will get invoked for all operations executed for that domain.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">GraphQLInterceptorManager interceptorManager
+
+interceptorManager.registerInterceptor(Author, <span class="keyword">new</span> AuthorFetcherInterceptor())</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Registering an interceptor for the <code>Object</code> type will cause it to be executed for all domain classes.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_provided">Provided</h3>
+<div class="paragraph">
+<p>There are two methods that will be invoked for provided data fetchers. Which one gets invoked depends on whether the operation is a query or a mutation. For query operations (GET, LIST), the <code>onQuery</code> method will be executed. For mutation operations (CREATE, UPDATE, DELETE), the <code>onMutation</code> method will be executed.</p>
+</div>
+<div class="paragraph">
+<p>The data fetching environment and the data fetcher type are available to help make decisions about whether or not to interrupt the execution.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_custom">Custom</h3>
+<div class="paragraph">
+<p>There are two methods that will be invoked for custom data fetchers. For operations registered with the <code>query</code> method in the mapping, the <code>onCustomQuery</code> method will be invoked. For operations registered with the <code>mutation</code> method in the mapping, the <code>onCustomMutation</code> method will be invoked.</p>
+</div>
+<div class="paragraph">
+<p>For custom operations, the name of the operation is available to be able to distinguish one custom operation from another.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_schema_interceptors">Schema Interceptors</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to data fetcher interceptors, it is also possible to register an interceptor for the GraphQL schema before it is built. These interceptors have the ability to intercept each persistent entity after its types are created, but before building, as well as one final interception before the schema as a whole is built.</p>
+</div>
+<div class="sect2">
+<h3 id="_registration">Registration</h3>
+<div class="paragraph">
+<p>Once you have access to the manager, registration of your own interceptor is easy. In this example a schema interceptor is being registered. The interceptor will get invoked for all entities as they are being created as well as once before the schema is finalized.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">GraphQLInterceptorManager interceptorManager
+
+interceptorManager.registerInterceptor(<span class="keyword">new</span> MySchemaInterceptor())</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_entity">Entity</h3>
+<div class="paragraph">
+<p>As each entity is being processed, a list of query fields and a list of mutation fields are being built. Before those fields are passed to the root query or mutation object, any schema interceptors are invoked with the intention that they may mutate the lists of fields. The persistent entity is also available to the interceptor.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_final_schema">Final Schema</h3>
+<div class="paragraph">
+<p>After all of the entities have been processed, schema interceptors are invoked with the query type and mutation type. Once again, this provides the opportunity to make changes before the types are built and passed to the root schema object.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/dataBinders.html">&lt;&lt; <strong>7</strong><span>Data Binding</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/otherNotes.html"><strong>9</strong><span>Other Notes</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

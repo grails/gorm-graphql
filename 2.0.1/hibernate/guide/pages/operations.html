@@ -1,0 +1,475 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>4.2 Operations 2.0.1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        GORM GraphQL
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/installation.html"><strong>2</strong><span>Installation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/customizations.html"><strong>4</strong><span>Customizing The Schema</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/dataFetchers.html"><strong>6</strong><span>Data Fetchers</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/dataBinders.html"><strong>7</strong><span>Data Binding</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/interceptors.html"><strong>8</strong><span>Interceptors</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/otherNotes.html"><strong>9</strong><span>Other Notes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/APIDocs.html"><strong>10</strong><span>API Docs</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>4.2 Operations</h1>
+
+                    <p><strong>Version:</strong> 2.0.1</p>
+                </div>
+
+                
+
+                
+
+<h2 id="operations">4.2 Operations</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grails/gorm-graphql/edit/2.0.x/src/main/docs/guide/customizations/operations.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_provided_operations">Provided Operations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The 3 query (get, list, count) and 3 mutation (create, update, delete) operations provided by default for all entities mapped with GraphQL are called the provided operations.</p>
+</div>
+<div class="paragraph">
+<p>It is possible to customize the provided operations as well as disable their creation.</p>
+</div>
+<div class="sect2">
+<h3 id="_disabling_all_operations">Disabling All Operations</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.all.enabled <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disabling_a_provided_operation">Disabling A Provided Operation</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.delete.enabled <span class="predefined-constant">false</span>
+    <span class="comment">//or</span>
+    <span class="comment">//operations.get</span>
+    <span class="comment">//operations.list</span>
+    <span class="comment">//operations.count</span>
+    <span class="comment">//operations.create</span>
+    <span class="comment">//operations.update</span>
+    <span class="comment">//operations.delete</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disabling_all_mutation_write_operation">Disabling All Mutation(Write) Operation</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.mutation.enabled <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disabling_all_query_read_operation">Disabling All Query(Read) Operation</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.query.enabled <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_metadata">Metadata</h3>
+<div class="paragraph">
+<p>The mapping closure also allows the description and deprecation status of the provided operations to be manipulated.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.get
+        .description(<span class="string"><span class="delimiter">&quot;</span><span class="content">Retrieve a single instance</span><span class="delimiter">&quot;</span></span>)
+        .deprecationReason(<span class="string"><span class="delimiter">&quot;</span><span class="content">Use newBook instead</span><span class="delimiter">&quot;</span></span>)
+
+    operations.delete.deprecated(<span class="predefined-constant">true</span>)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pagination">Pagination</h3>
+<div class="paragraph">
+<p>By default, list operations return a list of instances. For most pagination solutions, that is not enough data. In addition to the list of results, the total count is required to be able to calculate pagination controls. Pagination is supported in this library through configuration of the list operation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> graphql = GraphQLMapping.build {
+    operations.list.paginate(<span class="predefined-constant">true</span>)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By configuring the list operation to paginate, instead of a list of results being returned, an object will be returned that has a "results" value, which is the list, and a "totalCount" value which is the total count not considering the pagination parameters.</p>
+</div>
+<div class="sect3">
+<h4 id="_customization">Customization</h4>
+<div class="paragraph">
+<p>It is possible to customize how the pagination response is created through the creation of a <a href="../api/org/grails/gorm/graphql/response/pagination/GraphQLPaginationResponseHandler.html">GraphQLPaginationResponseHandler</a>.</p>
+</div>
+<div class="paragraph">
+<p>How you can supply your own pagination response handler depends on whether the library is being used standalone or part of a Grails application.</p>
+</div>
+<div class="paragraph">
+<p>For standalone applications, simply set the handler on the schema.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.grails.gorm.graphql.Schema</span>
+
+<span class="predefined-type">Schema</span> schema = ...
+schema.paginationResponseHandler = <span class="keyword">new</span> MyPaginationResponseHandler()
+...
+schema.generate()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For Grails applications, override the <code>graphQLPaginationResponseHandler</code> bean.</p>
+</div>
+<div class="listingblock">
+<div class="title">grails-app/config/spring/resources.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">beans = {
+    graphQLPaginationResponseHandler(MyPaginationResponseHandler)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Data fetchers must respond according to the object type definition created by the pagination response handler. When supplying your own data fetcher, implement <a href="../api/org/grails/gorm/graphql/fetcher/PaginatingGormDataFetcher.html">PaginatingGormDataFetcher</a> and the response handler will be populated for you. The response handler is responsible for creating the response in order to assure it is compatible.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_custom_operations">Custom Operations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to the provided operations, it is possible to add custom operations through the mapping block in an entity.</p>
+</div>
+<div class="paragraph">
+<p>Custom operations can be defined with the <code>query</code> method and the <code>mutation</code> method, depending on what category the operation being added falls into. In both cases the API is exactly the same.</p>
+</div>
+<div class="sect2">
+<h3 id="_definition">Definition</h3>
+<div class="paragraph">
+<p>Custom operations must be defined in the mapping block of GORM entities. In the example below we have an <code>Author</code> class that has a <code>name</code>. We want to create a custom operation to retrieve an author by it&#8217;s name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+
+        <span class="comment">//authorByName is the name exposed by the API</span>
+        <span class="comment">//Author is the return type</span>
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) { <span class="comment">//or [Author] to return a list of authors</span>
+            ...
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the case where a pagination result should be returned from the custom operation, a simple method <code>pagedResult</code> is available to mark the type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+
+        <span class="comment">//authorsByName is the name exposed by the API</span>
+        <span class="comment">//The return type will have a results key and a totalCount key</span>
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorsByName</span><span class="delimiter">'</span></span>, pagedResult(Author)) {
+            ...
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For operations with a custom return type, it possible to define a custom type using the <code>returns</code> block. The API inside of the returns block is exactly the same as the API for defining <a href="#custom">custom properties</a> with custom types.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">mutation(<span class="string"><span class="delimiter">'</span><span class="content">deleteAuthors</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">AuthorsDeletedResponse</span><span class="delimiter">'</span></span>) {
+    returns {
+        field(<span class="string"><span class="delimiter">'</span><span class="content">deletedCount</span><span class="delimiter">'</span></span>, <span class="predefined-type">Long</span>)
+        field(<span class="string"><span class="delimiter">'</span><span class="content">success</span><span class="delimiter">'</span></span>, <span class="predefined-type">Boolean</span>)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The data fetcher provided must have the defined fields.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_metadata_2">Metadata</h3>
+<div class="paragraph">
+<p>Description and deprecation information can also be supplied for custom operations.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) { <span class="comment">//or [Author] to return a list of authors</span>
+    description <span class="string"><span class="delimiter">'</span><span class="content">Retrieves an author where the name equals the supplied name`</span></span><span class="error">
+</span>
+    deprecated <span class="predefined-constant">true</span>
+    <span class="comment">//or</span>
+    deprecationReason <span class="string"><span class="delimiter">'</span><span class="content">Use authorWhereName instead`</span></span><span class="error">
+</span>}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_data_fetcher">Data Fetcher</h3>
+<div class="paragraph">
+<p>When creating a custom operation, it is necessary to supply a "data fetcher". The data fetcher is responsible for returning data to GraphQL to be used in generating the response. The data fetcher must be an instance of <code>graphql.schema.DataFetcher</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+
+    <span class="directive">static</span> graphql = GraphQLMapping.build {
+        argument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) {
+            dataFetcher(<span class="keyword">new</span> DataFetcher&lt;&gt;() {
+                <span class="annotation">@Override</span>
+                <span class="predefined-type">Object</span> get(DataFetchingEnvironment environment) {
+                    Author.findByName(environment.getArgument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>))
+                }
+            })
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above example will function properly, however it is missing out on one of the best features of this library, query optimization. If books were requested to be returned, a separate query would need to be executed to retrieve the books. To make this better, the recommendation is to always extend from one of the provided data fetchers.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/SingleEntityDataFetcher.html">SingleEntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LIST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/EntityDataFetcher.html">EntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LIST (Paginated Response)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/PaginatedEntityDataFetcher.html">PaginatedEntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CREATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/CreateEntityDataFetcher.html">CreateEntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UPDATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/UpdateEntityDataFetcher.html">UpdateEntityDataFetcher</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/org/grails/gorm/graphql/fetcher/impl/DeleteEntityDataFetcher.html">EntityDataFetcher</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>If the data fetcher you wish to create does not fit well in any of the above use cases, you can extend directly from <a href="../api/org/grails/gorm/graphql/fetcher/DefaultGormDataFetcher.html">DefaultGormDataFetcher</a>, which has all of the query optimization logic.</p>
+</div>
+<div class="paragraph">
+<p>All of the classes above have a constructor which takes in a <a href="http://gorm.grails.org/latest/api/org/grails/datastore/mapping/model/PersistentEntity.html">PersistentEntity</a>. The easiest way to get a persistent entity from a domain class is to execute the static <code>gormPersistentEntity</code> method.</p>
+</div>
+<div class="paragraph">
+<p>Using the above information, we can change the <code>authorByName</code> to extend from the <a href="../api/org/grails/gorm/graphql/fetcher/impl/SingleEntityDataFetcher.html">SingleEntityDataFetcher</a> class because we are returning a single <code>Author</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">String</span> name
+
+    <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+
+    <span class="directive">static</span> graphql = GraphQLMapping.lazy {
+        query(<span class="string"><span class="delimiter">'</span><span class="content">authorByName</span><span class="delimiter">'</span></span>, Author) {
+            argument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="predefined-type">String</span>)
+            dataFetcher(<span class="keyword">new</span> SingleEntityDataFetcher&lt;&gt;(Author.gormPersistentEntity) {
+                <span class="annotation">@Override</span>
+                <span class="directive">protected</span> DetachedCriteria buildCriteria(DataFetchingEnvironment environment) {
+                    Author.where { name == environment.getArgument(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>) }
+                }
+            })
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Note the use of <code>GraphQLMapping.lazy</code> in this example. Because we are accessing the persistent entity, the GORM mapping context must be created before this code is evaluated. The <code>lazy</code> method will execute the provided code when the mapping is requested (during schema creation), instead of at class initialization time. By that time it is expected that GORM is available.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>3</strong><span>Getting Started</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/types.html"><strong>5</strong><span>Type Conversion And Creation</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
