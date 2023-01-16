@@ -75,7 +75,6 @@ class GormGraphqlGrailsPlugin extends Plugin {
 
         graphQLSchema(graphQLSchemaGenerator: "generate")
         graphQLBuilder(GraphQL.Builder, ref("graphQLSchema"))
-
         graphQL(GraphQL) { bean ->
             bean.factoryBean = "graphQLBuilder"
             bean.factoryMethod = "build"

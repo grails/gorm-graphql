@@ -21,7 +21,13 @@ import org.grails.gorm.graphql.entity.property.manager.GraphQLDomainPropertyMana
 import org.grails.gorm.graphql.fetcher.BindingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.DeletingGormDataFetcher
 import org.grails.gorm.graphql.fetcher.PaginatingGormDataFetcher
-import org.grails.gorm.graphql.fetcher.impl.*
+import org.grails.gorm.graphql.fetcher.impl.CountEntityDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.CreateEntityDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.DeleteEntityDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.EntityDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.PaginatedEntityDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.SingleEntityDataFetcher
+import org.grails.gorm.graphql.fetcher.impl.UpdateEntityDataFetcher
 import org.grails.gorm.graphql.fetcher.interceptor.InterceptingDataFetcher
 import org.grails.gorm.graphql.fetcher.interceptor.InterceptorInvoker
 import org.grails.gorm.graphql.fetcher.interceptor.MutationInterceptorInvoker
@@ -40,10 +46,8 @@ import org.grails.gorm.graphql.response.pagination.GraphQLPaginationResponseHand
 import org.grails.gorm.graphql.types.DefaultGraphQLTypeManager
 import org.grails.gorm.graphql.types.GraphQLPropertyType
 import org.grails.gorm.graphql.types.GraphQLTypeManager
-import org.grails.gorm.graphql.types.scalars.GraphQLDate
 import org.grails.gorm.graphql.types.scalars.coercing.DateCoercion
 import org.grails.gorm.graphql.types.scalars.coercing.jsr310.*
-import org.grails.gorm.graphql.types.scalars.jsr310.*
 import org.springframework.context.support.StaticMessageSource
 import javax.annotation.PostConstruct
 import java.time.Instant
@@ -59,6 +63,7 @@ import static graphql.schema.GraphQLArgument.newArgument
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLList.list
 import static graphql.schema.GraphQLObjectType.newObject
+import static graphql.schema.GraphQLScalarType.newScalar
 import static org.grails.gorm.graphql.fetcher.GraphQLDataFetcherType.*
 
 /**
@@ -83,9 +88,10 @@ class Schema {
     GraphQLPaginationResponseHandler paginationResponseHandler
     GraphQLServiceManager serviceManager
 
+    Map<String, GraphQLInputType> listArguments
+
     List<String> dateFormats
     boolean dateFormatLenient = false
-    Map<String, GraphQLInputType> listArguments
 
     private boolean initialized = false
 
@@ -113,28 +119,28 @@ class Schema {
 
     void populateDefaultDateTypes() {
         if (!typeManager.hasType(Date)) {
-            typeManager.registerType(Date, new GraphQLDate(new DateCoercion(dateFormats, dateFormatLenient)))
+            typeManager.registerType(Date, newScalar().name('Date').description('Built-in Date').coercing(new DateCoercion(dateFormats, dateFormatLenient)).build())
         }
         if (!typeManager.hasType(Instant)) {
-            typeManager.registerType(Instant, new GraphQLInstant(new InstantCoercion()))
+            typeManager.registerType(Instant, newScalar().name('Instant').description('Built-in Instant').coercing(new InstantCoercion()).build())
         }
         if (!typeManager.hasType(LocalDate)) {
-            typeManager.registerType(LocalDate, new GraphQLLocalDate(new LocalDateCoercion(dateFormats)))
+            typeManager.registerType(LocalDate, newScalar().name('LocalDate').description('Built-in LocalDate').coercing(new LocalDateCoercion(dateFormats)).build())
         }
         if (!typeManager.hasType(LocalDateTime)) {
-            typeManager.registerType(LocalDateTime, new GraphQLLocalDateTime(new LocalDateTimeCoercion(dateFormats)))
+            typeManager.registerType(LocalDateTime, newScalar().name('LocalDateTime').description('Built-in LocalDateTime').coercing(new LocalDateTimeCoercion(dateFormats)).build())
         }
         if (!typeManager.hasType(LocalTime)) {
-            typeManager.registerType(LocalTime, new GraphQLLocalTime(new LocalTimeCoercion(dateFormats)))
+            typeManager.registerType(LocalTime, newScalar().name('LocalTime').description('Built-in LocalTime').coercing(new LocalTimeCoercion(dateFormats)).build())
         }
         if (!typeManager.hasType(OffsetDateTime)) {
-            typeManager.registerType(OffsetDateTime, new GraphQLOffsetDateTime(new OffsetDateTimeCoercion(dateFormats)))
+            typeManager.registerType(OffsetDateTime, newScalar().name('OffsetDateTime').description('Built-in OffsetDateTime').coercing(new OffsetDateTimeCoercion(dateFormats)).build())
         }
         if (!typeManager.hasType(OffsetTime)) {
-            typeManager.registerType(OffsetTime, new GraphQLOffsetTime(new OffsetTimeCoercion(dateFormats)))
+            typeManager.registerType(OffsetTime, newScalar().name('OffsetTime').description('Built-in OffsetTime').coercing(new OffsetTimeCoercion(dateFormats)).build())
         }
         if (!typeManager.hasType(ZonedDateTime)) {
-            typeManager.registerType(ZonedDateTime, new GraphQLZonedDateTime(new ZonedDateTimeCoercion(dateFormats)))
+            typeManager.registerType(ZonedDateTime, newScalar().name('ZonedDateTime').description('Built-in ZonedDateTime').coercing(new ZonedDateTimeCoercion(dateFormats)).build())
         }
     }
 
@@ -365,9 +371,8 @@ class Schema {
                     }
                     GraphQLInputType createObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.CREATE, true)
 
-                    if(!createObjectType.getChildren().isEmpty()) {
+                    if (!createObjectType.children.empty) {
                         BindingGormDataFetcher createFetcher = dataFetcherManager.getBindingFetcher(entity, CREATE).orElse(new CreateEntityDataFetcher(entity))
-
                         createFetcher.dataBinder = dataBinder
 
                         final String CREATE_FIELD_NAME = namingConvention.getCreate(entity)
@@ -378,8 +383,8 @@ class Schema {
                                 .description(createOperation.description)
                                 .deprecate(createOperation.deprecationReason)
                                 .argument(newArgument()
-                                                .name(entity.decapitalizedName)
-                                                .type(createObjectType))
+                                        .name(entity.decapitalizedName)
+                                        .type(createObjectType))
 
                         codeRegistry.dataFetcher(
                                 coordinates(MUTATION_TYPE_NAME, CREATE_FIELD_NAME),
@@ -489,20 +494,19 @@ class Schema {
             schemaInterceptor.interceptSchema(queryType, mutationType, additionalTypes)
         }
 
-        GraphQLSchema.Builder schemaBuilder = GraphQLSchema.newSchema()
+        GraphQLSchema.Builder schema = GraphQLSchema.newSchema()
                 .codeRegistry(codeRegistry.build())
                 .additionalTypes(additionalTypes)
 
         GraphQLObjectType mutation = mutationType.build()
-        if(mutation.fieldDefinitions) {
-            schemaBuilder.mutation(mutation)
+        if (mutation.fieldDefinitions) {
+            schema.mutation(mutation)
         }
         GraphQLObjectType query = queryType.build()
-        if(query.fieldDefinitions) {
-            schemaBuilder.query(query)
-            return schemaBuilder.build()
+        if (query.fieldDefinitions) {
+            schema.query(query)
+            return schema.build()
         }
-
     }
 
 }

@@ -1,17 +1,8 @@
 package org.grails.gorm.graphql.types
 
 import graphql.Scalars
-import graphql.schema.GraphQLCodeRegistry
-import graphql.schema.GraphQLEnumType
-import graphql.schema.GraphQLFieldDefinition
-import graphql.schema.GraphQLInputObjectField
-import graphql.schema.GraphQLInputObjectType
-import graphql.schema.GraphQLInputType
-import graphql.schema.GraphQLNonNull
-import graphql.schema.GraphQLObjectType
-import graphql.schema.GraphQLOutputType
-import graphql.schema.GraphQLType
-import graphql.schema.GraphQLTypeReference
+import graphql.scalars.ExtendedScalars
+import graphql.schema.*
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.gorm.graphql.GraphQL
 import org.grails.gorm.graphql.HibernateSpec
@@ -23,8 +14,7 @@ import org.grails.gorm.graphql.response.pagination.DefaultGraphQLPaginationRespo
 import org.grails.gorm.graphql.testing.GraphQLSchemaSpec
 import org.grails.gorm.graphql.types.input.AbstractInputObjectTypeBuilder
 import org.grails.gorm.graphql.types.output.AbstractObjectTypeBuilder
-import org.grails.gorm.graphql.types.scalars.GraphQLByteArray
-import org.grails.gorm.graphql.types.scalars.GraphQLCharacterArray
+import org.grails.gorm.graphql.types.scalars.CustomScalars
 import org.springframework.context.support.StaticMessageSource
 import spock.lang.Shared
 import spock.lang.Unroll
@@ -38,8 +28,9 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
     List<Class> getDomainClasses() { [One] }
 
     DefaultGraphQLTypeManager typeManager
-    @Shared GraphQLCodeRegistry.Builder codeRegistry
-    
+    @Shared
+    GraphQLCodeRegistry.Builder codeRegistry
+
     void setup() {
         codeRegistry = GraphQLCodeRegistry.newCodeRegistry()
         typeManager = new DefaultGraphQLTypeManager(codeRegistry,
@@ -56,10 +47,10 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
         when:
         typeManager.getType(clazz)
         codeRegistry.build()
-        
+
         then:
         notThrown(TypeNotFoundException)
-        
+
         where:
         clazz << [Integer, Long, Short, Byte, Byte[], Double, Float, BigInteger, BigDecimal, String, Boolean, Character, Character[], UUID, URL, URI, Time, java.sql.Date, Timestamp, Currency, TimeZone]
     }
@@ -77,10 +68,10 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
         clazz   | expectedType
         boolean | Scalars.GraphQLBoolean
         int     | Scalars.GraphQLInt
-        short   | Scalars.GraphQLShort
-        byte    | Scalars.GraphQLByte
-        char    | Scalars.GraphQLChar
-        long    | Scalars.GraphQLLong
+        short   | ExtendedScalars.GraphQLShort
+        byte    | ExtendedScalars.GraphQLByte
+        char    | ExtendedScalars.GraphQLChar
+        long    | ExtendedScalars.GraphQLLong
         float   | Scalars.GraphQLFloat
         double  | Scalars.GraphQLFloat
     }
@@ -96,8 +87,8 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
 
         where:
         clazz  | expectedType
-        byte[] | GraphQLByteArray
-        char[] | GraphQLCharacterArray
+        byte[] | CustomScalars.GraphQLByteArray.class
+        char[] | CustomScalars.GraphQLCharacterArray.class
     }
 
     void "test getType nullable false"() {
@@ -120,17 +111,17 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
 
         when:
         codeRegistry = GraphQLCodeRegistry.newCodeRegistry()
-        typeManager.registerType(AtomicLong, Scalars.GraphQLLong)
+        typeManager.registerType(AtomicLong, ExtendedScalars.GraphQLLong)
         GraphQLType type = typeManager.getType(AtomicLong)
         codeRegistry.build()
 
         then:
-        type == Scalars.GraphQLLong
+        type == ExtendedScalars.GraphQLLong
     }
 
     void "test getEnumType Foo"() {
         when:
-        GraphQLEnumType enumType = (GraphQLEnumType)typeManager.getEnumType(Foo, true)
+        GraphQLEnumType enumType = (GraphQLEnumType) typeManager.getEnumType(Foo, true)
         codeRegistry.build()
 
         then:
@@ -152,7 +143,7 @@ class DefaultGraphQLTypeManagerSpec extends HibernateSpec implements GraphQLSche
 
     void "test getEnumType Bar"() {
         when:
-        GraphQLEnumType enumType = (GraphQLEnumType)typeManager.getEnumType(Bar, true)
+        GraphQLEnumType enumType = (GraphQLEnumType) typeManager.getEnumType(Bar, true)
         codeRegistry.build()
 
         then:

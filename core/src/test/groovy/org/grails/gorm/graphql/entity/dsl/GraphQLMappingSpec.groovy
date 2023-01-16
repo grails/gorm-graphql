@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.entity.dsl
 
 import graphql.Scalars
+import graphql.scalars.ExtendedScalars
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.GraphQLCodeRegistry
@@ -176,23 +177,21 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         foo.description == 'Foo Query'
         foo.deprecated
         foo.deprecationReason == 'Foo Query is deprecated'
-        foo.type == Scalars.GraphQLBigDecimal
-        foo.dataFetcher instanceof InterceptingDataFetcher
+        foo.type == ExtendedScalars.GraphQLBigDecimal
         foo.arguments.size() == 1
         unwrap(null, foo.getArgument('bar').type) == Scalars.GraphQLString
         foo.getArgument('bar').description == 'Bar argument'
-        foo.getArgument('bar').defaultValue == 'b'
+        foo.getArgument('bar').argumentDefaultValue.value == 'b'
 
         bar.description == 'Bar Query'
         bar.deprecated
         bar.deprecationReason == 'Deprecated'
         bar.type instanceof GraphQLList
-        unwrap([], bar.type) == Scalars.GraphQLBigDecimal
-        bar.dataFetcher instanceof InterceptingDataFetcher
+        unwrap([], bar.type) == ExtendedScalars.GraphQLBigDecimal
         bar.arguments.size() == 1
         bar.getArgument('foo').type instanceof GraphQLList
         bar.getArgument('foo').description == null
-        bar.getArgument('foo').defaultValue == null
+        bar.getArgument('foo').argumentDefaultValue.value == null
         unwrap([null], bar.getArgument('foo').type) == Scalars.GraphQLString
 
         xyz.description == 'ZYX mutation'
@@ -201,7 +200,6 @@ class GraphQLMappingSpec extends Specification implements GraphQLSchemaSpec {
         ((GraphQLObjectType)xyz.type).fieldDefinitions[0].name == 'bar'
         ((GraphQLObjectType)xyz.type).fieldDefinitions[0].type == Scalars.GraphQLString
         ((GraphQLObjectType)xyz.type).fieldDefinitions.size() == 1
-        xyz.dataFetcher instanceof InterceptingDataFetcher
         xyz.arguments.size() == 1
         xyz.arguments[0].type instanceof GraphQLNonNull
         unwrap(null, xyz.arguments[0].type) instanceof GraphQLInputObjectType

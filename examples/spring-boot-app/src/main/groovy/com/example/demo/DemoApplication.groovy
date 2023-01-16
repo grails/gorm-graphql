@@ -1,6 +1,7 @@
 package com.example.demo
 
 import graphql.GraphQL
+import graphql.execution.AsyncExecutionStrategy
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.Schema
 import org.grails.orm.hibernate.HibernateDatastore
@@ -24,6 +25,6 @@ class DemoApplication {
 
 	@Bean
 	GraphQL graphQL(@Autowired HibernateDatastore datastore) {
-		GraphQL.newGraphQL(new Schema(datastore.mappingContext).generate()).build()
+		 new GraphQL.Builder(new Schema(datastore.mappingContext).generate()).queryExecutionStrategy(new AsyncExecutionStrategy()).build()
 	}
 }
