@@ -371,7 +371,7 @@ class Schema {
                     }
                     GraphQLInputType createObjectType = typeManager.getMutationType(entity, GraphQLPropertyType.CREATE, true)
 
-                    if (!createObjectType.children.isEmpty()) {
+                    if (!createObjectType.children.empty) {
                         BindingGormDataFetcher createFetcher = dataFetcherManager.getBindingFetcher(entity, CREATE).orElse(new CreateEntityDataFetcher(entity))
                         createFetcher.dataBinder = dataBinder
 
