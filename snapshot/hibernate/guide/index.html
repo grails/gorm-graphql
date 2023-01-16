@@ -2197,54 +2197,51 @@ This process only handles how an ObjectId will be created from either Java argum
 
 GraphQLTypeManager typeManager
 
-typeManager.registerType(ObjectId, <span class="keyword">new</span> GraphQLScalarType(<span class="string"><span class="delimiter">&quot;</span><span class="content">ObjectId</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Hex representation of a Mongo object id</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> Coercing&lt;ObjectId, ObjectId&gt;() {
+        typeManager.registerType(ObjectId, GraphQLScalarType.newScalar()
+                .name(<span class="string"><span class="delimiter">&quot;</span><span class="content">ObjectId</span><span class="delimiter">&quot;</span></span>).description(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hex representation of a Mongo object id</span><span class="delimiter">&quot;</span></span>).coercing(<span class="keyword">new</span> Coercing&lt;ObjectId, ObjectId&gt;() {
 
-    <span class="directive">protected</span> Optional&lt;ObjectId&gt; convert(<span class="predefined-type">Object</span> input) {
-        <span class="keyword">if</span> (input <span class="keyword">instanceof</span> ObjectId) {
-            Optional.of((ObjectId) input)
-        }
-        <span class="keyword">else</span> <span class="keyword">if</span> (input <span class="keyword">instanceof</span> <span class="predefined-type">String</span>) {
-            parseObjectId((<span class="predefined-type">String</span>) input)
-        }
-        <span class="keyword">else</span> {
-            Optional.empty()
-        }
-    }
+            <span class="directive">protected</span> Optional&lt;ObjectId&gt; convert(<span class="predefined-type">Object</span> input) {
+                <span class="keyword">if</span> (input <span class="keyword">instanceof</span> ObjectId) {
+                    Optional.of((ObjectId) input)
+                } <span class="keyword">else</span> <span class="keyword">if</span> (input <span class="keyword">instanceof</span> <span class="predefined-type">String</span>) {
+                    parseObjectId((<span class="predefined-type">String</span>) input)
+                } <span class="keyword">else</span> {
+                    Optional.empty()
+                }
+            }
 
-    <span class="annotation">@Override</span>
-    ObjectId serialize(<span class="predefined-type">Object</span> input) {
-        convert(input).orElseThrow( {
-            <span class="keyword">throw</span> <span class="keyword">new</span> CoercingSerializeException(<span class="string"><span class="delimiter">&quot;</span><span class="content">Could not convert </span><span class="inline"><span class="inline-delimiter">${</span>input.class.name<span class="inline-delimiter">}</span></span><span class="content"> to an ObjectId</span><span class="delimiter">&quot;</span></span>)
-        })
-    }
+            <span class="annotation">@Override</span>
+            ObjectId serialize(<span class="predefined-type">Object</span> input) {
+                convert(input).orElseThrow({
+                    <span class="keyword">throw</span> <span class="keyword">new</span> CoercingSerializeException(<span class="string"><span class="delimiter">&quot;</span><span class="content">Could not convert </span><span class="inline"><span class="inline-delimiter">${</span>input.class.name<span class="inline-delimiter">}</span></span><span class="content"> to an ObjectId</span><span class="delimiter">&quot;</span></span>)
+                })
+            }
 
-    <span class="annotation">@Override</span>
-    ObjectId parseValue(<span class="predefined-type">Object</span> input) {
-        convert(input).orElseThrow( {
-            <span class="keyword">throw</span> <span class="keyword">new</span> CoercingParseValueException(<span class="string"><span class="delimiter">&quot;</span><span class="content">Could not convert </span><span class="inline"><span class="inline-delimiter">${</span>input.class.name<span class="inline-delimiter">}</span></span><span class="content"> to an ObjectId</span><span class="delimiter">&quot;</span></span>)
-        })
-    }
+            <span class="annotation">@Override</span>
+            ObjectId parseValue(<span class="predefined-type">Object</span> input) {
+                convert(input).orElseThrow({
+                    <span class="keyword">throw</span> <span class="keyword">new</span> CoercingParseValueException(<span class="string"><span class="delimiter">&quot;</span><span class="content">Could not convert </span><span class="inline"><span class="inline-delimiter">${</span>input.class.name<span class="inline-delimiter">}</span></span><span class="content"> to an ObjectId</span><span class="delimiter">&quot;</span></span>)
+                })
+            }
 
-    <span class="annotation">@Override</span>
-    ObjectId parseLiteral(<span class="predefined-type">Object</span> input) {
-        <span class="keyword">if</span> (input <span class="keyword">instanceof</span> StringValue) {
-            parseObjectId(((StringValue) input).value).orElse(<span class="predefined-constant">null</span>)
-        }
-        <span class="keyword">else</span> {
-            <span class="predefined-constant">null</span>
-        }
-    }
+            <span class="annotation">@Override</span>
+            ObjectId parseLiteral(<span class="predefined-type">Object</span> input) {
+                <span class="keyword">if</span> (input <span class="keyword">instanceof</span> StringValue) {
+                    parseObjectId(((StringValue) input).value).orElse(<span class="predefined-constant">null</span>)
+                } <span class="keyword">else</span> {
+                    <span class="predefined-constant">null</span>
+                }
+            }
 
-    <span class="directive">protected</span> Optional&lt;ObjectId&gt; parseObjectId(<span class="predefined-type">String</span> input) {
-        <span class="keyword">if</span> (ObjectId.isValid(input)) {
-            Optional.of(<span class="keyword">new</span> ObjectId(input))
-        }
-        <span class="keyword">else</span> {
-            Optional.empty()
-        }
-    }
+            <span class="directive">protected</span> Optional&lt;ObjectId&gt; parseObjectId(<span class="predefined-type">String</span> input) {
+                <span class="keyword">if</span> (ObjectId.isValid(input)) {
+                    Optional.of(<span class="keyword">new</span> ObjectId(input))
+                } <span class="keyword">else</span> {
+                    Optional.empty()
+                }
+            }
 
-}))</code></pre>
+        }).build())</code></pre>
 </div>
 </div>
 </div>
