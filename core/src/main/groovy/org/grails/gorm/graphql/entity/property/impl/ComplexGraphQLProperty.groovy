@@ -16,7 +16,6 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * @since 1.0.0
  */
 @AutoClone
-@CompileStatic
 class ComplexGraphQLProperty extends CustomGraphQLProperty<ComplexGraphQLProperty> implements ExecutesClosures {
 
     String typeName

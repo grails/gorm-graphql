@@ -24,4 +24,6 @@ trait ExecutesClosures {
             }
         }
     }
+
 }
+

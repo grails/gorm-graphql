@@ -4,8 +4,8 @@ import groovy.json.StreamingJsonBuilder
 import groovy.transform.TupleConstructor
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
-import io.micronaut.http.client.RxHttpClient
 import io.micronaut.http.uri.UriBuilder
+import io.micronaut.rxjava2.http.client.RxHttpClient
 import org.springframework.beans.factory.annotation.Value
 
 trait GraphQLSpec {

@@ -2,6 +2,8 @@ package grails.test.app.manyToMany
 
 import grails.test.hibernate.HibernateSpec
 import org.grails.gorm.graphql.Schema
+import org.junit.Test
+
 
 class StudentSchemaSpec extends HibernateSpec {
 

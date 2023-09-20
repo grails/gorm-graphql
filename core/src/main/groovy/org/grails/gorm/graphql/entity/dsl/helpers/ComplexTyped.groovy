@@ -18,7 +18,7 @@ import static graphql.schema.GraphQLInputObjectField.newInputObjectField
  * @author James Kleeh
  * @since 1.0.0
  */
-@CompileStatic
+
 trait ComplexTyped<T> extends ExecutesClosures {
 
     boolean collection = false

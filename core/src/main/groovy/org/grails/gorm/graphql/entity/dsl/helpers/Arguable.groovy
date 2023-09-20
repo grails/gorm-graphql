@@ -15,7 +15,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * @author James Kleeh
  * @since 1.0.0
  */
-@CompileStatic
+
 trait Arguable<T> extends ExecutesClosures {
 
     List<CustomArgument> arguments = []

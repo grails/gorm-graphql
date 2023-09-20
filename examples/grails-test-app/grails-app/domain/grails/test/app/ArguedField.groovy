@@ -4,7 +4,6 @@ import grails.compiler.GrailsCompileStatic
 import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 import org.grails.gorm.graphql.fetcher.impl.ClosureDataFetchingEnvironment
 
-@GrailsCompileStatic
 class ArguedField {
 
     String name

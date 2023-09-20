@@ -3,7 +3,7 @@ buildscript {
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
         classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
         classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
     }
@@ -68,7 +68,11 @@ subprojects {
     }
 
     dependencies {
-        testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"
+        implementation "com.graphql-java:graphql-java:$graphqlJavaVersion"
+        testImplementation "org.codehaus.groovy:groovy-test:$groovyVersion"
+        testImplementation "io.projectreactor:reactor-test:3.5.5"
+        testImplementation("org.spockframework:spock-core:$spockVersion")
+        implementation 'org.grails:grails-datastore-gorm:7.3.4'
     }
 }
 

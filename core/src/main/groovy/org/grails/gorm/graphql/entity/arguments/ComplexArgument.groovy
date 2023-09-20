@@ -14,7 +14,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * @author James Kleeh
  * @since 1.0.0
  */
-@CompileStatic
+
 @InheritConstructors
 class ComplexArgument extends CustomArgument<ComplexArgument> implements ComplexTyped<ComplexArgument>, ExecutesClosures {
 

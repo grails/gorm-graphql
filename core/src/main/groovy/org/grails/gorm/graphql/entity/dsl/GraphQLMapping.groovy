@@ -1,5 +1,6 @@
 package org.grails.gorm.graphql.entity.dsl
 
+import grails.compiler.GrailsCompileStatic
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
@@ -36,7 +37,7 @@ import org.springframework.validation.DataBinder
  * @author James Kleeh
  * @since 1.0.0
  */
-@CompileStatic
+
 class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQLMapping>, ExecutesClosures {
 
     private List<CustomGraphQLProperty> additional = []

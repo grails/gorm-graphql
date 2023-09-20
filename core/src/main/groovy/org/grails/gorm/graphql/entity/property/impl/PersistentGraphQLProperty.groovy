@@ -33,7 +33,6 @@ import static graphql.schema.GraphQLList.list
  * @author James Kleeh
  * @since 1.0.0
  */
-@CompileStatic
 class PersistentGraphQLProperty extends OrderedGraphQLProperty {
 
     final Integer order

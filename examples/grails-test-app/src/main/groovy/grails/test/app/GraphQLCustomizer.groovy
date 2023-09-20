@@ -1,7 +1,6 @@
 package grails.test.app
 
 import grails.test.app.pogo.Painting
-import grails.test.app.pogo.Profile
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLOutputType
 import org.grails.gorm.graphql.binding.manager.GraphQLDataBinderManager
