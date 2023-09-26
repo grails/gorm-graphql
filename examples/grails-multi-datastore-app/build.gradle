@@ -1,3 +1,7 @@
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-logging"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
@@ -35,6 +39,7 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
     testImplementation "org.grails:grails-test-mixins:3.3.0"
+    testImplementation "org.grails:grails-gorm-testing-support"
     implementation project(":grails-plugin-gorm-graphql-plugin")
 }
 
@@ -43,6 +48,6 @@ bootRun {
     sourceResources sourceSets.main
 }
 
-repositories {
-    mavenCentral()
+tasks.withType(Test) {
+    useJUnitPlatform()
 }
