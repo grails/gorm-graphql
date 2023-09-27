@@ -1,7 +1,6 @@
 package org.grails.gorm.graphql.entity.dsl.helpers
 
 import graphql.schema.GraphQLArgument
-import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.entity.arguments.ComplexArgument
 import org.grails.gorm.graphql.entity.arguments.CustomArgument

@@ -1,7 +1,6 @@
 package org.grails.gorm.graphql.entity.operations
 
 import graphql.schema.GraphQLOutputType
-import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.entity.dsl.helpers.ComplexTyped
 import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures

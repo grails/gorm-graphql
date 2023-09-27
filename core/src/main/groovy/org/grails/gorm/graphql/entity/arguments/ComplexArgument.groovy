@@ -1,7 +1,6 @@
 package org.grails.gorm.graphql.entity.arguments
 
 import graphql.schema.GraphQLInputType
-import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.entity.dsl.helpers.ComplexTyped

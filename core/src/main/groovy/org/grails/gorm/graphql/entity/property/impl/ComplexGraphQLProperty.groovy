@@ -2,7 +2,6 @@ package org.grails.gorm.graphql.entity.property.impl
 
 import graphql.schema.GraphQLType
 import groovy.transform.AutoClone
-import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.entity.dsl.helpers.ComplexTyped
 import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures
 import org.grails.gorm.graphql.types.GraphQLOperationType

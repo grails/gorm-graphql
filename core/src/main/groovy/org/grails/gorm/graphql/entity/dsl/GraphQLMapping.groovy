@@ -1,8 +1,6 @@
 package org.grails.gorm.graphql.entity.dsl
 
-import grails.compiler.GrailsCompileStatic
 import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
 import org.grails.gorm.graphql.entity.dsl.helpers.Deprecatable
 import org.grails.gorm.graphql.entity.dsl.helpers.Describable
 import org.grails.gorm.graphql.entity.dsl.helpers.ExecutesClosures

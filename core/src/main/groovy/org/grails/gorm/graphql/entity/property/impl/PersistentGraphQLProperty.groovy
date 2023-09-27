@@ -4,7 +4,6 @@ import grails.gorm.validation.ConstrainedProperty
 import grails.gorm.validation.PersistentEntityValidator
 import graphql.schema.DataFetcher
 import graphql.schema.GraphQLType
-import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty

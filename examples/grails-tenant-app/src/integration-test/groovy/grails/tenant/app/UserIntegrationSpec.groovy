@@ -3,8 +3,6 @@ package grails.tenant.app
 import grails.testing.mixin.integration.Integration
 import org.grails.datastore.mapping.multitenancy.resolvers.SystemPropertyTenantResolver
 import org.grails.gorm.graphql.plugin.testing.GraphQLSpec
-import org.grails.web.json.JSONArray
-import org.grails.web.json.JSONObject
 import spock.lang.Specification
 import spock.lang.Stepwise
 
