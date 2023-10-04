@@ -12,7 +12,7 @@ import groovy.transform.CompileStatic
 @CompileStatic
 trait ExecutesClosures {
 
-    static void withDelegate(Closure closure, Object delegate) {
+    static void withDelegate(@DelegatesTo(strategy = Closure.DELEGATE_ONLY) Closure closure, Object delegate) {
         if (closure != null) {
             closure.resolveStrategy = Closure.DELEGATE_ONLY
             closure.delegate = delegate
@@ -24,6 +24,5 @@ trait ExecutesClosures {
             }
         }
     }
-
 }
 

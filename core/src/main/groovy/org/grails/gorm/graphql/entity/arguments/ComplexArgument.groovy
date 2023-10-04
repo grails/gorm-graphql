@@ -1,6 +1,7 @@
 package org.grails.gorm.graphql.entity.arguments
 
 import graphql.schema.GraphQLInputType
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.gorm.graphql.entity.dsl.helpers.ComplexTyped
@@ -13,7 +14,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * @author James Kleeh
  * @since 1.0.0
  */
-
+@CompileStatic
 @InheritConstructors
 class ComplexArgument extends CustomArgument<ComplexArgument> implements ComplexTyped<ComplexArgument>, ExecutesClosures {
 
