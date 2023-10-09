@@ -105,7 +105,7 @@ trait ComplexTyped<T> extends ExecutesClosures {
         customInputType
     }
 
-    private void handleField(Closure closure, Field field) {
+    private void handleField(@DelegatesTo(strategy = Closure.DELEGATE_ONLY)Closure closure, Field field) {
         field.nullable(defaultNull)
         withDelegate(closure, (Object)field)
         handleField(field)

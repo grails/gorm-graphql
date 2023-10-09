@@ -246,7 +246,7 @@ class GraphQLMapping implements Describable<GraphQLMapping>, Deprecatable<GraphQ
         mapping
     }
 
-    private CustomOperation handleCustomOperation(CustomOperation operation, OperationType type, Closure closure) {
+    private CustomOperation handleCustomOperation(CustomOperation operation, OperationType type, @DelegatesTo(strategy = Closure.DELEGATE_ONLY)Closure closure) {
         operation.operationType = type
         withDelegate(closure, operation)
         operation.validate()

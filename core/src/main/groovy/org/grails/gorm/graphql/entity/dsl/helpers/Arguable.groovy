@@ -20,7 +20,7 @@ trait Arguable<T> extends ExecutesClosures {
 
     List<CustomArgument> arguments = []
 
-    private void handleArgumentClosure(CustomArgument argument, Closure closure) {
+    private void handleArgumentClosure(CustomArgument argument, @DelegatesTo(strategy = Closure.DELEGATE_ONLY)Closure closure) {
         withDelegate(closure, (Object)argument)
         argument.validate()
         arguments.add(argument)
