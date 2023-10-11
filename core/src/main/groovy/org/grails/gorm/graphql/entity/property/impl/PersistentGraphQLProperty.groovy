@@ -4,6 +4,8 @@ import grails.gorm.validation.ConstrainedProperty
 import grails.gorm.validation.PersistentEntityValidator
 import graphql.schema.DataFetcher
 import graphql.schema.GraphQLType
+import groovy.transform.CompileStatic
+import org.grails.datastore.mapping.config.Property
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
@@ -32,7 +34,7 @@ import static graphql.schema.GraphQLList.list
  * @author James Kleeh
  * @since 1.0.0
  */
-//@CompileStatic
+@CompileStatic
 class PersistentGraphQLProperty extends OrderedGraphQLProperty {
 
     final Integer order
@@ -62,7 +64,7 @@ class PersistentGraphQLProperty extends OrderedGraphQLProperty {
             this.nullable = mapping.nullable
         }
         else {
-            this.nullable = property.mapping.mappedForm.nullable
+            this.nullable = ((Property) property.mapping.mappedForm).nullable
         }
         this.output = mapping.output
         this.input = mapping.input
