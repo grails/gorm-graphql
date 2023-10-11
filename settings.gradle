@@ -1,3 +1,32 @@
+plugins {
+    id "com.gradle.enterprise" version "3.15.1"
+    id 'com.gradle.common-custom-user-data-gradle-plugin' version '1.11.3'
+}
+
+gradleEnterprise {
+    server = 'https://ge.grails.org'
+    buildScan {
+        publishAlwaysIf(System.getenv('CI') == 'true')
+        publishIfAuthenticated()
+        uploadInBackground = System.getenv("CI") == null
+        capture {
+            taskInputFiles = true
+        }
+    }
+}
+
+buildCache {
+    local { enabled = System.getenv('CI') != 'true' }
+    remote(HttpBuildCache) {
+        push = System.getenv('CI') == 'true'
+        enabled = true
+        url = 'https://ge.grails.org/cache/'
+        credentials {
+            username = System.getenv('GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER')
+            password = System.getenv('GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY')
+        }
+    }}
+
 include 'core'
 include 'plugin'
 include 'docs'
