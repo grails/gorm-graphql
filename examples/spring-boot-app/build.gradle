@@ -27,6 +27,7 @@ dependencies {
 	implementation 'jakarta.transaction:jakarta.transaction-api:2.0.1'
 	implementation 'com.github.javaparser:javaparser-core:3.25.5'
 	implementation "com.graphql-java:graphql-java:$graphqlJavaVersion"
+	implementation 'junit:junit:4.13.1'
 	runtimeOnly 'com.h2database:h2:2.1.214'
 	runtimeOnly 'org.apache.tomcat:tomcat-jdbc:10.1.9'
 	runtimeOnly "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"
@@ -37,7 +38,8 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
-	testImplementation 'junit:junit:4.12'
+	testImplementation 'junit:junit:4.13.2'
+
 
 
 
@@ -45,4 +47,8 @@ dependencies {
 
 repositories {
 	mavenCentral()
+}
+
+tasks.withType(Test) {
+	useJUnitPlatform()
 }

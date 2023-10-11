@@ -39,3 +39,7 @@ dependencies {
 compileGsonViews {
     packageName = "gorm-graphql"
 }
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}

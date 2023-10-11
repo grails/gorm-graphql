@@ -41,3 +41,7 @@ bootRun {
     jvmArgs('-Dspring.output.ansi.enabled=always')
     sourceResources sourceSets.main
 }
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
