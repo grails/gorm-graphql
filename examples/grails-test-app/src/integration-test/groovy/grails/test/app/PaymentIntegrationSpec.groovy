@@ -25,7 +25,7 @@ class PaymentIntegrationSpec extends Specification implements GraphQLSpec {
 
         then:
         result.errors.size() == 1
-        result.errors[0].message == "Validation error of type FieldUndefined: Field 'paymentCreate' in type 'Mutation' is undefined @ 'paymentCreate'"
+        result.errors[0].message == "Validation error (FieldUndefined@[paymentCreate]) : Field 'paymentCreate' in type 'Mutation' is undefined"
     }
 
     void "test creating a credit card payment"() {
@@ -108,7 +108,7 @@ class PaymentIntegrationSpec extends Specification implements GraphQLSpec {
         then: 'An error is returned'
         obj.data == null
         obj.errors.size() == 1
-        obj.errors[0].message == "Validation error of type FieldUndefined: Field 'cardNumber' in type 'Payment' is undefined @ 'payment/cardNumber'"
+        obj.errors[0].message == "Validation error (FieldUndefined@[payment/cardNumber]) : Field 'cardNumber' in type 'Payment' is undefined"
     }
 
     void "test querying a list of credit card payments"() {
@@ -196,7 +196,8 @@ class PaymentIntegrationSpec extends Specification implements GraphQLSpec {
         then: 'An error is thrown'
         obj.data == null
         obj.errors.size() == 1
-        obj.errors[0].message.startsWith('Validation error of type WrongType')
+        obj.errors[0].message.startsWith('Validation error (WrongType@[paymentUpdate])')
+        obj.errors[0].message.endsWith("contains a field not in 'PaymentUpdate': 'cardNumber'")
 
         when:
         resp = graphQL.graphql("""
