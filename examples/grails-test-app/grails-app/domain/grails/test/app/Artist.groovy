@@ -9,6 +9,7 @@ class Artist {
 
     static graphql = GraphQLMapping.build {
         add('paintings', [Painting]) {
+            input(false)
             dataFetcher {
                 return [new Painting(name: 'test', artistName: 'Picasso', heightCm: 60, widthCm: 120)]
             }
