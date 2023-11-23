@@ -7,12 +7,12 @@ apply plugin: 'codenarc'
 dependencies {
     documentation "org.codehaus.groovy:groovy-cli-picocli:$groovyVersion"
 
-    implementation "org.grails:grails-datastore-gorm:${gormVersion}"
-    implementation "com.graphql-java:graphql-java:$graphqlJavaVersion"
-    implementation "com.graphql-java:graphql-java-extended-scalars:$graphqlJavaScalarExtVersion"
-    implementation 'com.github.javaparser:javaparser-core:3.25.5'
-    implementation "org.grails.plugins:views-json:2.3.2"
-    implementation 'org.javassist:javassist:3.29.2-GA'
+    api "org.grails:grails-datastore-gorm:${gormVersion}"
+    api "com.graphql-java:graphql-java:$graphqlJavaVersion"
+    api "com.graphql-java:graphql-java-extended-scalars:$graphqlJavaScalarExtVersion"
+    api 'com.github.javaparser:javaparser-core:3.25.5'
+    api "org.grails.plugins:views-json:2.3.2"
+    api 'org.javassist:javassist:3.29.2-GA'
 
     codenarc "org.codenarc:CodeNarc:$codenarcVersion"
 

@@ -15,25 +15,24 @@ apply plugin:"org.grails.grails-plugin"
 apply plugin:"org.grails.plugins.views-json"
 
 dependencies {
-
-    implementation "org.grails:grails-plugin-controllers"
-    implementation "org.grails:grails-plugin-databinding"
-    implementation("org.grails:grails-plugin-rest") {
+    api "org.grails:grails-plugin-controllers"
+    api "org.grails:grails-plugin-databinding"
+    api("org.grails:grails-plugin-rest") {
         exclude group: 'org.grails.plugins', module: 'converters'
     }
-    implementation "org.grails:grails-plugin-url-mappings"
-    implementation "org.grails.plugins:views-json:$viewsJsonVersion"
-    implementation 'io.micronaut.rxjava2:micronaut-rxjava2-http-client:1.2.0'
-    implementation "javax.servlet:javax.servlet-api:$servletApiVersion"
-    implementation "io.micronaut:micronaut-http-client:$micronautVersion"
-    implementation "org.grails.plugins:converters:3.3.1"
-    implementation 'com.github.javaparser:javaparser-core:3.25.5'
-    implementation "com.graphql-java:graphql-java:$graphqlJavaVersion"
+    api "org.grails:grails-plugin-url-mappings"
+    api "org.grails.plugins:views-json:$viewsJsonVersion"
+    api 'io.micronaut.rxjava2:micronaut-rxjava2-http-client:1.2.0'
+    api "javax.servlet:javax.servlet-api:$servletApiVersion"
+    api "io.micronaut:micronaut-http-client:$micronautVersion"
+    api "org.grails.plugins:converters:3.3.1"
+    api 'com.github.javaparser:javaparser-core:3.25.5'
+    api "com.graphql-java:graphql-java:$graphqlJavaVersion"
     testImplementation "org.grails:grails-web-testing-support"
     testImplementation "cglib:cglib-nodep:3.3.0"
     profile "org.grails.profiles:web-plugin"
 
-    compile project(":gorm-graphql")
+    api project(":gorm-graphql")
 }
 
 compileGsonViews {
