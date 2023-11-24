@@ -23,14 +23,14 @@ dependencies {
     implementation 'io.micronaut.rxjava2:micronaut-rxjava2-http-client:1.2.0'
     console "org.grails:grails-console"
     profile "org.grails.profiles:rest-api"
-    runtime "org.glassfish.web:el-impl:2.1.2-b03"
+    runtimeOnly "org.glassfish.web:el-impl:2.1.2-b03"
     runtimeOnly "com.h2database:h2"
     runtimeOnly "org.apache.tomcat:tomcat-jdbc"
     testImplementation "org.grails:grails-gorm-testing-support"
     testImplementation "org.grails.plugins:geb"
     testImplementation "org.grails:grails-web-testing-support"
-    testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
-    testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
+    testRuntimeOnly "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
+    testRuntimeOnly "net.sourceforge.htmlunit:htmlunit:2.18"
     testImplementation "org.grails:grails-test-mixins:3.3.0"
 
 

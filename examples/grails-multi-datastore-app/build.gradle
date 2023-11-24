@@ -36,8 +36,8 @@ dependencies {
     compileOnly "org.grails:grails-gorm-testing-support"
     compileOnly "org.grails.plugins:geb"
     compileOnly "org.grails:grails-web-testing-support"
-    testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
-    testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
+    testRuntimeOnly "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
+    testRuntimeOnly "net.sourceforge.htmlunit:htmlunit:2.18"
     testImplementation "org.grails:grails-test-mixins:3.3.0"
     testImplementation "org.grails:grails-gorm-testing-support"
     implementation project(":grails-plugin-gorm-graphql-plugin")
