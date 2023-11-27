@@ -4,6 +4,8 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
+        classpath "org.grails.plugins:views-gradle:$viewGradleVersion"
+        classpath "org.grails.plugins:views-json:$viewsJsonVersion"
         classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
         classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
     }

@@ -1,18 +1,8 @@
-repositories {
-    mavenCentral()
-}
-buildscript {
-    repositories {
-        maven { url "https://repo.grails.org/grails/core" }
-    }
-    dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
-        classpath "org.grails.plugins:views-gradle:$viewGradleVersion"
-    }
-}
 
-apply plugin:"org.grails.grails-plugin"
-apply plugin:"org.grails.plugins.views-json"
+plugins {
+    id "org.grails.grails-plugin"
+    id "org.grails.plugins.views-json"
+}
 
 dependencies {
     api "org.grails:grails-plugin-controllers"
