@@ -32,4 +32,3 @@ org.grails.gorm.graphql.types.output
 org.grails.gorm.graphql.types.scalars
 org.grails.gorm.graphql.types.scalars.coercing
 org.grails.gorm.graphql.types.scalars.coercing.jsr310
-org.grails.gorm.graphql.types.scalars.jsr310
