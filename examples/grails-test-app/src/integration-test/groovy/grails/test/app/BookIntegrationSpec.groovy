@@ -21,7 +21,7 @@ class BookIntegrationSpec extends Specification implements GraphQLSpec {
 
         then:
         result.errors.size() == 1
-        result.errors[0].message == "Validation error of type FieldUndefined: Field 'bookList' in type 'Query' is undefined @ 'bookList'"
+        result.errors[0].message == "Validation error (FieldUndefined@[bookList]) : Field 'bookList' in type 'Query' is undefined"
     }
 
 }

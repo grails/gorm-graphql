@@ -1,15 +1,14 @@
 package myapp
 
-import grails.testing.mixin.integration.Integration
+import grails.test.mixin.integration.Integration
 import org.bson.types.ObjectId
 import org.grails.datastore.gorm.GormEnhancer
 import org.grails.datastore.mapping.mongo.MongoDatastore
 import org.grails.gorm.graphql.plugin.testing.GraphQLSpec
-import org.grails.web.json.JSONObject
-import spock.lang.Specification
+
 
 @Integration
-class BarIntegrationSpec extends Specification implements GraphQLSpec {
+class BarIntegrationSpec implements GraphQLSpec {
 
     void "test a bar can be created"() {
         when:

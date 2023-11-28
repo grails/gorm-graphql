@@ -1,34 +1,34 @@
-buildscript {
-    repositories {
-        maven { url "https://repo.grails.org/grails/core" }
-    }
-    dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "org.grails.plugins:views-gradle:$viewGradleVersion"
-    }
+
+plugins {
+    id "org.grails.grails-plugin"
+    id "org.grails.plugins.views-json"
 }
 
-apply plugin:"org.grails.grails-plugin"
-apply plugin:"org.grails.plugins.views-json"
-
 dependencies {
-    compile "org.grails:grails-plugin-controllers"
-    compile "org.grails:grails-plugin-databinding"
-    compile("org.grails:grails-plugin-rest") {
+    api "org.grails:grails-plugin-controllers"
+    api "org.grails:grails-plugin-databinding"
+    api("org.grails:grails-plugin-rest") {
         exclude group: 'org.grails.plugins', module: 'converters'
     }
-    compile "org.grails:grails-plugin-url-mappings"
-    compile "org.grails.plugins:views-json:$viewsJsonVersion"
-    compile "javax.servlet:javax.servlet-api:$servletApiVersion"
-    compile "io.micronaut:micronaut-http-client:$micronautVersion"
-    compileOnly "org.grails.plugins:converters:3.3.1"
-    testCompile "org.grails:grails-web-testing-support"
-    testCompile "cglib:cglib-nodep:3.3.0"
+    api "org.grails:grails-plugin-url-mappings"
+    api "org.grails.plugins:views-json:$viewsJsonVersion"
+    api 'io.micronaut.rxjava2:micronaut-rxjava2-http-client:1.2.0'
+    api "javax.servlet:javax.servlet-api:$servletApiVersion"
+    api "io.micronaut:micronaut-http-client:$micronautVersion"
+    api "org.grails.plugins:converters:3.3.1"
+    api 'com.github.javaparser:javaparser-core:3.25.5'
+    api "com.graphql-java:graphql-java:$graphqlJavaVersion"
+    testImplementation "org.grails:grails-web-testing-support"
+    testImplementation "cglib:cglib-nodep:3.3.0"
     profile "org.grails.profiles:web-plugin"
 
-    compile project(":gorm-graphql")
+    api project(":gorm-graphql")
 }
 
 compileGsonViews {
     packageName = "gorm-graphql"
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
 }

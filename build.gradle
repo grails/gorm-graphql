@@ -3,7 +3,9 @@ buildscript {
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
+        classpath "org.grails.plugins:views-gradle:$viewGradleVersion"
+        classpath "org.grails.plugins:views-json:$viewsJsonVersion"
         classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
         classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
     }
@@ -17,7 +19,7 @@ repositories {
 version project.projectVersion
 
 ext {
-    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/master'
+    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/v2.0.0'
 }
 
 subprojects {
@@ -62,13 +64,21 @@ subprojects {
     }
 
     if (isGrailsPlugin) {
+        apply plugin: 'groovy'
+        apply plugin: 'eclipse'
+        apply plugin: 'idea'
+        apply plugin: 'java-library'
         apply plugin: "org.grails.grails-plugin"
     } else {
         apply from: "${commonBuild}/common-project.gradle"
     }
 
     dependencies {
-        testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"
+        implementation "com.graphql-java:graphql-java:$graphqlJavaVersion"
+        testImplementation "org.codehaus.groovy:groovy-test:$groovyVersion"
+        testImplementation "io.projectreactor:reactor-test:3.5.5"
+        testImplementation("org.spockframework:spock-core:$spockVersion")
+        implementation 'org.grails:grails-datastore-gorm:7.3.4'
     }
 }
 

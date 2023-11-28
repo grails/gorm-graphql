@@ -36,8 +36,8 @@ import org.grails.gorm.graphql.entity.dsl.helpers.Named
  * @author James Kleeh
  * @since 1.0.0
  */
-@Builder(builderStrategy = SimpleStrategy, prefix = '')
 @CompileStatic
+@Builder(builderStrategy = SimpleStrategy, prefix = '')
 class GraphQLPropertyMapping implements Describable<GraphQLPropertyMapping>, Deprecatable<GraphQLPropertyMapping>, Named<GraphQLPropertyMapping>, ExecutesClosures {
 
     /**

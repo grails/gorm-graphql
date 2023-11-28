@@ -16,23 +16,39 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 dependencies {
-	compile 'org.springframework.boot:spring-boot-starter'
-	compile "org.springframework.boot:spring-boot-starter-web"
-	compile 'org.codehaus.groovy:groovy'
-	compile "org.grails:gorm-hibernate5-spring-boot:${gormHibernateVersion}"
-	compile "org.hibernate:hibernate-core:$hibernateCoreVersion"
-	compile "org.hibernate:hibernate-ehcache:$hibernateEcacheVersion"
-	compile "org.grails:grails-core:$grailsVersion"
-	compile project(":gorm-graphql")
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation "org.springframework.boot:spring-boot-starter-web"
+	implementation "org.grails:gorm-hibernate5-spring-boot:7.3.1"
+	implementation "org.hibernate:hibernate-core:$hibernateCoreVersion"
+	implementation "org.hibernate:hibernate-ehcache:5.6.15.Final"
+	implementation "org.grails:grails-core:5.3.2"
+	implementation project(":gorm-graphql")
+	implementation 'org.codehaus.groovy:groovy-astbuilder:3.0.19'
+	implementation 'jakarta.transaction:jakarta.transaction-api:2.0.1'
+	implementation 'com.github.javaparser:javaparser-core:3.25.5'
+	implementation "com.graphql-java:graphql-java:$graphqlJavaVersion"
+	implementation 'junit:junit:4.13.1'
+	runtimeOnly 'com.h2database:h2:2.1.214'
+	runtimeOnly 'org.apache.tomcat:tomcat-jdbc:10.1.9'
+	runtimeOnly "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"
+	implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
 
-	runtime "com.h2database:h2:1.4.192"
-	runtime "org.apache.tomcat:tomcat-jdbc:8.5.0"
-	runtime "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"
+	runtimeOnly "javax.el:javax.el-api:3.0.0"
+	runtimeOnly "org.glassfish:javax.el:3.0.0"
 
-	runtime "javax.el:javax.el-api:3.0.0"
-	runtime "org.glassfish:javax.el:3.0.0"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
+	testImplementation 'junit:junit:4.13.2'
 
-	testCompile 'org.springframework.boot:spring-boot-starter-test'
-	testCompile "org.spockframework:spock-spring:$spockVersion"
 
+
+
+}
+
+repositories {
+	mavenCentral()
+}
+
+tasks.withType(Test) {
+	useJUnitPlatform()
 }

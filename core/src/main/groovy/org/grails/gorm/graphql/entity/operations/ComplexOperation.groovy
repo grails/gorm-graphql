@@ -13,6 +13,7 @@ import org.grails.gorm.graphql.types.GraphQLTypeManager
  * @author James Kleeh
  * @since 1.0.0
  */
+
 @CompileStatic
 class ComplexOperation extends CustomOperation<ComplexOperation> implements ExecutesClosures {
 
