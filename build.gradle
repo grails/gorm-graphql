@@ -7,7 +7,7 @@ buildscript {
         classpath "org.grails.plugins:views-gradle:$viewGradleVersion"
         classpath "org.grails.plugins:views-json:$viewsJsonVersion"
         classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
-        classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
+        classpath "io.github.gradle-nexus:publish-plugin:1.3.0"
     }
 }
 
