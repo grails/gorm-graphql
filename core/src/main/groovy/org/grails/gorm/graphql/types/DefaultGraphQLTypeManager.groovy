@@ -169,12 +169,12 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
             }
 
             for (Enum anEnum: clazz.enumConstants) {
-                final String NAME = anEnum.name()
+                final String name = anEnum.name()
 
                 String description = null
                 String deprecationReason = null
 
-                GraphQL valueAnnotation = clazz.getField(NAME).getAnnotation(GraphQL)
+                GraphQL valueAnnotation = clazz.getField(name).getAnnotation(GraphQL)
                 if (valueAnnotation != null) {
                     if (!valueAnnotation.deprecationReason().empty) {
                         deprecationReason = valueAnnotation.deprecationReason()
@@ -187,7 +187,7 @@ class DefaultGraphQLTypeManager implements GraphQLTypeManager {
                     }
                 }
 
-                builder.value(NAME, anEnum, description, deprecationReason)
+                builder.value(name, anEnum, description, deprecationReason)
             }
 
             enumType = builder.build()

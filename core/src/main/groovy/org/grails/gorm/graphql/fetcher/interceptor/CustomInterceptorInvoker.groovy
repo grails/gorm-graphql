@@ -18,10 +18,10 @@ abstract class CustomInterceptorInvoker extends InterceptorInvoker {
 
     @Override
     final boolean invoke(GraphQLFetcherInterceptor interceptor, DataFetchingEnvironment environment, GraphQLDataFetcherType type) {
-        final String NAME = getName(environment)
-        boolean result = invoke(interceptor, NAME, environment)
+        final String name = getName(environment)
+        boolean result = invoke(interceptor, name, environment)
         if (!result) {
-            log.info("Execution of ${NAME} was prevented by an interceptor")
+            log.info("Execution of ${name} was prevented by an interceptor")
         }
         result
     }

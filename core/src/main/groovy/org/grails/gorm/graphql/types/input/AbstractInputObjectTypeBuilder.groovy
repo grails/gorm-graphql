@@ -51,13 +51,13 @@ abstract class AbstractInputObjectTypeBuilder implements InputObjectTypeBuilder 
             objectTypeCache.get(entity)
         }
         else {
-            final String DESCRIPTION = GraphQLEntityHelper.getDescription(entity)
+            final String description = GraphQLEntityHelper.getDescription(entity)
 
             List<GraphQLDomainProperty> properties = builder.getProperties(entity)
 
             GraphQLInputObjectType.Builder inputObj = newInputObject()
                     .name(typeManager.namingConvention.getType(entity, type))
-                    .description(DESCRIPTION)
+                    .description(description)
 
             for (GraphQLDomainProperty prop: properties) {
                 if (prop.input) {
