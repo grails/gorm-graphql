@@ -214,7 +214,7 @@ class Schema {
                     if (associatedEntity.identity != null) {
                         identities.put(identity.name, associatedEntity.identity.type)
                     } else {
-                        throw new UnsupportedOperationException("Mapping domain classes with nested composite keys is not currently supported. ${identity.toString()} has a composite key.")
+                        throw new UnsupportedOperationException("Mapping domain classes with nested composite keys is not currently supported. ${identity} has a composite key.")
                     }
                 } else {
                     identities.put(identity.name, identity.type)
