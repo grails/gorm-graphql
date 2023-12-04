@@ -84,32 +84,32 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
             objectTypeCache.get(entity)
         }
         else {
-            final String DESCRIPTION = GraphQLEntityHelper.getDescription(entity)
-            final String NAME = typeManager.namingConvention.getType(entity, type)
+            final String description = GraphQLEntityHelper.getDescription(entity)
+            final String name = typeManager.namingConvention.getType(entity, type)
 
             List<GraphQLFieldDefinition> fields = new ArrayList<>(properties.size() + 1)
 
             List<GraphQLDomainProperty> properties = builder.getProperties(entity)
             for (GraphQLDomainProperty prop: properties) {
                 if (prop.output) {
-                    GraphQLFieldDefinition.Builder field = buildField(prop, NAME)
+                    GraphQLFieldDefinition.Builder field = buildField(prop, name)
                     addFieldArgs(field, prop, entity.mappingContext)
                     fields.add(field.build())
                 }
             }
 
             if (errorsResponseHandler != null) {
-                GraphQLFieldDefinition fieldDefinition = errorsResponseHandler.getFieldDefinition(typeManager, NAME)
+                GraphQLFieldDefinition fieldDefinition = errorsResponseHandler.getFieldDefinition(typeManager, name)
                 fields.add(fieldDefinition)
             }
 
             boolean hasChildEntities = entity.root && !entity.mappingContext.getDirectChildEntities(entity).empty
 
             if (hasChildEntities && !type.embedded) {
-                objectType = buildInterfaceType(entity, NAME, DESCRIPTION, fields)
+                objectType = buildInterfaceType(entity, name, description, fields)
             }
             else {
-                objectType = buildObjectType(entity, NAME, DESCRIPTION, fields)
+                objectType = buildObjectType(entity, name, description, fields)
             }
 
             objectTypeCache.put(entity, objectType)
@@ -140,8 +140,8 @@ abstract class AbstractObjectTypeBuilder implements ObjectTypeBuilder {
                 .typeResolver(new TypeResolver() {
                     @Override
                     GraphQLObjectType getType(TypeResolutionEnvironment env) {
-                        final String TYPE_NAME = typeManager.namingConvention.getType(env.object.class.simpleName, GraphQLPropertyType.OUTPUT)
-                        (GraphQLObjectType)env.schema.getType(TYPE_NAME)
+                        final String typeName = typeManager.namingConvention.getType(env.object.class.simpleName, GraphQLPropertyType.OUTPUT)
+                        (GraphQLObjectType)env.schema.getType(typeName)
                     }
                 })
 
