@@ -5,7 +5,7 @@ repositories {
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-logging"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation "org.grails:grails-core:5.3.2"
+    implementation "org.grails:grails-core"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
     implementation "org.grails:grails-plugin-url-mappings"
