@@ -26,9 +26,6 @@ subprojects {
 
     version project.projectVersion
 
-    sourceCompatibility = 1.11
-    targetCompatibility = 1.11
-
     ext {
         userOrg = "grails"
         isGrailsPlugin = name.startsWith('grails-plugin')
@@ -72,6 +69,9 @@ subprojects {
         apply plugin: 'idea'
         apply plugin: 'java-library'
         apply plugin: "org.grails.grails-plugin"
+
+        sourceCompatibility = 1.11
+        targetCompatibility = 1.11
     } else {
         apply from: "${commonBuild}/common-project.gradle"
     }
