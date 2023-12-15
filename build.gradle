@@ -26,6 +26,9 @@ subprojects {
 
     version project.projectVersion
 
+    sourceCompatibility = 1.11
+    targetCompatibility = 1.11
+
     ext {
         userOrg = "grails"
         isGrailsPlugin = name.startsWith('grails-plugin')
