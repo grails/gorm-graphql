@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
-          java-version: '8'
+          java-version: '11'
       - name: Run Build
         id: build
         uses: gradle/gradle-build-action@v2
@@ -39,7 +39,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
-          java-version: '8'
+          java-version: '11'
       - name: Publish Artifacts (repo.grails.org)
         id: publish
         uses: gradle/gradle-build-action@v2

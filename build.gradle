@@ -19,7 +19,7 @@ repositories {
 version project.projectVersion
 
 ext {
-    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/master'
+    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/v2.0.1'
 }
 
 subprojects {
@@ -69,6 +69,9 @@ subprojects {
         apply plugin: 'idea'
         apply plugin: 'java-library'
         apply plugin: "org.grails.grails-plugin"
+
+        sourceCompatibility = 1.11
+        targetCompatibility = 1.11
     } else {
         apply from: "${commonBuild}/common-project.gradle"
     }
