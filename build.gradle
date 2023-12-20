@@ -79,7 +79,7 @@ subprojects {
     dependencies {
         implementation "com.graphql-java:graphql-java:$graphqlJavaVersion"
         testImplementation "org.codehaus.groovy:groovy-test:$groovyVersion"
-        testImplementation "io.projectreactor:reactor-test:3.6.0"
+        testImplementation "io.projectreactor:reactor-test:3.6.1"
         testImplementation("org.spockframework:spock-core:$spockVersion")
         implementation 'org.grails:grails-datastore-gorm:7.3.4'
     }
