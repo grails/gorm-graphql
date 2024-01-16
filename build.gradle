@@ -8,6 +8,7 @@ buildscript {
         classpath "org.grails.plugins:views-json:$viewsJsonVersion"
         classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
         classpath "io.github.gradle-nexus:publish-plugin:1.3.0"
+        classpath "org.asciidoctor:asciidoctor-gradle-jvm:3.3.2"
     }
 }
 
@@ -19,7 +20,7 @@ repositories {
 version project.projectVersion
 
 ext {
-    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/v2.0.0'
+    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/master'
 }
 
 subprojects {
