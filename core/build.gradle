@@ -10,7 +10,7 @@ dependencies {
     api "org.grails:grails-datastore-gorm:${gormVersion}"
     api "com.graphql-java:graphql-java:$graphqlJavaVersion"
     api "com.graphql-java:graphql-java-extended-scalars:$graphqlJavaScalarExtVersion"
-    api 'com.github.javaparser:javaparser-core:3.25.6'
+    api 'com.github.javaparser:javaparser-core:3.25.7'
     api "org.grails.plugins:views-json:2.3.2"
     api 'org.javassist:javassist:3.29.2-GA'
 
@@ -20,7 +20,7 @@ dependencies {
     testImplementation "org.grails:grails-datastore-gorm-mongodb:${gormMongoDbVersion}"
     testImplementation 'com.github.fakemongo:fongo:2.1.1'
     testImplementation 'com.h2database:h2:2.2.224'
-    testImplementation "org.apache.tomcat:tomcat-jdbc:8.5.96"
+    testImplementation "org.apache.tomcat:tomcat-jdbc:8.5.97"
     testImplementation "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.2"
     testImplementation "org.slf4j:slf4j-api:$slf4jVersion"
 }
