@@ -20,7 +20,7 @@ buildCache {
     remote(gradleEnterprise.buildCache) {
         def isAuthenticated = System.getenv('GRADLE_ENTERPRISE_ACCESS_KEY')
         push = System.getenv('CI') == 'true' && isAuthenticated
-        enabled = trueÏ
+        enabled = true
     }}
 
 include 'core'
